@@ -1,0 +1,298 @@
+{
+  "schema_version": "0.1",
+  "run_id": "synthetic-newborn-screening",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-economic_cost",
+    "version": "1.0.0",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "economic_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "staff-minute-rate",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "minute",
+      "amount": "2.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "salary"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-staff-minute-rate",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-screening.json"
+      }
+    },
+    {
+      "id": "batch-rate",
+      "kind": "resource_use",
+      "target": "assay_batch",
+      "unit": "batch",
+      "amount": "100.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "assay"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-batch-rate",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-screening.json"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "collection-a",
+      "use_id": "use-collection-a",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "minute",
+      "quantity": "5",
+      "service_date": "2026-06-15",
+      "quote_id": "staff-minute-rate",
+      "source": {
+        "id": "synthetic-collection-a",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-screening.json"
+      },
+      "event_id": "event-collection-a",
+      "process_id": "screening-process",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-a",
+        "specimen-a"
+      ],
+      "attribution_object_id": "infant-a"
+    },
+    {
+      "id": "collection-b",
+      "use_id": "use-collection-b",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "minute",
+      "quantity": "5",
+      "service_date": "2026-06-15",
+      "quote_id": "staff-minute-rate",
+      "source": {
+        "id": "synthetic-collection-b",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-screening.json"
+      },
+      "event_id": "event-collection-b",
+      "process_id": "screening-process",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-b",
+        "specimen-b"
+      ],
+      "attribution_object_id": "infant-b"
+    },
+    {
+      "id": "batch",
+      "use_id": "use-batch",
+      "kind": "resource_use",
+      "target": "assay_batch",
+      "unit": "batch",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "batch-rate",
+      "source": {
+        "id": "synthetic-batch",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-screening.json"
+      },
+      "event_id": "event-batch",
+      "process_id": "screening-process",
+      "activity_id": "assay",
+      "object_ids": [
+        "batch-1",
+        "specimen-a",
+        "specimen-b"
+      ]
+    },
+    {
+      "id": "confirmation-b",
+      "use_id": "use-confirmation-b",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "minute",
+      "quantity": "15",
+      "service_date": "2026-06-15",
+      "quote_id": "staff-minute-rate",
+      "source": {
+        "id": "synthetic-confirmation-b",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-screening.json"
+      },
+      "event_id": "event-confirmation-b",
+      "process_id": "screening-process",
+      "activity_id": "confirmation",
+      "object_ids": [
+        "infant-b",
+        "specimen-b",
+        "confirmation-b"
+      ],
+      "attribution_object_id": "infant-b"
+    }
+  ],
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-b",
+      "kind": "infant"
+    },
+    {
+      "id": "specimen-a",
+      "kind": "specimen"
+    },
+    {
+      "id": "specimen-b",
+      "kind": "specimen"
+    },
+    {
+      "id": "batch-1",
+      "kind": "assay_batch"
+    },
+    {
+      "id": "confirmation-b",
+      "kind": "confirmation"
+    }
+  ],
+  "processes": [
+    {
+      "id": "screening-process",
+      "model_id": "synthetic-newborn-screening",
+      "model_version": "1.0.0"
+    }
+  ],
+  "events": [
+    {
+      "id": "event-collection-a",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-a",
+        "specimen-a"
+      ]
+    },
+    {
+      "id": "event-collection-b",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-b",
+        "specimen-b"
+      ]
+    },
+    {
+      "id": "event-batch",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "assay",
+      "object_ids": [
+        "batch-1",
+        "specimen-a",
+        "specimen-b"
+      ]
+    },
+    {
+      "id": "event-confirmation-b",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "confirmation",
+      "object_ids": [
+        "infant-b",
+        "specimen-b",
+        "confirmation-b"
+      ]
+    }
+  ],
+  "object_relations": [
+    {
+      "from_object_id": "specimen-a",
+      "to_object_id": "infant-a",
+      "relationship": "collected_from"
+    },
+    {
+      "from_object_id": "specimen-b",
+      "to_object_id": "infant-b",
+      "relationship": "collected_from"
+    },
+    {
+      "from_object_id": "specimen-a",
+      "to_object_id": "batch-1",
+      "relationship": "included_in"
+    },
+    {
+      "from_object_id": "specimen-b",
+      "to_object_id": "batch-1",
+      "relationship": "included_in"
+    },
+    {
+      "from_object_id": "confirmation-b",
+      "to_object_id": "specimen-b",
+      "relationship": "confirms"
+    }
+  ],
+  "allocations": [
+    {
+      "id": "batch-allocation",
+      "source_line_ids": [
+        "batch"
+      ],
+      "weights": [
+        {
+          "object_id": "infant-a",
+          "weight": "1"
+        },
+        {
+          "object_id": "infant-b",
+          "weight": "1"
+        }
+      ]
+    }
+  ]
+}

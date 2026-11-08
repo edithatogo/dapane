@@ -1,19 +1,19 @@
 # Implementation plan: Newborn screening pathway composition
 
-Status: new
+Status: in_progress
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
 
 ## Phase 1 — Domain recipe
 
-- [ ] N1.1 Define the newborn object relationships and supported stage/branch vocabulary using the shared contracts.
-- [ ] N1.2 Compose workforce and laboratory recipes with explicit resource/component inclusion and allocation policies.
-- [ ] N1.3 Verify that multiple assays per specimen and multiple infants per batch retain correct identities and cost boundaries.
+- [~] N1.1 Define the newborn object relationships and supported stage/branch vocabulary using the shared contracts.
+- [~] N1.2 Compose workforce and laboratory recipes with explicit resource/component inclusion and allocation policies.
+- [~] N1.3 Verify that multiple assays per specimen and multiple infants per batch retain correct identities and cost boundaries.
 
 ## Phase 2 — Synthetic execution cases
 
-- [ ] N2.1 Implement the independent 150-total, 60/90-allocation case with invented quantities and rates clearly labelled synthetic.
+- [x] N2.1 Implement the independent 150-total, 60/90-allocation case with invented quantities and rates clearly labelled synthetic.
 - [ ] N2.2 Add repeat collection, inadequate specimens, failed/reflex assays, partial batches and an extra-capacity threshold case.
 - [ ] N2.3 Verify pool conservation, marginal versus average results, denominator/window definitions and family-time inclusion by perspective.
 
@@ -25,5 +25,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
-No runtime acceptance evidence is recorded by this initial plan.
+The [synthetic request](../../../fixtures/newborn-screening.json) and [independent expectations](../../../fixtures/expected.json) implement N2.1, with explicit infant/specimen/batch/confirmation objects, four events, a process and relations. N1 remains partial because a complete supported programme recipe/vocabulary and composition with real providers are not delivered. Repeat/failure/capacity cases, denominator methods, source-qualified programme work and reporting remain pending.
+
+Full scope and observed commands/results are recorded in [runtime verification](../../../docs/runtime-verification.md). This track remains in progress.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.

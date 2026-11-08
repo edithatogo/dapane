@@ -7,7 +7,7 @@ with no branch commits, instructions, manifests, licence, source, tests or exist
 Conductor records. Its configured default branch was `main`. No content needed
 migration or deletion.
 
-The setup adds:
+Current repository areas:
 
 | Path | Current responsibility |
 | --- | --- |
@@ -20,11 +20,23 @@ The setup adds:
 | `conductor/archive/` | Archive policy; no archived tracks at setup |
 | `scripts/validate_conductor.py` | Dependency-free structural and consistency check |
 | `.github/workflows/conductor.yml` | Read-only documentation CI |
+| `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml` | Native workspace and pinned toolchain/dependency graph |
+| `crates/dapane-core/` | Exact contract, validation, valuation, allocation and deterministic digests |
+| `crates/dapane-cli/` | Offline file/stdin JSON interface and CLI boundary checks |
+| `crates/dapane-python/`, `python/dapane/`, `pyproject.toml` | Thin PyO3 extension and Python exact-value transport |
+| `schemas/0.1/` | Request, report, error and shared JSON schemas |
+| `fixtures/` | Five synthetic inputs and independently authored expected results |
+| `tests/python/` | Installed-wheel consumer, transport, error and concurrency checks |
+| `scripts/validate_contract.py` | Structural checks and independent CLI result/digest verification |
+| `scripts/benchmark_cli.py` | Bounded synthetic valuation/allocation measurements |
+| `docs/` | Implemented contract, provider review, quickstart, compatibility and runtime evidence |
+| `.github/workflows/runtime.yml` | Native and four-interpreter installed-wheel CI |
 
-The first runtime tracks will establish the Cargo workspace, crate layout,
-manifests, lockfiles, schemas, fixtures and Python package. Paths described in the
-design as proposed implementation locations do not exist merely because they are
-mentioned here. There are no package releases, binary artefacts or deployments.
+The first runtime candidate is implemented and locally built; its precise scope
+is recorded in [the contract](../docs/contract-v0.1.md) and
+[verification](../docs/runtime-verification.md). Build outputs remain outside
+version control. There is no registry release or deployment, and provider
+adapters, R/Julia, reporting and process execution remain planned.
 
 ## Source-of-truth boundaries
 

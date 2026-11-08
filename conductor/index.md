@@ -23,11 +23,14 @@ their repository owners.
 
 ## Execution
 
+- [Implemented contract 0.1](../docs/contract-v0.1.md), [quickstart](../docs/quickstart.md) and [runtime verification](../docs/runtime-verification.md): the working bounded Rust/CLI/Python candidate.
+- [Event/process/object model](../docs/event-process-object-model.md) and [provider boundaries](../docs/provider-boundaries.md): independent core and optional Kairos/provider integration.
+
 - [Roadmap](roadmap.md): capability milestones and optional delivery paths.
 - [Track registry](tracks.md): status and entry points for all tracks.
 - [Setup record](tracks/conductor_setup_20261108/index.md): what this initialisation delivers.
-- [Core contracts](tracks/core_contracts_20261108/index.md): first runtime implementation prerequisite.
-- [Verification record](verification.md): checks performed on this setup and their limits.
+- [Core contracts](tracks/core_contracts_20261108/index.md): implemented first profile and remaining contract work.
+- [Setup verification record](verification.md): historical Conductor setup checks and their limits.
 - [Archive policy](archive/README.md): retention without premature archival.
 
 The registry and each track's metadata describe the same state. Plans record

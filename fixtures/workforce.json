@@ -1,0 +1,67 @@
+{
+  "schema_version": "0.1",
+  "run_id": "synthetic-workforce",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-economic_cost",
+    "version": "1.0.0",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "economic_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "hourly-rate",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "hour",
+      "amount": "90.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "salary"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-hourly-rate",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/workforce.json"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "workforce-exposure",
+      "use_id": "use-workforce-exposure",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "hour",
+      "quantity": {
+        "numerator": "1",
+        "denominator": "3"
+      },
+      "service_date": "2026-06-15",
+      "quote_id": "hourly-rate",
+      "source": {
+        "id": "synthetic-workforce-exposure",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/workforce.json"
+      }
+    }
+  ]
+}

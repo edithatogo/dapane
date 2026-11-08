@@ -1,9 +1,9 @@
 {
   "track_id": "rust_kernel_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T04:40:00Z",
   "description": "Implement one authoritative numerical core for exact valuation, component accounting and shared-pool allocation. The native library and CLI must work without a language wrapper, table engine, simulator or cloud account.",
   "repositories": [
     "."
@@ -15,17 +15,32 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "ADR-010"
+  ],
   "requirement_ids": [
     "RQ-01",
     "RQ-02",
     "RQ-03",
     "RQ-12"
   ],
-  "capability_status": "planned",
+  "capability_status": "implemented_bounded_profile_0_1",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "passed_for_bounded_profile",
+    "scope": "Exact point-date kernel/CLI, deterministic allocation, independent installed CLI and bounded performance verified. Automatic segmentation and full project-licence/release qualification remain open.",
+    "commands": [
+      "cargo test --locked",
+      "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "cargo build --locked --release -p dapane-cli",
+      "python scripts/validate_contract.py --cli target/release/dapane",
+      "python scripts/benchmark_cli.py --cli target/release/dapane",
+      "cargo fmt --all --check",
+      "cargo install --locked --path crates/dapane-cli --root <clean-prefix>"
+    ],
+    "evidence": [
+      "docs/runtime-verification.md",
+      "docs/contract-v0.1.md"
+    ]
   },
   "completion_evidence": [
     "All supported exact reference cases match independently derived results; invalid quantity/unit/date/valuation combinations return structured errors.",

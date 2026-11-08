@@ -2,7 +2,7 @@
 
 Track: `python_two_consumers_20261108`
 
-Status: new
+Status: in_progress
 
 Prove that the common core is a useful independent package by running a workforce calculation and a genomics workflow through installed Python bindings and the same Rust implementation.
 
@@ -14,4 +14,4 @@ Prove that the common core is a useful independent package by running a workforc
 
 Requirements: RQ-04, RQ-02, RQ-03.
 
-Capability status: planned. A documented plan is not implementation or release evidence.
+Capability status: native_binding_and_synthetic_consumers. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.

@@ -57,8 +57,9 @@ python3 scripts/validate_conductor.py
 
 This checks required context, relative links, metadata/registry consistency,
 requirement ownership and acyclic local dependencies. It never marks numerical,
-clinical, source or deployment validity. Runtime commands are added to their
-tracks once there is an implementation to run.
+clinical, source or deployment validity. Runtime commands and actual outcomes
+are recorded in [runtime verification](../docs/runtime-verification.md) and the
+affected tracks.
 
 ## Commits and collaboration
 

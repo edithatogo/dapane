@@ -1,13 +1,13 @@
 # Implementation plan: Observed events, Petri nets and BPMN adapters
 
-Status: new
+Status: in_progress
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
 
 ## Phase 1 — Observed records
 
-- [ ] X1.1 Specify event/object identity, timestamps, correction rules and mapping of observed/assumed/simulated usage.
+- [~] X1.1 Specify event/object identity, timestamps, correction rules and mapping of observed/assumed/simulated usage.
 - [ ] X1.2 Qualify XES and OCEL 2.0 import using a pinned rust4pm/provider revision; preserve many-to-many batch relationships.
 - [ ] X1.3 Verify duplicate, incomplete, reordered and censored event cases against independent resource-use expectations.
 
@@ -26,5 +26,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
-No runtime acceptance evidence is recorded by this initial plan.
+The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. X1.1 remains partial for richer timestamps, observed/simulated corrections and censoring. X1.2 onward, including X3.1 actual Kairos export consumption, remain open; Kairos Track114 export was pending at the inspected immutable revision.
+
+Full scope and observed commands/results are recorded in [runtime verification](../../../docs/runtime-verification.md). This track remains in progress.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.

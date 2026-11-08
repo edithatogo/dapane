@@ -4,8 +4,10 @@
 
 Start at [conductor/index.md](conductor/index.md). Resolve work through
 [conductor/tracks.md](conductor/tracks.md), then the selected track's index,
-specification, plan and metadata. Dapane is currently a planning repository;
-do not describe planned runtime, language or deployment capabilities as delivered.
+specification, plan and metadata. Dapane has a bounded Rust/CLI/Python candidate;
+read [the implemented contract](docs/contract-v0.1.md) and
+[verification](docs/runtime-verification.md) before describing capabilities.
+Do not describe planned provider, language or deployment capabilities as delivered.
 
 ## Working practices
 
@@ -33,7 +35,10 @@ do not describe planned runtime, language or deployment capabilities as delivere
 - Dependency policy: [conductor/tech-stack.md](conductor/tech-stack.md).
 - Domain/provider boundaries: [conductor/ecosystem.md](conductor/ecosystem.md).
 - Style guides: [conductor/code_styleguides/index.md](conductor/code_styleguides/index.md).
-- Current check: `python3 scripts/validate_conductor.py`.
+- Context check: `python3 scripts/validate_conductor.py`.
+- Native checks: `cargo fmt --all --check`, `cargo clippy --locked --all-targets -- -D warnings`, `cargo test --locked`.
+- Public-contract check: `python scripts/validate_contract.py --cli target/release/dapane`.
+- Python: build/install a native wheel and run `tests/python` from outside the checkout, as in [the quickstart](docs/quickstart.md).
 
-Runtime test commands must be added when the runtime exists; an empty test suite
-or a documentation-only check cannot qualify a numerical implementation.
+Keep the installed-artifact matrix and independent synthetic references current.
+An empty test suite or documentation-only check cannot qualify a numerical implementation.

@@ -2,7 +2,7 @@
 
 Track: `rust_kernel_20261108`
 
-Status: new
+Status: in_progress
 
 Implement one authoritative numerical core for exact valuation, component accounting and shared-pool allocation. The native library and CLI must work without a language wrapper, table engine, simulator or cloud account.
 
@@ -14,4 +14,4 @@ Implement one authoritative numerical core for exact valuation, component accoun
 
 Requirements: RQ-01, RQ-02, RQ-03, RQ-12.
 
-Capability status: planned. A documented plan is not implementation or release evidence.
+Capability status: implemented_bounded_profile_0_1. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.

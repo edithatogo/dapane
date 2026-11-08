@@ -1,8 +1,10 @@
 # Requirements
 
-Status: design baseline, 8 November 2026. These are requirements for future
-implementation. Establishing Conductor does not implement or qualify the Rust
-engine, any language binding, a domain model or a deployment.
+Status: product acceptance baseline, 8 November 2026. The first runtime implements
+a bounded subset recorded in the [0.1 contract](../docs/contract-v0.1.md) and
+[verification evidence](../docs/runtime-verification.md). The requirements below
+remain broader than that candidate; synthetic numerical and package checks do
+not complete provider, domain, deployment or research qualification.
 
 The [product](product.md) defines scope; the [design](design.md) explains the
 implementation boundary; [decisions](decisions.md) records the chosen direction.
@@ -196,7 +198,11 @@ Owner: [process models](tracks/process_models_20261108/index.md).
 
 Accept observed or simulated activity/resource events, then qualify XES, OCEL 2.0,
 a bounded Petri-net/PNML profile and a named BPMN 2.0 subset. Reuse process tooling
-and Kairos execution contracts; keep Kairos independent of valuation.
+and Kairos execution contracts; keep both Kairos and Dapane independently usable.
+Represent event, process and object context over one source ledger. Associations
+must not implicitly allocate or multiply costs; explicit attribution/allocation
+determines object views. The initial runtime preserves context but does not
+execute processes or infer usage from event duration.
 
 Acceptance:
 

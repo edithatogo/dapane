@@ -4,7 +4,7 @@
 
 Define a small domain-neutral boundary that can represent workforce resource use, genomic workflows and MCHS weighted activity without making their meanings interchangeable.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This is the full acceptance specification. The first bounded profile is implemented; [runtime evidence](../../../docs/runtime-verification.md) records its scope. Unmet criteria below remain open.
 
 ## Scope and requirements
 

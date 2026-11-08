@@ -2,7 +2,7 @@
 
 Track: `process_models_20261108`
 
-Status: new
+Status: in_progress
 
 Produce resource-use records from observed or explicitly executed process models while keeping resource execution, discovery and monetary valuation independently owned.
 
@@ -14,4 +14,4 @@ Produce resource-use records from observed or explicitly executed process models
 
 Requirements: RQ-10, RQ-01, RQ-03.
 
-Capability status: planned. A documented plan is not implementation or release evidence.
+Capability status: context_contract_implemented_adapters_pending. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.
