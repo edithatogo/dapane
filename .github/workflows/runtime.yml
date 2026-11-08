@@ -60,7 +60,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install build tools
         run: |
-          rustup toolchain install 1.99.1 --profile minimal
+          rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
           python -m pip install -r requirements-dev.txt
       - name: Build and install wheel
         run: |
