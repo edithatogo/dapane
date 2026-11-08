@@ -2,7 +2,7 @@
 
 Track: `conductor_setup_20261108`
 
-Status: in_progress
+Status: completed
 
 Give the repository maintainer and coding agents a navigable, internally consistent project definition and an executable delivery plan. Dapane becomes the coordinating home for the shared framework; the earlier MCHS plan remains a provenance record and domain-consumer reference.
 
@@ -14,4 +14,4 @@ Give the repository maintainer and coding agents a navigable, internally consist
 
 Requirements: RQ-01, RQ-12.
 
-Capability status: documentation_in_progress. A documented plan is not implementation or release evidence.
+Capability status: documentation_ready. A documented plan is not implementation or release evidence.

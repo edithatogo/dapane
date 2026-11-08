@@ -12,7 +12,7 @@ A completed planning task does not change a runtime capability from planned to q
 
 | Marker | Track | Status | Requirements |
 | --- | --- | --- | --- |
-| [~] | [Conductor setup and source-of-truth handoff](./tracks/conductor_setup_20261108/index.md) | in_progress | RQ-01, RQ-12 |
+| [x] | [Conductor setup and source-of-truth handoff](./tracks/conductor_setup_20261108/index.md) | completed | RQ-01, RQ-12 |
 | [ ] | [Core contracts and independent reference cases](./tracks/core_contracts_20261108/index.md) | new | RQ-01, RQ-02, RQ-03 |
 | [ ] | [Minimal Rust valuation kernel and CLI](./tracks/rust_kernel_20261108/index.md) | new | RQ-01, RQ-02, RQ-03, RQ-12 |
 | [ ] | [Python delivery with workforce and genomics consumers](./tracks/python_two_consumers_20261108/index.md) | new | RQ-04, RQ-02, RQ-03 |
@@ -28,7 +28,7 @@ A completed planning task does not change a runtime capability from planned to q
 
 ## Next executable work
 
-Finish and verify the setup track, then begin
+The setup track is complete. Begin
 `core_contracts_20261108` (core contracts and independent reference cases).
 Its first task freezes bounded workforce, genomics and MCHS examples with independent expected results.
 The first implementation release follows contracts → Rust kernel → installed Python and two consumers → release assurance.

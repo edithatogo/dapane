@@ -40,9 +40,19 @@ resolved outside-root source reads, title parsing and malformed-status handling.
 
 ## Publication
 
-The reviewed setup is ready for initial publication to the empty repository.
-Remote commit identity and hosted CI outcome will be recorded after publication;
-the setup track remains in progress until that handoff is verified.
+The empty repository was initialised on `main`. The full setup was published in
+[commit 6579591](https://github.com/edithatogo/dapane/commit/6579591366d746cde267bfae8950219a56da6855).
+All 76 remote file blobs were compared with the local reviewed contents and their
+Git blob hashes matched. The local checkout was then reconciled to that commit
+with a clean working tree.
+
+[Conductor validation run 42445514505](https://github.com/edithatogo/dapane/actions/runs/42445514505)
+passed on that full-setup commit. This completion update records the evidence and
+marks only the setup track complete. The same local validation is rerun for the
+status changes; subsequent hosted results remain attached to their own commits.
+
+No provider repository was modified, no earlier cross-repository PR was merged,
+and no package release, deployment or archive action was performed.
 
 ## Limits
 

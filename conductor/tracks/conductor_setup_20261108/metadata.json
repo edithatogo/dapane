@@ -1,9 +1,9 @@
 {
   "track_id": "conductor_setup_20261108",
   "type": "chore",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T04:06:25Z",
+  "updated_at": "2026-11-08T04:09:02Z",
   "description": "Give the repository maintainer and coding agents a navigable, internally consistent project definition and an executable delivery plan. Dapane becomes the coordinating home for the shared framework; the earlier MCHS plan remains a provenance record and domain-consumer reference.",
   "repositories": [
     "."
@@ -21,21 +21,26 @@
     "RQ-01",
     "RQ-12"
   ],
-  "capability_status": "documentation_in_progress",
+  "capability_status": "documentation_ready",
   "verification": {
-    "status": "partial",
+    "status": "passed",
     "commands": [
       "python3 scripts/validate_conductor.py",
       "python3 -m py_compile scripts/validate_conductor.py",
       "git diff --cached --check"
     ],
-    "scope": "Local Conductor structure and documentation validator; remote publication and CI pending.",
+    "scope": "Conductor structure, documentation validator, reviewed remote file contents and hosted documentation CI. No runtime qualification.",
     "temporary_fixture_checks": {
       "rejected": 11,
       "accepted": 1,
       "interface": "Actual CLI with isolated --root fixtures",
       "result": "passed"
-    }
+    },
+    "remote_commit": "6579591366d746cde267bfae8950219a56da6855",
+    "remote_files_verified": 76,
+    "ci_run_url": "https://github.com/edithatogo/dapane/actions/runs/42445514505",
+    "ci_conclusion": "success",
+    "runtime_tests": "not_applicable_no_runtime_implemented"
   },
   "completion_evidence": [
     "All project and track links resolve; metadata, registry status and task markers agree.",
