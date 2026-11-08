@@ -1,0 +1,47 @@
+{
+  "track_id": "conductor_setup_20261108",
+  "type": "chore",
+  "status": "in_progress",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T04:06:25Z",
+  "description": "Give the repository maintainer and coding agents a navigable, internally consistent project definition and an executable delivery plan. Dapane becomes the coordinating home for the shared framework; the earlier MCHS plan remains a provenance record and domain-consumer reference.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [],
+  "external_dependencies": [
+    "edithatogo/mchs: shared_microcosting_valuation_20261108 is the source design; Dapane now coordinates the framework.",
+    "edithatogo/UOGTO and edithatogo/standards_check: upstream semantics and source catalogue retain their owners."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-01",
+    "RQ-12"
+  ],
+  "capability_status": "documentation_in_progress",
+  "verification": {
+    "status": "partial",
+    "commands": [
+      "python3 scripts/validate_conductor.py",
+      "python3 -m py_compile scripts/validate_conductor.py",
+      "git diff --cached --check"
+    ],
+    "scope": "Local Conductor structure and documentation validator; remote publication and CI pending.",
+    "temporary_fixture_checks": {
+      "rejected": 11,
+      "accepted": 1,
+      "interface": "Actual CLI with isolated --root fixtures",
+      "result": "passed"
+    }
+  },
+  "completion_evidence": [
+    "All project and track links resolve; metadata, registry status and task markers agree.",
+    "Every requirement has at least one owning implementation track and concrete acceptance criteria.",
+    "The local dependency graph is acyclic; external provider readiness is recorded separately.",
+    "Only setup work is marked complete. No Rust engine, domain model, binding, deployment or archive is asserted delivered.",
+    "The repository contains the reviewed files and publication outcome is recorded without claiming a runtime release."
+  ]
+}

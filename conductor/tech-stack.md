@@ -1,0 +1,88 @@
+# Technology stack and dependency policy
+
+## Actual state at setup
+
+The repository was empty: no code, manifests, lockfiles, licence, release or CI
+was present. This change adds Markdown/JSON project context, a Python standard-
+library documentation validator and a GitHub Actions job for that validator.
+It installs no Rust or language-binding dependencies and qualifies no runtime.
+
+The documentation job uses `python3` on `ubuntu-24.04`; that interpreter is tooling
+for repository checks, not the future Python package's support declaration.
+`actions/checkout` is pinned to the observed v7 commit
+`3d3c42e5aac5ba805825da76410c181273ba90b1`, with read-only permissions and persisted
+credentials disabled. The tag was inspected through the
+[GitHub API](https://api.github.com/repos/actions/checkout/git/ref/tags/v7) on
+8 November 2026. The immutable pin is authoritative for this workflow.
+
+## Selected implementation direction
+
+| Layer | Direction | Boundary |
+| --- | --- | --- |
+| Core | Rust; Cargo workspace | Domain-neutral records, exact arithmetic, valuation and allocation |
+| Core support | Qualified serde/serde_json, error, time, decimal/rational and hashing crates | Use established implementations; select exact versions with fixtures and MSRV evidence |
+| Python | PyO3 + maturin; uv for Python tooling | Thin installed extension and optional batch convenience layer |
+| Table interfaces | Polars with Arrow/Parquet interchange | Optional IO/adapter crates; no pandas/xarray compatibility implementation in the new core |
+| R | extendr, with rextendr packaging if suitable | Direct call to the shared Rust core; no C ABI prerequisite |
+| Julia | Versioned C ABI; native artifacts/JLL packaging | No Python or R runtime dependency |
+| Local interface | CLI, JSON manifests, optional Arrow/Parquet files | Same engine and versioned run contract |
+| Power Platform | Standard SharePoint/file route first | Authorised worker, custom connector/API and WASM/PCF separately optional |
+| Semantics | UOGTO and standards_check versioned products | Optional mappings/validation, no mandatory reasoner in the hot path |
+| Process models | rust4pm candidate; XES, OCEL, PNML and bounded BPMN adapters | Model execution remains with a qualified engine such as Kairos |
+
+No crate version, Rust edition, MSRV, Python range, R version or Julia version is
+selected merely by copying another repository. Those choices are outputs of the
+[core contracts](tracks/core_contracts_20261108/index.md),
+[Python consumers](tracks/python_two_consumers_20261108/index.md) and
+[polyglot bindings](tracks/polyglot_bindings_20261108/index.md) tracks.
+
+## Alignment policy
+
+Align schemas, error behaviour, numerical semantics and provider contracts across
+the portfolio. Reuse provider packages rather than source-copying their rules.
+Keep exact dependency constraints in manifests/locks once they exist, accompanied
+by a tested compatibility matrix. A native extension's ABI range does not widen
+the enclosing Python distribution's supported interpreter range.
+
+Current stable dependencies are the supported baseline. Preview toolchains and
+new releases can be exercised in isolated, non-promoted canary jobs. Do not
+silently widen sibling repositories' runtime pins or claim that declared support
+has been tested. Record vendored patches, source rights and transitive licences.
+
+## Numeric and performance choices
+
+Preserve decimal source values and rational exposure without silent float
+coercion. Choose bounds for precision, magnitude, denominator and serialization;
+define overflow/error and rounding behaviour before benchmarking implementations.
+Arrow decimal encodings and rational pairs must preserve the agreed contract.
+
+Begin with deterministic CPU execution. Add Rayon, SIMD, GPU, distributed or
+incremental paths only for measured workloads and independently checked results.
+Do not inherit MCHS's acceleration defaults. Qualify chunk-boundary invariance,
+parallel reduction, cancellation and peak memory for each supported path.
+
+## Tooling as implementation begins
+
+Use Cargo formatting/lint/test checks for Rust and Ruff plus appropriate type and
+test tooling for Python wrappers. Test installed wheels and native packages, not
+only imports from a source checkout. Lock build/release environments and record
+source identity, licences, dependency inventory and release provenance using
+existing portfolio practices. Do not introduce empty success badges or jobs for
+unimplemented packages.
+
+The first release must have a documented project licence. The setup does not
+choose one by inference from neighbouring repositories. Dependency and data
+licences need separate treatment; PM4Py is an optional AGPL/commercial comparison
+adapter, not an assumed permissive runtime dependency.
+
+## Primary implementation references
+
+- [PyO3](https://pyo3.rs/main/) and [maturin](https://www.maturin.rs/).
+- [extendr](https://extendr.rs/) and [Julia C interface](https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/).
+- [Arrow C data interface](https://arrow.apache.org/docs/format/CDataInterface.html).
+- [Rust process_mining](https://docs.rs/process_mining/latest/process_mining/) and [OMG BPMN](https://www.omg.org/spec/BPMN/2.0.2/).
+- [Power Apps licence designation](https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/license-designation) and [PCF overview](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/overview).
+
+These references support the design direction. Recheck version-specific support
+when selecting and qualifying an implementation; they are not frozen dependency
+pins or evidence that Dapane has implemented those capabilities.

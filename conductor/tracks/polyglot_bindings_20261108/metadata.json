@@ -1,0 +1,39 @@
+{
+  "track_id": "polyglot_bindings_20261108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Expose the same Rust numerical implementation to R and Julia with explicit ownership, exact transport and installed-artifact parity. R and Julia are independent delivery branches.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "rust_kernel_20261108"
+  ],
+  "external_dependencies": [
+    "R/extendr/rextendr and Julia/native artifact toolchains: recheck documented host support and package terms at implementation.",
+    "Existing MCHS and Voiage binding work: reuse qualified patterns where appropriate without importing their domain equations or assuming their matrices apply."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-09",
+    "RQ-02"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "The R wrapper calls the core directly and can be completed without the C ABI, Julia or Python bindings.",
+    "The C ABI specifies buffer lengths, ownership/free symmetry, errors, version negotiation and panic containment; no Rust layout/unwinding crosses it.",
+    "Julia calls the qualified ABI without requiring Python or R.",
+    "Installed R/Julia results match the same independent exact fixtures and reject invalid/missing values according to documented host conventions.",
+    "Host GC, lifetime and thread restrictions are exercised rather than inferred from a successful source build.",
+    "Only installed and tested platform combinations are advertised."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "track_id": "frontier_benchmarks_20261108",
+  "type": "research",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Test whether evidence-linked, object-centric costing provides measurable advantages over strong current alternatives. Treat novelty and frontier claims as empirical questions.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "python_two_consumers_20261108"
+  ],
+  "external_dependencies": [
+    "Independent reference/calculation reviewers and authorised programme-data owners: external validation cannot be inferred from agent-generated fixtures.",
+    "edithatogo/voiage, edithatogo/innovate, edithatogo/paignia and process providers: each experiment requires the exact qualified capability it uses."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-12",
+    "RQ-06",
+    "RQ-10",
+    "RQ-11"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "Comparators are selected from a dated review and use equivalent inputs, methods and declared capabilities.",
+    "Controlled omissions, double counts, unit/date changes and unsupported assumptions have independent expected outcomes.",
+    "Incremental revaluation is identical to full recomputation under the agreed exact contract before speed improvements are reported.",
+    "Process benchmarks preserve many-to-many objects and compare allocation/denominator errors as well as runtime.",
+    "Measurement-planning and capacity experiments use qualified decision/provider contracts and distinguish epistemic uncertainty, heterogeneity and transfers.",
+    "External validation reports transportability, missingness, model limitations and analyst effort; synthetic success is not described as empirical programme validation.",
+    "Any privacy-preserving or federated experiment measures disclosure risk and utility rather than merely asserting privacy."
+  ]
+}

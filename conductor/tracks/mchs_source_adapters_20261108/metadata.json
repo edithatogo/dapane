@@ -1,0 +1,39 @@
+{
+  "track_id": "mchs_source_adapters_20261108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Connect classified hospital activity and versioned quotation sources without conflating tariffs, funding, resource cost and actual payment.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "python_two_consumers_20261108"
+  ],
+  "external_dependencies": [
+    "edithatogo/mchs: classification-specific equations, activity editions and existing Rust/wrapper qualification.",
+    "edithatogo/reimbursement-atlas: authoritative quotation source registry, parsers, source licences and releases."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-05",
+    "RQ-01",
+    "RQ-03"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "The activity-only funding fixture produces the correct result with zero inferred or manufactured ResourceUse records.",
+    "Pricing/classification edition is retained separately from economic price year and quote knowledge date.",
+    "Unqualified synthetic/local fixtures are not presented as official rate releases.",
+    "Incompatible resource/activity quotations, stale applicability and missing source rights/status produce explicit diagnostics.",
+    "Resource cost, funding entitlement, tariff and observed payment remain separately queryable and are not summed by default."
+  ]
+}

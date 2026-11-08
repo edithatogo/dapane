@@ -1,0 +1,42 @@
+{
+  "track_id": "decision_integrations_20261108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Connect correctly paired cost outputs to Voiage, Innovate and Paignia while retaining their existing ownership of decision methods, adoption mechanisms and strategic models.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "rust_kernel_20261108"
+  ],
+  "external_dependencies": [
+    "edithatogo/voiage: qualified paired-outcome, VOI, value-of-perspective and value-of-heterogeneity contracts; recheck actual method readiness.",
+    "edithatogo/innovate: adoption, utilisation, substitution and competition mechanisms remain provider-owned.",
+    "edithatogo/paignia: supported game representation/solvers and explicit payoff input boundary.",
+    "External health-economic outcome model: clinical outcomes are separately sourced and qualified."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-11",
+    "RQ-02",
+    "RQ-03"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "Repeated evaluation uses the actual model; demonstration random outputs cannot substitute for missing calculation capability.",
+    "Costs and externally modelled outcomes retain joint draw identity; parameter uncertainty differs from within-population variation.",
+    "Perspective/subgroup results are preserved and transfer payments are not double-counted when presenting broader totals.",
+    "Voiage methods are selected by qualified capability and input contract; Dapane introduces no duplicate local VOI estimator.",
+    "Innovate feedback scenarios state how adoption/utilisation changes resources and when price affects behaviour.",
+    "Paignia receives an explicit payoff transformation with provenance; cost values do not silently become utility or clinical benefit."
+  ]
+}

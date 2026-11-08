@@ -1,0 +1,39 @@
+{
+  "track_id": "reporting_profiles_20261108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Consume UOGTO costing semantics and the standards_check source catalogue to produce evidence-linked, conditionally applicable reporting coverage from Dapane run bundles.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "core_contracts_20261108"
+  ],
+  "external_dependencies": [
+    "edithatogo/UOGTO: costing-valuation applied pack, SHACL, explicit HTA bridge and reporting-profile semantics; qualify a pinned revision.",
+    "edithatogo/standards_check: original reporting instrument catalogue, verified item IDs and extraction qualifications; qualify the matching source revision."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-07",
+    "RQ-01"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "The importer/exporter records exact upstream source versions and checks source content/counts where supported.",
+    "Original instrument/version/item IDs and extraction qualifications survive export; project profiles do not claim universal endorsement.",
+    "Reported requirements cite evidence; not-applicable assertions carry rationales; partial, missing, unassessed and unresolved states remain distinguishable.",
+    "Protocols/reviews are evidence artefacts, not silently promoted into operational reporting checklists.",
+    "SHACL conformance is not described as methodological correctness, truth of sources or empirical validity.",
+    "Static valuation and the minimal Rust build remain usable without an RDF reasoner or reporting dependency."
+  ]
+}

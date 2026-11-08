@@ -1,0 +1,40 @@
+{
+  "track_id": "release_consolidation_20261108",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "python_two_consumers_20261108"
+  ],
+  "external_dependencies": [
+    "edithatogo/repository-standards and existing portfolio CI/release practices: select applicable maintained controls rather than invent a new governance layer.",
+    "Domain package maintainers: migration, public API compatibility and archive/successor decisions remain repository-specific.",
+    "Package registries and source licensors: package identity/rights and any external release conditions must be verified at publication."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-12",
+    "RQ-04"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "A core/Python release can qualify after contracts, kernel and the two consumers; optional integration tracks remain independently planned or experimental.",
+    "Advertised capabilities match exact source, artifact, platform, method and data versions actually checked.",
+    "Dependency licences/advisories, permissions, provenance and source-data redistribution constraints have recorded outcomes.",
+    "Installed artifacts exercise native functionality and reference cases; passing source-tree tests alone is insufficient.",
+    "Existing consumer APIs have a documented migration and recovery path before shared machinery is removed.",
+    "No archive is executed from a recommendation alone; unique history/research, rights, successor behaviour and any required authorization are retained."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "track_id": "python_two_consumers_20261108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Prove that the common core is a useful independent package by running a workforce calculation and a genomics workflow through installed Python bindings and the same Rust implementation.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "rust_kernel_20261108"
+  ],
+  "external_dependencies": [
+    "edithatogo/microcosting_healthworkforce: rule/source ownership and import namespace migration remain provider-owned.",
+    "edithatogo/microcosting_genomics: resource recipes and workbook/assay evidence remain provider-owned."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-04",
+    "RQ-02",
+    "RQ-03"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "Both domain consumers invoke the same Rust numerical implementation rather than copying arithmetic into Python.",
+    "Native and independently installed Python results match the same exact fixtures, including a nonterminating exposure and sub-cent allocation.",
+    "One genomic workflow consumes one dated workforce quotation release without duplicating its loaded components.",
+    "Historical workbook comparisons identify expected differences and repairs separately from mechanical extraction.",
+    "Errors, missing values, ownership/lifetimes and exact-number transport are exercised through the installed wheel.",
+    "Declared Python support matches tested dependencies; no provider pin is loosened merely to make packaging resolve."
+  ]
+}

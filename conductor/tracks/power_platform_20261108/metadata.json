@@ -1,0 +1,39 @@
+{
+  "track_id": "power_platform_20261108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Surface the shared engine through an operational Power App while keeping the calculation implementation independent and the standard-connector/file path usable.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "python_two_consumers_20261108"
+  ],
+  "external_dependencies": [
+    "edithatogo/careops: maintained costing module and non-premium SharePoint-oriented delivery patterns.",
+    "Target Microsoft tenant/environment and authorised host owner: actual entitlements, identity, configuration and permitted-data scope."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-08",
+    "RQ-03"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "The baseline demonstrates input export, CLI execution and result import without a hidden premium connector, HTTP action, gateway, Dataverse or Copilot requirement.",
+    "Actual user/environment rights and target-host behaviour are recorded before deployment; a Standard badge is not treated as an entitlement decision.",
+    "Large payloads/results use immutable files; Lists hold identities, state and summaries, and incomplete results are visibly incomplete.",
+    "A worker handles idempotency, claiming, retry/cancellation and scoped access without bypassing service or licensing obligations.",
+    "An API or browser component uses the same qualified numerical implementation and does not duplicate Power Fx calculation rules.",
+    "Optional routes have separate capability status; their absence does not block the CLI or core release."
+  ]
+}

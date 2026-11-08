@@ -1,0 +1,42 @@
+{
+  "track_id": "process_models_20261108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T03:52:45Z",
+  "description": "Produce resource-use records from observed or explicitly executed process models while keeping resource execution, discovery and monetary valuation independently owned.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "rust_kernel_20261108"
+  ],
+  "external_dependencies": [
+    "edithatogo/rust4pm: pin and qualify actual XES/OCEL/PNML support and licence terms.",
+    "edithatogo/kairos: Track 114 or its successor must supply a qualified neutral resource-execution contract.",
+    "edithatogo/careops-sim: healthcare process models remain provider-owned.",
+    "OMG BPMN/PNML and optional PM4Py: supported semantics and licence obligations must be assessed for the selected adapter."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-10",
+    "RQ-01",
+    "RQ-03"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "Infant/specimen/assay/batch object relationships survive observed-event import without forcing one flat independent case per event.",
+    "Each advertised Petri/BPMN construct has explicit timing, marking/branching and resource semantics; unsupported elements fail visibly.",
+    "Transfers, occupancy and consumption remain distinguishable; shared staff or batch use is not charged multiple times by trace duplication.",
+    "Changing only a quotation release leaves process execution and resource-use identities unchanged.",
+    "Kairos remains independent of Dapane; app-level feedback is explicit when prices affect behaviour.",
+    "Selected dependency versions/licences and supported subsets are recorded; an imported diagram is not advertised as a general BPMN simulator."
+  ]
+}
