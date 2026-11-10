@@ -1,0 +1,42 @@
+{
+  "track_id": "tobac_regulatory_fiscal_valuation_20261110",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-11-10T00:00:00Z",
+  "updated_at": "2026-11-10T00:00:00Z",
+  "description": "Provide versioned public-finance and health-system perspective valuation, excise/GST tax-transfer separation and subgroup equity-weighting interfaces for tobac regulatory policy evaluation.",
+  "repositories": [
+    "."
+  ],
+  "dependencies": [
+    "core_contracts_20261108",
+    "rust_kernel_20261108",
+    "decision_integrations_20261108"
+  ],
+  "external_dependencies": [
+    "edithatogo/tobac: tobacco/vaping cohort state trajectories, cessation intervention pathways and customs/excise policy scenarios (F04, F05).",
+    "edithatogo/voiage: paired-outcome, value-of-perspective and credal dominance contracts."
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-01",
+    "RQ-02",
+    "RQ-07",
+    "RQ-11"
+  ],
+  "capability_status": "planned",
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "completion_evidence": [
+    "Health-system direct medical costs and public-finance excise/GST transfers are represented as distinct typed accounting lines; societal totals never add transfer payments to real resource costs without an explicit net-transfer rule.",
+    "Differential and uniform discounting reference cases match independent exact arithmetic across annual and sub-annual cohort steps.",
+    "Subgroup and equity-stratum identities survive valuation and discounting without silent pooling across Maori / non-Maori or socioeconomic quintiles.",
+    "Paired parameter/replication draw keys are preserved end-to-end when exporting valued net-benefit tables to tobac and voiage.",
+    "Disabling the optional dapane adapter in tobac leaves tobac's standalone reference oracle intact."
+  ]
+}
