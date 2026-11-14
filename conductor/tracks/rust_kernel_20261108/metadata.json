@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-14T12:55:00Z",
+  "updated_at": "2026-11-14T22:55:53.304Z",
   "description": "Implement one authoritative numerical core for exact valuation, component accounting and shared-pool allocation. The native library and CLI must work without a language wrapper, table engine, simulator or cloud account.",
   "repositories": [
     "."
@@ -27,8 +27,8 @@
   ],
   "capability_status": "implemented_bounded_profiles_0_1_and_0_2",
   "verification": {
-    "status": "passed_for_bounded_profile",
-    "scope": "Exact point-date kernel/CLI, deterministic allocation, independent installed CLI and bounded performance verified. Automatic segmentation and full project-licence/release qualification remain open. The 14 November increment adds bounded 0.2 incomplete instrument-capacity semantics and five synthetic genomics candidates; original 0.1 digests remain unchanged. See the separate increment evidence; broader provider and economic qualification remains open.",
+    "status": "in_progress",
+    "scope": "Exact point-date kernel/CLI, deterministic allocation, independent installed CLI and bounded performance verified. Automatic segmentation and full project-licence/release qualification remain open. The 14 November increment adds bounded 0.2 incomplete instrument-capacity semantics and five synthetic genomics candidates; original 0.1 digests remain unchanged. See the separate increment evidence; broader provider and economic qualification remains open. Interval completion and dependency qualification are in progress on a separate branch; no interval qualification or archive claim yet.",
     "commands": [
       "cargo test --locked",
       "cargo clippy --workspace --all-targets --locked -- -D warnings",
