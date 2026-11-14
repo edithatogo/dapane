@@ -30,9 +30,8 @@ jobs:
           python scripts/release_assurance.py validate
           python -m unittest discover -s tests/release -v
           python -m pip install ruff==0.17.4
-          ruff check --fix scripts/release_assurance.py tests/release
-          ruff format scripts/release_assurance.py tests/release
-          git diff --exit-code -- scripts/release_assurance.py tests/release
+          ruff check scripts/release_assurance.py tests/release
+          ruff format --check scripts/release_assurance.py tests/release
           python scripts/validate_conductor.py
 
   candidate:

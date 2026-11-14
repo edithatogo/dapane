@@ -38,7 +38,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Review, fixes and archival
 
-- [~] L4.1 Review the implementation against the original acceptance criteria, apply concrete fixes and retain exact-source verification.
+- [x] L4.1 Review the implementation against the original acceptance criteria, apply concrete fixes and retain exact-source verification.
+  - Independent review closed five concrete findings; 31 release-control regressions, Ruff and Conductor checks passed. Native and installed-artifact qualification remains separately recorded under L1.3/L1.4.
 - [!] L4.2 Archive this track after all mandatory acceptance criteria have evidence.
   - Archival is already authorised by the user. It is held by L1.2 and the required real-consumer evidence, not by an additional approval form. Do not weaken those criteria to obtain an archive marker.
 

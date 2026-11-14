@@ -40,10 +40,38 @@ Adversarial cases rehash a substituted quote snapshot and still require rejectio
 
 ## Verification status
 
-The execution workspace became unavailable before code-level local execution.
-No native build, Python test or lint result is claimed from that environment.
-The implementation is being checked on hosted GitHub Actions against its exact
-branch head; this record will be updated with the resulting run and outcomes.
+The execution workspace was initially unavailable. After recovery, the candidate
+assurance checks were executed on CPython **3.12.14**:
+
+| Check | Actual result |
+| --- | --- |
+| Standard-library adversarial release tests | **31 passed** |
+| Ruff 0.17.4 lint and formatting | Passed |
+| Candidate manifest validation | Passed |
+| Publication negative gate | Expected exit **2**; publication remains false |
+| Conductor consistency | Passed: 14 tracks, 12 requirements, 145 tasks, 434 local links |
+| Workflow YAML, 11 shell run blocks and embedded Python syntax | Passed |
+| Rust 1.99.1 formatting and workspace Clippy with warnings denied | Passed |
+| Locked offline native tests | **40 passed: 6 CLI, 9 capacity, 25 evaluator** |
+| Minimal-feature release CLI and CPython 3.12.14 wheel | Built successfully |
+
+The exact Rust 1.99.1 toolchain and all 36 checksum-matching registry crates were
+available in existing caches. No compiler downgrade, dependency change or
+network substitute was needed for the native build. Native verification began
+at source commit 3c80b594e149fd81c27ac79bf9f6d36529b0e8d5; the subsequent review
+fixes affect only release tooling/tests and documentation, not native source,
+fixtures, package manifests or lockfile.
+
+The independent reviewer closed all five findings: input/source provenance,
+saved engine version, distinct build directories, interpreter-to-wheel pairing
+and dependency versions against Cargo.lock. The reviewer independently ran the
+two final consistency regressions and checked the diff. The native wheel is
+still subject to installed-reference, repeatability and full matrix evidence;
+building it alone is not installed-artifact qualification.
+
+Hosted GitHub Actions were queued when this local record was prepared. Their
+results remain tied to the exact branch head and workflow run; no hosted pass,
+trusted-main attestation or full release completion is inferred from local checks.
 
 Configured checks:
 
@@ -57,8 +85,9 @@ Configured checks:
 - The existing bounded 10/1,000/5,000-row CLI performance measurement.
 - Complete same-source matrix verification; main-only attestation route.
 
-Configuring these commands is not execution evidence. Failed-run artifacts, if
-retained, record failures and do not qualify a candidate.
+The results above identify the checks actually executed. The remaining configured
+checks require their own outcomes. Failed-run artifacts record failures and do
+not qualify a candidate.
 
 ## Closure boundary
 

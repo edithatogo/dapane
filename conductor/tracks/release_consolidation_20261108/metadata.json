@@ -3,7 +3,7 @@
   "type": "chore",
   "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-14T23:01:08Z",
+  "updated_at": "2026-11-14T23:18:24.301690Z",
   "description": "Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.",
   "repositories": [
     "."
@@ -26,7 +26,7 @@
   ],
   "capability_status": "candidate_assurance_under_verification",
   "verification": {
-    "status": "pending_hosted_checks",
+    "status": "partial_local_verification",
     "commands": [
       "python scripts/release_assurance.py validate",
       "python -m unittest discover -s tests/release -v",
@@ -37,7 +37,22 @@
     "evidence": [
       "evidence.md",
       "../../../docs/release-assurance.md"
-    ]
+    ],
+    "results": {
+      "release_unit_tests": 31,
+      "native_behavioral_tests": 40,
+      "ruff": "passed",
+      "conductor": "passed",
+      "workflow_syntax": "passed",
+      "publication_gate": "expected exit 2",
+      "hosted_actions": "queued",
+      "installed_matrix": "pending"
+    },
+    "environment": {
+      "python": "3.12.14",
+      "rust": "1.99.1",
+      "ruff": "0.17.4"
+    }
   },
   "completion_evidence": [
     "A core/Python release can qualify after contracts, kernel and the two consumers; optional integration tracks remain independently planned or experimental.",
@@ -52,5 +67,10 @@
   "blockers": [
     "Project licence and registry identity are unresolved; no public package publication is enabled.",
     "The required Python track has not yet qualified real workforce/genomics consumers and historical API migration/recovery."
-  ]
+  ],
+  "review": {
+    "status": "completed_with_fixes",
+    "findings_resolved": 5,
+    "scope": "Candidate assurance implementation; original licensing/registry/provider acceptance remains open."
+  }
 }

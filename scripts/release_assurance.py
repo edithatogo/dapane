@@ -9,7 +9,6 @@ registry entitlements, empirical validation or a substitute for required CI jobs
 import argparse
 import base64
 import csv
-from copy import deepcopy
 import hashlib
 import importlib
 import importlib.machinery
@@ -18,11 +17,13 @@ import io
 import json
 import os
 import platform
+import re
 import subprocess
 import sys
 import tempfile
 import tomllib
 import zipfile
+from copy import deepcopy
 from datetime import UTC, datetime
 from email.parser import Parser
 from pathlib import Path, PurePosixPath
@@ -36,8 +37,12 @@ TRACKS = {
     "python_two_consumers_20261108",
 }
 CAPABILITIES = {
-    "rust-core", "json-cli", "python-native",
-    "synthetic-workforce", "synthetic-genomics", "partial-capacity",
+    "rust-core",
+    "json-cli",
+    "python-native",
+    "synthetic-workforce",
+    "synthetic-genomics",
+    "partial-capacity",
 }
 PYTHONS = {"3.12", "3.13", "3.14", "3.15"}
 
@@ -63,9 +68,7 @@ def decode_json(text):
     def invalid_constant(value):
         raise AssuranceError(f"non-finite JSON number: {value}")
 
-    return json.loads(
-        text, object_pairs_hook=unique_object, parse_constant=invalid_constant
-    )
+    return json.loads(text, object_pairs_hook=unique_object, parse_constant=invalid_constant)
 
 
 def read_json(path):
@@ -91,8 +94,8 @@ def command(args, cwd=ROOT):
 
 def source_identity(root=ROOT):
     require(
-        not command(["git", "status", "--porcelain", "--untracked-files=no"], root),
-        "tracked source is dirty; commit the tested inputs first",
+        not command(["git", "status", "--porcelain", "--untracked-files=all"], root),
+        "source is dirty or has untracked inputs; commit the tested inputs first",
     )
     return {
         "commit": command(["git", "rev-parse", "HEAD"], root),
@@ -105,9 +108,15 @@ def input_hashes(root=ROOT):
     # The commit/tree identifies all tracked implementation. Explicit hashes
     # make the release configuration, reference inputs and tool pins inspectable.
     names = {
-        "Cargo.toml", "Cargo.lock", "pyproject.toml", "rust-toolchain.toml",
-        "requirements-dev.txt", "requirements-release.txt", "deny.toml",
-        ".github/workflows/release-assurance.yml", "release/capabilities.json",
+        "Cargo.toml",
+        "Cargo.lock",
+        "pyproject.toml",
+        "rust-toolchain.toml",
+        "requirements-dev.txt",
+        "requirements-release.txt",
+        "deny.toml",
+        ".github/workflows/release-assurance.yml",
+        "release/capabilities.json",
         "scripts/release_assurance.py",
     }
     names.update(str(p.relative_to(root)) for p in (root / "fixtures").rglob("*.json"))
@@ -133,8 +142,7 @@ def validate_manifest(manifest, root=ROOT):
     targets = manifest["targets"]
     require(len(targets) == 4, "all four interpreter targets are required")
     require(
-        {target_key(t) for t in targets}
-        == {("Linux", "x86_64", "CPython", p) for p in PYTHONS},
+        {target_key(t) for t in targets} == {("Linux", "x86_64", "CPython", p) for p in PYTHONS},
         "missing, duplicate or unsupported platform/interpreter target",
     )
     require(
@@ -195,11 +203,15 @@ def verify_artifacts(records, directory):
     for record in records:
         name = record["name"]
         require(
-            isinstance(name, str) and name not in {"", ".", ".."}
-            and PurePosixPath(name).name == name and "\\" not in name,
+            isinstance(name, str)
+            and name not in {"", ".", ".."}
+            and PurePosixPath(name).name == name
+            and "\\" not in name,
             "artifact path must be a plain filename",
         )
-        require(file_record(directory / name, record["role"]) == record, f"artifact changed: {name}")
+        require(
+            file_record(directory / name, record["role"]) == record, f"artifact changed: {name}"
+        )
 
 
 def candidate_artifacts(directory):
@@ -226,7 +238,8 @@ def verify_wheel_members(wheel, installed, version):
         require(
             all(
                 not PurePosixPath(n).is_absolute()
-                and ".." not in PurePosixPath(n).parts and "\\" not in n
+                and ".." not in PurePosixPath(n).parts
+                and "\\" not in n
                 for n in names
             ),
             "unsafe wheel member path",
@@ -246,22 +259,24 @@ def verify_wheel_members(wheel, installed, version):
             "invalid wheel RECORD",
         )
         records = {row[0]: row[1:] for row in rows}
-        require(set(records) == {n for n in names if not n.endswith("/")}, "incomplete wheel RECORD")
         require(
-            all(
-                n.startswith(("dapane/", "dapane.libs/", dist_info + "/"))
-                for n in names
-            ),
+            set(records) == {n for n in names if not n.endswith("/")}, "incomplete wheel RECORD"
+        )
+        require(
+            all(n.startswith(("dapane/", "dapane.libs/", dist_info + "/")) for n in names),
             "unsupported wheel layout requires explicit installation mapping",
         )
         wheel_metadata = Parser().parsestr(archive.read(f"{dist_info}/WHEEL").decode())
         require(wheel_metadata["Root-Is-Purelib"] == "false", "wheel must contain native code")
         tags = wheel_metadata.get_all("Tag", [])
         require(
-            tags and all(
+            tags
+            and all(
                 len(parts := tag.split("-")) == 3
-                and parts[0].startswith("cp") and parts[0] == parts[1]
-                and parts[0][2:].isdigit() and parts[2].endswith("x86_64")
+                and parts[0].startswith("cp")
+                and parts[0] == parts[1]
+                and parts[0][2:].isdigit()
+                and parts[2].endswith("x86_64")
                 for tag in tags
             ),
             "wheel ABI or architecture exceeds interpreter-specific x86_64 scope",
@@ -273,13 +288,75 @@ def verify_wheel_members(wheel, installed, version):
                 require(digest == length == "", "RECORD must not hash itself")
                 continue
             data = archive.read(name)
-            expected = "sha256=" + base64.urlsafe_b64encode(hashlib.sha256(data).digest()).decode().rstrip("=")
+            expected = "sha256=" + base64.urlsafe_b64encode(
+                hashlib.sha256(data).digest()
+            ).decode().rstrip("=")
             require(digest == expected and length == str(len(data)), f"bad wheel RECORD: {name}")
             if not name.endswith("/"):
                 path = installed / name
-                require(path.resolve().is_relative_to(installed.resolve()), "installed file escapes prefix")
-                require(path.is_file() and path.read_bytes() == data, f"installed wheel bytes differ: {name}")
+                require(
+                    path.resolve().is_relative_to(installed.resolve()),
+                    "installed file escapes prefix",
+                )
+                require(
+                    path.is_file() and path.read_bytes() == data,
+                    f"installed wheel bytes differ: {name}",
+                )
         return package_names
+
+
+def verify_wheel_target(wheel, runtime):
+    """Bind the recorded interpreter to the artifact's native wheel tags."""
+    require(runtime["implementation"] == "CPython", "wheel needs CPython evidence")
+    require(
+        runtime["system"] == "Linux" and runtime["machine"] == "x86_64",
+        "wheel target is outside the candidate platform",
+    )
+    interpreter = "cp" + "".join(runtime["python"].split(".")[:2])
+    with zipfile.ZipFile(wheel) as archive:
+        names = [n for n in archive.namelist() if n.endswith(".dist-info/WHEEL")]
+        require(len(names) == 1, "expected one WHEEL metadata record")
+        metadata = Parser().parsestr(archive.read(names[0]).decode())
+    tags = metadata.get_all("Tag", [])
+    require(
+        metadata["Root-Is-Purelib"] == "false"
+        and tags
+        and all(
+            len(parts := tag.split("-")) == 3
+            and parts[0] == parts[1] == interpreter
+            and re.fullmatch(r"(linux|manylinux(?:\d+|_\d+_\d+))_x86_64", parts[2])
+            for tag in tags
+        ),
+        "wheel tags do not match the recorded interpreter/platform",
+    )
+
+
+def verify_dependency_versions(dependencies, manifest, root=ROOT):
+    names = [p["name"] for p in dependencies]
+    require(
+        len(names) == len(set(names))
+        and {"dapane-core", "dapane-cli"} <= set(names)
+        and not any(
+            name == prefix or name.startswith(prefix + "-")
+            for name in names
+            for prefix in ("pyo3", "polars", "arrow", "kairos", "process_mining")
+        ),
+        "missing or non-minimal native dependency evidence",
+    )
+    locked = tomllib.loads((root / "Cargo.lock").read_text())["package"]
+    allowed = {(p["name"], p["version"]) for p in locked}
+    require(
+        all((p["name"], p["version"]) in allowed for p in dependencies),
+        "dependency evidence does not match Cargo.lock",
+    )
+    require(
+        all(
+            p["version"] == manifest["package"]["version"]
+            for p in dependencies
+            if p["name"] in {"dapane-core", "dapane-cli"}
+        ),
+        "native workspace version differs from candidate",
+    )
 
 
 def installed_identity(wheel, root, manifest):
@@ -316,7 +393,9 @@ def installed_identity(wheel, root, manifest):
 
 
 def core_dependencies(root=ROOT):
-    metadata = decode_json(command(["cargo", "metadata", "--locked", "--format-version", "1"], root))
+    metadata = decode_json(
+        command(["cargo", "metadata", "--locked", "--format-version", "1"], root)
+    )
     packages = {p["id"]: p for p in metadata["packages"]}
     nodes = {n["id"]: n for n in metadata["resolve"]["nodes"]}
     pending = list(metadata["workspace_default_members"])
@@ -420,9 +499,8 @@ def check_provenance(report, request):
     require(report["policy"] == normalized["policy"], "report policy changed")
     require(report["quote_snapshots"] == normalized["quotes"], "quote/source snapshot changed")
     require(
-        report["context"] == {
-            key: normalized[key] for key in ("objects", "processes", "events", "object_relations")
-        },
+        report["context"]
+        == {key: normalized[key] for key in ("objects", "processes", "events", "object_relations")},
         "report context changed",
     )
     usage = indexed(normalized["usage"], "id")
@@ -442,7 +520,10 @@ def check_provenance(report, request):
     for name, row in capacities.items():
         fields(
             results[name],
-            {key: row[key] for key in ("source", "source_line_ids", "unit", "observation_coverage")},
+            {
+                key: row[key]
+                for key in ("source", "source_line_ids", "unit", "observation_coverage")
+            },
             "capacity source provenance",
         )
 
@@ -450,12 +531,17 @@ def check_provenance(report, request):
 def check_reference(report, kind, expected, request):
     check_provenance(report, request)
     version = request["schema_version"]
+    require(report["status"] == "complete", "partial report cannot qualify a candidate")
     require(report["schema_version"] == version, "report schema changed")
     require(report["method_version"] == PROFILES[version], "report method changed")
     require(report["run_id"] == request["run_id"], "report run identity changed")
     if kind == "base":
         fields(report["totals"], expected["totals"], "totals")
-        for group, identity in (("lines", "id"), ("object_totals", "object_id"), ("allocations", "id")):
+        for group, identity in (
+            ("lines", "id"),
+            ("object_totals", "object_id"),
+            ("allocations", "id"),
+        ):
             actual = indexed(report[group], identity)
             require(set(actual) == set(expected[group]), f"reference members changed: {group}")
             for name, values in expected[group].items():
@@ -468,8 +554,11 @@ def check_reference(report, kind, expected, request):
     else:
         fields(
             report["totals"],
-            {"rounded": expected["total"], "allocated": expected["allocated"],
-             "unattributed": expected["unattributed"]},
+            {
+                "rounded": expected["total"],
+                "allocated": expected["allocated"],
+                "unattributed": expected["unattributed"],
+            },
             "capacity totals",
         )
         pools = report["capacity_allocations" if version == "0.2" else "allocations"]
@@ -477,8 +566,10 @@ def check_reference(report, kind, expected, request):
         pool = pools[0]
         fields(
             pool,
-            {"pool_rounded": expected["pool"],
-             "unallocated" if version == "0.2" else "residual": expected["unallocated"]},
+            {
+                "pool_rounded": expected["pool"],
+                "unallocated" if version == "0.2" else "residual": expected["unallocated"],
+            },
             "capacity pool",
         )
         shares = indexed(pool["shares"], "object_id")
@@ -493,7 +584,9 @@ def check_reference(report, kind, expected, request):
 
 def runtime_target(runtime):
     return (
-        runtime["system"], runtime["machine"], runtime["implementation"],
+        runtime["system"],
+        runtime["machine"],
+        runtime["implementation"],
         ".".join(runtime["python"].split(".")[:2]),
     )
 
@@ -504,9 +597,12 @@ def collect(cli, wheel, output, root=ROOT):
     artifacts = [file_record(cli, "cli"), file_record(wheel, "wheel")]
     module, installation = installed_identity(wheel, root, manifest)
     runtime = {
-        "system": platform.system(), "machine": platform.machine(),
-        "platform": platform.platform(), "implementation": platform.python_implementation(),
-        "python": platform.python_version(), "libc": list(platform.libc_ver()),
+        "system": platform.system(),
+        "machine": platform.machine(),
+        "platform": platform.platform(),
+        "implementation": platform.python_implementation(),
+        "python": platform.python_version(),
+        "libc": list(platform.libc_ver()),
         "rustc": command(["rustc", "--version", "--verbose"]),
         "cargo": command(["cargo", "--version"]),
     }
@@ -514,6 +610,7 @@ def collect(cli, wheel, output, root=ROOT):
         runtime_target(runtime) in {target_key(t) for t in manifest["targets"]},
         "executed target is outside the candidate matrix",
     )
+    verify_wheel_target(wheel, runtime)
     require(
         command([str(cli), "--version"], Path.cwd()).split()[:2]
         == ["dapane", manifest["package"]["version"]],
@@ -525,25 +622,43 @@ def collect(cli, wheel, output, root=ROOT):
             report = decode_json(command([str(cli), "evaluate", str(root / name)], Path(temp)))
             python_report = decode_json(module.evaluate_json((root / name).read_text()))
             require(report == python_report, f"CLI/Python parity failed: {name}")
-            require(report["engine_version"] == manifest["package"]["version"], "engine version changed")
+            require(
+                report["engine_version"] == manifest["package"]["version"], "engine version changed"
+            )
             check_reference(report, kind, expected, request)
             references[name] = report
     result = {
-        "format": FORMAT, "purpose": "unpublished-candidate-verification",
-        "publication_ready": False, "source": source, "inputs": input_hashes(root),
+        "format": FORMAT,
+        "purpose": "unpublished-candidate-verification",
+        "publication_ready": False,
+        "source": source,
+        "inputs": input_hashes(root),
         "created_at": datetime.now(UTC).isoformat(),
-        "ci": {k: os.environ.get(k) for k in ("GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_EVENT_NAME")},
-        "runtime": runtime, "artifacts": artifacts, "installed_python": installation,
-        "minimal_native_dependencies": core_dependencies(root), "references": references,
+        "ci": {
+            k: os.environ.get(k)
+            for k in ("GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_EVENT_NAME")
+        },
+        "runtime": runtime,
+        "artifacts": artifacts,
+        "installed_python": installation,
+        "minimal_native_dependencies": core_dependencies(root),
+        "references": references,
         "publication_blockers": publication_blockers(manifest, root),
         "limits": "Synthetic references; no real provider, empirical, other-platform or publication qualification.",
     }
     write_json(output, result)
-    print(json.dumps({
-        "source_commit": source["commit"], "target": runtime_target(runtime),
-        "artifacts": artifacts, "independent_reference_cases": len(references),
-        "publication_ready": False,
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "source_commit": source["commit"],
+                "target": runtime_target(runtime),
+                "artifacts": artifacts,
+                "independent_reference_cases": len(references),
+                "publication_ready": False,
+            },
+            indent=2,
+        )
+    )
 
 
 def verify_evidence(evidence, artifact_dir, root=ROOT):
@@ -554,13 +669,19 @@ def verify_evidence(evidence, artifact_dir, root=ROOT):
         and evidence["publication_ready"] is False,
         "candidate evidence cannot establish publication readiness",
     )
-    require(evidence["source"] == source_identity(root), "evidence belongs to another source revision")
-    require(evidence["inputs"] == input_hashes(root), "evidence input/lock/reference hashes changed")
+    require(
+        evidence["source"] == source_identity(root), "evidence belongs to another source revision"
+    )
+    require(
+        evidence["inputs"] == input_hashes(root), "evidence input/lock/reference hashes changed"
+    )
     require(
         runtime_target(evidence["runtime"]) in {target_key(t) for t in manifest["targets"]},
         "unsupported evidence target",
     )
     verify_artifacts(evidence["artifacts"], artifact_dir)
+    wheel = next(r for r in evidence["artifacts"] if r["role"] == "wheel")
+    verify_wheel_target(artifact_dir / wheel["name"], evidence["runtime"])
     comparison = read_json(artifact_dir / "reproducibility.json")
     require(
         comparison["format"] == "dapane-build-comparison/1"
@@ -584,24 +705,14 @@ def verify_evidence(evidence, artifact_dir, root=ROOT):
             "saved report engine version differs from candidate",
         )
         check_reference(evidence["references"][name], kind, expected, request)
-    dependencies = evidence["minimal_native_dependencies"]
-    names = [p["name"] for p in dependencies]
-    require(
-        len(names) == len(set(names))
-        and {"dapane-core", "dapane-cli"} <= set(names)
-        and all(p["version"] for p in dependencies)
-        and not any(
-            name == prefix or name.startswith(prefix + "-")
-            for name in names for prefix in ("pyo3", "polars", "arrow", "kairos", "process_mining")
-        ),
-        "missing or non-minimal native dependency evidence",
-    )
+    verify_dependency_versions(evidence["minimal_native_dependencies"], manifest, root)
     return runtime_target(evidence["runtime"])
 
 
 def verify_matrix_targets(actual, manifest):
     require(
-        len(actual) == len(set(actual)) and set(actual) == {target_key(t) for t in manifest["targets"]},
+        len(actual) == len(set(actual))
+        and set(actual) == {target_key(t) for t in manifest["targets"]},
         "missing, duplicate or unsupported executed matrix target",
     )
 
@@ -643,7 +754,12 @@ def main():
         if args.operation == "validate":
             manifest = validate_manifest(read_json(ROOT / "release/capabilities.json"))
             if args.publication:
-                print(json.dumps({"publication_ready": False, "blockers": publication_blockers(manifest)}, indent=2))
+                print(
+                    json.dumps(
+                        {"publication_ready": False, "blockers": publication_blockers(manifest)},
+                        indent=2,
+                    )
+                )
                 return 2
         elif args.operation == "collect":
             collect(args.cli.resolve(), args.wheel.resolve(), args.output.resolve())
@@ -653,12 +769,25 @@ def main():
             print(f"Verified {verify_matrix(args.directory)} installed interpreter targets")
         else:
             artifacts = compare_artifacts(args.first, args.second)
-            write_json(args.output, {
-                "format": "dapane-build-comparison/1", "source": source_identity(),
-                "comparison": "two-clean-builds-same-runner", "identical": True,
-                "artifacts": artifacts, "cross_host_reproducibility": "not_assessed",
-            })
-    except (AssuranceError, KeyError, TypeError, OSError, ValueError, subprocess.SubprocessError) as error:
+            write_json(
+                args.output,
+                {
+                    "format": "dapane-build-comparison/1",
+                    "source": source_identity(),
+                    "comparison": "two-clean-builds-same-runner",
+                    "identical": True,
+                    "artifacts": artifacts,
+                    "cross_host_reproducibility": "not_assessed",
+                },
+            )
+    except (
+        AssuranceError,
+        KeyError,
+        TypeError,
+        OSError,
+        ValueError,
+        subprocess.SubprocessError,
+    ) as error:
         print(f"Release assurance failed: {error}", file=sys.stderr)
         return 1
     print(f"Release assurance {args.operation}: passed (candidate scope)")
