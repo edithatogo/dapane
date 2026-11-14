@@ -14,4 +14,6 @@ Define a small domain-neutral boundary that can represent workforce resource use
 
 Requirements: RQ-01, RQ-02, RQ-03.
 
-Capability status: implemented_bounded_profile_0_1. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.
+Capability status: implemented_bounded_profiles_0_1_and_0_2. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.
+
+The [synthetic capacity increment](../../../docs/genomics-capacity-verification.md) records the separate 0.2 scope and checks.

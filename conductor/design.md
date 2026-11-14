@@ -8,6 +8,13 @@ records its evidence and limits. [Requirements](requirements.md) define
 acceptance, [decisions](decisions.md) explain choices, and the [roadmap](roadmap.md)
 sequences delivery.
 
+The bounded [0.2 capacity contract](../docs/contract-v0.2.md) extends that API
+explicitly while preserving 0.1 full-pool allocation. It keeps known and unknown
+instrument-hour observations distinct, retains unallocated pool value in the
+ledger, and does not infer availability from sample throughput. Synthetic
+preparation assumptions live in a separate versioned fixture manifest; the
+runtime does not implement an economic annualisation or recurrence policy.
+
 ## 1. Boundary and dependency direction
 
 Dapane owns quantities, quotation application, valuation policies, allocation,

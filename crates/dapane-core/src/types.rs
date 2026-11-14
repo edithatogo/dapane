@@ -189,6 +189,46 @@ pub struct Allocation {
     pub weights: Vec<AllocationWeight>,
 }
 
+/// An absent observation is never represented by a numeric zero.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "status", rename_all = "snake_case", deny_unknown_fields)]
+pub enum CapacityQuantity {
+    Known { quantity: ExactNumber },
+    Unknown { reason: String },
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum CapacityUnit {
+    InstrumentHour,
+}
+
+/// The initial capacity profile does not establish complete utilisation records.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ObservationCoverage {
+    Incomplete,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct CapacityUse {
+    pub object_id: String,
+    pub quantity: CapacityQuantity,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct CapacityAllocation {
+    pub id: String,
+    pub source_line_ids: Vec<String>,
+    pub unit: CapacityUnit,
+    pub observation_coverage: ObservationCoverage,
+    pub available_capacity: CapacityQuantity,
+    pub use_records: Vec<CapacityUse>,
+    pub source: SourceRef,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Request {
@@ -208,6 +248,8 @@ pub struct Request {
     pub object_relations: Vec<ObjectRelation>,
     #[serde(default)]
     pub allocations: Vec<Allocation>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub capacity_allocations: Vec<CapacityAllocation>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -266,6 +308,33 @@ pub struct AllocationResult {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
+pub struct CapacityShare {
+    pub object_id: String,
+    pub quantity: CapacityQuantity,
+    pub exact_share: Option<Rational>,
+    pub rounded: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct CapacityAllocationResult {
+    pub id: String,
+    pub source_line_ids: Vec<String>,
+    pub unit: CapacityUnit,
+    pub observation_coverage: ObservationCoverage,
+    pub available_capacity: CapacityQuantity,
+    pub source: SourceRef,
+    pub pool_exact: Rational,
+    pub pool_rounded: String,
+    pub accounted_quantity: Rational,
+    pub unaccounted_quantity: Option<Rational>,
+    pub shares: Vec<CapacityShare>,
+    pub unallocated_exact: Rational,
+    pub unallocated: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct ObjectTotal {
     pub object_id: String,
     pub direct: String,
@@ -304,5 +373,7 @@ pub struct Report {
     pub context: Context,
     pub totals: Totals,
     pub allocations: Vec<AllocationResult>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub capacity_allocations: Vec<CapacityAllocationResult>,
     pub object_totals: Vec<ObjectTotal>,
 }

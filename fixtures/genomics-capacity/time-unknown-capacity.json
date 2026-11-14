@@ -1,0 +1,201 @@
+{
+  "schema_version": "0.2",
+  "run_id": "synthetic-time-unknown-capacity",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-economic_cost",
+    "version": "1.0.0",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "economic_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "device-period-quote",
+      "kind": "resource_use",
+      "target": "device-period",
+      "unit": "candidate_month",
+      "amount": "200.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "device-period"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "device-period-assumption",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics-capacity/scenario.json"
+      }
+    },
+    {
+      "id": "maintenance-period-quote",
+      "kind": "resource_use",
+      "target": "maintenance-period",
+      "unit": "candidate_month",
+      "amount": "100.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "maintenance-period"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "maintenance-period-assumption",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics-capacity/scenario.json"
+      }
+    },
+    {
+      "id": "implementation-quote",
+      "kind": "resource_use",
+      "target": "implementation",
+      "unit": "implementation",
+      "amount": "600.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "implementation"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "implementation-assumption",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics-capacity/scenario.json"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "device-period",
+      "use_id": "device-period-use",
+      "kind": "resource_use",
+      "target": "device-period",
+      "unit": "candidate_month",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "device-period-quote",
+      "source": {
+        "id": "device-period-scenario",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics-capacity/scenario.json"
+      }
+    },
+    {
+      "id": "maintenance-period",
+      "use_id": "maintenance-period-use",
+      "kind": "resource_use",
+      "target": "maintenance-period",
+      "unit": "candidate_month",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "maintenance-period-quote",
+      "source": {
+        "id": "maintenance-period-scenario",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics-capacity/scenario.json"
+      }
+    },
+    {
+      "id": "implementation",
+      "use_id": "implementation-use",
+      "kind": "resource_use",
+      "target": "implementation",
+      "unit": "implementation",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "implementation-quote",
+      "source": {
+        "id": "implementation-scenario",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics-capacity/scenario.json"
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "cohort-a",
+      "kind": "synthetic_sample_cohort"
+    },
+    {
+      "id": "cohort-b",
+      "kind": "synthetic_sample_cohort"
+    }
+  ],
+  "object_relations": [],
+  "allocations": [],
+  "capacity_allocations": [
+    {
+      "id": "recurring-instrument-pool",
+      "source_line_ids": [
+        "device-period",
+        "maintenance-period"
+      ],
+      "unit": "instrument_hour",
+      "observation_coverage": "incomplete",
+      "available_capacity": {
+        "status": "unknown",
+        "reason": "available-instrument-hours-not-recorded"
+      },
+      "use_records": [
+        {
+          "object_id": "cohort-a",
+          "quantity": {
+            "status": "known",
+            "quantity": "10"
+          }
+        },
+        {
+          "object_id": "cohort-b",
+          "quantity": {
+            "status": "unknown",
+            "reason": "instrument-duration-not-recorded"
+          }
+        }
+      ],
+      "source": {
+        "id": "independently-stipulated-capacity",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics-capacity/scenario.json"
+      }
+    }
+  ]
+}

@@ -24,7 +24,7 @@ Current repository areas:
 | `crates/dapane-core/` | Exact contract, validation, valuation, allocation and deterministic digests |
 | `crates/dapane-cli/` | Offline file/stdin JSON interface and CLI boundary checks |
 | `crates/dapane-python/`, `python/dapane/`, `pyproject.toml` | Thin PyO3 extension and Python exact-value transport |
-| `schemas/0.1/` | Request, report, error and shared JSON schemas |
+| `schemas/0.1/`, `schemas/0.2/`, `schemas/scenarios/` | Original and explicit capacity contracts; synthetic candidate preparation schema |
 | `fixtures/` | Five synthetic inputs and independently authored expected results |
 | `tests/python/` | Installed-wheel consumer, transport, error and concurrency checks |
 | `scripts/validate_contract.py` | Structural checks and independent CLI result/digest verification |
@@ -51,3 +51,5 @@ standards_check owns original reporting-source records. See
 Update this file when implementation areas or public entry points are added or
 removed. Record actual build/test commands in the workflow and affected track.
 Do not replace executable discovery with a speculative exhaustive file tree.
+
+The [synthetic genomics capacity fixtures](../fixtures/genomics-capacity/README.md) and [0.2 contract](../docs/contract-v0.2.md) extend the reused runtime; [increment verification](../docs/genomics-capacity-verification.md) records ownership and bounded evidence.

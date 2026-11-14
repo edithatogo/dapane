@@ -1,0 +1,40 @@
+{
+  "profile_version": "dapane-synthetic-genomics-v0.1",
+  "evidence": "synthetic",
+  "validation": "unvalidated",
+  "currency": "AUD",
+  "price_year": 2026,
+  "period_months": "1",
+  "device": {
+    "purchase_amount": "12000",
+    "useful_life_months": "60",
+    "residual_amount": "0",
+    "candidate_monthly_charge": "200.00",
+    "method": "straight_line_no_discount_candidate"
+  },
+  "maintenance": {
+    "contract_amount": "2400",
+    "contract_duration_months": "24",
+    "candidate_monthly_charge": "100.00",
+    "method": "equal_monthly_contract_charge_candidate"
+  },
+  "implementation": {
+    "amount": "600.00",
+    "recurrence": "one_time",
+    "included_in_recurring_pool": false
+  },
+  "sample_counts": {
+    "cohort-a": "20",
+    "cohort-b": "30"
+  },
+  "sample_allocation_assumption": "Recover the full recurrent pool across the observed cohort; counts are weights, not equipment capacity.",
+  "capacity_assumption": "When known, 100 instrument-hours are independently stipulated for the same one-month pool. Use records are incomplete; unaccounted hours are not established idle hours.",
+  "cost_scope": "Only the three named synthetic cost components; no personnel, consumables, tax, salvage, discounting, replacements, failure or clinical outcomes are inferred.",
+  "requests": [
+    "sample-full-first.json",
+    "sample-full-recurring.json",
+    "time-known.json",
+    "time-missing-use.json",
+    "time-unknown-capacity.json"
+  ]
+}

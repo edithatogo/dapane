@@ -1,14 +1,16 @@
 # Compatibility, identity and rollback
 
-The first implementation is an unpublished `0.1.0` candidate. Its public wire
-contract is `0.1` and its calculation method is `dapane-exact-v0.1.0`. These
+The implementation remains an unpublished `0.1.0` package candidate. Its original
+wire contract `0.1` / method `dapane-exact-v0.1.0` remains supported unchanged.
+The explicit [capacity profile](contract-v0.2.md) adds wire `0.2` / method
+`dapane-exact-v0.2.0`. Package and contract versions are independent. These
 identities have different responsibilities; a package version alone does not
 identify a price release or an economic method.
 
 | Identity | Meaning | Change rule |
 | --- | --- | --- |
 | Engine/package version | Code and packaging implementation | Pin the source revision and `Cargo.lock` for a reproducible source build. Published binaries will need their own artifact identity. |
-| `schema_version` | Accepted fields, types and meanings | This implementation accepts exactly `0.1`. Unknown fields and versions fail. Incompatible changes require a new schema and an explicit conversion. |
+| `schema_version` | Accepted fields, types and meanings | Accepts `0.1` and `0.2` explicitly. Capacity records are rejected in `0.1`. Unknown fields and versions fail; there is no implicit conversion. |
 | `method_version` | Numerical and rounding semantics | Changed financial semantics require a new method identity and reference cases; retain prior expected results and explain differences. |
 | Policy ID/version | Caller-selected perspective and valuation assumptions | Never silently substitute another policy. Contract 0.1 supports only its explicit fields and named rounding method. |
 | Source ID/version/digest | Supplied source snapshot | Corrections create a new source version and a new run. A supplied digest is preserved; the core does not retrieve external content to verify it. |
@@ -18,6 +20,11 @@ The input digest preserves supplied decimal spellings and canonicalizes collecti
 order. The output digest covers the complete report except its own digest field.
 Neither digest proves the truth of input data or replaces a signed release record.
 The exact algorithm and normalization are in the [contract](contract-v0.1.md).
+The [capacity contract](contract-v0.2.md) defines its separate remainder and
+unknown-state semantics. The five original fixture input/output digests remain
+unchanged. Typed Rust `Request` literals need the new empty
+`capacity_allocations` vector; pre-1.0 source compatibility is not asserted for
+struct construction. JSON/CLI/Python full-pool inputs remain compatible.
 
 ## Namespaces and extensions
 

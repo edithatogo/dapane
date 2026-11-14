@@ -34,7 +34,7 @@ fn main() -> ExitCode {
         return ExitCode::SUCCESS;
     }
     if matches!(arguments.as_slice(), [flag] if flag == "--version" || flag == "-V") {
-        println!("dapane {} (contract 0.1)", env!("CARGO_PKG_VERSION"));
+        println!("dapane {} (contracts 0.1, 0.2)", env!("CARGO_PKG_VERSION"));
         return ExitCode::SUCCESS;
     }
     let [command, path] = arguments.as_slice() else {

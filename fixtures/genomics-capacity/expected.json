@@ -1,0 +1,65 @@
+{
+  "provenance": "Hand calculations with synthetic candidate assumptions; not economic validation. See README.md.",
+  "cases": {
+    "sample-full-first.json": {
+      "schema_version": "0.1",
+      "total": "900.00",
+      "allocated": "300.00",
+      "unattributed": "600.00",
+      "shares": {
+        "cohort-a": "120.00",
+        "cohort-b": "180.00"
+      },
+      "pool": "300.00",
+      "unallocated": "0.00"
+    },
+    "sample-full-recurring.json": {
+      "schema_version": "0.1",
+      "total": "300.00",
+      "allocated": "300.00",
+      "unattributed": "0.00",
+      "shares": {
+        "cohort-a": "120.00",
+        "cohort-b": "180.00"
+      },
+      "pool": "300.00",
+      "unallocated": "0.00"
+    },
+    "time-known.json": {
+      "schema_version": "0.2",
+      "total": "900.00",
+      "allocated": "90.00",
+      "unattributed": "810.00",
+      "shares": {
+        "cohort-a": "30.00",
+        "cohort-b": "60.00"
+      },
+      "pool": "300.00",
+      "unallocated": "210.00"
+    },
+    "time-missing-use.json": {
+      "schema_version": "0.2",
+      "total": "900.00",
+      "allocated": "30.00",
+      "unattributed": "870.00",
+      "shares": {
+        "cohort-a": "30.00",
+        "cohort-b": null
+      },
+      "pool": "300.00",
+      "unallocated": "270.00"
+    },
+    "time-unknown-capacity.json": {
+      "schema_version": "0.2",
+      "total": "900.00",
+      "allocated": "0.00",
+      "unattributed": "900.00",
+      "shares": {
+        "cohort-a": null,
+        "cohort-b": null
+      },
+      "pool": "300.00",
+      "unallocated": "300.00"
+    }
+  }
+}

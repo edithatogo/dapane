@@ -1,0 +1,26 @@
+{
+  "source_commit": "056e8e3f78f6843bcd55e5d3816e7a23b167305f",
+  "purpose": "Compatibility regression only; independent arithmetic remains in fixtures/expected.json.",
+  "fixtures": {
+    "activity-funding.json": {
+      "input_digest": "sha256:3d93e927b141b44bc6c258baaa61dd97bd78c340d893e6249c190b780a179dab",
+      "output_digest": "sha256:5b1c2b64ca5ab5d33d6dc7174c559d279e120fa972d2490935ab943e402edc2d"
+    },
+    "genomics.json": {
+      "input_digest": "sha256:e83259815b563284aa33be591bee44288b3d975ea8689b50a827e5a0c42c2a67",
+      "output_digest": "sha256:1fbe4ce46e1632f4d89e613b5f50553c290c5e67971ff1409d40bc1c60c649c1"
+    },
+    "newborn-screening.json": {
+      "input_digest": "sha256:1b5afba6fc193da9d1fb4debdb22d0f88f0430e4faadb0216f993f0fc0d33959",
+      "output_digest": "sha256:a38641e5373cb775f84fec290cb48e7e030a344bf86e44c0d1f76e1b44cd0d9c"
+    },
+    "subcent-allocation.json": {
+      "input_digest": "sha256:8803674eace74b18bd75f2c42a3d8a603c3232d516036938b4037d68a62bfe2d",
+      "output_digest": "sha256:167f6b13083060a28da4110659bb91925ca29a220ba86cb6271b55b79f861801"
+    },
+    "workforce.json": {
+      "input_digest": "sha256:900e0d1db1fbcc779bcae2c63b47f06b467577405c88c33ea8739350e26b2955",
+      "output_digest": "sha256:098638443ea5dbba162d24dcfe63532bfdf78c68be41cf35cc2e6c07cecece55"
+    }
+  }
+}

@@ -4,7 +4,7 @@ use chrono::{Datelike, NaiveDate};
 use num_rational::BigRational;
 use num_traits::Zero;
 
-use crate::{DapaneError, Event, Request, SourceRef, Usage, numeric};
+use crate::{DapaneError, Event, Request, SourceRef, Usage, capacity, numeric};
 
 const MAX_COLLECTION: usize = 10_000;
 const MAX_TOTAL_RECORDS: usize = 20_000;
@@ -207,11 +207,18 @@ fn same_use(
 }
 
 pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
-    if request.schema_version != "0.1" {
+    if !["0.1", "0.2"].contains(&request.schema_version.as_str()) {
         return Err(DapaneError::new(
             "unsupported_schema",
-            "Supported schema_version is 0.1",
+            "Supported schema_version is 0.1 or 0.2",
             "/schema_version",
+        ));
+    }
+    if request.schema_version == "0.1" && !request.capacity_allocations.is_empty() {
+        return Err(DapaneError::new(
+            "invalid_request",
+            "capacity_allocations requires schema_version 0.2",
+            "/capacity_allocations",
         ));
     }
     text(&request.run_id, "/run_id")?;
@@ -224,6 +231,7 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
         (request.events.len(), "/events"),
         (request.object_relations.len(), "/object_relations"),
         (request.allocations.len(), "/allocations"),
+        (request.capacity_allocations.len(), "/capacity_allocations"),
     ];
     for (size, path) in sizes {
         collection(size, path)?;
@@ -488,7 +496,7 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
         }
     }
 
-    unique_ids(
+    let full_pool_ids = unique_ids(
         request.allocations.iter().map(|a| a.id.as_str()),
         "/allocations",
     )?;
@@ -559,6 +567,91 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
             ));
         }
     }
+    unique_ids(
+        request.capacity_allocations.iter().map(|a| a.id.as_str()),
+        "/capacity_allocations",
+    )?;
+    for (index, allocation) in request.capacity_allocations.iter().enumerate() {
+        let path = format!("/capacity_allocations/{index}");
+        if full_pool_ids.contains(allocation.id.as_str()) {
+            return Err(DapaneError::new(
+                "duplicate_id",
+                "Allocation IDs must be unique across both modes",
+                &format!("{path}/id"),
+            ));
+        }
+        collection(
+            allocation.source_line_ids.len(),
+            &format!("{path}/source_line_ids"),
+        )?;
+        collection(allocation.use_records.len(), &format!("{path}/use_records"))?;
+        if allocation.source_line_ids.is_empty() || allocation.use_records.is_empty() {
+            return Err(DapaneError::new(
+                "invalid_allocation",
+                "Capacity allocation requires source lines and explicit use records",
+                &path,
+            ));
+        }
+        source(&allocation.source, &format!("{path}/source"))?;
+        for (line_index, line_id) in allocation.source_line_ids.iter().enumerate() {
+            let line_path = format!("{path}/source_line_ids/{line_index}");
+            text(line_id, &line_path)?;
+            let usage = usage_by_id.get(line_id.as_str()).ok_or_else(|| {
+                DapaneError::new(
+                    "unknown_reference",
+                    "Unknown capacity source line",
+                    &line_path,
+                )
+            })?;
+            if usage.attribution_object_id.is_some() || !pooled.insert(line_id) {
+                return Err(DapaneError::new(
+                    "allocation_overlap",
+                    "A source line can belong to only one direct or pooled allocation",
+                    &line_path,
+                ));
+            }
+        }
+        let available = capacity::quantity(
+            &allocation.available_capacity,
+            &format!("{path}/available_capacity"),
+        )?;
+        if available.as_ref().is_some_and(Zero::is_zero) {
+            return Err(DapaneError::new(
+                "invalid_capacity",
+                "Known available capacity must be strictly positive",
+                &format!("{path}/available_capacity"),
+            ));
+        }
+        let mut recipients = BTreeSet::new();
+        let mut accounted = BigRational::zero();
+        for (use_index, record) in allocation.use_records.iter().enumerate() {
+            let use_path = format!("{path}/use_records/{use_index}");
+            reference(
+                &record.object_id,
+                &objects,
+                &format!("{use_path}/object_id"),
+            )?;
+            if !recipients.insert(&record.object_id) {
+                return Err(DapaneError::new(
+                    "duplicate_recipient",
+                    "Repeated capacity recipient",
+                    &format!("{use_path}/object_id"),
+                ));
+            }
+            if let Some(value) =
+                capacity::quantity(&record.quantity, &format!("{use_path}/quantity"))?
+            {
+                accounted = numeric::bounded(accounted + value, &path)?;
+            }
+        }
+        if available.is_some_and(|value| accounted > value) {
+            return Err(DapaneError::new(
+                "capacity_exceeded",
+                "Known recorded use exceeds independently supplied capacity",
+                &path,
+            ));
+        }
+    }
     Ok(())
 }
 
@@ -590,6 +683,13 @@ pub(crate) fn normalize(request: &Request) -> Request {
         allocation.source_line_ids.sort();
         allocation
             .weights
+            .sort_by(|a, b| a.object_id.cmp(&b.object_id));
+    }
+    result.capacity_allocations.sort_by(|a, b| a.id.cmp(&b.id));
+    for allocation in &mut result.capacity_allocations {
+        allocation.source_line_ids.sort();
+        allocation
+            .use_records
             .sort_by(|a, b| a.object_id.cmp(&b.object_id));
     }
     result

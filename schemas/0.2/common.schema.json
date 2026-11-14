@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/common.schema.json",
+  "title": "Dapane 0.2 explicit incomplete instrument-capacity definitions",
+  "$defs": {
+    "capacityQuantity": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "const": "known"
+            },
+            "quantity": {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/exactNumber"
+            }
+          },
+          "required": [
+            "status",
+            "quantity"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "const": "unknown"
+            },
+            "reason": {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            }
+          },
+          "required": [
+            "status",
+            "reason"
+          ]
+        }
+      ]
+    },
+    "availableCapacity": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "const": "known"
+            },
+            "quantity": {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+            }
+          },
+          "required": [
+            "status",
+            "quantity"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "const": "unknown"
+            },
+            "reason": {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            }
+          },
+          "required": [
+            "status",
+            "reason"
+          ]
+        }
+      ]
+    },
+    "capacityUse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "object_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/common.schema.json#/$defs/capacityQuantity"
+        }
+      },
+      "required": [
+        "object_id",
+        "quantity"
+      ]
+    },
+    "capacityAllocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "source_line_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "unit": {
+          "const": "instrument_hour"
+        },
+        "observation_coverage": {
+          "const": "incomplete"
+        },
+        "available_capacity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/common.schema.json#/$defs/availableCapacity"
+        },
+        "use_records": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/common.schema.json#/$defs/capacityUse"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "source": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/source"
+        }
+      },
+      "required": [
+        "id",
+        "source_line_ids",
+        "unit",
+        "observation_coverage",
+        "available_capacity",
+        "use_records",
+        "source"
+      ]
+    },
+    "capacityShare": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "object_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/common.schema.json#/$defs/capacityQuantity"
+        },
+        "exact_share": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rounded": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "object_id",
+        "quantity",
+        "exact_share",
+        "rounded"
+      ]
+    },
+    "capacityAllocationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "source_line_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "unit": {
+          "const": "instrument_hour"
+        },
+        "observation_coverage": {
+          "const": "incomplete"
+        },
+        "available_capacity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/common.schema.json#/$defs/availableCapacity"
+        },
+        "source": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/source"
+        },
+        "pool_exact": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        },
+        "pool_rounded": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        },
+        "accounted_quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        },
+        "unaccounted_quantity": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "shares": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/common.schema.json#/$defs/capacityShare"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "unallocated_exact": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        },
+        "unallocated": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        }
+      },
+      "required": [
+        "id",
+        "source_line_ids",
+        "unit",
+        "observation_coverage",
+        "available_capacity",
+        "source",
+        "pool_exact",
+        "pool_rounded",
+        "accounted_quantity",
+        "unaccounted_quantity",
+        "shares",
+        "unallocated_exact",
+        "unallocated"
+      ]
+    }
+  }
+}

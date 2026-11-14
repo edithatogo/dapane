@@ -6,6 +6,7 @@
 
 #![forbid(unsafe_code)]
 
+mod capacity;
 mod json;
 mod numeric;
 mod types;
@@ -23,6 +24,8 @@ pub use types::*;
 
 pub const SCHEMA_VERSION: &str = "0.1";
 pub const METHOD_VERSION: &str = "dapane-exact-v0.1.0";
+pub const CAPACITY_SCHEMA_VERSION: &str = "0.2";
+pub const CAPACITY_METHOD_VERSION: &str = "dapane-exact-v0.2.0";
 pub const ENGINE_VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const MAX_JSON_BYTES: usize = 4 * 1024 * 1024;
 
@@ -82,7 +85,10 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
     json::check_typed_size(request)?;
     validation::validate(request)?;
     let request = validation::normalize(request);
-    let input_digest = json::digest("dapane:input:0.1\n", &json::value(&request)?)?;
+    let input_digest = json::digest(
+        &format!("dapane:input:{}\n", request.schema_version),
+        &json::value(&request)?,
+    )?;
     let scale = request.policy.rounding.scale;
     let quote_map: BTreeMap<_, _> = request
         .quotes
@@ -248,6 +254,19 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
         });
     }
 
+    let mut capacity_allocations = Vec::with_capacity(request.capacity_allocations.len());
+    for allocation in &request.capacity_allocations {
+        let result = capacity::evaluate(allocation, &line_values, scale)?;
+        for (object_id, minor) in &result.assigned {
+            objects
+                .get_mut(object_id.as_str())
+                .ok_or_else(|| invariant("Validated capacity recipient disappeared"))?
+                .allocated += minor;
+            allocated_minor += minor;
+        }
+        capacity_allocations.push(result.report);
+    }
+
     let unattributed = &total_minor - &directly_attributed - &allocated_minor;
     if unattributed < BigInt::zero() {
         return Err(invariant("Attributed views exceed the source ledger"));
@@ -266,11 +285,16 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
         })
         .collect();
     let mut report = Report {
-        schema_version: SCHEMA_VERSION.to_owned(),
+        schema_version: request.schema_version.clone(),
         run_id: request.run_id,
         status: ReportStatus::Complete,
         engine_version: ENGINE_VERSION.to_owned(),
-        method_version: METHOD_VERSION.to_owned(),
+        method_version: if request.schema_version == CAPACITY_SCHEMA_VERSION {
+            CAPACITY_METHOD_VERSION
+        } else {
+            METHOD_VERSION
+        }
+        .to_owned(),
         input_digest,
         output_digest: String::new(),
         policy: request.policy,
@@ -291,6 +315,7 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
             unattributed: numeric::format_minor(&unattributed, scale),
         },
         allocations,
+        capacity_allocations,
         object_totals,
     };
     let mut output_value = json::value(&report)?;
@@ -298,6 +323,9 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
         .as_object_mut()
         .ok_or_else(|| invariant("Report did not serialize to an object"))?
         .remove("output_digest");
-    report.output_digest = json::digest("dapane:output:0.1\n", &output_value)?;
+    report.output_digest = json::digest(
+        &format!("dapane:output:{}\n", report.schema_version),
+        &output_value,
+    )?;
     Ok(report)
 }

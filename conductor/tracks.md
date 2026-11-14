@@ -31,6 +31,7 @@ A completed planning task does not change a runtime capability from planned to q
 
 The setup track is complete. A bounded contract, exact Rust/CLI kernel, Python
 binding and five synthetic consumers now have [runtime evidence](../docs/runtime-verification.md).
+The [capacity increment](../docs/genomics-capacity-verification.md) adds five synthetic genomics comparisons and explicit 0.2 semantics while retaining 0.1 compatibility.
 Core, kernel, Python, newborn and process-context tracks are in progress; their
 broader acceptance criteria remain open. Next work qualifies actual workforce
 release and genomics recipe adapters, broader quantity/correction semantics and

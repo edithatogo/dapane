@@ -13,6 +13,9 @@ specialist rules and source data. R and Julia remain planned bindings.
 This is an **unpublished 0.1.0 candidate**, implementing a bounded subset of the
 Conductor requirements and roadmap. It supports nonnegative point-date quantities,
 exact quotation application, conserving allocation and event/process/object context.
+Wire profile 0.1 retains full-pool allocation; [profile 0.2](docs/contract-v0.2.md)
+adds explicit incomplete instrument-capacity allocation, preserving unknown
+observations and unallocated value. The package remains an unpublished candidate.
 Documentation validation alone does not establish numerical or empirical validity.
 
 Installed provider adapters, automatic interval segmentation, richer economic
@@ -47,6 +50,12 @@ The synthetic newborn example values collections at 10 each, a shared batch at
 **60 and 90**. Other fixtures cover fractional workforce time, genomics,
 activity-only funding and sub-cent allocation. None contains an official rate
 or real patient data.
+
+The [synthetic genomics capacity cases](fixtures/genomics-capacity/README.md)
+compare declared time-based and sample-based allocation, distinguish maintenance
+contract duration from device useful life, and keep one-time implementation
+costs separate from recurring costs. Their preparation assumptions are candidate
+scenarios, not validated economic formulae. See the [increment verification](docs/genomics-capacity-verification.md).
 
 After building and installing the Python wheel using the [quickstart](docs/quickstart.md):
 

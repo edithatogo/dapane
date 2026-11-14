@@ -72,6 +72,12 @@ Acceptance:
   resource cost or cash savings.
 - Results retain valuation basis, perspective, currency, denominator, observation
   window and component lineage through aggregation.
+- Full-pool weights remain distinct from explicit capacity denominators. Incomplete
+  instrument-use records and unknown availability retain unknown/unallocated states;
+  sample throughput never becomes available equipment hours implicitly.
+- Synthetic preparation cases distinguish maintenance contract duration from
+  device useful life and one-time implementation from recurrent costs. Candidate
+  assumptions and verified arithmetic do not establish validated economic formulae.
 
 ## RQ-04 — Python delivery and two independent domain consumers
 
