@@ -176,7 +176,7 @@ small delivered scope. No dependency, runtime package version, provider owner or
 release status changes. Typed Rust struct literals require the new empty vector;
 0.1 JSON/CLI/Python inputs and the five original fixture digests remain compatible.
 
-## ADR-012 — Explicit calendar exposure and parent-level interval rounding
+## ADR-013 — Explicit calendar exposure and parent-level interval rounding
 
 Status: implemented bounded direction, 15 November 2026; qualification is recorded
 in the [kernel evidence](../docs/kernel-completion-verification.md).
@@ -190,6 +190,20 @@ exactly at rate boundaries without iterating each date. Each parent line sums
 exact segments before half-even rounding; component identity and pool attribution
 remain attached to the original use. Different component schedules can have
 different boundaries while retaining the same parent interval and exposure.
+
+The original track required explicit rounding and segmentation invariants but
+did not prescribe whether generated segments are separate monetary source lines.
+This method makes the original interval usage the source line: rate boundaries
+partition exact valuation without creating independent charge events. Equal-rate
+subdivision therefore cannot change expenditure. Callers needing independently
+rounded point observations can continue to use explicitly segmented 0.1/0.2
+inputs. Concurrent kernel PR #16's segment-rounding envelope is a different
+method and is not combined with this profile. Its branch and comparison evidence
+are retained; this track's authoritative completion selects profile 0.3.
+
+ADR-013 preserves ADR-012 for the independently developed immutable run-bundle
+decision in core-contract PR #9. The [kernel review](tracks/rust_kernel_20261108/review.md)
+records the numerical comparison and retained acceptance work.
 
 This is a new method identity; 0.1 and 0.2 calculations/digests remain unchanged.
 The model does not infer hourly utilisation, business days, availability or

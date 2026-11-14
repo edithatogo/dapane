@@ -603,3 +603,67 @@ fn typed_interval_api_matches_json_and_rejects_earlier_profile_versions() {
         assert_eq!(failure.path, "/interval_usage");
     }
 }
+
+#[test]
+fn independent_duration_oracle_conserves_quantity_and_values_the_parent() {
+    // One day before the change, N days after, total quantity (N+1)/7:
+    // quantities are 1/7 and N/7; exact parent value is (90 + 120*N)/7.
+    // Adapted from the independent duration case inspected in PR #16;
+    // the rounded oracle here uses this contract's parent rounding.
+    for days_after in 1..=25 {
+        let mut input = base();
+        input["quotes"][0]["amount"] = json!("90");
+        input["quotes"][0]["valid_to"] = json!("2026-01-02");
+        input["quotes"][1]["amount"] = json!("120");
+        input["quotes"][1]["valid_from"] = json!("2026-01-02");
+        input["quotes"][1]["valid_to"] = json!("2026-02-01");
+        input["interval_usage"][0]["quantity"] = ratio(&(days_after + 1).to_string(), "7");
+        input["interval_usage"][0]["end_date"] = json!(format!("2026-01-{:02}", days_after + 2));
+        let output = report(&input);
+        let line = &output["interval_lines"][0];
+        assert_eq!(line["segments"][0]["quantity"], ratio("1", "7"));
+        let after = &line["segments"][1]["quantity"];
+        let after_numerator: i64 = after["numerator"].as_str().unwrap().parse().unwrap();
+        let after_denominator: i64 = after["denominator"].as_str().unwrap().parse().unwrap();
+        assert_eq!(after_numerator * 7, days_after * after_denominator);
+        let total = &line["quantity"];
+        let total_numerator: i64 = total["numerator"].as_str().unwrap().parse().unwrap();
+        let total_denominator: i64 = total["denominator"].as_str().unwrap().parse().unwrap();
+        assert_eq!(total_numerator * 7, (days_after + 1) * total_denominator);
+        let exact = &output["totals"]["exact"];
+        let numerator: i64 = exact["numerator"].as_str().unwrap().parse().unwrap();
+        let denominator: i64 = exact["denominator"].as_str().unwrap().parse().unwrap();
+        assert_eq!(numerator * 7, (90 + 120 * days_after) * denominator);
+        // Sevenths cannot be half-cent ties. Adding three before integer
+        // division by seven independently gives the nearest whole cent.
+        let cents = ((90 + 120 * days_after) * 100 + 3) / 7;
+        assert_eq!(
+            output["totals"]["rounded"],
+            format!("{}.{:02}", cents / 100, cents % 100)
+        );
+    }
+}
+
+#[test]
+fn computed_segment_may_exceed_input_digits_within_the_intermediate_bound() {
+    // A 96-digit input denominator D = 10^96 - 1 is permitted. Dividing
+    // quantity 1/D across three days produces denominator 3D, which has
+    // 97 decimal digits but is less than 2^323 and therefore well below
+    // the 4096-bit computed-value limit. It is not a new scalar input.
+    let mut input = base();
+    input["interval_usage"][0]["quantity"] = ratio("1", &"9".repeat(96));
+    input["interval_usage"][0]["end_date"] = json!("2026-01-04");
+    input["quotes"][0]["valid_to"] = json!("2026-01-02");
+    input["quotes"][1]["valid_from"] = json!("2026-01-02");
+    let output = report(&input);
+    let denominator = format!("2{}7", "9".repeat(95));
+    assert_eq!(denominator.len(), 97);
+    let line = &output["interval_lines"][0];
+    assert_eq!(line["segments"][0]["quantity"], ratio("1", &denominator));
+    assert_eq!(line["segments"][1]["quantity"], ratio("2", &denominator));
+    // Rates are 2 and 3: (1/(3D))*2 + (2/(3D))*3 = 8/(3D).
+    assert_eq!(line["exact"], ratio("8", &denominator));
+    assert_eq!(output["totals"]["exact"], ratio("8", &denominator));
+    assert_eq!(output["totals"]["rounded"], "0.00");
+    assert_eq!(output["status"], "complete");
+}

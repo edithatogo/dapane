@@ -34,8 +34,7 @@ def check_reference(report: dict, expected: dict) -> None:
             assert lines[line_id][name] == value
     if "allocation_shares" in expected:
         assert {
-            share["object_id"]: share["rounded"]
-            for share in report["allocations"][0]["shares"]
+            share["object_id"]: share["rounded"] for share in report["allocations"][0]["shares"]
         } == expected["allocation_shares"]
 
 

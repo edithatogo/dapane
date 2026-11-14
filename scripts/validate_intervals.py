@@ -102,8 +102,7 @@ def check_report(report: dict, request: dict, expected: dict, label: str) -> Non
     require(report["quote_snapshots"] == normalized["quotes"], f"{label}: changed quotes")
     compare_fields(report["totals"], expected["totals"], label + ".totals")
     expected_context = {
-        key: normalized[key]
-        for key in ("objects", "processes", "events", "object_relations")
+        key: normalized[key] for key in ("objects", "processes", "events", "object_relations")
     }
     require(report["context"] == expected_context, f"{label}: changed context")
     actual_lines = keyed(report["interval_lines"], "id", label)
@@ -112,7 +111,9 @@ def check_report(report: dict, request: dict, expected: dict, label: str) -> Non
     for usage in normalized["interval_usage"]:
         line = actual_lines[usage["id"]]
         compare_fields(line, expected["interval_lines"][usage["id"]], label)
-        lineage = {key: value for key, value in usage.items() if key not in ("quantity", "quote_ids")}
+        lineage = {
+            key: value for key, value in usage.items() if key not in ("quantity", "quote_ids")
+        }
         event = events.get(usage["event_id"], {})
         for key in ("process_id", "activity_id"):
             if lineage[key] is None:
@@ -138,8 +139,7 @@ def check_report(report: dict, request: dict, expected: dict, label: str) -> Non
             f"{label}: allocation differs from independent one-cent oracle",
         )
         require(
-            sum(fraction(share["rounded"]) for share in pool["shares"])
-            + fraction(pool["residual"])
+            sum(fraction(share["rounded"]) for share in pool["shares"]) + fraction(pool["residual"])
             == fraction(pool["pool_rounded"]),
             f"{label}: allocation did not conserve the parent pool",
         )
@@ -216,7 +216,9 @@ def main() -> int:
     for name, request in requests.items():
         validate(checkers["request"], request, name)
     count = structural_negatives(checkers["request"], requests["rate-boundary.json"])
-    print(f"Validated 0.3 schemas, {len(requests)} synthetic requests and {count} schema negatives.")
+    print(
+        f"Validated 0.3 schemas, {len(requests)} synthetic requests and {count} schema negatives."
+    )
     if args.cli is None:
         print("Native numerical, semantic and determinism checks were not run; supply --cli.")
         return 0

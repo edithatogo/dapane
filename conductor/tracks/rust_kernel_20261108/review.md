@@ -198,3 +198,26 @@ qualified by this interval implementation.
 
 The three review findings above are closed by source inspection. At this record's
 revision, final executed qualification and track synchronization remain open.
+
+## Concurrent implementation and method decision
+
+Read-only comparison examined [PR #16](https://github.com/edithatogo/dapane/pull/16)
+at `2d4698a33249845182ee41e2184040eb088af475`. It targets this same track with
+a separate interval envelope, generated point-date lines and rounding on each
+segment. The methods are financially different: two exact half-cent segments
+round to zero separately, while their original parent rounds to one cent in 0.3.
+
+The original specification left the interval rounding point to an explicit
+method decision. This completion selects the original usage as the monetary
+source line, making equal-rate subdivision financially invariant. ADR-013 records
+that decision; it does not claim this rule had already been settled by the
+original plan. Profiles 0.1/0.2 retain independently rounded point observations.
+
+The independent comparison recommended PR #15 as the integration candidate.
+PR #16's branch and evidence are preserved, and its incompatible public envelope
+is not merged into 0.3. Two useful independent acceptance cases are adapted to
+the chosen method: rational duration conservation across 25 interval lengths,
+and a valid input whose computed segment needs more than the input's digit limit
+while remaining inside the separate intermediate-precision bound. These cases
+retain the useful boundary evidence without copying the alternative method's
+rounding or scalar-replay restrictions.
