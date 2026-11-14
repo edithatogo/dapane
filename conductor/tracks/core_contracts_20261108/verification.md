@@ -40,7 +40,7 @@ all 11 configured checks before integration:
 
 | Check | Observed outcome and receipt |
 | --- | --- |
-| Runtime: native and installed CPython 3.12, 3.13, 3.14, 3.15 | All five jobs passed in [43651136979](https://github.com/edithatogo/dapane/actions/runs/43651136979). Inspected native logs show 40 tests passed; the inspected CPython 3.15.2 installed-wheel log shows 133 passed. |
+| Runtime: native and installed CPython 3.12, 3.13, 3.14, 3.15 | All five jobs passed in [43651136979](https://github.com/edithatogo/dapane/actions/runs/43651136979). Inspected native logs show 40 tests passed; all four installed-wheel logs were independently inspected and each records 133 passing tests. |
 | CLI/schema/format/lint | Native job passed installed CLI evaluation, five independent reports and original digests, 37 negative schema/parser cases, 14 runtime rejections, three identity/context cases, Cargo fmt/Clippy and Ruff. |
 | Conductor | [43651136990](https://github.com/edithatogo/dapane/actions/runs/43651136990) passed. The native log also records 14 tracks, 12 requirements, 145 tasks and 455 local links. |
 | Privacy and secrets | [43651137061](https://github.com/edithatogo/dapane/actions/runs/43651137061) passed. |
@@ -103,10 +103,21 @@ Rust execution boundary remain unchanged. The Python verifier is repository
 conformance tooling; financial arithmetic stays in the installed Rust engine.
 
 The user requested merge, then archive. PR #9 was merged first. The subsequent
-archive change updates only seven documentation/metadata files, retaining all
+original archive commit updates seven documentation/metadata files, retaining all
 14 completed tasks, the six original criteria, review records and stable paths.
-Its pull request retains the existing hosted gates; it introduces no runtime,
-schema, workflow, dependency or other track implementation changes.
+A subsequent compatibility review adds the missing `Status: archived` declaration
+to the synthetic archive-test plan. This keeps that valid fixture compatible
+with the stricter status validation proposed in setup PR #14.
+The pull request retains the existing hosted gates; it introduces no financial
+runtime, schema, workflow, dependency or other track implementation changes.
+
+The compatibility defect was reproduced against PR #14 validator revision
+`09e81c6e0ab1a80580258f82b5c1506fafd3d45f`: the original synthetic plan failed
+the exactly-one-status rule. Adding the status line eliminated that error while
+all six unfinished-task/verification negative cases retained their intended
+failures. The corrected fixture also passed all seven archive tests and Ruff
+lint/format locally against integrated main. These are targeted conformance
+checks; archive-head hosted verification remains required before merge.
 
 This contract closes full-snapshot replacement/retraction and synthetic
 reference coverage. It does not complete every broader RQ-01–03 capability:

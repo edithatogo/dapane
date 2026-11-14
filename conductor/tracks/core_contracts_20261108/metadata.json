@@ -57,7 +57,13 @@
         "3.15"
       ],
       "inspected_cpython_3_15_2_tests_passed": 133,
-      "configured_checks_passed": 11
+      "configured_checks_passed": 11,
+      "installed_wheel_tests_passed_per_interpreter": {
+        "3.12": 133,
+        "3.13": 133,
+        "3.14": 133,
+        "3.15": 133
+      }
     },
     "check_runs": [
       "https://github.com/edithatogo/dapane/actions/runs/43651136979",
