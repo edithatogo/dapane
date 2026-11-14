@@ -1,0 +1,7 @@
+Command: python3 scripts/validate_conductor.py
+Conductor validation passed: 14 tracks, 12 requirements, 149 tasks, 493 local links.
+This checks project records only; runtime and scientific qualification remain separate.
+
+Command: env -u PYTHONPATH PYTHONDONTWRITEBYTECODE=1 <isolated-python-3.12.14> -m pytest --import-mode=importlib <repository>/tests/python/test_conductor_archive.py -q -p no:cacheprovider
+.......                                                                  [100%]
+7 passed in 0.04s

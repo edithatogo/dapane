@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "track_id": "rust_kernel_20261108",
+  "observed_at": "2026-11-14T23:33:41Z",
+  "qualified_corrected_commit": "023dc4b61452caa0e4ba886d76333f4c398c8498",
+  "qualified_corrected_tree": "3ce4e29d8eafabf6afb837bc762ac277cf13f536",
+  "qualified_integrated_commit": "a703c93d49e782b67fe4b14588bf1fb26292bb23",
+  "qualified_integrated_tree": "006a11a59e33c42c42ee4ab815b5cdb632caf55e",
+  "compiler": {
+    "version": "1.99.1",
+    "commit": "58cf8f9c35b355199727627d07ae34a4e2846d67",
+    "cargo": "1.99.1 (5f94df478 2026-08-27)",
+    "host": "x86_64-unknown-linux-gnu",
+    "llvm": "23.1.1"
+  },
+  "results": {
+    "native_tests_passed": 62,
+    "dependency_tests_passed": 11,
+    "registry_packages": 36,
+    "native_closure_packages": 29,
+    "installed_python_tests_passed_per_interpreter": 133,
+    "interval_schema_negatives": 9,
+    "interval_runtime_rejections": 11,
+    "interval_schema_valid_tamper_controls": 15,
+    "archive_regressions_passed": 7,
+    "conductor": {
+      "tracks": 14,
+      "requirements": 12,
+      "tasks": 149,
+      "local_links": 493
+    }
+  },
+  "cli": {
+    "sha256": "ee16254d1443d202e9a8b9f12be24c93fdd1f87830eebd14521334498de56573",
+    "bytes": 1719120
+  },
+  "wheels": [
+    {
+      "python": "3.12.14",
+      "tag": "cp312-cp312-manylinux_2_34_x86_64",
+      "sha256": "e3f123ea0a7c3d8fe2eb12db5747876c44733e967c526c11e579cb6773627286"
+    },
+    {
+      "python": "3.13.5",
+      "tag": "cp313-cp313-manylinux_2_34_x86_64",
+      "sha256": "4ced6a9cf7484dfc5ed60ad54b3c54b2a885d137c19e99c47010af7e165c7505"
+    },
+    {
+      "python": "3.14.10",
+      "tag": "cp314-cp314-manylinux_2_34_x86_64",
+      "sha256": "dd87c5e0c4103393dd6c760d0006da4e18e2d4fdfd51e0322f60e45fd962c0d7"
+    },
+    {
+      "python": "3.15.1",
+      "tag": "cp315-cp315-manylinux_2_34_x86_64",
+      "sha256": "160cba6a06dcb1295ef7e3e39ec4722ae91e255f88b243036de2b62628e8764f"
+    }
+  ],
+  "notes": [
+    "Retained RED baseline was executed retrospectively after implementation was authored.",
+    "Native and installed wheel build inputs are byte-identical across corrected and integrated trees.",
+    "Hosted queued workflows are not counted as passing.",
+    "Local scanner receipts cover the explicit integrated commit range; final documentation scans are separate receipts."
+  ],
+  "files": {
+    "archive-validation.log": {
+      "sha256": "058fa26c15170152fc3b6fc8917d095670e7bdb74dcb92c97edd3f2ee5fbc8af",
+      "bytes": 507
+    },
+    "benchmark.json": {
+      "sha256": "aa04acf0d2e1fa4738f0f624fc4de08d3a169b842be536cd14be78f56fa31797",
+      "bytes": 1554
+    },
+    "dependencies.json": {
+      "sha256": "2d9742806cf7051ebb56cb7f178e5820364b56bea89771f146a77b783224fc53",
+      "bytes": 2664
+    },
+    "dependency-tests.log": {
+      "sha256": "dd204df5f913204fd8ab4402c2488568036af69881863bf9b55085ace5b4d0b8",
+      "bytes": 1709
+    },
+    "gitleaks-integrated.json": {
+      "sha256": "f6ecdc64789f6f54955352e8681c5c99dc329073cebd0a199ec05322f4bd1d86",
+      "bytes": 424
+    },
+    "installed-cli.log": {
+      "sha256": "122616a3dde67d95f51c04e38c6c57380eee8f6a2b6dfe148f7f2234fab1e10b",
+      "bytes": 578
+    },
+    "native.log": {
+      "sha256": "62e1b81b7ebeb0d26063ea925bb829d9596bfb0f95ef0ba72ea1eafd609c4b69",
+      "bytes": 10593
+    },
+    "presidio-integrated.json": {
+      "sha256": "709f646dbf6c3c3c462dbb4e116106d0550742f5f2323982c6ea4d97010b1adb",
+      "bytes": 831
+    },
+    "python-3.12.log": {
+      "sha256": "7a04df12ec1fe2f0e22a11241441a32373b7f0a0dfac97248b25ded1f22279f8",
+      "bytes": 180
+    },
+    "python-3.13.log": {
+      "sha256": "9a6dde5afedd85d5c3ce2a07bbdbc6a66198a93beef982bac789b37882b35d61",
+      "bytes": 180
+    },
+    "python-3.14.log": {
+      "sha256": "95c4fe1098b4ab301aaa9bbe8f366cef927cad2de461a70dcb098f8be22e014c",
+      "bytes": 180
+    },
+    "python-3.15.log": {
+      "sha256": "b426b938fbf056b097f98422b78a222298a34c9c441931821ec3ac10bfeb92dd",
+      "bytes": 180
+    },
+    "red.log": {
+      "sha256": "80f793296de37ab83f67b24484012a1a8b63cab6312a9c4b017d767eed586180",
+      "bytes": 1315
+    }
+  }
+}
