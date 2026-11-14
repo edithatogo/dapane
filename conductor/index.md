@@ -30,6 +30,7 @@ their repository owners.
 - [Track registry](tracks.md): status and entry points for all tracks.
 - [Archived setup record](tracks/conductor_setup_20261108/index.md): the completed initialisation, review and retained evidence.
 - [Core contracts](tracks/core_contracts_20261108/index.md): request profiles 0.1/0.2, [run-bundle profile 0.1](../docs/run-bundle-v0.1.md), independent reference cases and retained review records. [Verification](tracks/core_contracts_20261108/verification.md) records the checked revision and qualification limits.
+- [Rust kernel](tracks/rust_kernel_20261108/index.md): exact valuation/allocation, bounded [interval profile 0.1](../docs/interval-contract-v0.1.md), dependency qualification and [installed-artifact evidence](tracks/rust_kernel_20261108/verification.md).
 - [Setup verification record](verification.md): historical Conductor setup checks and their limits.
 - [Archive policy](archive/README.md): retention without premature archival.
 

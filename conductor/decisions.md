@@ -208,15 +208,44 @@ Consequence: [bundle 0.1](../docs/run-bundle-v0.1.md) has its own schema and
 digest namespace. Retain numerical method identities, original expectations
 and prior schema implementations. Candidate integrity/replay does not establish
 signed provenance, binary-to-source attestation, economic validity or production
-publication. Automatic interval integration, new capital methods, real provider
+publication. Interval integration is separately versioned in ADR-013; new capital methods, real provider
 adapters and release qualification remain with their existing owners. The
 registry and verification evidence determine completion and archival status.
+
+## ADR-013 — Version declared calendar-day interval exposure separately
+
+Status: implemented bounded direction, **15 November 2026**. Requirements:
+RQ-01, RQ-02, RQ-03, RQ-12. The Rust-kernel track owns this increment and its
+[qualification and review](tracks/rust_kernel_20261108/verification.md).
+
+Retain point/capacity profiles 0.1/0.2 and their historical digests. Add interval
+schema `0.1` and method `dapane-intervals-v0.1.0` as an explicit Rust/CLI envelope.
+The caller supplies the total exact quantity, half-open calendar dates, pinned
+quote IDs and `uniform_calendar_day` exposure. Each segment receives total quantity
+times its calendar-day fraction; no working calendar, clock or utilisation is inferred.
+
+Validate original parent-use identity, source/context and disjoint components before
+expansion. Selected quotations must exactly cover the interval and preserve the
+component set. Use domain-separated parent/date tuple hashes for generated identities,
+reject collisions, and expand parent allocation references to their children. Bound
+encoded output-request bytes before copying large source/context records.
+
+The scalar engine remains the single valuation/allocation implementation. It rounds
+each generated line half-even before summing; artificial extra rate boundaries can
+therefore change rounded totals. Preserve original request/interval snapshots, exact
+segments, the expanded scalar request and separate envelope digests for audit/replay.
+
+Consequence: [the interval contract](../docs/interval-contract-v0.1.md) is an additive
+native/CLI capability; the Python wrapper's public API is unchanged. Richer exposure,
+timestamp/timezone semantics and economic methods need separate scoped increments.
+The locked dependency boundary is qualified on Rust 1.99.1; project-licence selection,
+distribution notices and registry publication retain their release/consolidation owner.
 
 ## Decisions intentionally left to their implementation tracks
 
 | Decision | Owner and constraint |
 | --- | --- |
-| Wider schemas and compatibility windows | Request profiles 0.1/0.2 and bundle 0.1 define the current boundary. Further profiles need explicit versioning, reference cases and migration in a new scoped contract increment coordinated with the owning kernel/provider track. |
+| Wider schemas and compatibility windows | Request profiles 0.1/0.2, bundle 0.1 and interval 0.1 define the current boundary. Further profiles need explicit versioning, reference cases and migration in a new scoped contract increment coordinated with the owning kernel/provider track. |
 | Wider numeric methods and platform matrix | First Rust/CPython versions and precision bounds are recorded in the technology stack and runtime evidence; other methods/platforms remain unqualified. |
 | Project licence and package registry identities | Release/consolidation track; the empty repository supplied no licence or published package identity. |
 | First real newborn programme and data access | Newborn-screening track; separate synthetic arithmetic from sourced programme validity. |

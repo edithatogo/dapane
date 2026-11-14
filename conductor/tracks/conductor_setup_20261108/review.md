@@ -127,10 +127,23 @@ The fixture now declares `Status: archived`; its seven valid/invalid combination
 pass direct validation, and all 12 public-CLI regression methods pass. The
 combined project context also passes. No numerical or bundle behaviour changed.
 
-Pytest is unavailable in the local interpreter. Direct fixture-helper execution
-is not reported as a pytest run; the existing installed-wheel matrix must execute
-the actual suite on the updated PR head. Earlier hosted results remain attached
-to their stated commits and do not claim execution of this later integration.
+The primary interpreter initially lacked pytest, so direct fixture-helper
+execution was not reported as a pytest run. A later check used the existing
+qualified kernel environment: CPython 3.12.14 and pytest 9.2.0. Running only
+`tests/python/test_conductor_archive.py` with `--noconftest`,
+`--import-mode=importlib` and plugin/cache isolation passed all seven tests.
+The validator and fixture hashes were unchanged by that execution.
+
+Main then advanced through the separately qualified Rust-kernel archive at
+`172d0ef39291a936a35c6e221eb467701ccefbba`. Its native implementation, tests,
+schemas, qualification evidence and track state are preserved unchanged. The
+archive-catalogue conflict is resolved by retaining both existing entries and
+the setup lifecycle safeguards. Combined context validation passes for 14
+tracks, 12 requirements, 153 tasks and 501 local links.
+
+Earlier hosted results remain attached to their stated commits and do not
+claim execution of this later integration. The latest published head retains
+its own hosted verification requirement.
 
 ## Limits
 

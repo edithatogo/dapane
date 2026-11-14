@@ -14,7 +14,7 @@ A completed planning task does not change a runtime capability from planned to q
 | --- | --- | --- | --- |
 | [-] | [Conductor setup and source-of-truth handoff](./tracks/conductor_setup_20261108/index.md) | archived | RQ-01, RQ-12 |
 | [~] | [Core contracts and independent reference cases](./tracks/core_contracts_20261108/index.md) | in_progress | RQ-01, RQ-02, RQ-03 |
-| [~] | [Minimal Rust valuation kernel and CLI](./tracks/rust_kernel_20261108/index.md) | in_progress | RQ-01, RQ-02, RQ-03, RQ-12 |
+| [-] | [Minimal Rust valuation kernel and CLI](./tracks/rust_kernel_20261108/index.md) | archived | RQ-01, RQ-02, RQ-03, RQ-12 |
 | [~] | [Python delivery with workforce and genomics consumers](./tracks/python_two_consumers_20261108/index.md) | in_progress | RQ-04, RQ-02, RQ-03 |
 | [ ] | [MCHS activity and quotation-source adapters](./tracks/mchs_source_adapters_20261108/index.md) | new | RQ-05, RQ-01, RQ-03 |
 | [ ] | [Reporting profiles and evidence exports](./tracks/reporting_profiles_20261108/index.md) | new | RQ-07, RQ-01 |
@@ -32,8 +32,9 @@ A completed planning task does not change a runtime capability from planned to q
 The setup track is complete and archived in place. A bounded contract, exact Rust/CLI kernel, Python
 binding and five synthetic consumers now have [runtime evidence](../docs/runtime-verification.md).
 The [capacity increment](../docs/genomics-capacity-verification.md) adds five synthetic genomics comparisons and explicit 0.2 semantics while retaining 0.1 compatibility.
-Core, kernel, Python, newborn and process-context tracks are in progress; their
-broader acceptance criteria remain open. Next work qualifies actual workforce
+The Rust kernel is archived in place after [bounded acceptance and independent review](tracks/rust_kernel_20261108/verification.md), including declared calendar-day interval splitting and the minimal dependency boundary.
+Core-contract closeout, Python, newborn and process-context tracks retain their
+own recorded states. Next work qualifies actual workforce
 release and genomics recipe adapters, broader quantity/correction semantics and
 release prerequisites. The first release follows contracts → Rust kernel →
 installed Python and two real provider consumers → release assurance.

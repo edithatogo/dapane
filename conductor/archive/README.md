@@ -21,6 +21,7 @@ into a second authoritative location.
 | Track | Completed scope | Archived | Evidence |
 | --- | --- | --- | --- |
 | [Conductor setup](../tracks/conductor_setup_20261108/index.md) | Project context and source-of-truth handoff | 2026-11-15 | [Review and verification](../tracks/conductor_setup_20261108/review.md) |
+| [Rust kernel](../tracks/rust_kernel_20261108/index.md) | Bounded Rust valuation kernel and CLI | 2026-11-15 | [Qualification](../tracks/rust_kernel_20261108/verification.md) and [independent review](../tracks/rust_kernel_20261108/review.md); original specification, plan, metadata, logs and dependency links retained. |
 
 ## Repository archival
 

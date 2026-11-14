@@ -1,0 +1,215 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling autocfg v1.5.1
+    Checking typenum v1.20.1
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.154
+    Checking const-oid v0.10.2
+    Checking itoa v1.0.18
+    Checking cpufeatures v0.3.1
+    Checking memchr v2.8.3
+    Checking cfg-if v1.0.5
+   Compiling target-lexicon v0.13.5
+   Compiling libc v0.2.191
+   Compiling pyo3-macros-backend v0.30.1
+   Compiling num-traits v0.2.19
+   Compiling heck v0.5.0
+    Checking once_cell v1.21.4
+   Compiling syn v3.0.9
+   Compiling pyo3-build-config v0.30.1
+    Checking hybrid-array v0.4.15
+    Checking num-integer v0.1.47
+    Checking chrono v0.4.45
+   Compiling pyo3-ffi v0.30.1
+   Compiling pyo3 v0.30.1
+    Checking num-bigint v0.4.8
+    Checking crypto-common v0.2.2
+    Checking block-buffer v0.12.1
+    Checking digest v0.11.3
+    Checking num-rational v0.4.2
+    Checking sha2 v0.11.1
+   Compiling serde_derive v1.0.229
+    Checking dapane-core v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-core)
+   Compiling pyo3-macros v0.30.1
+    Checking dapane-cli v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-cli)
+    Checking dapane-python v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-python)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.49s
+   Compiling quote v1.0.47
+   Compiling typenum v1.20.1
+   Compiling const-oid v0.10.2
+   Compiling num-traits v0.2.19
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling itoa v1.0.18
+   Compiling cpufeatures v0.3.1
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling syn v3.0.9
+   Compiling num-integer v0.1.47
+   Compiling chrono v0.4.45
+   Compiling num-bigint v0.4.8
+   Compiling hybrid-array v0.4.15
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling digest v0.11.3
+   Compiling num-rational v0.4.2
+   Compiling sha2 v0.11.1
+   Compiling serde_json v1.0.154
+   Compiling serde_derive v1.0.229
+   Compiling serde v1.0.229
+   Compiling dapane-core v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-core)
+   Compiling dapane-cli v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.80s
+     Running unittests src/main.rs (/workspace/scratch/e631579299b0/dapane-target-green/debug/deps/dapane-687b744aab5bbb15)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (/workspace/scratch/e631579299b0/dapane-target-green/debug/deps/cli-3d89262f277a92e9)
+
+running 6 tests
+test malformed_input_has_no_financial_stdout_and_a_structured_failure ... ok
+test help_and_version_do_not_require_a_request ... ok
+test invalid_arguments_and_missing_files_fail_without_panicking ... ok
+test non_utf8_arguments_do_not_panic_and_file_paths_remain_usable ... ok
+test capacity_cli_preserves_unknown_shares_and_rejects_silent_downgrades ... ok
+test installed_protocol_accepts_files_and_stdin_with_identical_results ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/intervals.rs (/workspace/scratch/e631579299b0/dapane-target-green/debug/deps/intervals-3b55e5f485972168)
+
+running 2 tests
+test interval_failures_emit_only_structured_errors ... ok
+test interval_file_stdin_and_repeat_runs_have_identical_exact_output ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/lib.rs (/workspace/scratch/e631579299b0/dapane-target-green/debug/deps/dapane_core-1f69fc375cbdb847)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/capacity.rs (/workspace/scratch/e631579299b0/dapane-target-green/debug/deps/capacity-7c6929ec3483de27)
+
+running 9 tests
+test capacity_rounding_includes_unallocated_bucket_with_explicit_tie_priority ... ok
+test direct_full_pool_and_partial_capacity_views_compose_without_double_counting ... ok
+test capacity_order_is_canonical_and_units_are_never_derived_from_sample_weights ... ok
+test v01_weights_still_allocate_the_whole_pool_and_reject_capacity_extensions ... ok
+test unknown_use_and_known_zero_remain_distinct ... ok
+test capacity_inputs_reject_invalid_denominators_units_and_overlapping_costs ... ok
+test unknown_capacity_preserves_observations_without_inventing_a_denominator ... ok
+test all_five_v01_fixture_digests_are_unchanged_from_integrated_runtime ... ok
+test synthetic_time_and_sample_cases_match_independent_expected_values ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/evaluation.rs (/workspace/scratch/e631579299b0/dapane-target-green/debug/deps/evaluation-ac9765837ffcedb1)
+
+running 25 tests
+test disjoint_components_still_reject_contradictory_resolved_context ... ok
+test context_associations_do_not_multiply_or_attribute_values ... ok
+test disjoint_components_can_mix_inherited_and_explicit_equivalent_context ... ok
+test exact_zero_is_distinct_from_missing_or_unavailable_input ... ok
+test duplicate_loaded_components_are_rejected_and_disjoint_components_allowed ... ok
+test dates_are_strict_and_quote_validity_is_half_open ... ok
+test duplicate_ids_are_rejected_in_each_registry ... ok
+test identifier_limits_count_utf8_bytes_and_evidence_remains_declarative ... ok
+test largest_remainder_conserves_subcent_three_way_pool ... ok
+test kind_target_unit_and_valuation_context_must_match ... ok
+test invalid_sources_zero_denominators_and_zero_pools_are_explicit ... ok
+test rational_duration_and_decimal_rate_remain_exact ... ok
+test invalid_numbers_and_precision_limits_are_bounded ... ok
+test invalid_contexts_are_rejected_with_structured_paths ... ok
+test numeric_literals_unknown_fields_and_duplicate_json_keys_are_rejected ... ok
+test half_even_ties_and_line_then_sum_policy_are_explicit ... ok
+test source_lines_cannot_be_counted_in_two_allocation_views ... ok
+test newborn_shared_batch_conserves_150_as_60_and_90 ... ok
+test weighted_activity_funding_does_not_invent_resource_use ... ok
+test zero_weight_is_not_given_a_rounding_residual ... ok
+test typed_and_json_entry_points_agree_and_empty_ledger_is_explicit ... ok
+test repeated_runs_and_collection_permutations_are_identical ... ok
+test equal_weight_allocation_conserves_many_pool_sizes_without_floats ... ok
+test collection_and_typed_byte_limits_stop_oversized_requests ... ok
+test rational_accumulation_has_a_real_intermediate_precision_bound ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+     Running tests/interval_review.rs (/workspace/scratch/e631579299b0/dapane-target-green/debug/deps/interval_review-338d87ff4a438222)
+
+running 8 tests
+test duplicate_keys_inside_the_nested_request_are_rejected ... ok
+test generated_rational_must_fit_the_replayable_scalar_input_contract ... ok
+test parent_source_cannot_belong_to_both_full_and_capacity_pools ... ok
+test one_parent_cannot_claim_different_interval_ends_for_disjoint_components ... ok
+test component_set_order_does_not_change_segment_selection_or_identity ... ok
+test generated_line_and_use_id_collisions_are_rejected ... ok
+test modest_interval_input_cannot_expand_past_the_exact_byte_budget ... ok
+test selected_references_plus_original_points_have_a_combined_bound ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+
+     Running tests/intervals.rs (/workspace/scratch/e631579299b0/dapane-target-green/debug/deps/intervals-72d623d832dbb2b9)
+
+running 12 tests
+test independent_rate_boundary_and_parent_lineage_are_preserved ... ok
+test disjoint_component_lines_share_a_parent_without_double_counting ... ok
+test boundaries_are_half_open_and_leap_days_are_calendar_days ... ok
+test strict_transport_rejects_duplicate_keys_and_legacy_implicit_intervals ... ok
+test parent_identity_blocks_duplicate_component_charges_before_child_ids_are_made ... ok
+test weighted_activity_is_valued_without_manufacturing_resource_use ... ok
+test segment_rounding_is_explicit_and_does_not_claim_split_invariance ... ok
+test capacity_expansion_retains_unknown_usage_and_unallocated_value ... ok
+test request_order_does_not_change_output_and_decimal_provenance_does ... ok
+test parent_pool_expands_and_conserves_value_and_zero_residual ... ok
+test invalid_dates_exposure_precision_and_coverage_never_return_a_report ... ok
+test exact_quantity_conservation_holds_for_many_independent_durations ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+   Doc-tests dapane_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling autocfg v1.5.1
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling typenum v1.20.1
+   Compiling unicode-ident v1.0.27
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling const-oid v0.10.2
+   Compiling serde_json v1.0.154
+   Compiling serde v1.0.229
+   Compiling cpufeatures v0.3.1
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling num-traits v0.2.19
+   Compiling syn v3.0.9
+   Compiling hybrid-array v0.4.15
+   Compiling num-integer v0.1.47
+   Compiling chrono v0.4.45
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling num-bigint v0.4.8
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling serde_derive v1.0.229
+   Compiling num-rational v0.4.2
+   Compiling dapane-core v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-core)
+   Compiling dapane-cli v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-cli)
+    Finished `release` profile [optimized] target(s) in 15.17s
+  Installing dapane-cli v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-cli)
+    Finished `release` profile [optimized] target(s) in 0.03s
+  Installing /workspace/scratch/e631579299b0/dapane-installed/bin/dapane
+   Installed package `dapane-cli v0.1.0 (/workspace/scratch/e631579299b0/dapane-kernel-verified/crates/dapane-cli)` (executable `dapane`)
+warning: be sure to add `/workspace/scratch/e631579299b0/dapane-installed/bin` to your PATH to be able to run the installed binaries

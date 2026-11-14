@@ -84,7 +84,11 @@ implementation includes request profiles 0.1/0.2 and the separate
 [run-bundle profile 0.1](../docs/run-bundle-v0.1.md). Its
 [acceptance/review evidence](tracks/core_contracts_20261108/verification.md)
 identifies the checked revision and limits; the registry records disposition.
-Broader G2 methods, provider-based G3 and release G4 remain open.
+G2 now includes the separately qualified [interval method](../docs/interval-contract-v0.1.md)
+and [minimal dependency boundary](../docs/kernel-dependencies.md). Its
+[kernel evidence](tracks/rust_kernel_20261108/verification.md) records completed
+bounded native acceptance. Richer numerical methods, provider-based G3 and release
+G4 retain their own scope and acceptance work.
 
 Next, qualify the real workforce release adapter and genomics recipe extraction,
 preserving jurisdiction/employer/source scope and loaded components. Resolve the
@@ -94,11 +98,13 @@ actual inspected contracts and documents fields that must not be silently lost.
 
 Contract 0.1 already verifies fractional exposure, effective/knowledge dates,
 half-even rounding, largest-remainder allocation, duplicate/component rejection,
-incompatible quotation targets and missing versus zero. Usage must be explicitly
-segmented into dated quantities. Bundle 0.1 adds immutable replacement/withdrawal
+incompatible quotation targets and missing versus zero. Point-profile usage is
+explicitly segmented into dated quantities; interval profile 0.1 can generate
+those segments from a declared uniform calendar-day exposure and pinned rates.
+Bundle 0.1 adds immutable replacement/withdrawal
 history, consistent declared release identities and historical selection with
 native replay. Its capital references use alternative prepared quotations.
-Automatic interval splitting, line-level financial corrections and capital
+Richer exposure/timestamp models, line-level financial corrections and capital
 formulae require separate kernel/provider methods and fixtures; production
 publication remains release work.
 
