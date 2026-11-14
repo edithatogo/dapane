@@ -2,6 +2,7 @@
 
 Date: **15 November 2026** (Australia/Brisbane).
 Track: `core_contracts_20261108`. Candidate status: `synthetic_candidate`.
+Disposition: completed, integrated, then archived in place.
 
 ## Implementation and review identity
 
@@ -15,30 +16,48 @@ changing the original request/report schemas or Rust financial methods.
   for immutable release identity and the chronology regression.
 - `5996d7cb0adbdd8d433a0395caefd7a3ac37423e`: retained concurrent fix requiring
   completed tasks and passed verification for archived tracks.
+- `ea2cbffae505475108bfa5fb67e290f44349fee0`: final reviewed PR #9 head,
+  including ADR-012 and acceptance/context reconciliation.
+- `224cf91dbcf513feaa022b2cf5aa310a965472ce`: PR #9 integration, before archival.
 
 The [independent review](independent-review.md) records both findings and their
-remediation. A separate read-only re-review of `bc92e9b` found them resolved
-and found no further blocking defect. The [earlier review](review.md) retains
-the original fail-first and implementer-review history.
+remediation. Its recorded read-only re-review of `bc92e9b` found them resolved
+and no further blocking defect. The [earlier review](review.md) retains the
+original fail-first and implementer-review history. The coordinator's
+[final-head review](https://github.com/edithatogo/dapane/pull/9#pullrequestreview-5907712786)
+is an implementer review, not an additional independent approval.
 
 ## Observed hosted evidence
 
-The earlier exact head `96b178c0f2b21cd8fc702a86dec2f0cde8fa8504` passed all
-11 configured checks. Inspected Runtime
+Historical head `96b178c0f2b21cd8fc702a86dec2f0cde8fa8504` passed all 11
+configured checks. Its Runtime
 [43609831820](https://github.com/edithatogo/dapane/actions/runs/43609831820)
-contained 40 passing native tests and 119 installed-wheel tests on each CPython
-3.12, 3.13, 3.14 and 3.15 job. CLI references, schema checks, formatting/lint and
-Conductor validation passed. Privacy/secrets and CodeQL checks also succeeded.
+recorded 40 native tests and 119 installed-wheel tests per CPython 3.12–3.15 job.
+These observations remain historical, not a substitute for final-head acceptance.
 
-Those observations are historical; they do not qualify the later changes.
-The current implementation at `5996d7cb0adbdd8d433a0395caefd7a3ac37423e` is
-awaiting hosted qualification in Runtime
-[43650466658](https://github.com/edithatogo/dapane/actions/runs/43650466658).
-Track closure and archival remain pending until the latest required checks and
-context reconciliation are verified. The local workspace became unavailable;
-no local native or installed-wheel execution is claimed for this continuation.
+The final head `ea2cbffae505475108bfa5fb67e290f44349fee0` subsequently passed
+all 11 configured checks before integration:
 
-The existing workflow executes:
+| Check | Observed outcome and receipt |
+| --- | --- |
+| Runtime: native and installed CPython 3.12, 3.13, 3.14, 3.15 | All five jobs passed in [43651136979](https://github.com/edithatogo/dapane/actions/runs/43651136979). Inspected native logs show 40 tests passed; the inspected CPython 3.15.2 installed-wheel log shows 133 passed. |
+| CLI/schema/format/lint | Native job passed installed CLI evaluation, five independent reports and original digests, 37 negative schema/parser cases, 14 runtime rejections, three identity/context cases, Cargo fmt/Clippy and Ruff. |
+| Conductor | [43651136990](https://github.com/edithatogo/dapane/actions/runs/43651136990) passed. The native log also records 14 tracks, 12 requirements, 145 tasks and 455 local links. |
+| Privacy and secrets | [43651137061](https://github.com/edithatogo/dapane/actions/runs/43651137061) passed. |
+| CodeQL | All three language/action jobs passed in [43651132670](https://github.com/edithatogo/dapane/actions/runs/43651132670); the [aggregate check](https://github.com/edithatogo/dapane/runs/132622678744) succeeded with no new alerts in changed code. |
+
+The tested checkout was merge candidate
+`4d3b71ea59d2449c08fc0b534681d84a87975e5c` against main
+`d7063cecc26abe96a3f28fca575b99b450241430`. Its tree and the actual integration
+commit's tree are identical: `6af2f8194cebd032fbad495cff95d3acf0066a10`.
+The merge used an expected-head guard. No required check or protection was bypassed.
+
+The archive-validator regression was also reproduced locally from the exact
+original blob: six intended failures and one pass, then seven passes after the
+fix on Python 3.13.5. Hosted installed-wheel acceptance remains authoritative
+for the native integration. No local Rust execution is claimed for closeout.
+
+Executed workflow commands included:
 
 - `cargo fmt --all --check`
 - `cargo clippy --workspace --locked --all-targets -- -D warnings`
@@ -76,12 +95,18 @@ The [archive regressions](../../../tests/python/test_conductor_archive.py)
 exercise real isolated project records, including unfinished tasks and failed
 or missing verification.
 
-## Compatibility and downstream work
+## Compatibility, archival and downstream work
 
 Bundle 0.1 is independently versioned and wraps valuation profiles 0.1/0.2.
 The original fixture digests, numerical methods, dependency pins and minimal
 Rust execution boundary remain unchanged. The Python verifier is repository
 conformance tooling; financial arithmetic stays in the installed Rust engine.
+
+The user requested merge, then archive. PR #9 was merged first. The subsequent
+archive change updates only seven documentation/metadata files, retaining all
+14 completed tasks, the six original criteria, review records and stable paths.
+Its pull request retains the existing hosted gates; it introduces no runtime,
+schema, workflow, dependency or other track implementation changes.
 
 This contract closes full-snapshot replacement/retraction and synthetic
 reference coverage. It does not complete every broader RQ-01–03 capability:
