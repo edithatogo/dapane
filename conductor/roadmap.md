@@ -79,9 +79,12 @@ Independent native integration branches:
 The first contract, exact kernel, CLI and thin Python binding are implemented for
 bounded synthetic workforce, genomics, funding, newborn and sub-cent allocation
 cases. These establish the numerical boundary and installed-package behaviour;
-they do not complete migration of the existing provider libraries. G1/G2 have
-evidence for profile 0.1; full track acceptance, provider-based G3 and release G4
-remain open.
+they do not complete migration of the existing provider libraries. The G1
+implementation includes request profiles 0.1/0.2 and the separate
+[run-bundle profile 0.1](../docs/run-bundle-v0.1.md). Its
+[acceptance/review evidence](tracks/core_contracts_20261108/verification.md)
+identifies the checked revision and limits; the registry records disposition.
+Broader G2 methods, provider-based G3 and release G4 remain open.
 
 Next, qualify the real workforce release adapter and genomics recipe extraction,
 preserving jurisdiction/employer/source scope and loaded components. Resolve the
@@ -92,8 +95,12 @@ actual inspected contracts and documents fields that must not be silently lost.
 Contract 0.1 already verifies fractional exposure, effective/knowledge dates,
 half-even rounding, largest-remainder allocation, duplicate/component rejection,
 incompatible quotation targets and missing versus zero. Usage must be explicitly
-segmented into dated quantities; automatic interval splitting, retractions and
-capital/economic extensions need new supported methods and fixtures.
+segmented into dated quantities. Bundle 0.1 adds immutable replacement/withdrawal
+history, consistent declared release identities and historical selection with
+native replay. Its capital references use alternative prepared quotations.
+Automatic interval splitting, line-level financial corrections and capital
+formulae require separate kernel/provider methods and fixtures; production
+publication remains release work.
 
 The [bounded genomics capacity increment](../docs/genomics-capacity-verification.md) now covers explicit incomplete instrument-hour observations, unknown availability and time/sample comparisons. Maintenance duration, useful life and one-time/recurrent preparation assumptions remain separate synthetic inputs. Real source qualification, complete utilisation models and economic-method validation remain open.
 

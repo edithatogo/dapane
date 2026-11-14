@@ -11,6 +11,17 @@ implementation boundary; [decisions](decisions.md) records the chosen direction.
 The [track registry](tracks.md) owns execution status. Requirement identifiers
 remain stable when descriptions or implementation plans change.
 
+Implementation note, **15 November 2026**: the RQ-01–03 contract boundary now
+includes [run-bundle profile 0.1](../docs/run-bundle-v0.1.md) around unchanged
+request/report profiles 0.1 and 0.2. It defines snapshot replacement, nonfinancial
+withdrawal, historical selection, consistent declared release identities and
+exact native replay. Synthetic references cover explicitly segmented rate changes
+and alternative prepared capital quotations. The
+[core-contract evidence](tracks/core_contracts_20261108/verification.md) records
+the reviewed revision and executed checks. Automatic interval integration,
+economic formulae, actual provider/source qualification and release assurance
+retain their existing owners and the broader acceptance criteria below.
+
 ## RQ-01 — Domain-neutral types and contracts
 
 Owners: [core contracts](tracks/core_contracts_20261108/index.md) and

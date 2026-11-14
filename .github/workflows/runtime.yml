@@ -41,8 +41,8 @@ jobs:
           python -m pip install -r requirements-dev.txt
           python scripts/validate_contract.py --cli target/release/dapane
           python scripts/validate_conductor.py
-          ruff check python tests/python scripts/validate_contract.py scripts/benchmark_cli.py
-          ruff format --check python tests/python scripts/validate_contract.py scripts/benchmark_cli.py
+          ruff check python tests/python scripts/validate_contract.py scripts/benchmark_cli.py scripts/verify_run_bundle.py
+          ruff format --check python tests/python scripts/validate_contract.py scripts/benchmark_cli.py scripts/verify_run_bundle.py
 
   python:
     runs-on: ubuntu-24.04
