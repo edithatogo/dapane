@@ -32,13 +32,16 @@ jobs:
         run: |
           python -m unittest discover -s tests/tooling -p 'test_qualify_kernel.py' -v
           python scripts/qualify_kernel.py
-          ruff check scripts/qualify_kernel.py scripts/validate_intervals.py tests/tooling
-          ruff format --check scripts/qualify_kernel.py scripts/validate_intervals.py tests/tooling
+          ruff check scripts/qualify_kernel.py scripts/validate_intervals.py tests/tooling tests/python/test_intervals.py
+          ruff format --check --diff scripts/qualify_kernel.py scripts/validate_intervals.py tests/tooling tests/python/test_intervals.py
       - name: Test and build minimal native packages offline
         run: |
           cargo test --locked --offline --no-default-features -p dapane-core -p dapane-cli
           cargo build --locked --offline --no-default-features --release -p dapane-cli
-      - name: Verify interval references and observe bounded CPU workloads
+      - name: Verify clean installed CLI and observe bounded CPU workloads
         run: |
-          python scripts/validate_intervals.py --cli target/release/dapane
+          cargo install --locked --offline --path crates/dapane-cli --root "$RUNNER_TEMP/dapane-kernel"
+          cd "$RUNNER_TEMP"
+          python "$GITHUB_WORKSPACE/scripts/validate_intervals.py" --cli "$RUNNER_TEMP/dapane-kernel/bin/dapane"
+          cd "$GITHUB_WORKSPACE"
           python scripts/benchmark_cli.py --cli target/release/dapane --counts 10 1000 5000 --repeats 3

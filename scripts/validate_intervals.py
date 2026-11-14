@@ -153,7 +153,15 @@ def check_report(report: dict, request: dict, expected: dict, label: str) -> Non
         report["output_digest"] == digest("dapane:output:0.3\n", undigested),
         f"{label}: output digest differs from independent canonicalization",
     )
-    canonical_rationals(report)
+    # Input quotation spellings are immutable provenance, not normalized output.
+    # Inspect computed ledger fields only; capacity observations likewise retain
+    # the caller's exact-number spelling under their separate contract.
+    canonical_rationals(
+        {
+            key: report[key]
+            for key in ("totals", "lines", "interval_lines", "allocations", "object_totals")
+        }
+    )
 
 
 def structural_negatives(checker: Draft202012Validator, request: dict) -> int:
@@ -226,6 +234,17 @@ def main() -> int:
             usage["quote_ids"].reverse()
         _, reordered = successful_report(cli, permuted, checkers, name + " reordered")
         require(raw == reordered, f"{name}: quote/schedule ordering changed canonical output")
+    rational_quote = deepcopy(requests["rate-boundary.json"])
+    rational_quote["quotes"][0]["amount"] = {"numerator": "4", "denominator": "2"}
+    rational_report, _ = successful_report(
+        cli, rational_quote, checkers, "retained nonreduced quote"
+    )
+    check_report(
+        rational_report,
+        rational_quote,
+        reference["cases"]["rate-boundary.json"],
+        "retained nonreduced quote",
+    )
     unchanged = deepcopy(requests["rounding.json"])
     unchanged["quotes"][0]["valid_to"] = unchanged["quotes"][1]["valid_to"]
     unchanged["quotes"] = unchanged["quotes"][:1]
