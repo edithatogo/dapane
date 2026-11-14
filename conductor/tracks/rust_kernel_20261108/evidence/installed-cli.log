@@ -1,0 +1,4 @@
+Validated four JSON Schema 2020-12 documents, 5 synthetic request fixtures and 37 negative schema/parser cases.
+Validated 5 CLI reports against independent exact values, allocations, provenance, conservation and digests; 14 runtime rejection cases and three identity/context cases passed.
+Validated interval request/report schemas and synthetic reference; 9 negative cases passed.
+Verified independent exact segment/reference values, parent lineage, conservation, immutable digests, scalar replay and ordering; 11 runtime rejection cases and 15 tampered-report controls passed.

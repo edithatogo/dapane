@@ -7,6 +7,7 @@
 #![forbid(unsafe_code)]
 
 mod capacity;
+mod intervals;
 mod json;
 mod numeric;
 mod types;
@@ -20,6 +21,7 @@ use num_rational::BigRational;
 use num_traits::{ToPrimitive, Zero};
 use serde::{Deserialize, Serialize};
 
+pub use intervals::*;
 pub use types::*;
 
 pub const SCHEMA_VERSION: &str = "0.1";

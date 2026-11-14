@@ -18,8 +18,11 @@ withdrawal, historical selection, consistent declared release identities and
 exact native replay. Synthetic references cover explicitly segmented rate changes
 and alternative prepared capital quotations. The
 [core-contract evidence](tracks/core_contracts_20261108/verification.md) records
-the reviewed revision and executed checks. Automatic interval integration,
-economic formulae, actual provider/source qualification and release assurance
+the reviewed revision and executed checks. The separately versioned
+[interval profile 0.1](../docs/interval-contract-v0.1.md) implements bounded automatic
+rate-boundary segmentation under declared uniform calendar-day exposure; the
+[kernel evidence](tracks/rust_kernel_20261108/verification.md) records its qualification.
+Richer exposure models, economic formulae, actual provider/source qualification and release assurance
 retain their existing owners and the broader acceptance criteria below.
 
 ## RQ-01 — Domain-neutral types and contracts
