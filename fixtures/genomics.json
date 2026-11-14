@@ -1,0 +1,182 @@
+{
+  "schema_version": "0.1",
+  "run_id": "synthetic-genomics",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-economic_cost",
+    "version": "1.0.0",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "economic_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "collection-rate",
+      "kind": "resource_use",
+      "target": "collection",
+      "unit": "collection",
+      "amount": "10.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "collection"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-collection-rate",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics.json"
+      }
+    },
+    {
+      "id": "batch-rate",
+      "kind": "resource_use",
+      "target": "assay_batch",
+      "unit": "batch",
+      "amount": "100.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "assay"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-batch-rate",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics.json"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "collection-a",
+      "use_id": "use-collection-a",
+      "kind": "resource_use",
+      "target": "collection",
+      "unit": "collection",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "collection-rate",
+      "source": {
+        "id": "synthetic-collection-a",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics.json"
+      },
+      "object_ids": [
+        "specimen-a"
+      ],
+      "attribution_object_id": "specimen-a"
+    },
+    {
+      "id": "collection-b",
+      "use_id": "use-collection-b",
+      "kind": "resource_use",
+      "target": "collection",
+      "unit": "collection",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "collection-rate",
+      "source": {
+        "id": "synthetic-collection-b",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics.json"
+      },
+      "object_ids": [
+        "specimen-b"
+      ],
+      "attribution_object_id": "specimen-b"
+    },
+    {
+      "id": "batch",
+      "use_id": "use-batch",
+      "kind": "resource_use",
+      "target": "assay_batch",
+      "unit": "batch",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "batch-rate",
+      "source": {
+        "id": "synthetic-batch",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/genomics.json"
+      },
+      "object_ids": [
+        "batch-1",
+        "specimen-a",
+        "specimen-b"
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "specimen-a",
+      "kind": "specimen"
+    },
+    {
+      "id": "specimen-b",
+      "kind": "specimen"
+    },
+    {
+      "id": "batch-1",
+      "kind": "assay_batch"
+    }
+  ],
+  "object_relations": [
+    {
+      "from_object_id": "specimen-a",
+      "to_object_id": "batch-1",
+      "relationship": "included_in"
+    },
+    {
+      "from_object_id": "specimen-b",
+      "to_object_id": "batch-1",
+      "relationship": "included_in"
+    }
+  ],
+  "allocations": [
+    {
+      "id": "batch-allocation",
+      "source_line_ids": [
+        "batch"
+      ],
+      "weights": [
+        {
+          "object_id": "specimen-a",
+          "weight": "1"
+        },
+        {
+          "object_id": "specimen-b",
+          "weight": "1"
+        }
+      ]
+    }
+  ]
+}

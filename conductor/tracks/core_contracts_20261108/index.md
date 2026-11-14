@@ -2,7 +2,7 @@
 
 Track: `core_contracts_20261108`
 
-Status: new
+Status: in_progress
 
 Define a small domain-neutral boundary that can represent workforce resource use, genomic workflows and MCHS weighted activity without making their meanings interchangeable.
 
@@ -14,4 +14,4 @@ Define a small domain-neutral boundary that can represent workforce resource use
 
 Requirements: RQ-01, RQ-02, RQ-03.
 
-Capability status: planned. A documented plan is not implementation or release evidence.
+Capability status: implemented_bounded_profile_0_1. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.

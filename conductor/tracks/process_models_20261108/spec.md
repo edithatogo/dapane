@@ -4,7 +4,7 @@
 
 Produce resource-use records from observed or explicitly executed process models while keeping resource execution, discovery and monetary valuation independently owned.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This is the full acceptance specification. The first bounded profile is implemented; [runtime evidence](../../../docs/runtime-verification.md) records its scope. Unmet criteria below remain open.
 
 ## Scope and requirements
 

@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-08",
+  "platform": "Linux x86_64 glibc2.41",
+  "command": "cargo install --locked --path crates/dapane-cli --root <clean-prefix>",
+  "execution_working_directory": "outside checkout",
+  "fixture": "fixtures/newborn-screening.json",
+  "source_total": "150.00",
+  "infant_totals": {
+    "infant-a": "60.00",
+    "infant-b": "90.00"
+  },
+  "binary_sha256": "f4bd15db3500abda829678ee0483e38ee1843320dfb21c9a7090958a8bd9c819",
+  "output_digest": "sha256:a38641e5373cb775f84fec290cb48e7e030a344bf86e44c0d1f76e1b44cd0d9c"
+}

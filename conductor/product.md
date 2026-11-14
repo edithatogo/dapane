@@ -2,9 +2,9 @@
 
 ## Purpose
 
-Dapane will provide a reusable Rust microcosting and valuation framework. It will
-apply explicit valuation policies to resource-use and activity records, preserve
-their provenance, reconcile shared costs and return reproducible result bundles.
+Dapane provides a bounded Rust microcosting and valuation candidate. It applies
+explicit valuation policies to resource-use and activity records, preserves
+their provenance, reconciles shared costs and returns reproducible result bundles.
 Its specialist consumers initially cover health workforce, genomic testing,
 hospital activity/funding and newborn screening.
 
@@ -67,7 +67,10 @@ reproducibility contracts.
 
 ## Current maturity
 
-Only project context and its documentation validator exist at initialisation.
-Runtime code, provider adapters, distributions, deployments and scientific
-benchmarks are planned. The [requirements](requirements.md), [roadmap](roadmap.md)
-and [tracks](tracks.md) define their acceptance evidence.
+The first candidate implements the bounded [0.1 contract](../docs/contract-v0.1.md)
+in Rust, a CLI and thin Python bindings. Synthetic workforce, genomics, funding,
+newborn and allocation examples exercise the same arithmetic. See
+[runtime verification](../docs/runtime-verification.md) for actual installed-artifact
+and numerical evidence. Existing provider packages have not been migrated; real
+programme support, distributions, deployments and comparative research remain
+open in the [requirements](requirements.md), [roadmap](roadmap.md) and [tracks](tracks.md).

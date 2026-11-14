@@ -4,7 +4,7 @@
 
 Prove that the common core is a useful independent package by running a workforce calculation and a genomics workflow through installed Python bindings and the same Rust implementation.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This is the full acceptance specification. The first bounded profile is implemented; [runtime evidence](../../../docs/runtime-verification.md) records its scope. Unmet criteria below remain open.
 
 ## Scope and requirements
 

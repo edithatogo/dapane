@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-08",
+  "engine_version": "0.1.0",
+  "build_tool": "maturin1.16.0",
+  "toolchain": "rustc1.99.1",
+  "platform": "Linux6.18.57 x86_64 glibc2.41",
+  "scope": "Locally built and installed candidate wheels; no registry release or broad manylinux-host qualification. Wheels include the corrected core.",
+  "wheels": [
+    {
+      "python": "3.12.14",
+      "wheel": "dapane-0.1.0-cp312-cp312-manylinux_2_34_x86_64.whl",
+      "bytes": 536265,
+      "sha256": "fa13309aa8e3b4ce4d54707d6b8f90134a9f80629889765dbc0f52608b8f69ae",
+      "installed_tests_passed": 54
+    },
+    {
+      "python": "3.13.15",
+      "wheel": "dapane-0.1.0-cp313-cp313-manylinux_2_34_x86_64.whl",
+      "bytes": 536516,
+      "sha256": "3d910f42839d45c25012392191d9cec4bc97b327f5120f45c8301ff17bb489e8",
+      "installed_tests_passed": 54
+    },
+    {
+      "python": "3.14.9",
+      "wheel": "dapane-0.1.0-cp314-cp314-manylinux_2_34_x86_64.whl",
+      "bytes": 536700,
+      "sha256": "a4ca3f7e0db7426fed1dfc5b17564ba227be4250f4239294278edfc752c6284f",
+      "installed_tests_passed": 54
+    },
+    {
+      "python": "3.15.1",
+      "wheel": "dapane-0.1.0-cp315-cp315-manylinux_2_34_x86_64.whl",
+      "bytes": 536790,
+      "sha256": "b46dfc417d3762bfe838dbce7f7df98383a47e4b1f5f3d89b6d6bce44d68ade0",
+      "installed_tests_passed": 54
+    }
+  ]
+}

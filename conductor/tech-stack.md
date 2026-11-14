@@ -1,11 +1,12 @@
 # Technology stack and dependency policy
 
-## Actual state at setup
+## Historical setup
 
 The repository was empty: no code, manifests, lockfiles, licence, release or CI
-was present. This change adds Markdown/JSON project context, a Python standard-
-library documentation validator and a GitHub Actions job for that validator.
-It installs no Rust or language-binding dependencies and qualifies no runtime.
+was present. The initial setup added Markdown/JSON project context, a Python
+standard-library documentation validator and a GitHub Actions job for that validator.
+The subsequent first runtime is described below; setup validation alone did not
+qualify it.
 
 The documentation job uses `python3` on `ubuntu-24.04`; that interpreter is tooling
 for repository checks, not the future Python package's support declaration.
@@ -15,7 +16,45 @@ credentials disabled. The tag was inspected through the
 [GitHub API](https://api.github.com/repos/actions/checkout/git/ref/tags/v7) on
 8 November 2026. The immutable pin is authoritative for this workflow.
 
-## Selected implementation direction
+## Implemented first candidate
+
+The Cargo workspace has `dapane-core`, `dapane-cli` and `dapane-python`; default
+members are only core and CLI. `rust-toolchain.toml` pins stable Rust **1.99.1**,
+the workspace declares that tested minimum and uses edition 2024. `Cargo.lock`
+pins the exact graph. This baseline makes no promise about older compilers.
+
+| Direct dependency | Locked version | Responsibility |
+| --- | --- | --- |
+| serde / serde_json | 1.0.229 / 1.0.154 | Typed strict transport and canonical report construction |
+| num-rational / num-bigint / num-traits | 0.4.2 / 0.4.8 / 0.2.19 | Bounded exact rational arithmetic |
+| chrono | 0.4.45, default features disabled, `std` only | Strict calendar dates without clock/timezone lookup |
+| sha2 | 0.11.1 | Input and report digests |
+| PyO3 | 0.30.1, separate wrapper crate | Native Python boundary |
+
+`num-bigint` stays on the line required by the selected `num-rational` release;
+using an incompatible newer major would duplicate numeric types. The core has
+no simulation, table, Python, web or ontology dependency. Arrow/Parquet is deferred
+because the first five reference consumers use exact JSON directly.
+
+Maturin 1.16.0 builds interpreter-specific wheels. Development requirements pin
+Maturin, Pytest 9.2.0, jsonschema 4.26.0 and Ruff 0.17.4. The Python package itself
+has no runtime Python-package dependencies. Its declared CPython range is
+3.12–3.15, with actual interpreter/platform checks recorded in
+[runtime verification](../docs/runtime-verification.md); no ABI3 or other-platform
+support follows from the range alone.
+
+The [dependency inventory](../docs/dependencies.json) records the 36 locked
+registry packages and their declared licences/checksums. This is a source
+inventory, not a completed project-licence or source-data rights decision.
+Packages use `publish = false` while the project licence is unresolved.
+
+Runtime CI uses the pinned checkout action above and setup-python v6 at
+`ece7cb06caefa5fff74198d8649806c4678c61a1`, inspected through its
+[tag reference](https://api.github.com/repos/actions/setup-python/git/ref/tags/v6)
+on 8 November 2026. It runs native, schema and four-interpreter installed-wheel
+checks with read-only repository permissions.
+
+## Broader implementation direction
 
 | Layer | Direction | Boundary |
 | --- | --- | --- |
@@ -30,8 +69,8 @@ credentials disabled. The tag was inspected through the
 | Semantics | UOGTO and standards_check versioned products | Optional mappings/validation, no mandatory reasoner in the hot path |
 | Process models | rust4pm candidate; XES, OCEL, PNML and bounded BPMN adapters | Model execution remains with a qualified engine such as Kairos |
 
-No crate version, Rust edition, MSRV, Python range, R version or Julia version is
-selected merely by copying another repository. Those choices are outputs of the
+Versions and support are not copied from another repository. The native/Python
+choices above are implemented; R/Julia and optional adapters remain outputs of the
 [core contracts](tracks/core_contracts_20261108/index.md),
 [Python consumers](tracks/python_two_consumers_20261108/index.md) and
 [polyglot bindings](tracks/polyglot_bindings_20261108/index.md) tracks.

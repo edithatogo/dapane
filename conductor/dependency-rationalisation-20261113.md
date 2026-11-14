@@ -1,14 +1,17 @@
 # Rust dependency rationalisation — dapane (2026-11-13)
 
-**Status:** proposal and review contract; no code adoption, runtime verification or benchmark result is claimed here.
+**Status:** proposal and review contract, reconciled with the existing PR #2 runtime
+on 14 November 2026. This document is not runtime or benchmark evidence; see
+[runtime verification](../docs/runtime-verification.md) for the candidate's scope
+and dated results.
 
 ## Repository-specific decisions
 
-- **Verified:** Dapane repository currently has Conductor and scripts only, not a Rust Cargo workspace; do not claim or install runtime packages before the core is implemented.
-- **Future owned core:** Serde for versioned valuation ledgers and stable interchange; Thiserror for typed economic/costing errors; exact decimal/rational arithmetic and unit constraints must be preserved.
-- **Binding:** PyO3 only in a separate Python adapter once the Rust calculation contract is stable. R/Julia adapters remain independent of core.
+- **Historical observation (13 November, main):** Conductor and scripts were present without a Cargo workspace. PR #2 already contained the candidate runtime at `14b34896b983e53fc053b405ff800504b2add678`; the integration preserves that work rather than starting another kernel.
+- **Existing owned core:** Serde provides versioned valuation ledgers and stable interchange; bounded exact rational arithmetic and unit constraints are implemented. The core already has a typed `DapaneError`; adopting Thiserror requires a concrete benefit, not a second error system. Review the locked graph in [the dependency inventory](../docs/dependencies.json) before changing dependencies.
+- **Binding:** PyO3 is in a separate Python adapter. R/Julia adapters remain independent of core and are still planned.
 - **Evaluate later:** Polars for optional large workforce/resource tabulations, Criterion for benchmark fixtures, Proptest for allocation conservation, sum reconciliation, rounding and monotonicity.
-- **Reject for base core:** Tokio, Reqwest, SQLx, Ratatui, Crossbeam, Syn/Quote and Rayon without a concrete adapter/workflow or proven benefit.
+- **Reject as new direct base-core dependencies:** Tokio, Reqwest, SQLx, Ratatui, Crossbeam, Syn/Quote and Rayon without a concrete adapter/workflow or proven benefit. Existing transitive Syn/Quote use by derive/binding macros is recorded in the inventory; this is not a requirement to remove those transitive dependencies.
 - **Scientific guard:** physical resources, weighted activity, tariffs, payments, financing and opportunity costs must remain distinct; do not introduce binary floating-point arithmetic for monetary rules.
 
 ## Evidence and release gate

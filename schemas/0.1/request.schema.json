@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/request.schema.json",
+  "title": "Dapane 0.1 valuation request",
+  "description": "Structural validation only. Rust additionally checks duplicate JSON keys, unique identities, aggregate record/byte/bit limits, references, date intervals, source knowledge, matching kind/target/unit/currency/price year/basis, use-component overlap and allocation conservation. Array order is not semantically significant.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "run_id": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+    },
+    "knowledge_cutoff": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+    },
+    "policy": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/policy"
+    },
+    "quotes": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/quote"
+      },
+      "maxItems": 10000
+    },
+    "usage": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage"
+      },
+      "maxItems": 10000
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/costObject"
+      },
+      "maxItems": 10000,
+      "default": []
+    },
+    "processes": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/process"
+      },
+      "maxItems": 10000,
+      "default": []
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/event"
+      },
+      "maxItems": 10000,
+      "default": []
+    },
+    "object_relations": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/relation"
+      },
+      "maxItems": 10000,
+      "default": []
+    },
+    "allocations": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/allocation"
+      },
+      "maxItems": 10000,
+      "default": []
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "knowledge_cutoff",
+    "policy",
+    "quotes",
+    "usage"
+  ]
+}

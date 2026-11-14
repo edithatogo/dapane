@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json",
+  "title": "Dapane 0.1 complete valuation report",
+  "description": "Complete report only; failed evaluations return the error schema. Schema validation does not establish arithmetic correctness, canonical rational reduction, semantic consistency, source validity, digest correctness or conservation.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "run_id": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+    },
+    "status": {
+      "const": "complete"
+    },
+    "engine_version": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+    },
+    "method_version": {
+      "const": "dapane-exact-v0.1.0"
+    },
+    "input_digest": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/digest"
+    },
+    "output_digest": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/digest"
+    },
+    "policy": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/policy"
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine"
+      },
+      "maxItems": 10000
+    },
+    "quote_snapshots": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/quote"
+      },
+      "maxItems": 10000
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "objects": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/costObject"
+          },
+          "maxItems": 10000
+        },
+        "processes": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/process"
+          },
+          "maxItems": 10000
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/event"
+          },
+          "maxItems": 10000
+        },
+        "object_relations": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/relation"
+          },
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "objects",
+        "processes",
+        "events",
+        "object_relations"
+      ]
+    },
+    "totals": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "exact": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        },
+        "rounded": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        },
+        "rounding_adjustment": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/signedRational"
+        },
+        "directly_attributed": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        },
+        "allocated": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        },
+        "unattributed": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        }
+      },
+      "required": [
+        "exact",
+        "rounded",
+        "rounding_adjustment",
+        "directly_attributed",
+        "allocated",
+        "unattributed"
+      ]
+    },
+    "allocations": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/allocationResult"
+      },
+      "maxItems": 10000
+    },
+    "object_totals": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/objectTotal"
+      },
+      "maxItems": 10000
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "status",
+    "engine_version",
+    "method_version",
+    "input_digest",
+    "output_digest",
+    "policy",
+    "lines",
+    "quote_snapshots",
+    "context",
+    "totals",
+    "allocations",
+    "object_totals"
+  ]
+}

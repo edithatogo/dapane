@@ -2,7 +2,7 @@
 
 Track: `newborn_screening_20261108`
 
-Status: new
+Status: in_progress
 
 Demonstrate the next new domain by composing workforce quotations and laboratory recipes into a versioned newborn-screening programme model, with conserved shared costs and explicit denominators.
 
@@ -14,4 +14,4 @@ Demonstrate the next new domain by composing workforce quotations and laboratory
 
 Requirements: RQ-06, RQ-03, RQ-07.
 
-Capability status: planned. A documented plan is not implementation or release evidence.
+Capability status: synthetic_two_infant_case_implemented. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.

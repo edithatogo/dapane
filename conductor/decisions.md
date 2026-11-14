@@ -119,12 +119,43 @@ Consequence: no fixed calendar promise or completed roadmap marker can substitut
 for capability evidence. Archive candidates require a working successor and review
 of unique research and source assets.
 
+## ADR-010 — Implement a bounded exact profile before provider migration
+
+Status: implemented direction, 8 November 2026. Requirements: RQ-01, RQ-02,
+RQ-03, RQ-04, RQ-06, RQ-10.
+
+The first candidate uses `num-rational`/`num-bigint` for nonnegative exact values,
+strict decimal strings/rational pairs for transport, explicit point service dates
+and selected quote IDs. It rounds each source line half-even, then allocates the
+rounded pool by largest remainder with object-ID tie breaking. Source, policy,
+method and engine identities are retained in deterministic request/report bundles.
+Numeric and record bounds are part of [contract 0.1](../docs/contract-v0.1.md).
+
+Event, process and object context coexist. Object associations never assign
+money; direct attribution or an explicit allocation creates conserving views.
+Equivalent inherited and explicit process/activity context must be treated as
+the same context when pricing disjoint components of one underlying use.
+
+The core and CLI are default workspace members. Python is a separate thin PyO3
+crate with interpreter-specific wheels; Arrow/Parquet and every simulator remain
+optional. The qualified first inputs are independent synthetic cases, not a
+claim that legacy packages have been migrated. The
+[provider review](../docs/provider-boundaries.md) found Kairos's public usage
+export still pending; Dapane remains independently usable.
+
+Consequence: reject unknown methods/fields and unsupported intervals, retractions,
+FX, tax, escalation, discounting or capital annualization. Source validation flags
+remain caller declarations. Component inclusion tags prevent duplicate charges
+but do not invent a monetary decomposition of loaded rates. Full provider, process,
+reporting and release tracks stay open. [Compatibility](../docs/compatibility.md)
+defines versioning, namespacing and rollback for the first profile.
+
 ## Decisions intentionally left to their implementation tracks
 
 | Decision | Owner and constraint |
 | --- | --- |
-| Public schemas, names and compatibility windows | Core-contracts track; preserve the semantic boundaries above and qualify consumers. |
-| Numeric crates, precision bounds, Rust MSRV and language/platform matrix | Core/kernel and release tracks; select from tested providers, not inferred compatibility. |
+| Wider schemas and compatibility windows | Contract 0.1 is implemented; further profiles remain in the core-contracts track and require explicit migration. |
+| Wider numeric methods and platform matrix | First Rust/CPython versions and precision bounds are recorded in the technology stack and runtime evidence; other methods/platforms remain unqualified. |
 | Project licence and package registry identities | Release/consolidation track; the empty repository supplied no licence or published package identity. |
 | First real newborn programme and data access | Newborn-screening track; separate synthetic arithmetic from sourced programme validity. |
 | Power Platform tenant and optional worker/API/WASM route | Power Platform track; retain the standard file baseline and record actual entitlements and host evidence. |

@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.1",
+  "run_id": "synthetic-activity-funding",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-funding",
+    "version": "1.0.0",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "funding",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "funding-rate",
+      "kind": "activity_measure",
+      "target": "synthetic_activity",
+      "unit": "activity_unit",
+      "amount": "17.00",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "funding",
+      "components": [
+        "funding"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-funding-rate",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/activity-funding.json"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "activity",
+      "use_id": "use-activity",
+      "kind": "activity_measure",
+      "target": "synthetic_activity",
+      "unit": "activity_unit",
+      "quantity": "2.50",
+      "service_date": "2026-06-15",
+      "quote_id": "funding-rate",
+      "source": {
+        "id": "synthetic-activity",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/activity-funding.json"
+      }
+    }
+  ]
+}

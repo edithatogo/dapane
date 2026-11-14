@@ -4,7 +4,7 @@
 
 Implement one authoritative numerical core for exact valuation, component accounting and shared-pool allocation. The native library and CLI must work without a language wrapper, table engine, simulator or cloud account.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This is the full acceptance specification. The first bounded profile is implemented; [runtime evidence](../../../docs/runtime-verification.md) records its scope. Unmet criteria below remain open.
 
 ## Scope and requirements
 
