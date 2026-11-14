@@ -90,6 +90,17 @@ pub(crate) fn parse(input: &str) -> Result<Request, DapaneError> {
             "/capacity_allocations",
         ));
     }
+    if matches!(
+        value.0.get("schema_version").and_then(Value::as_str),
+        Some("0.1" | "0.2")
+    ) && value.0.get("interval_usage").is_some()
+    {
+        return Err(DapaneError::new(
+            "invalid_request",
+            "interval_usage requires schema_version 0.3; earlier profiles remain unchanged",
+            "/interval_usage",
+        ));
+    }
     serde_json::from_value(value.0)
         .map_err(|error| DapaneError::new("invalid_request", &error.to_string(), "/"))
 }

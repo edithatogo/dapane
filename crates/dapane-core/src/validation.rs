@@ -4,7 +4,7 @@ use chrono::{Datelike, NaiveDate};
 use num_rational::BigRational;
 use num_traits::Zero;
 
-use crate::{DapaneError, Event, Request, SourceRef, Usage, capacity, numeric};
+use crate::{DapaneError, Event, Request, SourceRef, Usage, capacity, intervals, numeric};
 
 const MAX_COLLECTION: usize = 10_000;
 const MAX_TOTAL_RECORDS: usize = 20_000;
@@ -24,7 +24,7 @@ pub(crate) fn text(value: &str, path: &str) -> Result<(), DapaneError> {
     Ok(())
 }
 
-fn collection(size: usize, path: &str) -> Result<(), DapaneError> {
+pub(crate) fn collection(size: usize, path: &str) -> Result<(), DapaneError> {
     if size > MAX_COLLECTION {
         return Err(DapaneError::new(
             "input_limit",
@@ -35,7 +35,7 @@ fn collection(size: usize, path: &str) -> Result<(), DapaneError> {
     Ok(())
 }
 
-fn date(value: &str, path: &str) -> Result<NaiveDate, DapaneError> {
+pub(crate) fn date(value: &str, path: &str) -> Result<NaiveDate, DapaneError> {
     let bytes = value.as_bytes();
     let valid_shape = bytes.len() == 10
         && bytes[4] == b'-'
@@ -207,10 +207,10 @@ fn same_use(
 }
 
 pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
-    if !["0.1", "0.2"].contains(&request.schema_version.as_str()) {
+    if !["0.1", "0.2", "0.3"].contains(&request.schema_version.as_str()) {
         return Err(DapaneError::new(
             "unsupported_schema",
-            "Supported schema_version is 0.1 or 0.2",
+            "Supported schema_version is 0.1, 0.2 or 0.3",
             "/schema_version",
         ));
     }
@@ -221,11 +221,19 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
             "/capacity_allocations",
         ));
     }
+    if request.schema_version != "0.3" && !request.interval_usage.is_empty() {
+        return Err(DapaneError::new(
+            "invalid_request",
+            "interval_usage requires schema_version 0.3",
+            "/interval_usage",
+        ));
+    }
     text(&request.run_id, "/run_id")?;
     let cutoff = date(&request.knowledge_cutoff, "/knowledge_cutoff")?;
     let sizes = [
         (request.quotes.len(), "/quotes"),
         (request.usage.len(), "/usage"),
+        (request.interval_usage.len(), "/interval_usage"),
         (request.objects.len(), "/objects"),
         (request.processes.len(), "/processes"),
         (request.events.len(), "/events"),
@@ -236,6 +244,13 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
     for (size, path) in sizes {
         collection(size, path)?;
     }
+    collection(
+        request
+            .usage
+            .len()
+            .saturating_add(request.interval_usage.len()),
+        "/interval_usage",
+    )?;
     if sizes.iter().map(|(size, _)| size).sum::<usize>() > MAX_TOTAL_RECORDS {
         return Err(DapaneError::new(
             "input_limit",
@@ -377,11 +392,25 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
         source(&quote.source, &format!("{path}/source"))?;
     }
 
-    unique_ids(request.usage.iter().map(|u| u.id.as_str()), "/usage")?;
-    let usage_by_id: BTreeMap<_, _> = request.usage.iter().map(|u| (u.id.as_str(), u)).collect();
+    let projected = intervals::projections(request, &quotes)?;
+    let all_usage: Vec<_> = request.usage.iter().chain(projected.iter()).collect();
+    let usage_by_id: BTreeMap<_, _> = all_usage.iter().map(|u| (u.id.as_str(), *u)).collect();
+    let mut line_ids = BTreeSet::new();
     let mut uses: BTreeMap<&str, (&Usage, BigRational, BTreeSet<&str>)> = BTreeMap::new();
-    for (index, usage) in request.usage.iter().enumerate() {
-        let path = format!("/usage/{index}");
+    for (index, usage) in all_usage.into_iter().enumerate() {
+        let path = if index < request.usage.len() {
+            format!("/usage/{index}")
+        } else {
+            format!("/interval_usage/{}", index - request.usage.len())
+        };
+        text(&usage.id, &format!("{path}/id"))?;
+        if !line_ids.insert(&usage.id) {
+            return Err(DapaneError::new(
+                "duplicate_id",
+                "Line IDs must be unique across point-date and interval usage",
+                &format!("{path}/id"),
+            ));
+        }
         text(&usage.use_id, &format!("{path}/use_id"))?;
         text(&usage.target, &format!("{path}/target"))?;
         text(&usage.unit, &format!("{path}/unit"))?;
@@ -663,6 +692,11 @@ pub(crate) fn normalize(request: &Request) -> Request {
     }
     result.usage.sort_by(|a, b| a.id.cmp(&b.id));
     for usage in &mut result.usage {
+        usage.object_ids.sort();
+    }
+    result.interval_usage.sort_by(|a, b| a.id.cmp(&b.id));
+    for usage in &mut result.interval_usage {
+        usage.quote_ids.sort();
         usage.object_ids.sort();
     }
     result.objects.sort_by(|a, b| a.id.cmp(&b.id));

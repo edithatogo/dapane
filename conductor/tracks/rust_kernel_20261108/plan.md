@@ -27,6 +27,30 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
+### Completion execution — 15 November 2026
+
+Work resumes from main `d7063cecc26abe96a3f28fca575b99b450241430` on
+`feat/rust-kernel-completion-20261115`. The existing core-contract PR #9 owns
+run-bundle lifecycle and presegmented reference acceptance; this increment owns
+automatic interval valuation, its native/CLI qualification and this track.
+
+- [~] K2.1/K2.4: qualify a separate 0.3 interval profile with explicit uniform
+  calendar-day exposure, exact quote-boundary segments, parent-line rounding,
+  component accounting, deterministic provenance and independent negative cases.
+- [~] K1.1: enforce pinned toolchain, inventory and minimal dependency checks for
+  the unpublished candidate. Reconcile the duplicated project-licence decision
+  with the existing release-track L1.2/L1.3 ownership; publication stays disabled.
+- [ ] Complete independent review, apply fixes, verify the final source, and
+  archive in place with evidence and stable links after acceptance passes.
+
+The pre-publication checkout passed 68 native tests and the independent 0.3
+fixture validator. A clean baseline with the new tests failed 22 core and three
+CLI assertions for missing interval support. The execution environment became
+unavailable before the final lint, installed-wheel and review pass. The source
+was recovered through the repository API and must be qualified on its exact
+published commit; the earlier local test result does not qualify a reconstructed
+commit. No archive or completion claim is made at this checkpoint.
+
 Native evidence is in [runtime verification](../../../docs/runtime-verification.md). K1.1 retains the unresolved project-licence/release qualification despite pinned dependencies. K2.1/K2.4 retain automatic interval segmentation; callers currently supply explicitly segmented dated quantities. K3.2 is deferred because all five first reference consumers use exact JSON and require no Arrow/Parquet IO. The 5,000-row/recipient measurements are bounded observations, not a scalability or acceleration claim.
 
 Full scope and observed commands/results are recorded in [runtime verification](../../../docs/runtime-verification.md). This track remains in progress.

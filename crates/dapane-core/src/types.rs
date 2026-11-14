@@ -138,6 +138,41 @@ pub struct Usage {
     pub attribution_object_id: Option<String>,
 }
 
+/// A declared distribution of a total quantity across a calendar-date interval.
+/// This assumption is never inferred from dates, event duration or throughput.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum IntervalExposure {
+    UniformCalendarDays,
+}
+
+/// One underlying use with explicitly selected rate periods and exact exposure.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct IntervalUsage {
+    pub id: String,
+    pub use_id: String,
+    pub kind: MeasureKind,
+    pub target: String,
+    pub unit: String,
+    pub quantity: ExactNumber,
+    pub start_date: String,
+    pub end_date: String,
+    pub exposure: IntervalExposure,
+    pub quote_ids: Vec<String>,
+    pub source: SourceRef,
+    #[serde(default)]
+    pub event_id: Option<String>,
+    #[serde(default)]
+    pub process_id: Option<String>,
+    #[serde(default)]
+    pub activity_id: Option<String>,
+    #[serde(default)]
+    pub object_ids: Vec<String>,
+    #[serde(default)]
+    pub attribution_object_id: Option<String>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct CostObject {
@@ -238,6 +273,8 @@ pub struct Request {
     pub policy: ValuationPolicy,
     pub quotes: Vec<UnitQuote>,
     pub usage: Vec<Usage>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub interval_usage: Vec<IntervalUsage>,
     #[serde(default)]
     pub objects: Vec<CostObject>,
     #[serde(default)]
@@ -264,6 +301,43 @@ pub struct ValuationLine {
     pub quantity: Rational,
     pub components: Vec<String>,
     pub service_date: String,
+    pub exact: Rational,
+    pub rounded: String,
+    pub rounding_adjustment: Rational,
+    pub source: SourceRef,
+    pub event_id: Option<String>,
+    pub process_id: Option<String>,
+    pub activity_id: Option<String>,
+    pub object_ids: Vec<String>,
+    pub attribution_object_id: Option<String>,
+}
+
+/// Explanatory exact segment, not a separately rounded charge or pool source.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct ValuationSegment {
+    pub quote_id: String,
+    pub start_date: String,
+    pub end_date: String,
+    pub quantity: Rational,
+    pub exact: Rational,
+}
+
+/// Parent-level interval ledger line; rounding occurs once after exact summation.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct IntervalValuationLine {
+    pub id: String,
+    pub use_id: String,
+    pub kind: MeasureKind,
+    pub target: String,
+    pub unit: String,
+    pub quantity: Rational,
+    pub start_date: String,
+    pub end_date: String,
+    pub exposure: IntervalExposure,
+    pub components: Vec<String>,
+    pub segments: Vec<ValuationSegment>,
     pub exact: Rational,
     pub rounded: String,
     pub rounding_adjustment: Rational,
@@ -369,6 +443,8 @@ pub struct Report {
     pub output_digest: String,
     pub policy: ValuationPolicy,
     pub lines: Vec<ValuationLine>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub interval_lines: Vec<IntervalValuationLine>,
     pub quote_snapshots: Vec<UnitQuote>,
     pub context: Context,
     pub totals: Totals,

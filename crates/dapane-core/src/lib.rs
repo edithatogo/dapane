@@ -7,6 +7,7 @@
 #![forbid(unsafe_code)]
 
 mod capacity;
+mod intervals;
 mod json;
 mod numeric;
 mod types;
@@ -26,6 +27,8 @@ pub const SCHEMA_VERSION: &str = "0.1";
 pub const METHOD_VERSION: &str = "dapane-exact-v0.1.0";
 pub const CAPACITY_SCHEMA_VERSION: &str = "0.2";
 pub const CAPACITY_METHOD_VERSION: &str = "dapane-exact-v0.2.0";
+pub const INTERVAL_SCHEMA_VERSION: &str = "0.3";
+pub const INTERVAL_METHOD_VERSION: &str = "dapane-exact-v0.3.0";
 pub const ENGINE_VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const MAX_JSON_BYTES: usize = 4 * 1024 * 1024;
 
@@ -77,7 +80,7 @@ fn invariant(message: &str) -> DapaneError {
     DapaneError::new("internal_invariant", message, "/")
 }
 
-/// Validate and evaluate exact point-date quantities under one valuation policy.
+/// Validate and evaluate exact point-date and explicit interval quantities.
 ///
 /// The function is pure: it uses no current date, network access or random state.
 /// It returns no partial financial result if validation or precision bounds fail.
@@ -102,6 +105,7 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
         .collect();
     let mut line_values = BTreeMap::new();
     let mut lines = Vec::with_capacity(request.usage.len());
+    let mut interval_lines = Vec::with_capacity(request.interval_usage.len());
     let mut objects: BTreeMap<_, _> = request
         .objects
         .iter()
@@ -160,6 +164,61 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
             attribution_object_id: usage.attribution_object_id.clone(),
         });
         line_values.insert(usage.id.as_str(), LineValue { exact, minor });
+    }
+
+    for (index, usage) in request.interval_usage.iter().enumerate() {
+        let path = format!("/interval_usage/{index}");
+        let value = intervals::evaluate(usage, &quote_map, &request.knowledge_cutoff, &path)?;
+        let minor = numeric::rounded_minor(&value.exact, scale);
+        let adjustment =
+            numeric::bounded(numeric::from_minor(&minor, scale) - &value.exact, &path)?;
+        total_exact = numeric::bounded(total_exact + &value.exact, &path)?;
+        total_minor += &minor;
+        if let Some(object_id) = &usage.attribution_object_id {
+            objects
+                .get_mut(object_id.as_str())
+                .ok_or_else(|| invariant("Validated interval attribution object disappeared"))?
+                .direct += &minor;
+            directly_attributed += &minor;
+        }
+        let event = usage.event_id.as_deref().and_then(|id| event_map.get(id));
+        let process_id = usage
+            .process_id
+            .clone()
+            .or_else(|| event.and_then(|event| event.process_id.clone()));
+        let activity_id = usage
+            .activity_id
+            .clone()
+            .or_else(|| event.and_then(|event| event.activity_id.clone()));
+        interval_lines.push(IntervalValuationLine {
+            id: usage.id.clone(),
+            use_id: usage.use_id.clone(),
+            kind: usage.kind,
+            target: usage.target.clone(),
+            unit: usage.unit.clone(),
+            quantity: numeric::wire(&value.quantity),
+            start_date: usage.start_date.clone(),
+            end_date: usage.end_date.clone(),
+            exposure: usage.exposure,
+            components: value.components,
+            segments: value.segments,
+            exact: numeric::wire(&value.exact),
+            rounded: numeric::format_minor(&minor, scale),
+            rounding_adjustment: numeric::wire(&adjustment),
+            source: usage.source.clone(),
+            event_id: usage.event_id.clone(),
+            process_id,
+            activity_id,
+            object_ids: usage.object_ids.clone(),
+            attribution_object_id: usage.attribution_object_id.clone(),
+        });
+        line_values.insert(
+            usage.id.as_str(),
+            LineValue {
+                exact: value.exact,
+                minor,
+            },
+        );
     }
 
     let mut allocations = Vec::with_capacity(request.allocations.len());
@@ -289,16 +348,17 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
         run_id: request.run_id,
         status: ReportStatus::Complete,
         engine_version: ENGINE_VERSION.to_owned(),
-        method_version: if request.schema_version == CAPACITY_SCHEMA_VERSION {
-            CAPACITY_METHOD_VERSION
-        } else {
-            METHOD_VERSION
+        method_version: match request.schema_version.as_str() {
+            INTERVAL_SCHEMA_VERSION => INTERVAL_METHOD_VERSION,
+            CAPACITY_SCHEMA_VERSION => CAPACITY_METHOD_VERSION,
+            _ => METHOD_VERSION,
         }
         .to_owned(),
         input_digest,
         output_digest: String::new(),
         policy: request.policy,
         lines,
+        interval_lines,
         quote_snapshots: request.quotes,
         context: Context {
             objects: request.objects,
