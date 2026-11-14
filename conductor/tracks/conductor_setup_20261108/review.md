@@ -106,6 +106,32 @@ The current archive outcome is separate from
 `initial_setup_verification` and `initial_setup_completion_evidence`.
 No provider or external repository is archived by this change.
 
+## Integration with core-contract completion
+
+All 11 configured checks passed on archive commit
+`09e81c6e0ab1a80580258f82b5c1506fafd3d45f`. Its
+[final Conductor run](https://github.com/edithatogo/dapane/actions/runs/43651158094)
+passed 12 tests and validated 14 tracks, 12 requirements, 147 tasks and 434
+local links. Its tested merge tree was identical to the archive commit's tree.
+
+While those checks ran, PR #9 merged to main at
+`224cf91dbcf513feaa022b2cf5aa310a965472ce`. The integration preserves that
+run-bundle implementation, its independent tests and context. Its equivalent
+archived-task/verification safeguards are retained alongside this track's stricter
+status checks. The project-index conflict was resolved by retaining both the
+archived setup link and the expanded core-contract entry.
+
+The new upstream archive-test fixture omitted its plan status. Executing its
+unchanged fixture helper reproduced rejection by the strict status check.
+The fixture now declares `Status: archived`; its seven valid/invalid combinations
+pass direct validation, and all 12 public-CLI regression methods pass. The
+combined project context also passes. No numerical or bundle behaviour changed.
+
+Pytest is unavailable in the local interpreter. Direct fixture-helper execution
+is not reported as a pytest run; the existing installed-wheel matrix must execute
+the actual suite on the updated PR head. Earlier hosted results remain attached
+to their stated commits and do not claim execution of this later integration.
+
 ## Limits
 
 These checks concern project records and archival integrity. They do not verify
