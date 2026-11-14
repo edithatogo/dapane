@@ -2,13 +2,14 @@
 
 Track: `conductor_setup_20261108`
 
-Status: completed
+Status: in_progress
 
 Give the repository maintainer and coding agents a navigable, internally consistent project definition and an executable delivery plan. Dapane becomes the coordinating home for the shared framework; the earlier MCHS plan remains a provenance record and domain-consumer reference.
 
 - [Specification](spec.md)
 - [Implementation plan](plan.md)
 - [Metadata](metadata.json)
+- [Review and archive evidence](review.md)
 - [Track registry](../../tracks.md)
 - [Roadmap](../../roadmap.md)
 

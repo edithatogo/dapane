@@ -1,6 +1,6 @@
 # Implementation plan: Conductor setup and source-of-truth handoff
 
-Status: completed
+Status: in_progress
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -23,8 +23,16 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [x] S3.2 Verify the remote file/commit state and any configured documentation CI; record the actual outcome.
 - [x] S3.3 Synchronise setup metadata, index and registry; mark setup complete only after its acceptance checks pass.
 
+## Phase 4 — Review and archival, 15 November 2026
+
+- [x] S4.1 Reconcile current main, active pull requests and original publication evidence; preserve the completed setup and separate implementation owners.
+- [~] S4.2 Reject unfinished or unverified archival and inconsistent or ambiguous status declarations; verify valid in-place archival with the existing dependency links.
+- [ ] S4.3 Review the corrections independently, apply findings and record focused verification with its limits.
+- [ ] S4.4 Archive the completed track in place, synchronise its lifecycle records and retain the original setup evidence and stable links.
+
 ## Evidence record
 
 Local setup checks and review resolutions are recorded in [verification](../../verification.md).
 No runtime acceptance evidence is recorded by this initial plan.
+The later [review record](review.md) records the bounded corrections and archival checks.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.

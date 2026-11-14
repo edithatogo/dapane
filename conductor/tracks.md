@@ -12,7 +12,7 @@ A completed planning task does not change a runtime capability from planned to q
 
 | Marker | Track | Status | Requirements |
 | --- | --- | --- | --- |
-| [x] | [Conductor setup and source-of-truth handoff](./tracks/conductor_setup_20261108/index.md) | completed | RQ-01, RQ-12 |
+| [~] | [Conductor setup and source-of-truth handoff](./tracks/conductor_setup_20261108/index.md) | in_progress | RQ-01, RQ-12 |
 | [~] | [Core contracts and independent reference cases](./tracks/core_contracts_20261108/index.md) | in_progress | RQ-01, RQ-02, RQ-03 |
 | [~] | [Minimal Rust valuation kernel and CLI](./tracks/rust_kernel_20261108/index.md) | in_progress | RQ-01, RQ-02, RQ-03, RQ-12 |
 | [~] | [Python delivery with workforce and genomics consumers](./tracks/python_two_consumers_20261108/index.md) | in_progress | RQ-04, RQ-02, RQ-03 |
