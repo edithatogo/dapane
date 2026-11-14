@@ -1,7 +1,7 @@
 # Setup review and archival
 
 Review date: **15 November 2026**, Australia/Brisbane.
-Status: in progress.
+Status: completed; track archived in place.
 
 ## Scope and reconciliation
 
@@ -66,9 +66,45 @@ from the current review and archive outcome.
 
 The local execution environment disconnected before the strict-status follow-up
 could be applied or run locally. The corrected files were reconstructed against
-the same immutable GitHub base. The final strict-status changes require the
-existing hosted Conductor job and independent review before archival. Earlier
-local results do not qualify the reconstructed final head.
+the same immutable GitHub base and independently reviewed at
+`77ec86710de00eea7374b7db8c4bf0e8d1180e3d`, with no remaining findings.
+
+[Conductor run 43650452721](https://github.com/edithatogo/dapane/actions/runs/43650452721)
+passed for that exact PR head. Its
+[job log](https://github.com/edithatogo/dapane/actions/runs/43650452721/job/132617513294)
+records **14 tracks, 12 requirements, 147 tasks and 432 local links** and
+**12 tests passed** (35 CLI fixture executions). The runner was Ubuntu 24.04.5.
+The tested PR merge commit `38606fae3554caadc5408607f5ffad5e4b88fa5f`
+has the same tree `3fec022dcc4e0fc5c3bd5b41cb6bdbd9b7869423` as the
+reviewed candidate. Earlier local results are retained as separate observations.
+
+Only after that pass and the independent review was this track archived in place.
+The archive commit changes lifecycle records and navigation, not the verified
+validator or tests. Its subsequent exact-head checks are attached to
+[PR #14](https://github.com/edithatogo/dapane/pull/14); the run above qualifies
+the reviewed code and pre-archive records rather than claiming to execute a
+later commit.
+
+## Acceptance and retained evidence
+
+| Setup acceptance | Review outcome |
+| --- | --- |
+| Links and lifecycle records agree | Hosted context validation passed; archive status is synchronised across metadata, registry, index and plan. |
+| Every requirement has an owner and acceptance criteria | The existing 12 requirements remain covered by the 14 registered tracks; no implementation scope was reassigned. |
+| Local prerequisites remain acyclic | The validator checks the graph; the archive fixture confirms that an in-place archived prerequisite remains registered and usable. |
+| Setup completion does not qualify runtime capability | Capability remains `documentation_ready`; the original setup evidence and later runtime records retain their separate scopes. |
+| Reviewed setup and publication evidence are retained | Original publication and CI references remain unchanged; the corrections and closure are versioned in PR #14. |
+
+## Archive outcome
+
+Archived on **15 November 2026** at the original
+`conductor/tracks/conductor_setup_20261108/` path. All original tasks and the
+four review/closure tasks are complete. The archive catalogue points to this
+authoritative record; no duplicate track or relocated dependency was created.
+
+The current archive outcome is separate from
+`initial_setup_verification` and `initial_setup_completion_evidence`.
+No provider or external repository is archived by this change.
 
 ## Limits
 

@@ -28,7 +28,7 @@ their repository owners.
 
 - [Roadmap](roadmap.md): capability milestones and optional delivery paths.
 - [Track registry](tracks.md): status and entry points for all tracks.
-- [Setup record](tracks/conductor_setup_20261108/index.md): what this initialisation delivers.
+- [Archived setup record](tracks/conductor_setup_20261108/index.md): the completed initialisation, review and retained evidence.
 - [Core contracts](tracks/core_contracts_20261108/index.md): implemented first profile and remaining contract work.
 - [Setup verification record](verification.md): historical Conductor setup checks and their limits.
 - [Archive policy](archive/README.md): retention without premature archival.

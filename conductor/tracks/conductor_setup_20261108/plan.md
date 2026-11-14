@@ -1,6 +1,6 @@
 # Implementation plan: Conductor setup and source-of-truth handoff
 
-Status: in_progress
+Status: archived
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -26,9 +26,9 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 ## Phase 4 — Review and archival, 15 November 2026
 
 - [x] S4.1 Reconcile current main, active pull requests and original publication evidence; preserve the completed setup and separate implementation owners.
-- [~] S4.2 Reject unfinished or unverified archival and inconsistent or ambiguous status declarations; verify valid in-place archival with the existing dependency links.
-- [ ] S4.3 Review the corrections independently, apply findings and record focused verification with its limits.
-- [ ] S4.4 Archive the completed track in place, synchronise its lifecycle records and retain the original setup evidence and stable links.
+- [x] S4.2 Reject unfinished or unverified archival and inconsistent or ambiguous status declarations; verify valid in-place archival with the existing dependency links.
+- [x] S4.3 Review the corrections independently, apply findings and record focused verification with its limits.
+- [x] S4.4 Archive the completed track in place, synchronise its lifecycle records and retain the original setup evidence and stable links.
 
 ## Evidence record
 

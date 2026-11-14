@@ -16,6 +16,14 @@ or remove a completed prerequisite from the local dependency graph.
 Record each archived track below with its review evidence; do not copy its files
 into a second authoritative location.
 
+## Archived tracks
+
+| Track | Completed scope | Archived | Evidence |
+| --- | --- | --- | --- |
+| [Conductor setup](../tracks/conductor_setup_20261108/index.md) | Project context and source-of-truth handoff | 2026-11-15 | [Review and verification](../tracks/conductor_setup_20261108/review.md) |
+
+## Repository archival
+
 Repository archival is a separate task in the
 [release and consolidation track](../tracks/release_consolidation_20261108/index.md).
 It requires a functioning successor and review of unique research/source assets;

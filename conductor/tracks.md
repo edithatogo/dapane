@@ -12,7 +12,7 @@ A completed planning task does not change a runtime capability from planned to q
 
 | Marker | Track | Status | Requirements |
 | --- | --- | --- | --- |
-| [~] | [Conductor setup and source-of-truth handoff](./tracks/conductor_setup_20261108/index.md) | in_progress | RQ-01, RQ-12 |
+| [-] | [Conductor setup and source-of-truth handoff](./tracks/conductor_setup_20261108/index.md) | archived | RQ-01, RQ-12 |
 | [~] | [Core contracts and independent reference cases](./tracks/core_contracts_20261108/index.md) | in_progress | RQ-01, RQ-02, RQ-03 |
 | [~] | [Minimal Rust valuation kernel and CLI](./tracks/rust_kernel_20261108/index.md) | in_progress | RQ-01, RQ-02, RQ-03, RQ-12 |
 | [~] | [Python delivery with workforce and genomics consumers](./tracks/python_two_consumers_20261108/index.md) | in_progress | RQ-04, RQ-02, RQ-03 |
@@ -29,7 +29,7 @@ A completed planning task does not change a runtime capability from planned to q
 
 ## Next executable work
 
-The setup track is complete. A bounded contract, exact Rust/CLI kernel, Python
+The setup track is complete and archived in place. A bounded contract, exact Rust/CLI kernel, Python
 binding and five synthetic consumers now have [runtime evidence](../docs/runtime-verification.md).
 The [capacity increment](../docs/genomics-capacity-verification.md) adds five synthetic genomics comparisons and explicit 0.2 semantics while retaining 0.1 compatibility.
 Core, kernel, Python, newborn and process-context tracks are in progress; their
