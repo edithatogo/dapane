@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.3/common.schema.json",
+  "title": "Dapane 0.3 explicit uniform calendar-day interval definitions",
+  "$defs": {
+    "intervalUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/id"
+        },
+        "use_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/use_id"
+        },
+        "kind": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/kind"
+        },
+        "target": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/target"
+        },
+        "unit": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/unit"
+        },
+        "quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/quantity"
+        },
+        "source": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/source"
+        },
+        "event_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/event_id"
+        },
+        "process_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/process_id"
+        },
+        "activity_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/activity_id"
+        },
+        "object_ids": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/object_ids"
+        },
+        "attribution_object_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/usage/properties/attribution_object_id"
+        },
+        "start_date": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "end_date": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "exposure": {
+          "const": "uniform_calendar_days"
+        },
+        "quote_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "minItems": 1,
+          "maxItems": 10000,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "id",
+        "use_id",
+        "kind",
+        "target",
+        "unit",
+        "quantity",
+        "source",
+        "start_date",
+        "end_date",
+        "exposure",
+        "quote_ids"
+      ],
+      "description": "One original usage quantity over [start_date,end_date). The caller explicitly declares uniform calendar-day exposure. Rust checks coverage, selected quote compatibility, bounded segment counts and same-use component exclusivity."
+    },
+    "intervalSegment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "quote_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "start_date": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "end_date": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        },
+        "exact": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        }
+      },
+      "required": [
+        "quote_id",
+        "start_date",
+        "end_date",
+        "quantity",
+        "exact"
+      ],
+      "description": "An exact explanatory valuation segment. Segments are not independently rounded or charged."
+    },
+    "intervalLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/id"
+        },
+        "use_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/use_id"
+        },
+        "kind": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/kind"
+        },
+        "target": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/target"
+        },
+        "unit": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/unit"
+        },
+        "quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/quantity"
+        },
+        "source": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/source"
+        },
+        "event_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/event_id"
+        },
+        "process_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/process_id"
+        },
+        "activity_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/activity_id"
+        },
+        "object_ids": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/object_ids"
+        },
+        "attribution_object_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/attribution_object_id"
+        },
+        "components": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/components"
+        },
+        "exact": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/exact"
+        },
+        "rounded": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/rounded"
+        },
+        "rounding_adjustment": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/valuationLine/properties/rounding_adjustment"
+        },
+        "start_date": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "end_date": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "exposure": {
+          "const": "uniform_calendar_days"
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.3/common.schema.json#/$defs/intervalSegment"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "id",
+        "use_id",
+        "kind",
+        "target",
+        "unit",
+        "quantity",
+        "source",
+        "event_id",
+        "process_id",
+        "activity_id",
+        "object_ids",
+        "attribution_object_id",
+        "components",
+        "exact",
+        "rounded",
+        "rounding_adjustment",
+        "start_date",
+        "end_date",
+        "exposure",
+        "segments"
+      ],
+      "description": "One parent source line. Sum exact segment values, then round once; pools and totals include the parent once."
+    }
+  }
+}

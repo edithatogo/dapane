@@ -1,0 +1,128 @@
+{
+  "schema_version": "0.3",
+  "run_id": "synthetic-interval-rounding",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-interval-provider",
+    "version": "1",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "financial_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "rate-first",
+      "kind": "resource_use",
+      "target": "synthetic_staff",
+      "unit": "hour",
+      "amount": "0.005",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "financial_cost",
+      "components": [
+        "salary"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2026-01-02",
+      "known_from": "2025-12-01",
+      "source": {
+        "id": "synthetic-interval-reference",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated"
+      }
+    },
+    {
+      "id": "rate-second",
+      "kind": "resource_use",
+      "target": "synthetic_staff",
+      "unit": "hour",
+      "amount": "0.005",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "financial_cost",
+      "components": [
+        "salary"
+      ],
+      "valid_from": "2026-01-02",
+      "valid_to": "2026-01-03",
+      "known_from": "2025-12-01",
+      "source": {
+        "id": "synthetic-interval-reference",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated"
+      }
+    }
+  ],
+  "usage": [],
+  "interval_usage": [
+    {
+      "id": "interval-line",
+      "use_id": "interval-use",
+      "kind": "resource_use",
+      "target": "synthetic_staff",
+      "unit": "hour",
+      "quantity": "2",
+      "start_date": "2026-01-01",
+      "end_date": "2026-01-03",
+      "exposure": "uniform_calendar_days",
+      "quote_ids": [
+        "rate-first",
+        "rate-second"
+      ],
+      "source": {
+        "id": "synthetic-interval-reference",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated"
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "c",
+      "kind": "synthetic_recipient"
+    },
+    {
+      "id": "b",
+      "kind": "synthetic_recipient"
+    },
+    {
+      "id": "a",
+      "kind": "synthetic_recipient"
+    }
+  ],
+  "allocations": [
+    {
+      "id": "pool",
+      "source_line_ids": [
+        "interval-line"
+      ],
+      "weights": [
+        {
+          "object_id": "c",
+          "weight": "1"
+        },
+        {
+          "object_id": "b",
+          "weight": "1"
+        },
+        {
+          "object_id": "a",
+          "weight": "1"
+        }
+      ]
+    }
+  ]
+}

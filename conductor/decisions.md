@@ -176,11 +176,38 @@ small delivered scope. No dependency, runtime package version, provider owner or
 release status changes. Typed Rust struct literals require the new empty vector;
 0.1 JSON/CLI/Python inputs and the five original fixture digests remain compatible.
 
+## ADR-012 — Explicit calendar exposure and parent-level interval rounding
+
+Status: implemented bounded direction, 15 November 2026; qualification is recorded
+in the [kernel evidence](../docs/kernel-completion-verification.md).
+Requirements: RQ-01, RQ-02, RQ-03, RQ-12.
+
+Profile 0.3 admits a total quantity over a half-open calendar-date interval only
+when the caller declares `uniform_calendar_days`. The caller selects every
+quotation ID; the kernel rejects missing, overlapping, unknown-at-cutoff,
+nonintersecting or incompatible rates. Calendar-day ratios partition quantities
+exactly at rate boundaries without iterating each date. Each parent line sums
+exact segments before half-even rounding; component identity and pool attribution
+remain attached to the original use. Different component schedules can have
+different boundaries while retaining the same parent interval and exposure.
+
+This is a new method identity; 0.1 and 0.2 calculations/digests remain unchanged.
+The model does not infer hourly utilisation, business days, availability or
+exposure from throughput. The request/report retain the declared assumption,
+parent identity, segment dates and quote snapshots. No new dependency is added.
+
+K1.1 qualifies the pinned compiler, locked dependencies, recorded obligations and
+minimal native boundary for the unpublished candidate. Project-licence selection,
+redistribution notices, registry identities and publication compatibility remain
+unresolved in release L1.2/L1.3, as already assigned below. This explicit ownership
+reconciliation removes duplicated release gating from the kernel task; it does
+not approve a licence or a release. Cargo publication remains disabled.
+
 ## Decisions intentionally left to their implementation tracks
 
 | Decision | Owner and constraint |
 | --- | --- |
-| Wider schemas and compatibility windows | Contracts 0.1 and bounded 0.2 capacity are implemented; further profiles remain in the core-contracts track and require explicit migration. |
+| Wider schemas and compatibility windows | Contracts 0.1, bounded 0.2 capacity and explicit 0.3 calendar intervals are implemented; further profiles remain in their owning tracks and require explicit migration. |
 | Wider numeric methods and platform matrix | First Rust/CPython versions and precision bounds are recorded in the technology stack and runtime evidence; other methods/platforms remain unqualified. |
 | Project licence and package registry identities | Release/consolidation track; the empty repository supplied no licence or published package identity. |
 | First real newborn programme and data access | Newborn-screening track; separate synthetic arithmetic from sourced programme validity. |

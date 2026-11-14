@@ -1,0 +1,44 @@
+name: Kernel qualification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kernel-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.15'
+      - name: Install existing pinned tools and fetch locked sources
+        run: |
+          rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
+          python -m pip install -r requirements-dev.txt
+          cargo fetch --locked
+      - name: Qualify compiler, dependency metadata and scalar boundary
+        run: |
+          python -m unittest discover -s tests/tooling -p 'test_qualify_kernel.py' -v
+          python scripts/qualify_kernel.py
+          ruff check scripts/qualify_kernel.py scripts/validate_intervals.py tests/tooling
+          ruff format --check scripts/qualify_kernel.py scripts/validate_intervals.py tests/tooling
+      - name: Test and build minimal native packages offline
+        run: |
+          cargo test --locked --offline --no-default-features -p dapane-core -p dapane-cli
+          cargo build --locked --offline --no-default-features --release -p dapane-cli
+      - name: Verify interval references and observe bounded CPU workloads
+        run: |
+          python scripts/validate_intervals.py --cli target/release/dapane
+          python scripts/benchmark_cli.py --cli target/release/dapane --counts 10 1000 5000 --repeats 3

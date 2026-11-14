@@ -15,14 +15,21 @@ Conductor requirements and roadmap. It supports nonnegative point-date quantitie
 exact quotation application, conserving allocation and event/process/object context.
 Wire profile 0.1 retains full-pool allocation; [profile 0.2](docs/contract-v0.2.md)
 adds explicit incomplete instrument-capacity allocation, preserving unknown
-observations and unallocated value. The package remains an unpublished candidate.
+observations and unallocated value. [Profile 0.3](docs/contract-v0.3.md) adds
+explicit uniform calendar-day intervals, exact rate-boundary segmentation and
+rounding once per parent usage record. The package remains an unpublished candidate.
 Documentation validation alone does not establish numerical or empirical validity.
 
-Installed provider adapters, automatic interval segmentation, richer economic
-methods, R/Julia, reporting exports, Power Apps and process execution remain
+Installed provider adapters, additional exposure/economic methods, R/Julia,
+reporting exports, Power Apps and process execution remain
 separate work. See the [implemented contract](docs/contract-v0.1.md),
 [compatibility policy](docs/compatibility.md) and
 [runtime verification](docs/runtime-verification.md) for exact limits and evidence.
+
+The [interval reference cases](fixtures/intervals/README.md) cover a rate change,
+rational exposure and subdivision-invariant parent rounding. The
+[kernel qualification record](docs/kernel-completion-verification.md) distinguishes
+observed local checks from qualification of the published source.
 
 ## Kairos and the three contexts
 

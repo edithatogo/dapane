@@ -1,0 +1,95 @@
+{
+  "schema_version": "0.3",
+  "run_id": "synthetic-interval-rational",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-interval-provider",
+    "version": "1",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "financial_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "rate-first",
+      "kind": "resource_use",
+      "target": "synthetic_staff",
+      "unit": "hour",
+      "amount": "3",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "financial_cost",
+      "components": [
+        "salary"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2026-01-03",
+      "known_from": "2025-12-01",
+      "source": {
+        "id": "synthetic-interval-reference",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated"
+      }
+    },
+    {
+      "id": "rate-second",
+      "kind": "resource_use",
+      "target": "synthetic_staff",
+      "unit": "hour",
+      "amount": "6",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "financial_cost",
+      "components": [
+        "salary"
+      ],
+      "valid_from": "2026-01-03",
+      "valid_to": "2026-01-04",
+      "known_from": "2025-12-01",
+      "source": {
+        "id": "synthetic-interval-reference",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated"
+      }
+    }
+  ],
+  "usage": [],
+  "interval_usage": [
+    {
+      "id": "interval-line",
+      "use_id": "interval-use",
+      "kind": "resource_use",
+      "target": "synthetic_staff",
+      "unit": "hour",
+      "quantity": {
+        "numerator": "1",
+        "denominator": "3"
+      },
+      "start_date": "2026-01-01",
+      "end_date": "2026-01-04",
+      "exposure": "uniform_calendar_days",
+      "quote_ids": [
+        "rate-first",
+        "rate-second"
+      ],
+      "source": {
+        "id": "synthetic-interval-reference",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated"
+      }
+    }
+  ]
+}

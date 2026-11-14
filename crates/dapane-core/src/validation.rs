@@ -403,6 +403,11 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
         } else {
             format!("/interval_usage/{}", index - request.usage.len())
         };
+        let quote_field = if index < request.usage.len() {
+            "quote_id"
+        } else {
+            "quote_ids"
+        };
         text(&usage.id, &format!("{path}/id"))?;
         if !line_ids.insert(&usage.id) {
             return Err(DapaneError::new(
@@ -414,14 +419,14 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
         text(&usage.use_id, &format!("{path}/use_id"))?;
         text(&usage.target, &format!("{path}/target"))?;
         text(&usage.unit, &format!("{path}/unit"))?;
-        text(&usage.quote_id, &format!("{path}/quote_id"))?;
+        text(&usage.quote_id, &format!("{path}/{quote_field}"))?;
         let quantity = numeric::parse(&usage.quantity, &format!("{path}/quantity"))?;
         let service_date = date(&usage.service_date, &format!("{path}/service_date"))?;
         let quote = quotes.get(usage.quote_id.as_str()).ok_or_else(|| {
             DapaneError::new(
                 "missing_quote",
                 "No quotation has the selected quote_id",
-                &format!("{path}/quote_id"),
+                &format!("{path}/{quote_field}"),
             )
         })?;
         if usage.kind != quote.kind || usage.target != quote.target || usage.unit != quote.unit {
@@ -444,7 +449,7 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
             return Err(DapaneError::new(
                 "quote_not_known",
                 "Selected quotation was not known by knowledge_cutoff",
-                &format!("{path}/quote_id"),
+                &format!("{path}/{quote_field}"),
             ));
         }
         source(&usage.source, &format!("{path}/source"))?;
@@ -509,7 +514,7 @@ pub(crate) fn validate(request: &Request) -> Result<(), DapaneError> {
                             "Underlying use {} already includes component {component}",
                             usage.use_id
                         ),
-                        &format!("{path}/quote_id"),
+                        &format!("{path}/{quote_field}"),
                     ));
                 }
             }

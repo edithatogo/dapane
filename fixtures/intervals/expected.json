@@ -1,0 +1,182 @@
+{
+  "schema_version": "0.3",
+  "evidence": "synthetic",
+  "cases": {
+    "rate-boundary.json": {
+      "totals": {
+        "exact": {
+          "numerator": "26",
+          "denominator": "1"
+        },
+        "rounded": "26.00",
+        "rounding_adjustment": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "directly_attributed": "26.00",
+        "allocated": "0.00",
+        "unattributed": "0.00"
+      },
+      "interval_lines": {
+        "interval-line": {
+          "exact": {
+            "numerator": "26",
+            "denominator": "1"
+          },
+          "rounded": "26.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          },
+          "segments": [
+            {
+              "quote_id": "rate-first",
+              "start_date": "2026-01-01",
+              "end_date": "2026-01-05",
+              "quantity": {
+                "numerator": "4",
+                "denominator": "1"
+              },
+              "exact": {
+                "numerator": "8",
+                "denominator": "1"
+              }
+            },
+            {
+              "quote_id": "rate-second",
+              "start_date": "2026-01-05",
+              "end_date": "2026-01-11",
+              "quantity": {
+                "numerator": "6",
+                "denominator": "1"
+              },
+              "exact": {
+                "numerator": "18",
+                "denominator": "1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "rational.json": {
+      "totals": {
+        "exact": {
+          "numerator": "4",
+          "denominator": "3"
+        },
+        "rounded": "1.33",
+        "rounding_adjustment": {
+          "numerator": "-1",
+          "denominator": "300"
+        },
+        "directly_attributed": "0.00",
+        "allocated": "0.00",
+        "unattributed": "1.33"
+      },
+      "interval_lines": {
+        "interval-line": {
+          "exact": {
+            "numerator": "4",
+            "denominator": "3"
+          },
+          "rounded": "1.33",
+          "rounding_adjustment": {
+            "numerator": "-1",
+            "denominator": "300"
+          },
+          "segments": [
+            {
+              "quote_id": "rate-first",
+              "start_date": "2026-01-01",
+              "end_date": "2026-01-03",
+              "quantity": {
+                "numerator": "2",
+                "denominator": "9"
+              },
+              "exact": {
+                "numerator": "2",
+                "denominator": "3"
+              }
+            },
+            {
+              "quote_id": "rate-second",
+              "start_date": "2026-01-03",
+              "end_date": "2026-01-04",
+              "quantity": {
+                "numerator": "1",
+                "denominator": "9"
+              },
+              "exact": {
+                "numerator": "2",
+                "denominator": "3"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "rounding.json": {
+      "totals": {
+        "exact": {
+          "numerator": "1",
+          "denominator": "100"
+        },
+        "rounded": "0.01",
+        "rounding_adjustment": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "directly_attributed": "0.00",
+        "allocated": "0.01",
+        "unattributed": "0.00"
+      },
+      "interval_lines": {
+        "interval-line": {
+          "exact": {
+            "numerator": "1",
+            "denominator": "100"
+          },
+          "rounded": "0.01",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          },
+          "segments": [
+            {
+              "quote_id": "rate-first",
+              "start_date": "2026-01-01",
+              "end_date": "2026-01-02",
+              "quantity": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact": {
+                "numerator": "1",
+                "denominator": "200"
+              }
+            },
+            {
+              "quote_id": "rate-second",
+              "start_date": "2026-01-02",
+              "end_date": "2026-01-03",
+              "quantity": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact": {
+                "numerator": "1",
+                "denominator": "200"
+              }
+            }
+          ]
+        }
+      },
+      "allocation_shares": {
+        "a": "0.01",
+        "b": "0.00",
+        "c": "0.00"
+      }
+    }
+  }
+}

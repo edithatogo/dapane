@@ -54,6 +54,17 @@ Runtime CI uses the pinned checkout action above and setup-python v6 at
 on 8 November 2026. It runs native, schema and four-interpreter installed-wheel
 checks with read-only repository permissions.
 
+## Kernel qualification increment
+
+The interval profile adds no dependencies and retains Rust 1.99.1 and the locked
+graph. `scripts/qualify_kernel.py` compares fetched package metadata with the
+inventory, verifies the native dependency boundary and records the distinction
+between declared dependency obligations and an unresolved project licence.
+The [qualification record](../docs/kernel-dependency-qualification.md) and
+[kernel acceptance evidence](../docs/kernel-completion-verification.md) state
+actual results and release limitations. The kernel qualification workflow uses
+the existing pinned actions and toolchain, with read-only repository permissions.
+
 ## Broader implementation direction
 
 | Layer | Direction | Boundary |

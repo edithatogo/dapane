@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.3/request.schema.json",
+  "title": "Dapane 0.3 request",
+  "description": "Adds explicit uniform calendar-day interval valuation. Point-date and capacity semantics retain their existing meanings. Rust enforces cross-collection bounds, schedule coverage, source selection, context and component exclusivity. Structural validity is not economic validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.3"
+    },
+    "run_id": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/run_id"
+    },
+    "knowledge_cutoff": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/knowledge_cutoff"
+    },
+    "policy": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/policy"
+    },
+    "quotes": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/quotes"
+    },
+    "usage": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/usage"
+    },
+    "objects": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/objects"
+    },
+    "processes": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/processes"
+    },
+    "events": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/events"
+    },
+    "object_relations": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/object_relations"
+    },
+    "allocations": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/allocations"
+    },
+    "capacity_allocations": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json#/properties/capacity_allocations"
+    },
+    "interval_usage": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.3/common.schema.json#/$defs/intervalUsage"
+      },
+      "minItems": 0,
+      "maxItems": 10000
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "knowledge_cutoff",
+    "policy",
+    "quotes",
+    "usage"
+  ]
+}

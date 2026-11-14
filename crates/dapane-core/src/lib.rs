@@ -1,6 +1,6 @@
 //! Exact microcosting and valuation, independent of simulation and language wrappers.
 //!
-//! The supported contract is documented in docs/contract-v0.1.md. All monetary
+//! Supported profiles are documented in docs/contract-v0.1.md through v0.3.md. All monetary
 //! arithmetic uses bounded arbitrary-precision rational numbers; observations and
 //! weighted activity remain distinct. Object context never multiplies values.
 
@@ -87,6 +87,12 @@ fn invariant(message: &str) -> DapaneError {
 pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
     json::check_typed_size(request)?;
     validation::validate(request)?;
+    let interval_input_indices: BTreeMap<_, _> = request
+        .interval_usage
+        .iter()
+        .enumerate()
+        .map(|(index, usage)| (usage.id.clone(), index))
+        .collect();
     let request = validation::normalize(request);
     let input_digest = json::digest(
         &format!("dapane:input:{}\n", request.schema_version),
@@ -166,7 +172,10 @@ pub fn evaluate(request: &Request) -> Result<Report, DapaneError> {
         line_values.insert(usage.id.as_str(), LineValue { exact, minor });
     }
 
-    for (index, usage) in request.interval_usage.iter().enumerate() {
+    for usage in &request.interval_usage {
+        let index = interval_input_indices
+            .get(&usage.id)
+            .ok_or_else(|| invariant("Validated interval input index disappeared"))?;
         let path = format!("/interval_usage/{index}");
         let value = intervals::evaluate(usage, &quote_map, &request.knowledge_cutoff, &path)?;
         let minor = numeric::rounded_minor(&value.exact, scale);

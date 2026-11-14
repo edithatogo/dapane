@@ -3,14 +3,15 @@
 The implementation remains an unpublished `0.1.0` package candidate. Its original
 wire contract `0.1` / method `dapane-exact-v0.1.0` remains supported unchanged.
 The explicit [capacity profile](contract-v0.2.md) adds wire `0.2` / method
-`dapane-exact-v0.2.0`. Package and contract versions are independent. These
+`dapane-exact-v0.2.0`. The [interval profile](contract-v0.3.md) adds wire `0.3` /
+method `dapane-exact-v0.3.0`. Package and contract versions are independent. These
 identities have different responsibilities; a package version alone does not
 identify a price release or an economic method.
 
 | Identity | Meaning | Change rule |
 | --- | --- | --- |
 | Engine/package version | Code and packaging implementation | Pin the source revision and `Cargo.lock` for a reproducible source build. Published binaries will need their own artifact identity. |
-| `schema_version` | Accepted fields, types and meanings | Accepts `0.1` and `0.2` explicitly. Capacity records are rejected in `0.1`. Unknown fields and versions fail; there is no implicit conversion. |
+| `schema_version` | Accepted fields, types and meanings | Accepts `0.1`, `0.2` and `0.3` explicitly. Capacity records are rejected in `0.1`; interval records require `0.3`. Unknown fields and versions fail; there is no implicit conversion. |
 | `method_version` | Numerical and rounding semantics | Changed financial semantics require a new method identity and reference cases; retain prior expected results and explain differences. |
 | Policy ID/version | Caller-selected perspective and valuation assumptions | Never silently substitute another policy. Contract 0.1 supports only its explicit fields and named rounding method. |
 | Source ID/version/digest | Supplied source snapshot | Corrections create a new source version and a new run. A supplied digest is preserved; the core does not retrieve external content to verify it. |
@@ -23,8 +24,21 @@ The exact algorithm and normalization are in the [contract](contract-v0.1.md).
 The [capacity contract](contract-v0.2.md) defines its separate remainder and
 unknown-state semantics. The five original fixture input/output digests remain
 unchanged. Typed Rust `Request` literals need the new empty
-`capacity_allocations` vector; pre-1.0 source compatibility is not asserted for
+`capacity_allocations` and `interval_usage` vectors; pre-1.0 source compatibility is not asserted for
 struct construction. JSON/CLI/Python full-pool inputs remain compatible.
+
+Interval reports add `interval_lines`; point-date `lines` keep their existing
+meaning. Each interval's exact segments are summed before the parent line is
+rounded. Equivalent rate subdivision preserves monetary results but changes
+quote provenance and therefore may change digests. The original input is retained
+for hashing; internal identity projections are validation-only and never become
+source records or financial lines. Empty new arrays are omitted from canonical
+old-profile transport, and even an empty `interval_usage` property is rejected
+in 0.1/0.2 JSON. A `Report` struct literal additionally needs `interval_lines`.
+
+The separate run-bundle lifecycle under core-contract PR #9 has its own version
+and acceptance. This kernel increment does not widen its admitted request
+profiles or claim the bundle verifier accepts 0.3.
 
 ## Namespaces and extensions
 
