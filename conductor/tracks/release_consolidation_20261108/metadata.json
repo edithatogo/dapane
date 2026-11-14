@@ -1,9 +1,9 @@
 {
   "track_id": "release_consolidation_20261108",
   "type": "chore",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-14T23:01:08Z",
   "description": "Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.",
   "repositories": [
     "."
@@ -24,10 +24,20 @@
     "RQ-12",
     "RQ-04"
   ],
-  "capability_status": "planned",
+  "capability_status": "candidate_assurance_under_verification",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "pending_hosted_checks",
+    "commands": [
+      "python scripts/release_assurance.py validate",
+      "python -m unittest discover -s tests/release -v",
+      "ruff check scripts/release_assurance.py tests/release",
+      "ruff format --check scripts/release_assurance.py tests/release",
+      "python scripts/validate_conductor.py"
+    ],
+    "evidence": [
+      "evidence.md",
+      "../../../docs/release-assurance.md"
+    ]
   },
   "completion_evidence": [
     "A core/Python release can qualify after contracts, kernel and the two consumers; optional integration tracks remain independently planned or experimental.",
@@ -36,5 +46,11 @@
     "Installed artifacts exercise native functionality and reference cases; passing source-tree tests alone is insufficient.",
     "Existing consumer APIs have a documented migration and recovery path before shared machinery is removed.",
     "No archive is executed from a recommendation alone; unique history/research, rights, successor behaviour and any required authorization are retained."
+  ],
+  "archive_requested": true,
+  "archive_performed": false,
+  "blockers": [
+    "Project licence and registry identity are unresolved; no public package publication is enabled.",
+    "The required Python track has not yet qualified real workforce/genomics consumers and historical API migration/recovery."
   ]
 }
