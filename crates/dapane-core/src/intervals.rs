@@ -11,8 +11,8 @@ use num_rational::BigRational;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    DapaneError, ExactNumber, MeasureKind, Rational, Report, Request, SourceRef, UnitQuote,
-    Usage, MAX_JSON_BYTES, evaluate, json, numeric, validation,
+    DapaneError, ExactNumber, MAX_JSON_BYTES, MeasureKind, Rational, Report, Request, SourceRef,
+    UnitQuote, Usage, evaluate, json, numeric, validation,
 };
 
 pub const INTERVAL_SCHEMA_VERSION: &str = "0.1";
@@ -145,11 +145,12 @@ fn parent_error(mut error: DapaneError, point_count: usize) -> DapaneError {
                 "quote_id" => "quote_ids",
                 field => field,
             };
-            error.path = format!("/intervals/{}", index - point_count);
+            let mut path = format!("/intervals/{}", index - point_count);
             if !field.is_empty() {
-                error.path.push('/');
-                error.path.push_str(field);
+                path.push('/');
+                path.push_str(field);
             }
+            error.path = path;
             return error;
         }
     }
@@ -161,8 +162,7 @@ pub fn evaluate_intervals_json(input: &str) -> Result<String, DapaneError> {
     let value = json::parse_value(input)?;
     if let Some(request) = value.get("request") {
         // Preserve the raw 0.1 prohibition on capacity_allocations, even [].
-        json::parse(&json::canonical(request)?)
-            .map_err(|error| inner_error(error, "/request"))?;
+        json::parse(&json::canonical(request)?).map_err(|error| inner_error(error, "/request"))?;
     }
     let request: IntervalRequest = serde_json::from_value(value)
         .map_err(|error| failure("invalid_request", &error.to_string(), "/"))?;
@@ -205,7 +205,11 @@ fn select<'a>(
             ));
         }
         let quote = quotes.get(id.as_str()).copied().ok_or_else(|| {
-            failure("missing_quote", "Selected quotation does not exist", &quote_path)
+            failure(
+                "missing_quote",
+                "Selected quotation does not exist",
+                &quote_path,
+            )
         })?;
         if usage.kind != quote.kind || usage.target != quote.target || usage.unit != quote.unit {
             return Err(failure(
@@ -215,7 +219,10 @@ fn select<'a>(
             ));
         }
         let covered: BTreeSet<_> = quote.components.iter().map(String::as_str).collect();
-        if components.as_ref().is_some_and(|expected| expected != &covered) {
+        if components
+            .as_ref()
+            .is_some_and(|expected| expected != &covered)
+        {
             return Err(failure(
                 "component_mismatch",
                 "One interval quotation series must preserve its component set",
@@ -245,9 +252,7 @@ fn select<'a>(
             quote,
         });
     }
-    selected.sort_by(|a, b| {
-        (&a.start, &a.end, &a.quote.id).cmp(&(&b.start, &b.end, &b.quote.id))
-    });
+    selected.sort_by(|a, b| (&a.start, &a.end, &a.quote.id).cmp(&(&b.start, &b.end, &b.quote.id)));
     let mut cursor = start;
     for segment in &selected {
         if segment.start < cursor {
@@ -279,7 +284,11 @@ fn select<'a>(
 fn generated_id(domain: &str, prefix: &str, parts: &[&str]) -> Result<String, DapaneError> {
     let digest = json::digest(domain, &json::value(&parts)?)?;
     let hex = digest.strip_prefix("sha256:").ok_or_else(|| {
-        failure("internal_invariant", "Unexpected digest encoding", "/intervals")
+        failure(
+            "internal_invariant",
+            "Unexpected digest encoding",
+            "/intervals",
+        )
     })?;
     Ok(format!("{prefix}{hex}"))
 }
@@ -300,7 +309,9 @@ fn expand_sources<'a>(
 }
 
 fn reserve_bytes(current: &mut usize, removed: usize, added: usize) -> Result<(), DapaneError> {
-    let next = current.checked_sub(removed).and_then(|n| n.checked_add(added));
+    let next = current
+        .checked_sub(removed)
+        .and_then(|n| n.checked_add(added));
     let Some(next) = next.filter(|n| *n <= MAX_JSON_BYTES) else {
         return Err(failure(
             "input_limit",
@@ -326,7 +337,11 @@ fn replace_sources(
     budget: &mut usize,
 ) -> Result<(), DapaneError> {
     let replacement = expand_sources(ids, children);
-    reserve_bytes(budget, json::encoded_size(ids)?, json::encoded_size(&replacement)?)?;
+    reserve_bytes(
+        budget,
+        json::encoded_size(ids)?,
+        json::encoded_size(&replacement)?,
+    )?;
     *ids = replacement.into_iter().map(str::to_owned).collect();
     Ok(())
 }
@@ -367,11 +382,18 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
         return Err(failure("input_limit", "Too many intervals", "/intervals"));
     }
     let point_count = request.request.usage.len();
-    let segment_count = request.intervals.iter().try_fold(point_count, |count, usage| {
-        count.checked_add(usage.quote_ids.len()).ok_or_else(|| {
-            failure("input_limit", "Interval expansion count overflow", "/intervals")
-        })
-    })?;
+    let segment_count = request
+        .intervals
+        .iter()
+        .try_fold(point_count, |count, usage| {
+            count.checked_add(usage.quote_ids.len()).ok_or_else(|| {
+                failure(
+                    "input_limit",
+                    "Interval expansion count overflow",
+                    "/intervals",
+                )
+            })
+        })?;
     if segment_count > MAX_SEGMENTS {
         return Err(failure(
             "input_limit",
@@ -389,7 +411,9 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
         request.request.object_relations.len(),
         request.request.allocations.len(),
         request.request.capacity_allocations.len(),
-    ].iter().sum::<usize>();
+    ]
+    .iter()
+    .sum::<usize>();
     if expanded_records > 20_000 {
         return Err(failure(
             "input_limit",
@@ -404,10 +428,24 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
     preliminary.allocations.clear();
     preliminary.capacity_allocations.clear();
     validation::validate(&preliminary).map_err(|error| inner_error(error, "/request"))?;
-    let cutoff = validation::date(&request.request.knowledge_cutoff, "/request/knowledge_cutoff")?;
-    let quotes: BTreeMap<_, _> = request.request.quotes.iter().map(|q| (q.id.as_str(), q)).collect();
-    let point_uses: BTreeSet<_> = request.request.usage.iter().map(|u| u.use_id.as_str()).collect();
-    let mut source_line_ids: BTreeSet<_> = request.request.usage.iter().map(|u| u.id.clone()).collect();
+    let cutoff = validation::date(
+        &request.request.knowledge_cutoff,
+        "/request/knowledge_cutoff",
+    )?;
+    let quotes: BTreeMap<_, _> = request
+        .request
+        .quotes
+        .iter()
+        .map(|q| (q.id.as_str(), q))
+        .collect();
+    let point_uses: BTreeSet<_> = request
+        .request
+        .usage
+        .iter()
+        .map(|u| u.use_id.as_str())
+        .collect();
+    let mut source_line_ids: BTreeSet<_> =
+        request.request.usage.iter().map(|u| u.id.clone()).collect();
     let mut source_use_ids = point_uses.clone();
     let mut spans = BTreeMap::new();
     for (index, usage) in request.intervals.iter().enumerate() {
@@ -431,8 +469,7 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
         if let Some((start, end)) = spans.insert(
             usage.use_id.as_str(),
             (usage.start.as_str(), usage.end.as_str()),
-        )
-            && (start != usage.start || end != usage.end)
+        ) && (start != usage.start || end != usage.end)
         {
             return Err(failure(
                 "inconsistent_use",
@@ -467,13 +504,20 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
     let mut children = BTreeMap::new();
     let mut generated_lines = BTreeSet::new();
     for (usage, selected) in request.intervals.iter().zip(&selections) {
-        let ids = selected.iter().map(|segment| {
-            generated_id(
-                "dapane:interval-line:0.1\n",
-                "il-",
-                &[&usage.id, &segment.start.to_string(), &segment.end.to_string()],
-            )
-        }).collect::<Result<Vec<_>, _>>()?;
+        let ids = selected
+            .iter()
+            .map(|segment| {
+                generated_id(
+                    "dapane:interval-line:0.1\n",
+                    "il-",
+                    &[
+                        &usage.id,
+                        &segment.start.to_string(),
+                        &segment.end.to_string(),
+                    ],
+                )
+            })
+            .collect::<Result<Vec<_>, _>>()?;
         for id in &ids {
             if source_line_ids.contains(id) || !generated_lines.insert(id.clone()) {
                 return Err(failure(
@@ -495,7 +539,11 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
             let smaller = json::encoded_size(&replacement)?
                 < json::encoded_size(&allocation.source_line_ids)?;
             if smaller == shrinking {
-                replace_sources(&mut allocation.source_line_ids, &children, &mut expanded_size)?;
+                replace_sources(
+                    &mut allocation.source_line_ids,
+                    &children,
+                    &mut expanded_size,
+                )?;
             }
         }
         for allocation in &mut expanded.capacity_allocations {
@@ -503,7 +551,11 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
             let smaller = json::encoded_size(&replacement)?
                 < json::encoded_size(&allocation.source_line_ids)?;
             if smaller == shrinking {
-                replace_sources(&mut allocation.source_line_ids, &children, &mut expanded_size)?;
+                replace_sources(
+                    &mut allocation.source_line_ids,
+                    &children,
+                    &mut expanded_size,
+                )?;
             }
         }
     }
@@ -601,8 +653,12 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
     let normalized = normalize(request);
     let input_digest = json::digest("dapane:interval-input:0.1\n", &json::value(&normalized)?)?;
     segments.sort_by(|a, b| {
-        (&a.interval_id, &a.start, &a.end, &a.quote_id)
-            .cmp(&(&b.interval_id, &b.start, &b.end, &b.quote_id))
+        (&a.interval_id, &a.start, &a.end, &a.quote_id).cmp(&(
+            &b.interval_id,
+            &b.start,
+            &b.end,
+            &b.quote_id,
+        ))
     });
     let mut result = IntervalReport {
         schema_version: INTERVAL_SCHEMA_VERSION.to_owned(),
@@ -616,9 +672,16 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
         report,
     };
     let mut value = json::value(&result)?;
-    value.as_object_mut().ok_or_else(|| {
-        failure("internal_invariant", "Interval report is not an object", "/")
-    })?.remove("output_digest");
+    value
+        .as_object_mut()
+        .ok_or_else(|| {
+            failure(
+                "internal_invariant",
+                "Interval report is not an object",
+                "/",
+            )
+        })?
+        .remove("output_digest");
     result.output_digest = json::digest("dapane:interval-output:0.1\n", &value)?;
     Ok(result)
 }

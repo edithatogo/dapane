@@ -227,10 +227,7 @@ def check_metadata(metadata: dict, lock: dict, recorded: dict) -> list[dict]:
         for dependency in node["deps"]:
             if any(kind["kind"] != "dev" for kind in dependency["dep_kinds"]):
                 pending.append(dependency["pkg"])
-    closure = [
-        {"name": by_id[key]["name"], "version": by_id[key]["version"]}
-        for key in visited
-    ]
+    closure = [{"name": by_id[key]["name"], "version": by_id[key]["version"]} for key in visited]
     return sorted(closure, key=lambda item: (item["name"], item["version"]))
 
 

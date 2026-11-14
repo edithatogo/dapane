@@ -7,7 +7,10 @@ use serde_json::{Value, json};
 const LIMIT: usize = 4 * 1024 * 1024;
 
 fn base() -> Value {
-    serde_json::from_str(include_str!("../../../fixtures/intervals/rate-boundary.json")).unwrap()
+    serde_json::from_str(include_str!(
+        "../../../fixtures/intervals/rate-boundary.json"
+    ))
+    .unwrap()
 }
 
 fn output(input: &Value) -> Value {
@@ -42,7 +45,9 @@ fn modest_interval_input_cannot_expand_past_the_exact_byte_budget() {
     input["intervals"][0]["start"] = json!(first.to_string());
     input["intervals"][0]["end"] = json!((first + Duration::days(100)).to_string());
     input["intervals"][0]["quote_ids"] = json!(selected);
-    let ids: Vec<_> = (0..5000).map(|index| format!("object-{index:04}")).collect();
+    let ids: Vec<_> = (0..5000)
+        .map(|index| format!("object-{index:04}"))
+        .collect();
     input["request"]["objects"] = json!(
         ids.iter()
             .map(|id| json!({"id": id, "kind": "recipient"}))
@@ -112,7 +117,10 @@ fn one_parent_cannot_claim_different_interval_ends_for_disjoint_components() {
         quote["id"] = json!(id);
         quote["components"] = json!(["overhead"]);
         selected.push(json!(id));
-        input["request"]["quotes"].as_array_mut().unwrap().push(quote);
+        input["request"]["quotes"]
+            .as_array_mut()
+            .unwrap()
+            .push(quote);
     }
     let mut second = input["intervals"][0].clone();
     second["id"] = json!("overhead-line");

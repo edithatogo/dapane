@@ -4,7 +4,10 @@ use dapane_core::{evaluate_intervals_json, evaluate_json};
 use serde_json::{Value, json};
 
 fn base() -> Value {
-    serde_json::from_str(include_str!("../../../fixtures/intervals/rate-boundary.json")).unwrap()
+    serde_json::from_str(include_str!(
+        "../../../fixtures/intervals/rate-boundary.json"
+    ))
+    .unwrap()
 }
 
 fn output(input: &Value) -> Value {
@@ -35,8 +38,20 @@ fn independent_rate_boundary_and_parent_lineage_are_preserved() {
     let segments = result["segments"].as_array().unwrap();
     assert_eq!(segments.len(), 2);
     for (start, end, quote, quantity, expected) in [
-        ("2026-01-31", "2026-02-01", "before", rational("1", "3"), "30.00"),
-        ("2026-02-01", "2026-02-03", "after", rational("2", "3"), "80.00"),
+        (
+            "2026-01-31",
+            "2026-02-01",
+            "before",
+            rational("1", "3"),
+            "30.00",
+        ),
+        (
+            "2026-02-01",
+            "2026-02-03",
+            "after",
+            rational("2", "3"),
+            "80.00",
+        ),
     ] {
         let segment = segments.iter().find(|s| s["start"] == start).unwrap();
         assert_eq!(segment["end"], end);
@@ -52,16 +67,12 @@ fn independent_rate_boundary_and_parent_lineage_are_preserved() {
             .unwrap();
         assert_eq!(line["quantity"], quantity);
         assert_eq!(line["rounded"], expected);
-        assert_eq!(
-            line["source"]["id"],
-            input["intervals"][0]["source"]["id"]
-        );
+        assert_eq!(line["source"]["id"], input["intervals"][0]["source"]["id"]);
     }
     assert_eq!(result["interval_snapshots"][0]["quantity"], "1");
-    let replay: Value = serde_json::from_str(
-        &evaluate_json(&result["expanded_request"].to_string()).unwrap(),
-    )
-    .unwrap();
+    let replay: Value =
+        serde_json::from_str(&evaluate_json(&result["expanded_request"].to_string()).unwrap())
+            .unwrap();
     assert_eq!(replay, result["report"]);
 }
 
@@ -82,9 +93,15 @@ fn boundaries_are_half_open_and_leap_days_are_calendar_days() {
     input["request"]["quotes"][1]["valid_from"] = json!("2024-03-01");
     let result = output(&input);
     assert_eq!(result["report"]["totals"]["rounded"], "100.00");
-    assert!(result["segments"].as_array().unwrap().iter().any(|segment| {
-        segment["quote_id"] == "before" && segment["quantity"] == rational("2", "3")
-    }));
+    assert!(
+        result["segments"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|segment| {
+                segment["quote_id"] == "before" && segment["quantity"] == rational("2", "3")
+            })
+    );
 }
 
 #[test]
@@ -128,8 +145,14 @@ fn request_order_does_not_change_output_and_decimal_provenance_does() {
     let input = base();
     let reference = output(&input);
     let mut reordered = input.clone();
-    reordered["request"]["quotes"].as_array_mut().unwrap().reverse();
-    reordered["intervals"][0]["quote_ids"].as_array_mut().unwrap().reverse();
+    reordered["request"]["quotes"]
+        .as_array_mut()
+        .unwrap()
+        .reverse();
+    reordered["intervals"][0]["quote_ids"]
+        .as_array_mut()
+        .unwrap()
+        .reverse();
     assert_eq!(output(&reordered), reference);
     let mut respelled = input;
     respelled["intervals"][0]["quantity"] = json!("1.00");
@@ -194,10 +217,9 @@ fn capacity_expansion_retains_unknown_usage_and_unallocated_value() {
     assert_eq!(pool["unallocated"], "77.00");
     assert_eq!(result["report"]["totals"]["unattributed"], "77.00");
     assert_eq!(result["report"]["totals"]["allocated"], "33.00");
-    let replay: Value = serde_json::from_str(
-        &evaluate_json(&result["expanded_request"].to_string()).unwrap(),
-    )
-    .unwrap();
+    let replay: Value =
+        serde_json::from_str(&evaluate_json(&result["expanded_request"].to_string()).unwrap())
+            .unwrap();
     assert_eq!(replay, result["report"]);
 }
 
@@ -209,9 +231,15 @@ fn invalid_dates_exposure_precision_and_coverage_never_return_a_report() {
         ("/intervals/0/end", json!("2026-01-31")),
         ("/intervals/0/exposure", json!("infer_uniform")),
         ("/intervals/0/quantity", json!(0.5)),
-        ("/intervals/0/quantity", json!({"numerator":"1", "denominator":"0"})),
+        (
+            "/intervals/0/quantity",
+            json!({"numerator":"1", "denominator":"0"}),
+        ),
         ("/intervals/0/quote_ids", json!([])),
-        ("/intervals/0/quote_ids", json!(["before", "before", "after"])),
+        (
+            "/intervals/0/quote_ids",
+            json!(["before", "before", "after"]),
+        ),
         ("/intervals/0/quote_ids", json!(["missing"])),
         ("/request/quotes/1/valid_from", json!("2026-02-02")),
         ("/request/quotes/1/valid_from", json!("2026-01-31")),
@@ -229,7 +257,10 @@ fn invalid_dates_exposure_precision_and_coverage_never_return_a_report() {
     irrelevant["intervals"][0]["start"] = json!("2026-02-01");
     reject(&irrelevant);
     let mut missing = base();
-    missing["intervals"][0].as_object_mut().unwrap().remove("exposure");
+    missing["intervals"][0]
+        .as_object_mut()
+        .unwrap()
+        .remove("exposure");
     reject(&missing);
     let mut empty = base();
     empty["intervals"] = json!([]);
@@ -267,7 +298,10 @@ fn disjoint_component_lines_share_a_parent_without_double_counting() {
     quote["amount"] = json!("3");
     quote["components"] = json!(["overhead"]);
     quote["valid_to"] = json!("2027-01-01");
-    input["request"]["quotes"].as_array_mut().unwrap().push(quote);
+    input["request"]["quotes"]
+        .as_array_mut()
+        .unwrap()
+        .push(quote);
     input["intervals"].as_array_mut().unwrap().push(second);
     let result = output(&input);
     assert_eq!(result["report"]["totals"]["rounded"], "113.00");
@@ -280,7 +314,10 @@ fn strict_transport_rejects_duplicate_keys_and_legacy_implicit_intervals() {
     let mut duplicate = input.to_string();
     duplicate.pop();
     duplicate.push_str(",\"schema_version\":\"0.1\"}");
-    assert_eq!(evaluate_intervals_json(&duplicate).unwrap_err().code, "invalid_json");
+    assert_eq!(
+        evaluate_intervals_json(&duplicate).unwrap_err().code,
+        "invalid_json"
+    );
     for version in ["0.1", "0.2"] {
         let mut legacy = input["request"].clone();
         legacy["schema_version"] = json!(version);

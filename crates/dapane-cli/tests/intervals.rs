@@ -3,8 +3,7 @@ use std::path::PathBuf;
 use std::process::{Command, Output, Stdio};
 
 fn fixture() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../fixtures/intervals/rate-boundary.json")
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/intervals/rate-boundary.json")
 }
 
 fn stdin(input: &[u8]) -> Output {

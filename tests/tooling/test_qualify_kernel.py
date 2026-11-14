@@ -47,33 +47,23 @@ def synthetic_metadata(lock: dict, recorded: dict) -> dict:
         )
     return {
         "packages": packages,
-        "workspace_members": [
-            ids[name] for name in sorted(guard.NATIVE_ROOTS | {"dapane-python"})
-        ],
-        "workspace_default_members": [
-            ids[name] for name in sorted(guard.NATIVE_ROOTS)
-        ],
+        "workspace_members": [ids[name] for name in sorted(guard.NATIVE_ROOTS | {"dapane-python"})],
+        "workspace_default_members": [ids[name] for name in sorted(guard.NATIVE_ROOTS)],
         "resolve": {"nodes": nodes},
     }
 
 
 class KernelQualificationTests(unittest.TestCase):
     def setUp(self):
-        self.lock = tomllib.loads(
-            (ROOT / "Cargo.lock").read_text(encoding="utf-8")
-        )
-        self.inventory = json.loads(
-            (ROOT / "docs/dependencies.json").read_text(encoding="utf-8")
-        )
+        self.lock = tomllib.loads((ROOT / "Cargo.lock").read_text(encoding="utf-8"))
+        self.inventory = json.loads((ROOT / "docs/dependencies.json").read_text(encoding="utf-8"))
         self.recorded = guard.check_inventory(self.lock, self.inventory)
         self.metadata = synthetic_metadata(self.lock, self.recorded)
 
     def test_actual_static_declarations_pass(self):
         _, recorded, members = guard.load_static(ROOT)
         self.assertEqual(len(recorded), 36)
-        self.assertEqual(
-            set(members), {"dapane-core", "dapane-cli", "dapane-python"}
-        )
+        self.assertEqual(set(members), {"dapane-core", "dapane-cli", "dapane-python"})
 
     def test_changed_checksum_is_rejected(self):
         self.inventory["packages"][0]["checksum"] = "0" * 64
@@ -113,43 +103,27 @@ class KernelQualificationTests(unittest.TestCase):
             metadata = deepcopy(self.metadata)
             package = next(p for p in metadata["packages"] if p.get("source"))
             package[field] = value
-            with self.assertRaisesRegex(
-                guard.QualificationError, "differs from inventory"
-            ):
+            with self.assertRaisesRegex(guard.QualificationError, "differs from inventory"):
                 guard.check_metadata(metadata, self.lock, self.recorded)
 
     def test_wrapper_build_dependency_in_native_closure_is_rejected(self):
         core = next(
-            node
-            for node in self.metadata["resolve"]["nodes"]
-            if "dapane-core@" in node["id"]
+            node for node in self.metadata["resolve"]["nodes"] if "dapane-core@" in node["id"]
         )
-        pyo3 = next(
-            package
-            for package in self.metadata["packages"]
-            if package["name"] == "pyo3"
-        )
-        core["deps"].append(
-            {"pkg": pyo3["id"], "dep_kinds": [{"kind": "build"}]}
-        )
+        pyo3 = next(package for package in self.metadata["packages"] if package["name"] == "pyo3")
+        core["deps"].append({"pkg": pyo3["id"], "dep_kinds": [{"kind": "build"}]})
         with self.assertRaisesRegex(guard.QualificationError, "Unqualified dependency"):
             guard.check_metadata(self.metadata, self.lock, self.recorded)
 
     def test_clock_features_are_rejected(self):
-        chrono = next(
-            node
-            for node in self.metadata["resolve"]["nodes"]
-            if "chrono@" in node["id"]
-        )
+        chrono = next(node for node in self.metadata["resolve"]["nodes"] if "chrono@" in node["id"])
         chrono["features"].append("clock")
         with self.assertRaisesRegex(guard.QualificationError, "clock/timezone"):
             guard.check_metadata(self.metadata, self.lock, self.recorded)
 
     def test_resolved_publication_gate_is_enforced(self):
         core = next(
-            package
-            for package in self.metadata["packages"]
-            if package["name"] == "dapane-core"
+            package for package in self.metadata["packages"] if package["name"] == "dapane-core"
         )
         core["publish"] = None
         with self.assertRaisesRegex(guard.QualificationError, "permits publication"):
@@ -157,21 +131,15 @@ class KernelQualificationTests(unittest.TestCase):
 
     def test_default_wrapper_is_rejected(self):
         wrapper = next(
-            package
-            for package in self.metadata["packages"]
-            if package["name"] == "dapane-python"
+            package for package in self.metadata["packages"] if package["name"] == "dapane-python"
         )
         self.metadata["workspace_default_members"].append(wrapper["id"])
-        with self.assertRaisesRegex(
-            guard.QualificationError, "default workspace members"
-        ):
+        with self.assertRaisesRegex(guard.QualificationError, "default workspace members"):
             guard.check_metadata(self.metadata, self.lock, self.recorded)
 
     def test_stable_version_comparison_preserves_cargo_patch_independence(self):
         self.assertEqual(guard.version("1.99"), (1, 99, 0))
-        self.assertEqual(
-            guard.version("1.99.0")[:2], guard.version("1.99.1")[:2]
-        )
+        self.assertEqual(guard.version("1.99.0")[:2], guard.version("1.99.1")[:2])
         for value in ("nightly", "1.99.0-nightly", "1", "1.99.0.1"):
             with self.assertRaises(guard.QualificationError):
                 guard.version(value)

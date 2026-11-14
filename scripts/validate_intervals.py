@@ -17,16 +17,17 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
-
 from validate_contract import (
     CONTEXT_IDS,
     ContractFailure,
     canonical,
     digest,
     fraction,
+    keyed,
     normalize_request,
     read_json,
     require,
+    set_path,
     strict_loads,
     validate,
 )
@@ -102,8 +103,8 @@ def successful(cli: Path, request: dict, checkers: dict) -> dict:
     return report
 
 
-def verify(cli: Path, request: dict, expected: dict, checkers: dict) -> None:
-    report = successful(cli, request, checkers)
+def verify_lineage(request: dict, report: dict) -> dict:
+    """Check original-to-derived provenance without evaluating any monetary rule."""
     normalized = normalize(request)
     require(
         report["request_snapshot"] == normalized["request"],
@@ -113,6 +114,211 @@ def verify(cli: Path, request: dict, expected: dict, checkers: dict) -> None:
         report["interval_snapshots"] == normalized["intervals"],
         "Original normalized interval snapshots were not retained",
     )
+    original = normalized["request"]
+    expanded = report["expanded_request"]
+    scalar = report["report"]
+    transformed = {"usage", "allocations", "capacity_allocations"}
+    require(
+        {key: value for key, value in expanded.items() if key not in transformed}
+        == {key: value for key, value in original.items() if key not in transformed},
+        "Expansion changed original quote, policy or context snapshots",
+    )
+    require(scalar["policy"] == original["policy"], "Scalar policy snapshot changed")
+    require(scalar["quote_snapshots"] == original["quotes"], "Scalar quote snapshots changed")
+    require(scalar["run_id"] == original["run_id"], "Scalar run identity changed")
+    require(scalar["schema_version"] == original["schema_version"], "Scalar contract changed")
+    require(
+        scalar["context"]
+        == {key: original[key] for key in ("objects", "processes", "events", "object_relations")},
+        "Scalar context snapshots changed",
+    )
+    parents = keyed(normalized["intervals"], "id", "original intervals")
+    points = keyed(original["usage"], "id", "original point rows")
+    quotes = keyed(original["quotes"], "id", "original quotes")
+    events = keyed(original["events"], "id", "original events")
+    segments = keyed(report["segments"], "line_id", "interval segments")
+    uses = keyed(expanded["usage"], "id", "expanded usage")
+    lines = keyed(scalar["lines"], "id", "scalar lines")
+    require(not set(points).intersection(segments), "Generated line collides with an original row")
+    require(set(uses) == set(points) | set(segments), "Expansion has missing or unexplained rows")
+    require(set(lines) == set(uses), "Scalar source ledger differs from prepared row identities")
+    for point_id, point in points.items():
+        require(uses[point_id] == point, "Expansion changed an original point row")
+    children = {parent_id: [] for parent_id in parents}
+    retained = ("kind", "target", "unit", "source", "object_ids", *CONTEXT_IDS)
+    for line_id, segment in segments.items():
+        require(segment["interval_id"] in parents, "Segment refers to an unknown parent")
+        parent = parents[segment["interval_id"]]
+        require(segment["use_id"] == parent["use_id"], "Segment lost the original use identity")
+        require(segment["quote_id"] in parent["quote_ids"], "Segment uses an unselected quote")
+        quote = quotes[segment["quote_id"]]
+        require(
+            segment["start"] == max(parent["start"], quote["valid_from"])
+            and segment["end"] == min(parent["end"], quote["valid_to"]),
+            "Segment dates differ from its original selected quote intersection",
+        )
+        expected_line_id = "il-" + digest(
+            "dapane:interval-line:0.1\n", [parent["id"], segment["start"], segment["end"]]
+        ).removeprefix("sha256:")
+        expected_use_id = "iu-" + digest(
+            "dapane:interval-use:0.1\n", [parent["use_id"], segment["start"], segment["end"]]
+        ).removeprefix("sha256:")
+        require(
+            line_id == expected_line_id, "Generated line identity differs from its parent tuple"
+        )
+        require(
+            uses[line_id]["use_id"] == expected_use_id,
+            "Generated use identity differs from its parent tuple",
+        )
+        prepared = {key: parent[key] for key in retained}
+        prepared.update(
+            id=line_id,
+            use_id=uses[line_id]["use_id"],
+            service_date=segment["start"],
+            quote_id=segment["quote_id"],
+            quantity=segment["quantity"],
+        )
+        require(uses[line_id] == prepared, "Prepared segment changed parent source or context")
+        children[parent["id"]].append(segment)
+    for parent_id, records in children.items():
+        parent = parents[parent_id]
+        require(len(records) == len(parent["quote_ids"]), "Unexpected segment count for parent")
+        require(
+            {record["quote_id"] for record in records} == set(parent["quote_ids"]),
+            "Segment selection differs from the parent's pinned quote series",
+        )
+        cursor = parent["start"]
+        for segment in sorted(records, key=lambda item: (item["start"], item["end"])):
+            require(segment["start"] == cursor, "Segments overlap or leave an interval gap")
+            require(segment["start"] < segment["end"], "Segment is empty or reversed")
+            cursor = segment["end"]
+        require(cursor == parent["end"], "Segments do not cover the original interval")
+    for field in ("allocations", "capacity_allocations"):
+        expected_pools = deepcopy(original.get(field, []))
+        for pool in expected_pools:
+            pool["source_line_ids"] = sorted(
+                child["line_id"]
+                for source_id in pool["source_line_ids"]
+                for child in children.get(source_id, [{"line_id": source_id}])
+            )
+        require(
+            expanded.get(field, []) == expected_pools,
+            f"Expansion changed {field} beyond replacing parent source references",
+        )
+    for line_id, prepared in uses.items():
+        line = lines[line_id]
+        for field in (
+            "id",
+            "use_id",
+            "kind",
+            "target",
+            "unit",
+            "quote_id",
+            "service_date",
+            "source",
+            "event_id",
+            "object_ids",
+            "attribution_object_id",
+        ):
+            require(line[field] == prepared[field], f"Scalar line changed prepared {field}")
+        require(
+            fraction(line["quantity"]) == fraction(prepared["quantity"]),
+            "Scalar line changed the exact prepared quantity",
+        )
+        require(
+            line["components"] == quotes[prepared["quote_id"]]["components"],
+            "Scalar line changed its selected quote components",
+        )
+        event = events.get(prepared["event_id"], {})
+        for field in ("process_id", "activity_id"):
+            expected_context = prepared[field]
+            if expected_context is None:
+                expected_context = event.get(field)
+            require(line[field] == expected_context, f"Scalar line changed resolved {field}")
+    return normalized
+
+
+def lineage_rejections(request: dict, report: dict, checkers: dict) -> int:
+    """Prove lineage controls reject structurally valid tampering of actual output.
+
+    These checks deliberately call the pure lineage verifier without digest or
+    financial checks, so a stale digest cannot conceal a missing lineage control.
+    """
+    cases = []
+    for label, path in [
+        ("duplicate segment", ("segments",)),
+        ("duplicate prepared row", ("expanded_request", "usage")),
+        ("duplicate scalar line", ("report", "lines")),
+    ]:
+        tampered = deepcopy(report)
+        rows = tampered
+        for key in path:
+            rows = rows[key]
+        rows.append(deepcopy(rows[0]))
+        cases.append((label, tampered))
+    for label, path, value in [
+        (
+            "duplicate segment identity",
+            ("segments", 1, "line_id"),
+            report["segments"][0]["line_id"],
+        ),
+        ("lost parent identity", ("segments", 0, "interval_id"), "unknown-parent"),
+        ("altered quote snapshot", ("expanded_request", "quotes", 0, "amount"), "999"),
+        (
+            "altered scalar quote source",
+            ("report", "quote_snapshots", 0, "source", "version"),
+            "changed",
+        ),
+        (
+            "altered prepared source",
+            ("expanded_request", "usage", 0, "source", "version"),
+            "changed",
+        ),
+        ("altered scalar source", ("report", "lines", 0, "source", "version"), "changed"),
+        (
+            "altered original source",
+            ("request_snapshot", "quotes", 0, "source", "version"),
+            "changed",
+        ),
+        ("altered interval source", ("interval_snapshots", 0, "source", "version"), "changed"),
+        (
+            "altered prepared context",
+            ("expanded_request", "objects"),
+            [{"id": "extra", "kind": "recipient"}],
+        ),
+        (
+            "altered scalar context",
+            ("report", "context", "objects"),
+            [{"id": "extra", "kind": "recipient"}],
+        ),
+    ]:
+        cases.append((label, set_path(report, path, value)))
+    for field, replacement in [("id", "changed-line"), ("use_id", "changed-use")]:
+        tampered = deepcopy(report)
+        line_id = tampered["segments"][0]["line_id"]
+        prepared = next(
+            row for row in tampered["expanded_request"]["usage"] if row["id"] == line_id
+        )
+        scalar = next(row for row in tampered["report"]["lines"] if row["id"] == line_id)
+        prepared[field] = replacement
+        scalar[field] = replacement
+        if field == "id":
+            tampered["segments"][0]["line_id"] = replacement
+        cases.append((f"consistently altered generated {field}", tampered))
+    for label, tampered in cases:
+        validate(checkers["report"], tampered, f"{label}: structural precondition")
+        try:
+            verify_lineage(request, tampered)
+        except ContractFailure:
+            pass
+        else:
+            raise ContractFailure(f"Lineage verifier accepted {label}")
+    return len(cases)
+
+
+def verify(cli: Path, request: dict, expected: dict, checkers: dict) -> int:
+    report = successful(cli, request, checkers)
+    normalized = verify_lineage(request, report)
     reconstructed = {
         "schema_version": report["schema_version"],
         "request": report["request_snapshot"],
@@ -132,9 +338,9 @@ def verify(cli: Path, request: dict, expected: dict, checkers: dict) -> None:
     scalar = report["report"]
     require(scalar["totals"]["rounded"] == expected["rounded"], "Independent total differs")
     require(scalar["totals"]["exact"] == expected["exact"], "Independent exact total differs")
-    lines = {line["id"]: line for line in scalar["lines"]}
-    segments = {segment["start"]: segment for segment in report["segments"]}
-    require(len(segments) == len(expected["segments"]), "Unexpected segment count")
+    lines = keyed(scalar["lines"], "id", "reference scalar lines")
+    segments = keyed(report["segments"], "start", "single-parent reference segments")
+    require(len(report["segments"]) == len(expected["segments"]), "Unexpected segment count")
     quantity = Fraction(0)
     for reference in expected["segments"]:
         segment = segments[reference["start"]]
@@ -156,6 +362,7 @@ def verify(cli: Path, request: dict, expected: dict, checkers: dict) -> None:
     reordered["request"]["quotes"].reverse()
     reordered["intervals"][0]["quote_ids"].reverse()
     require(successful(cli, reordered, checkers) == report, "Input order changed report identity")
+    return lineage_rejections(request, report, checkers)
 
 
 def reject_cases(request: dict) -> list[dict | str]:
@@ -233,7 +440,7 @@ def main() -> int:
         return 0
     cli = args.cli.resolve()
     require(cli.is_file(), f"CLI does not exist: {cli}")
-    verify(cli, request, references["fixtures"]["rate-boundary.json"], checkers)
+    lineage_count = verify(cli, request, references["fixtures"]["rate-boundary.json"], checkers)
     cases = reject_cases(request)
     for case in cases:
         result = call(cli, "evaluate-intervals", case)
@@ -243,7 +450,7 @@ def main() -> int:
     print(
         "Verified independent exact segment/reference values, parent lineage, conservation, "
         "immutable digests, scalar replay and ordering; "
-        f"{len(cases)} runtime rejection cases passed."
+        f"{len(cases)} runtime rejection cases and {lineage_count} tampered-report controls passed."
     )
     return 0
 
