@@ -13,18 +13,20 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 2 — Independent domain consumers
 
-- [ ] P2.1 Coordinate the workforce adapter with its source/rule owner; repair its generic import namespace in that provider repository through its own bounded change.
+- [~] P2.1 Coordinate the workforce adapter with its source/rule owner; repair its generic import namespace in that provider repository through its own bounded change.
 - [~] P2.2 Map one genomic workflow, batching and repeat/failure assumptions into resource recipes; label historical demonstration analyses.
-- [ ] P2.3 Compose the genomic recipe with a dated workforce release and preserve component inclusion and source identities.
+- [~] P2.3 Compose the genomic recipe with a dated workforce release and preserve component inclusion and source identities.
 - [~] P2.4 Verify both consumers against independent reference cases and show that all shared arithmetic enters the Rust kernel.
 
 ## Phase 3 — Compatibility and migration
 
 - [x] P3.1 Record actual interpreter/ABI/OS/architecture support, dependency locks and native build constraints.
-- [ ] P3.2 Provide explicit old-entry-point adapters and a consumer rollback procedure; do not silently change historical results.
+- [~] P3.2 Provide explicit old-entry-point adapters and a consumer rollback procedure; do not silently change historical results.
 - [~] P3.3 Run installed-wheel parity, negative input/error tests and the two complete consumer examples; record evidence for the first release candidate.
 
 ## Evidence record
+
+The 15 November completion increment is in progress. Its [provider qualification record](../../../docs/python-provider-verification.md) records source revisions, the separate provider environments, acceptance cases and the remaining evidence. The interrupted local setup is not runtime acceptance.
 
 The 14 November bounded P2.2/P2.4 increment adds synthetic genomics capacity
 comparisons under core-contract tasks C4.1/C4.2. Keep device useful life distinct
