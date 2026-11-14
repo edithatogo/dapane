@@ -65,13 +65,31 @@ fixtures, package manifests or lockfile.
 The independent reviewer closed all five findings: input/source provenance,
 saved engine version, distinct build directories, interpreter-to-wheel pairing
 and dependency versions against Cargo.lock. The reviewer independently ran the
-two final consistency regressions and checked the diff. The native wheel is
-still subject to installed-reference, repeatability and full matrix evidence;
-building it alone is not installed-artifact qualification.
+two final consistency regressions and checked the diff. The full installed-reference
+and repeatability work subsequently passed for all four interpreter targets at
+published source 354df1, as recorded below.
 
-Hosted GitHub Actions were queued when this local record was prepared. Their
-results remain tied to the exact branch head and workflow run; no hosted pass,
-trusted-main attestation or full release completion is inferred from local checks.
+## Completed local artifact qualification
+
+The complete result is in [the dated qualification record](../../../docs/release-verification-2026-11-15.md).
+At exact published source **354df1fd47fabcf8f2f571ac51566ad03d9cd3e4**, CPython
+3.12.14, 3.13.5, 3.14.10 and 3.15.2 each passed two clean byte-identical builds,
+clean installed collection/verification, 74 installed tests and contract checks.
+All four same-source receipts passed aggregate matrix verification. Each receipt
+contains ten independent synthetic reference reports and minimal-dependency evidence.
+
+At that same source, all cargo-deny policy domains passed against recorded RustSec
+revision 4ef2df8e806a65e2f1ecc14f56f51249062b23d6. Python build-tool auditing found
+no known vulnerabilities in 36 resolved packages. Three CycloneDX 1.6 SBOMs were
+generated without changing Cargo.lock. Bounded CLI performance was measured.
+The separate SBOM-generator build warning and local-host limits are retained in
+the dated record. Complete artifacts, receipts, logs and checksums were retained.
+
+At the tested source, hosted Conductor, Privacy and Runtime workflows subsequently
+passed. Release assurance remained queued; its Ubuntu artifact matrix and trusted-main
+attestation are not inferred from local results. Exact run links are in the dated record.
+This later documentation update records the tested source honestly; it does not
+claim the earlier artifacts were built from this documentation commit.
 
 Configured checks:
 
@@ -85,9 +103,9 @@ Configured checks:
 - The existing bounded 10/1,000/5,000-row CLI performance measurement.
 - Complete same-source matrix verification; main-only attestation route.
 
-The results above identify the checks actually executed. The remaining configured
-checks require their own outcomes. Failed-run artifacts record failures and do
-not qualify a candidate.
+The results above identify the executed checks. Hosted Release assurance execution
+and trusted-main attestations still need their own outcomes. Failed-run artifacts
+record failures and do not qualify a candidate.
 
 ## Closure boundary
 

@@ -23,7 +23,7 @@ A completed planning task does not change a runtime capability from planned to q
 | [ ] | [R and Julia bindings](./tracks/polyglot_bindings_20261108/index.md) | new | RQ-09, RQ-02 |
 | [~] | [Observed events, Petri nets and BPMN adapters](./tracks/process_models_20261108/index.md) | in_progress | RQ-10, RQ-01, RQ-03 |
 | [ ] | [Uncertainty and decision-library integration](./tracks/decision_integrations_20261108/index.md) | new | RQ-11, RQ-02, RQ-03 |
-| [~] | [Release assurance and conditional consolidation](./tracks/release_consolidation_20261108/index.md) | in_progress | RQ-12, RQ-04 |
+| [!] | [Release assurance and conditional consolidation](./tracks/release_consolidation_20261108/index.md) | blocked | RQ-12, RQ-04 |
 | [ ] | [Frontier research and comparative benchmarks](./tracks/frontier_benchmarks_20261108/index.md) | new | RQ-12, RQ-06, RQ-10, RQ-11 |
 | [ ] | [Regulatory public-finance and health-system valuation handoff for tobac](./tracks/tobac_regulatory_fiscal_valuation_20261110/index.md) | new | RQ-01, RQ-02, RQ-07, RQ-11 |
 

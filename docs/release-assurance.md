@@ -7,6 +7,10 @@ check. It does not declare a released package or turn a proposed platform into a
 supported one. Each run must produce fresh evidence for the exact clean source
 commit and artifacts.
 
+The [dated local qualification](release-verification-2026-11-15.md) records the
+completed installed matrix, dual-build identities, SBOM/advisory outcomes and
+measured limits at its exact source. Hosted checks remain separate.
+
 ## Scope and first-release prerequisites
 
 The initial candidate includes the Rust core, JSON CLI, thin native Python

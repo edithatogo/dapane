@@ -1,9 +1,9 @@
 {
   "track_id": "release_consolidation_20261108",
   "type": "chore",
-  "status": "in_progress",
+  "status": "blocked",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-14T23:18:24.301690Z",
+  "updated_at": "2026-11-14T23:40:13.465689Z",
   "description": "Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.",
   "repositories": [
     "."
@@ -24,9 +24,9 @@
     "RQ-12",
     "RQ-04"
   ],
-  "capability_status": "candidate_assurance_under_verification",
+  "capability_status": "candidate_assurance_locally_verified",
   "verification": {
-    "status": "partial_local_verification",
+    "status": "local_candidate_passed_release_blocked",
     "commands": [
       "python scripts/release_assurance.py validate",
       "python -m unittest discover -s tests/release -v",
@@ -36,7 +36,8 @@
     ],
     "evidence": [
       "evidence.md",
-      "../../../docs/release-assurance.md"
+      "../../../docs/release-assurance.md",
+      "../../../docs/release-verification-2026-11-15.md"
     ],
     "results": {
       "release_unit_tests": 31,
@@ -45,14 +46,46 @@
       "conductor": "passed",
       "workflow_syntax": "passed",
       "publication_gate": "expected exit 2",
-      "hosted_actions": "queued",
-      "installed_matrix": "pending"
+      "hosted_actions": {
+        "tested_source": "354df1fd47fabcf8f2f571ac51566ad03d9cd3e4",
+        "conductor": {
+          "run_id": 43652925908,
+          "conclusion": "success"
+        },
+        "privacy": {
+          "run_id": 43652925968,
+          "conclusion": "success"
+        },
+        "runtime": {
+          "run_id": 43652925937,
+          "conclusion": "success"
+        },
+        "release_assurance": {
+          "run_id": 43652925904,
+          "status": "queued"
+        }
+      },
+      "installed_matrix": {
+        "3.12.14": 74,
+        "3.13.5": 74,
+        "3.14.10": 74,
+        "3.15.2": 74
+      },
+      "independent_reference_cases_per_target": 10,
+      "dual_clean_builds": "byte-identical for all four targets",
+      "aggregate_matrix": "passed",
+      "cargo_deny": "passed: advisories/bans/licenses/sources",
+      "python_dependency_audit": "36 packages; no known vulnerabilities reported",
+      "cyclonedx_sboms": 3,
+      "bounded_benchmark": "passed; local synthetic scope",
+      "trusted_main_attestation": "not_run"
     },
     "environment": {
       "python": "3.12.14",
       "rust": "1.99.1",
       "ruff": "0.17.4"
-    }
+    },
+    "tested_source": "354df1fd47fabcf8f2f571ac51566ad03d9cd3e4"
   },
   "completion_evidence": [
     "A core/Python release can qualify after contracts, kernel and the two consumers; optional integration tracks remain independently planned or experimental.",
@@ -66,7 +99,8 @@
   "archive_performed": false,
   "blockers": [
     "Project licence and registry identity are unresolved; no public package publication is enabled.",
-    "The required Python track has not yet qualified real workforce/genomics consumers and historical API migration/recovery."
+    "The required Python track has not yet qualified real workforce/genomics consumers and historical API migration/recovery.",
+    "Hosted Release assurance remains queued; local Linux/glibc evidence does not establish its Ubuntu artifact matrix or a trusted-main attestation."
   ],
   "review": {
     "status": "completed_with_fixes",

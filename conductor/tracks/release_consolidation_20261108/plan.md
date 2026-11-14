@@ -1,6 +1,6 @@
 # Implementation plan: Release assurance and conditional consolidation
 
-Status: in_progress
+Status: blocked
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -11,19 +11,19 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   - The machine-readable manifest selects candidate core/CLI/Python, profiles 0.1/0.2 and synthetic cases. The real-provider prerequisite remains mandatory and open.
 - [!] L1.2 Resolve repository/package licensing, registry identities, supported matrix and source redistribution terms before public package publication.
   - No project licence or verified registry ownership is established. Publication remains disabled; provider assets are excluded. The requested four-interpreter matrix requires exact-run evidence.
-- [~] L1.3 Configure reproducible artifacts, dependency/advisory/licence checks, scoped CI permissions and provenance/SBOM generation using maintained tooling.
-  - New release-assurance workflow and dependency policy require hosted execution and review; existing runtime/privacy workflows are preserved.
+- [x] L1.3 Configure reproducible artifacts, dependency/advisory/licence checks, scoped CI permissions and provenance/SBOM generation using maintained tooling.
+  - Workflow/policy and maintained-tool interfaces were reviewed and executed locally: advisory/licence checks, three SBOMs and all four dual builds passed. The main-only attestation route is configured; hosted execution remains separately pending.
 - [~] L1.4 Verify a clean build and installed-consumer reference runs for every advertised target; retain exact commands and artifact identities.
-  - Candidate verification covers fresh installations and independent synthetic cases. Actual workforce/genomics composition and historical consumer parity remain with the required Python track.
+  - All four local installed targets and independent synthetic cases passed at source 354df1. Hosted Release assurance remains queued; Conductor, Privacy and Runtime passed. Actual workforce/genomics composition and historical consumer parity remain with the required Python track.
 
 ## Phase 2 — Operational quality
 
-- [~] L2.1 Measure representative throughput/memory and document numerical, scale and platform limits; add acceleration only through its own parity/performance evidence.
-  - The existing bounded CLI benchmark will run on the exact candidate in CI. No acceleration or cross-host claim is added.
+- [x] L2.1 Measure representative throughput/memory and document numerical, scale and platform limits; add acceleration only through its own parity/performance evidence.
+  - The 10/1,000/5,000-row benchmark ran on the exact installed candidate, including raw timings and peak child RSS. Scope and numerical/platform limits are in the dated qualification record; no acceleration or cross-host claim is added.
 - [x] L2.2 Document API/schema deprecation, source corrections, capability negotiation and rollback to previous qualified releases.
   - [Migration and recovery](../../../docs/release-migration.md) preserves schema/method/source/artifact identities and provider-owned entry points. No earlier public Dapane runtime or completed provider cutover is assumed.
-- [~] L2.3 Verify minimal-feature installation and optional-dependency absence; record release evidence without upgrading planned features to supported.
-  - Installed-wheel byte/RECORD checks and native default-member dependency closure are implemented; exact-run qualification is pending.
+- [x] L2.3 Verify minimal-feature installation and optional-dependency absence; record release evidence without upgrading planned features to supported.
+  - All four exact-source installed wheels passed byte/RECORD and zero-runtime-dependency checks. Receipts record the 29-package minimal native closure and keep all planned capabilities unqualified.
 
 ## Phase 3 — Conditional consolidation
 
@@ -41,7 +41,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [x] L4.1 Review the implementation against the original acceptance criteria, apply concrete fixes and retain exact-source verification.
   - Independent review closed five concrete findings; 31 release-control regressions, Ruff and Conductor checks passed. Native and installed-artifact qualification remains separately recorded under L1.3/L1.4.
 - [!] L4.2 Archive this track after all mandatory acceptance criteria have evidence.
-  - Archival is already authorised by the user. It is held by L1.2 and the required real-consumer evidence, not by an additional approval form. Do not weaken those criteria to obtain an archive marker.
+  - Archival is already authorised by the user. It is held by L1.2, required real-consumer evidence and outstanding hosted qualification, not by an additional approval form. Do not weaken those criteria to obtain an archive marker.
 
 ## Evidence record
 
