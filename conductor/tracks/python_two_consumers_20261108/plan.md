@@ -26,6 +26,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
+The 14 November bounded P2.2/P2.4 increment adds synthetic genomics capacity
+comparisons under core-contract tasks C4.1/C4.2. Keep device useful life distinct
+from maintenance contract duration, and one-time implementation costs distinct
+from recurrent period costs. Candidate preparation assumptions are not validated
+economic methods. This work does not migrate a real provider or edit CareOps.
+
 The Python package delegates valuation/allocation to Rust and adds exact Decimal/Fraction transport. [Runtime verification](../../../docs/runtime-verification.md) records the installed-wheel matrix. Synthetic workforce/genomics consumers exercise the shared kernel; they do not complete P2.1/P2.3 provider migration, workforce namespace repair, dated real release composition, or P3.2 historical entry-point parity. P2.2/P2.4/P3.3 remain partial until those real consumers are qualified.
 
 Full scope and observed commands/results are recorded in [runtime verification](../../../docs/runtime-verification.md). This track remains in progress.

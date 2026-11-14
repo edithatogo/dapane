@@ -61,6 +61,39 @@ fn malformed_input_has_no_financial_stdout_and_a_structured_failure() {
 }
 
 #[test]
+fn capacity_cli_preserves_unknown_shares_and_rejects_silent_downgrades() {
+    let path = fixture("genomics-capacity/time-missing-use.json");
+    let output = executable().arg("evaluate").arg(&path).output().unwrap();
+    assert!(output.status.success());
+    assert!(output.stderr.is_empty());
+    let report: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(report["schema_version"], "0.2");
+    assert_eq!(report["capacity_allocations"][0]["unallocated"], "270.00");
+    assert!(report["capacity_allocations"][0]["shares"][1]["rounded"].is_null());
+    let mut request: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(path).unwrap()).unwrap();
+    request["schema_version"] = serde_json::json!("0.1");
+    let mut child = executable()
+        .args(["evaluate", "-"])
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .unwrap();
+    child
+        .stdin
+        .take()
+        .unwrap()
+        .write_all(request.to_string().as_bytes())
+        .unwrap();
+    let rejected = child.wait_with_output().unwrap();
+    assert!(!rejected.status.success());
+    assert!(rejected.stdout.is_empty());
+    let error: serde_json::Value = serde_json::from_slice(&rejected.stderr).unwrap();
+    assert_eq!(error["code"], "invalid_request");
+}
+
+#[test]
 fn invalid_arguments_and_missing_files_fail_without_panicking() {
     for arguments in [
         vec![],

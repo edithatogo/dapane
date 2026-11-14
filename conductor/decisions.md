@@ -150,11 +150,37 @@ but do not invent a monetary decomposition of loaded rates. Full provider, proce
 reporting and release tracks stay open. [Compatibility](../docs/compatibility.md)
 defines versioning, namespacing and rollback for the first profile.
 
+## ADR-011 — Version partial capacity separately from full-pool recovery
+
+Status: implemented bounded direction, 14 November 2026. Requirements: RQ-01,
+RQ-02, RQ-03, RQ-04. Existing core-contract and Python-consumer tracks own it.
+
+Retain 0.1 normalised weighting and zero residual. Add an explicit 0.2 capacity
+array with an independently supplied known/unknown instrument-hour denominator,
+known/unknown use records and incomplete coverage. Assigned shares plus a named
+unallocated bucket conserve each rounded pool; the bucket is already included
+in unattributed ledger totals. Its rounding tie priority precedes object IDs.
+Unknown shares are nullable and never represented as observed zero. Reject
+unsupported units, coverage modes, fields and silent version downgrades.
+
+Device useful life, maintenance contract duration and cost recurrence remain
+separate preparation assumptions in the synthetic scenario manifest. The core
+consumes the resulting explicit quotes; no new economic annualisation method or
+utilisation estimator is claimed. Source qualification, full observation coverage
+and real provider integration remain open. CareOps consumes qualified versioned
+bundles and does not duplicate valuation. Its files are outside this work.
+
+Consequence: [contract 0.2](../docs/contract-v0.2.md) and the
+[independent genomics cases](../fixtures/genomics-capacity/README.md) define the
+small delivered scope. No dependency, runtime package version, provider owner or
+release status changes. Typed Rust struct literals require the new empty vector;
+0.1 JSON/CLI/Python inputs and the five original fixture digests remain compatible.
+
 ## Decisions intentionally left to their implementation tracks
 
 | Decision | Owner and constraint |
 | --- | --- |
-| Wider schemas and compatibility windows | Contract 0.1 is implemented; further profiles remain in the core-contracts track and require explicit migration. |
+| Wider schemas and compatibility windows | Contracts 0.1 and bounded 0.2 capacity are implemented; further profiles remain in the core-contracts track and require explicit migration. |
 | Wider numeric methods and platform matrix | First Rust/CPython versions and precision bounds are recorded in the technology stack and runtime evidence; other methods/platforms remain unqualified. |
 | Project licence and package registry identities | Release/consolidation track; the empty repository supplied no licence or published package identity. |
 | First real newborn programme and data access | Newborn-screening track; separate synthetic arithmetic from sourced programme validity. |

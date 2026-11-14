@@ -7,6 +7,13 @@ Versioned JSON Schema 2020-12 documents are in [`0.1/`](0.1/):
 - `error.schema.json`: the structured error shape, with no partial totals.
 - `common.schema.json`: shared exact numeric, provenance, context and policy definitions.
 
+[`0.2/`](0.2/) adds explicit incomplete instrument-capacity request/report
+definitions while reusing unchanged 0.1 types. Errors retain the 0.1 error shape.
+The [candidate scenario schema](scenarios/genomics-candidate-v0.1.schema.json)
+describes synthetic fixture preparation only; it is not an evaluation request.
+See [contract 0.2](../docs/contract-v0.2.md) for its deliberate compatibility and
+unknown/unallocated rules.
+
 Every object rejects unknown fields. Exact input quantities and prices are
 decimal strings or numerator/denominator string pairs. JSON numeric literals
 are not accepted for these values. Enumerations, required fields, date formats,
@@ -17,6 +24,12 @@ Schema IDs identify files in this repository. The validation script registers
 all four schemas locally using `referencing.Registry`; it performs no network
 retrieval. Date validation requires the included `FormatChecker` because JSON
 Schema tools may otherwise treat `format` as an annotation.
+
+Installed tests in `tests/python/test_genomics_capacity.py` register all eight
+schema documents locally and exercise the five new candidate requests, reports,
+manifest and structural rejection cases. Run them outside the checkout after
+installing a wheel, as described in the [quickstart](../docs/quickstart.md).
+The existing script below remains explicitly the 0.1 contract check.
 
 ## Validate
 

@@ -7,6 +7,8 @@ Start at [conductor/index.md](conductor/index.md). Resolve work through
 specification, plan and metadata. Dapane has a bounded Rust/CLI/Python candidate;
 read [the implemented contract](docs/contract-v0.1.md) and
 [verification](docs/runtime-verification.md) before describing capabilities.
+For capacity work, also read [contract 0.2](docs/contract-v0.2.md) and
+[its scoped verification](docs/genomics-capacity-verification.md).
 Do not describe planned provider, language or deployment capabilities as delivered.
 
 ## Working practices

@@ -95,6 +95,8 @@ incompatible quotation targets and missing versus zero. Usage must be explicitly
 segmented into dated quantities; automatic interval splitting, retractions and
 capital/economic extensions need new supported methods and fixtures.
 
+The [bounded genomics capacity increment](../docs/genomics-capacity-verification.md) now covers explicit incomplete instrument-hour observations, unknown availability and time/sample comparisons. Maintenance duration, useful life and one-time/recurrent preparation assumptions remain separate synthetic inputs. Real source qualification, complete utilisation models and economic-method validation remain open.
+
 ## Newborn screening as the next new domain
 
 [Newborn screening](tracks/newborn_screening_20261108/index.md) composes qualified

@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T04:40:00Z",
+  "updated_at": "2026-11-14T12:55:00Z",
   "description": "Define a small domain-neutral boundary that can represent workforce resource use, genomic workflows and MCHS weighted activity without making their meanings interchangeable.",
   "repositories": [
     "."
@@ -20,24 +20,27 @@
     "edithatogo"
   ],
   "decisions": [
-    "ADR-010"
+    "ADR-010",
+    "ADR-011"
   ],
   "requirement_ids": [
     "RQ-01",
     "RQ-02",
     "RQ-03"
   ],
-  "capability_status": "implemented_bounded_profile_0_1",
+  "capability_status": "implemented_bounded_profiles_0_1_and_0_2",
   "verification": {
     "status": "passed_for_bounded_profile",
-    "scope": "Contract0.1 schemas, exact values, five independent synthetic references and provider field mappings are implemented. Wider correction/interval/capital profiles and complete provider preservation remain open.",
+    "scope": "Contract0.1 schemas, exact values, five independent synthetic references and provider field mappings are implemented. Wider correction/interval/capital profiles and complete provider preservation remain open. The 14 November increment adds bounded 0.2 incomplete instrument-capacity semantics and five synthetic genomics candidates; original 0.1 digests remain unchanged. See the separate increment evidence; broader provider and economic qualification remains open.",
     "commands": [
       "python scripts/validate_contract.py --cli target/release/dapane",
       "cargo test --locked"
     ],
     "evidence": [
       "docs/runtime-verification.md",
-      "docs/contract-v0.1.md"
+      "docs/contract-v0.1.md",
+      "docs/contract-v0.2.md",
+      "docs/genomics-capacity-verification.md"
     ]
   },
   "completion_evidence": [

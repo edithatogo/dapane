@@ -24,9 +24,23 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [x] C3.2 Record extension namespacing, backward compatibility and deprecation behaviour without designing a native dynamic plugin ABI.
 - [~] C3.3 Run the contract-fixture checks, document the accepted first kernel scope and update requirement/decision records.
 
+## Bounded synthetic genomics increment — 14 November 2026
+
+- [x] C4.1 Preserve the 0.1 full-pool contract and define a separate 0.2 instrument-capacity allocation with explicit unknown quantities and conserved unallocated value.
+- [x] C4.2 Verify independent time/sample comparisons, missing use/capacity, rounding, strict rejection and installed Python parity using synthetic repository fixtures only.
+
+The single Dapane integration coordinator owns this increment with P2.2/P2.4 in
+the existing Python consumer track. PR #2 was integrated at
+`056e8e3f78f6843bcd55e5d3816e7a23b167305f` after all seven checks passed on
+`2e67d74329f664f0f2e4861869774425c82e176a`. Conditional security PR #5 is a
+separate owner and is untouched. CareOps consumes qualified bundles; its files
+and valuation implementation are outside this increment.
+
 ## Evidence record
 
 The implemented profile is [contract 0.1](../../../docs/contract-v0.1.md), with [schemas](../../../schemas/README.md), [compatibility](../../../docs/compatibility.md) and [provider mappings](../../../docs/provider-boundaries.md). C2.3/C3.3 remain active for the broader correction/interval/capital scope and its acceptance cases. Unsupported fields are rejected in 0.1; this does not silently complete those profiles.
 
 Full scope and observed commands/results are recorded in [runtime verification](../../../docs/runtime-verification.md). This track remains in progress.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.
+
+C4.1/C4.2 evidence: [capacity contract](../../../docs/contract-v0.2.md), [candidate cases](../../../fixtures/genomics-capacity/README.md), and [increment verification](../../../docs/genomics-capacity-verification.md). These complete the bounded synthetic tasks only.
