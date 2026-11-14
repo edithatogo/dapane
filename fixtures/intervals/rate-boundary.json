@@ -1,0 +1,95 @@
+{
+  "schema_version": "0.1",
+  "request": {
+    "schema_version": "0.2",
+    "run_id": "interval-reference",
+    "knowledge_cutoff": "2026-02-03",
+    "policy": {
+      "id": "synthetic-cost",
+      "version": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "perspective": "provider",
+      "basis": "financial_cost",
+      "rounding": {
+        "scale": 2,
+        "mode": "half_even"
+      }
+    },
+    "quotes": [
+      {
+        "id": "before",
+        "kind": "resource_use",
+        "target": "scientist-time",
+        "unit": "hour",
+        "amount": "90",
+        "per_quantity": "1",
+        "currency": "AUD",
+        "price_year": 2026,
+        "basis": "financial_cost",
+        "components": [
+          "labour"
+        ],
+        "valid_from": "2026-01-01",
+        "valid_to": "2026-02-01",
+        "known_from": "2026-01-01",
+        "source": {
+          "id": "synthetic-interval-reference",
+          "version": "1",
+          "evidence": "synthetic",
+          "access": "public",
+          "validation": "unvalidated"
+        }
+      },
+      {
+        "id": "after",
+        "kind": "resource_use",
+        "target": "scientist-time",
+        "unit": "hour",
+        "amount": "120",
+        "per_quantity": "1",
+        "currency": "AUD",
+        "price_year": 2026,
+        "basis": "financial_cost",
+        "components": [
+          "labour"
+        ],
+        "valid_from": "2026-02-01",
+        "valid_to": "2027-01-01",
+        "known_from": "2026-01-01",
+        "source": {
+          "id": "synthetic-interval-reference",
+          "version": "1",
+          "evidence": "synthetic",
+          "access": "public",
+          "validation": "unvalidated"
+        }
+      }
+    ],
+    "usage": []
+  },
+  "intervals": [
+    {
+      "id": "scientist-line",
+      "use_id": "scientist-use",
+      "kind": "resource_use",
+      "target": "scientist-time",
+      "unit": "hour",
+      "quantity": "1",
+      "start": "2026-01-31",
+      "end": "2026-02-03",
+      "quote_ids": [
+        "before",
+        "after"
+      ],
+      "exposure": "uniform_calendar_day",
+      "source": {
+        "id": "synthetic-interval-reference",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated"
+      }
+    }
+  ]
+}

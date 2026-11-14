@@ -133,3 +133,30 @@ reference coverage. It does not complete every broader RQ-01–03 capability:
 Stable track paths and dependency IDs are retained under the
 [archive policy](../../archive/README.md). Archival records contract acceptance;
 it does not qualify a provider, economic model, operational service or release.
+
+## Archive-head validation and main reconciliation — 15 November 2026
+
+Archive head `4784bf4b658d506a4f60ccda24f030690926a1a0` passed all
+11 configured checks. Runtime
+[43653248818](https://github.com/edithatogo/dapane/actions/runs/43653248818)
+logs record 40 native tests and 133 installed-wheel tests on each of CPython
+3.12, 3.13, 3.14 and 3.15. Conductor
+[43653248755](https://github.com/edithatogo/dapane/actions/runs/43653248755)
+validated 14 tracks, 12 requirements, 145 tasks and 466 local links. Privacy
+[43653248769](https://github.com/edithatogo/dapane/actions/runs/43653248769),
+CodeQL language jobs
+[43653243968](https://github.com/edithatogo/dapane/actions/runs/43653243968)
+and the [aggregate](https://github.com/edithatogo/dapane/runs/132629979892)
+succeeded. These jobs tested merge candidate
+`0363b1a8c7d23a2791663b05b51134cafa492fa6`, whose tree was
+`fcd4764bfc75a2fefc5316e7f738f8fea82c9284`, against main
+`224cf91dbcf513feaa022b2cf5aa310a965472ce`.
+
+Before archive integration, kernel PR #16 advanced main to
+`172d0ef39291a936a35c6e221eb467701ccefbba`. The subsequent reconciliation
+retains that integration in full and combines both archive entries in the
+shared registry and archive catalogue. No kernel runtime, test, schema or
+qualification record is replaced. The core's 14 completed tasks and six
+original criteria, implementation receipts and archive-fixture correction
+remain intact. The reconciled archive head requires its own applicable checks;
+the preceding results describe their exact historical checkout.

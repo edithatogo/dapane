@@ -35,7 +35,7 @@ fn collection(size: usize, path: &str) -> Result<(), DapaneError> {
     Ok(())
 }
 
-fn date(value: &str, path: &str) -> Result<NaiveDate, DapaneError> {
+pub(crate) fn date(value: &str, path: &str) -> Result<NaiveDate, DapaneError> {
     let bytes = value.as_bytes();
     let valid_shape = bytes.len() == 10
         && bytes[4] == b'-'

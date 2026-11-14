@@ -1,0 +1,16 @@
+{
+  "base": "224cf91dbcf513feaa022b2cf5aa310a965472ce",
+  "head": "a703c93d49e782b67fe4b14588bf1fb26292bb23",
+  "guard_revision": "985503bc8eae58e7d6ef36a6e5427d0077e0193c",
+  "gitleaks_version": "8.30.1",
+  "exit_code": 0,
+  "summary": {
+    "counts_by_rule": {},
+    "finding_count": 0,
+    "findings": [],
+    "mode": "commit_range",
+    "scanner": "gitleaks",
+    "status": "clean",
+    "summary_truncated": false
+  }
+}

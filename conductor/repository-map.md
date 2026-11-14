@@ -33,6 +33,11 @@ Current repository areas:
 | `tests/python/` | Installed-wheel consumer, transport, error and concurrency checks |
 | `scripts/validate_contract.py` | Structural checks and independent CLI result/digest verification |
 | `scripts/benchmark_cli.py` | Bounded synthetic valuation/allocation measurements |
+| `crates/dapane-core/src/intervals.rs` | Declared calendar-day rate segmentation and bounded replay envelope |
+| `schemas/intervals/`, `fixtures/intervals/` | Interval contracts and independently derived synthetic references |
+| `scripts/validate_intervals.py` | Installed CLI reference, provenance, digest, replay and tamper checks |
+| `scripts/qualify_kernel.py`, `tests/tooling/` | Pinned toolchain, locked inventory and native dependency-boundary qualification |
+| `conductor/tracks/rust_kernel_20261108/verification.md` | Kernel acceptance, independent review and installed-artifact evidence |
 | `docs/` | Implemented contract, provider review, quickstart, compatibility and runtime evidence |
 | `.github/workflows/runtime.yml` | Native and four-interpreter installed-wheel CI |
 
