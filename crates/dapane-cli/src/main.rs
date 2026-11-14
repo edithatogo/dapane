@@ -4,7 +4,7 @@ use std::io::{self, Read};
 use std::process::ExitCode;
 
 const MAX_INPUT_BYTES: u64 = 4 * 1024 * 1024;
-const HELP: &str = "Dapane: exact microcosting and valuation\n\nUsage:\n  dapane evaluate <request.json|->\n  dapane --version\n  dapane --help\n\nResults are JSON on stdout. Errors are JSON on stderr with a nonzero exit status.\nUse - to read a request from stdin. No network access or implicit date selection.\n";
+const HELP: &str = "Dapane: exact microcosting and valuation\n\nUsage:\n  dapane evaluate <request.json|->\n  dapane evaluate-intervals <interval-request.json|->\n  dapane --version\n  dapane --help\n\nResults are JSON on stdout. Errors are JSON on stderr with a nonzero exit status.\nUse - to read a request from stdin. No network access or implicit date selection.\n";
 
 fn read_request(mut input: impl Read) -> Result<String, String> {
     let mut bytes = Vec::new();
@@ -34,7 +34,7 @@ fn main() -> ExitCode {
         return ExitCode::SUCCESS;
     }
     if matches!(arguments.as_slice(), [flag] if flag == "--version" || flag == "-V") {
-        println!("dapane {} (contracts 0.1, 0.2)", env!("CARGO_PKG_VERSION"));
+        println!("dapane {} (contracts 0.1, 0.2; intervals 0.1)", env!("CARGO_PKG_VERSION"));
         return ExitCode::SUCCESS;
     }
     let [command, path] = arguments.as_slice() else {
@@ -44,7 +44,7 @@ fn main() -> ExitCode {
             "/arguments",
         );
     };
-    if command != "evaluate" {
+    if command != "evaluate" && command != "evaluate-intervals" {
         return fail(
             "invalid_arguments",
             "unknown command; use --help",
@@ -63,7 +63,12 @@ fn main() -> ExitCode {
         Ok(request) => request,
         Err(message) => return fail("input_error", &message, "/input"),
     };
-    match dapane_core::evaluate_json(&request) {
+    let result = if command == "evaluate-intervals" {
+        dapane_core::evaluate_intervals_json(&request)
+    } else {
+        dapane_core::evaluate_json(&request)
+    };
+    match result {
         Ok(report) => {
             println!("{report}");
             ExitCode::SUCCESS

@@ -39,7 +39,7 @@ outside this implementation. Existing checkouts and local work are preserved.
   Preserve point-contract 0.1/0.2 semantics, source identities and historical digests.
 - [~] K4.2 Verify the pinned compiler/MSRV, locked dependency inventory and minimal
   core/CLI graph; retain the project-licence decision in release consolidation.
-- [ ] K4.3 Review independently, fix findings, verify the final native/installed
+- [~] K4.3 Review independently, fix findings, verify the final native/installed
   artifact head and reconcile prerequisite PR #9.
 - [ ] K4.4 Record qualification and limitations, synchronise context and archive
   this track in place with all evidence and dependency links retained.

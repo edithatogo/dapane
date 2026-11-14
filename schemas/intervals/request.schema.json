@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/intervals/request.schema.json",
+  "title": "Dapane interval envelope 0.1 request",
+  "description": "Separate interval method wrapping unchanged scalar request contracts. Parent interval IDs may be referenced by inner allocation source_line_ids and are expanded by Rust before scalar evaluation. Structural validation is not method or empirical validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "request": {
+      "oneOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/request.schema.json"
+        },
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json"
+        }
+      ]
+    },
+    "intervals": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/intervals/request.schema.json#/$defs/interval"
+      },
+      "minItems": 1,
+      "maxItems": 10000
+    }
+  },
+  "required": [
+    "schema_version",
+    "request",
+    "intervals"
+  ],
+  "$defs": {
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "use_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "kind": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/kind"
+        },
+        "target": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "unit": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/exactNumber"
+        },
+        "source": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/source"
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "process_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "activity_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "object_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "default": []
+        },
+        "attribution_object_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "start": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "end": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "quote_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "minItems": 1,
+          "maxItems": 10000,
+          "uniqueItems": true
+        },
+        "exposure": {
+          "const": "uniform_calendar_day"
+        }
+      },
+      "required": [
+        "id",
+        "use_id",
+        "kind",
+        "target",
+        "unit",
+        "quantity",
+        "source",
+        "start",
+        "end",
+        "quote_ids",
+        "exposure"
+      ],
+      "description": "Total quantity under an explicit uniform calendar-day exposure assertion; no implicit unit, timezone or working-calendar conversion. Rust also enforces nonempty half-open dates, complete nonoverlapping pinned quote coverage, parent use/component identity, 128-byte identifier bounds, exact quantity limits, and a combined selected-quote plus original-point count of at most 10000."
+    }
+  }
+}

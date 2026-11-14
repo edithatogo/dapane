@@ -36,13 +36,20 @@
       "python scripts/validate_contract.py --cli target/release/dapane",
       "python scripts/benchmark_cli.py --cli target/release/dapane",
       "cargo fmt --all --check",
-      "cargo install --locked --path crates/dapane-cli --root <clean-prefix>"
+      "cargo install --locked --path crates/dapane-cli --root <clean-prefix>",
+      "cargo build --locked --release --no-default-features -p dapane-core -p dapane-cli",
+      "python scripts/validate_intervals.py --cli <independently-installed-cli>",
+      "python -m unittest discover -s tests/tooling -p test_qualify_kernel.py -v",
+      "python scripts/qualify_kernel.py"
     ],
     "evidence": [
       "docs/runtime-verification.md",
       "docs/contract-v0.1.md",
       "docs/contract-v0.2.md",
-      "docs/genomics-capacity-verification.md"
+      "docs/genomics-capacity-verification.md",
+      "docs/interval-contract-v0.1.md",
+      "docs/kernel-dependencies.md",
+      "conductor/tracks/rust_kernel_20261108/review.md"
     ]
   },
   "completion_evidence": [
@@ -52,5 +59,6 @@
     "Synthetic 2.50 weighted units at 17.00 per unit produce 42.50 in the declared funding view without manufacturing resource-use records.",
     "Repeated native runs reproduce the agreed output digest after excluding explicitly non-semantic metadata; no implicit current date or network selection changes results.",
     "The minimal feature build runs without Arrow/Polars, ontology, simulation, GPU or web-service dependencies."
-  ]
+  ],
+  "implementation_decision": "conductor/tracks/rust_kernel_20261108/review.md#scope-and-decision-kernel-interval-envelope-01"
 }
