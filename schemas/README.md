@@ -14,6 +14,22 @@ describes synthetic fixture preparation only; it is not an evaluation request.
 See [contract 0.2](../docs/contract-v0.2.md) for its deliberate compatibility and
 unknown/unallocated rules.
 
+[`bundles/0.1.schema.json`](bundles/0.1.schema.json) defines an independently
+versioned candidate envelope around request/report profiles 0.1 and 0.2.
+It includes full snapshots, replacement/withdrawal metadata, rate releases,
+observation windows, exclusions and alternative prepared capital annotations.
+The [bundle verifier](../scripts/verify_run_bundle.py) registers local schemas
+without network retrieval. It checks history continuity, retained head
+checkpoints, immutable quote snapshots and consistent release declarations,
+then replays every full valuation snapshot through the installed Rust wheel.
+
+Installed tests in `tests/python/test_core_contract_completion.py` and
+`tests/python/test_bundle_review.py` exercise independent references and
+adversarial history/replay cases. These checks complement structural schemas;
+neither establishes external source truth or economic validity. See the
+[bundle contract](../docs/run-bundle-v0.1.md) and
+[track evidence](../conductor/tracks/core_contracts_20261108/verification.md).
+
 Every object rejects unknown fields. Exact input quantities and prices are
 decimal strings or numerator/denominator string pairs. JSON numeric literals
 are not accepted for these values. Enumerations, required fields, date formats,

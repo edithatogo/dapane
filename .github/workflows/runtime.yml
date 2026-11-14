@@ -44,8 +44,8 @@ jobs:
           python -m unittest discover -s tests/tooling -p test_qualify_kernel.py -v
           python scripts/qualify_kernel.py
           python scripts/validate_conductor.py
-          ruff check python tests/python scripts/validate_contract.py scripts/benchmark_cli.py scripts/validate_intervals.py scripts/qualify_kernel.py tests/tooling
-          ruff format --check python tests/python scripts/validate_contract.py scripts/benchmark_cli.py scripts/validate_intervals.py scripts/qualify_kernel.py tests/tooling
+          ruff check python tests/python scripts/validate_contract.py scripts/benchmark_cli.py scripts/verify_run_bundle.py scripts/validate_intervals.py scripts/qualify_kernel.py tests/tooling
+          ruff format --check python tests/python scripts/validate_contract.py scripts/benchmark_cli.py scripts/verify_run_bundle.py scripts/validate_intervals.py scripts/qualify_kernel.py tests/tooling
 
   python:
     runs-on: ubuntu-24.04
