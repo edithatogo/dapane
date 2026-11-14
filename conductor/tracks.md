@@ -25,6 +25,7 @@ A completed planning task does not change a runtime capability from planned to q
 | [ ] | [Uncertainty and decision-library integration](./tracks/decision_integrations_20261108/index.md) | new | RQ-11, RQ-02, RQ-03 |
 | [ ] | [Release assurance and conditional consolidation](./tracks/release_consolidation_20261108/index.md) | new | RQ-12, RQ-04 |
 | [ ] | [Frontier research and comparative benchmarks](./tracks/frontier_benchmarks_20261108/index.md) | new | RQ-12, RQ-06, RQ-10, RQ-11 |
+| [ ] | [Regulatory public-finance and health-system valuation handoff for tobac](./tracks/tobac_regulatory_fiscal_valuation_20261110/index.md) | new | RQ-01, RQ-02, RQ-07, RQ-11 |
 
 ## Next executable work
 

@@ -72,6 +72,7 @@ Independent native integration branches:
 | `polyglot_bindings_20261108` | Rust kernel | R calls Rust directly; Julia waits for that track's C ABI, not for R or Python. |
 | `process_models_20261108` | Rust kernel | Pin and qualify each format/provider; simulated Kairos use waits for its neutral usage contract. |
 | `decision_integrations_20261108` | Rust kernel | Each Voiage, Innovate or Paignia example requires the exact supported provider method and input contract. |
+| `tobac_regulatory_fiscal_valuation_20261110` | Core contracts, Rust kernel, Decision integrations | Separates health-system direct costs from excise/GST fiscal transfers and preserves subgroup/draw keys for `tobac` and `voiage`. |
 
 ## Implemented numerical slice and next migration
 
