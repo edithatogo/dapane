@@ -66,12 +66,9 @@ def native_boundary(args):
     dapane = installed("dapane", "dapane", args.dapane_root)
     native = installed("dapane._native", "dapane", args.dapane_root)
     assert any(
-        native.__file__.endswith(suffix)
-        for suffix in importlib.machinery.EXTENSION_SUFFIXES
+        native.__file__.endswith(suffix) for suffix in importlib.machinery.EXTENSION_SUFFIXES
     )
-    request = json.loads(
-        (args.dapane_root / "fixtures/subcent-allocation.json").read_text()
-    )
+    request = json.loads((args.dapane_root / "fixtures/subcent-allocation.json").read_text())
     before = copy.deepcopy(request)
     report = dapane.evaluate(request)
     assert request == before
@@ -113,6 +110,8 @@ def workforce(args, dapane):
     artifact = adapter.export_dapane_quotes(release, bindings)
     encoded = json.dumps(artifact, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     digest = artifact["artifact_sha256"]
+    pins = json.loads((args.dapane_root / "docs/provider-consumers.lock.json").read_text())
+    assert digest == pins["workforce"]["artifact_sha256"]
     loaded = adapter.load_dapane_quotes_json(encoded, expected_sha256=digest)
     assert loaded == artifact
     hour = next(quote for quote in artifact["quotes"] if quote["unit"] == "hour")
@@ -139,11 +138,13 @@ def workforce(args, dapane):
         "run_id": "installed-workforce-qualification",
         "knowledge_cutoff": date(2026, 11, 15),
     }
+    quantity_before = quantity.model_dump()
     request = adapter.build_dapane_request(encoded, (quantity,), **options)
     before = copy.deepcopy(request)
-    report = adapter.evaluate_dapane(encoded, (quantity,), **options)
+    report = dapane.evaluate(request)
     assert request == before
-    assert report == dapane.evaluate(request)
+    assert report == adapter.evaluate_dapane(encoded, (quantity,), **options)
+    assert quantity.model_dump() == quantity_before
     assert exact(report["totals"]["exact"]) == Fraction(230329, 15000)
     assert report["totals"]["rounded"] == "15.36"
     native_parity(request, args.cli, report)
@@ -166,11 +167,7 @@ def workforce(args, dapane):
     rejected(lambda: dapane.evaluate(duplicate), "component_overlap")
     altered = copy.deepcopy(artifact)
     altered["quotes"][0]["amount"] = "999"
-    rejected(
-        lambda: adapter.load_dapane_quotes_json(
-            json.dumps(altered), expected_sha256=digest
-        )
-    )
+    rejected(lambda: adapter.load_dapane_quotes_json(json.dumps(altered), expected_sha256=digest))
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output / "workforce-release.json").write_text(encoded, encoding="utf-8")
     (args.output / "handoff.json").write_text(
@@ -218,11 +215,13 @@ def genomics(args, dapane):
         specimens = tuple(f"specimen-{index:02}" for index in range(count))
         batches = (adapter.ExtractionBatch(f"batch-{count}", specimens),)
         case = {**options, "run_id": f"installed-genomics-{count}", "batches": batches}
+        batches_before = copy.deepcopy(batches)
         request = adapter.manual_dna_extraction_request(encoded, **case)
         before = copy.deepcopy(request)
-        report = adapter.evaluate_manual_dna_extraction(encoded, **case)
+        report = dapane.evaluate(request)
         assert request == before
-        assert report == dapane.evaluate(request)
+        assert report == adapter.evaluate_manual_dna_extraction(encoded, **case)
+        assert batches == batches_before
         assert exact(report["totals"]["exact"]) == Fraction(1612303, 60000)
         assert report["totals"]["rounded"] == "26.87"
         assert len(report["lines"]) == 2
@@ -235,9 +234,7 @@ def genomics(args, dapane):
     specimens = ("specimen-00", "specimen-01", "specimen-02")
     attempts = (
         adapter.ExtractionBatch("attempt-1", specimens, outcome="failed"),
-        adapter.ExtractionBatch(
-            "attempt-2", specimens, outcome="completed", repeat_of="attempt-1"
-        ),
+        adapter.ExtractionBatch("attempt-2", specimens, outcome="completed", repeat_of="attempt-1"),
     )
     case = {**options, "run_id": "installed-failed-retry", "batches": attempts}
     request = adapter.manual_dna_extraction_request(encoded, **case)
@@ -263,6 +260,56 @@ def genomics(args, dapane):
         invalid = {**case, **overrides}
         rejected(lambda invalid=invalid: adapter.evaluate_manual_dna_extraction(encoded, **invalid))
 
+    # Isolate ledger-granularity changes from the separate source/rate change.
+    # These are synthetic normalized per-specimen rows under the CURRENT quote,
+    # not a relabelled historical price or an additional real resource ledger.
+    control = {
+        "schema_version": "0.1",
+        "run_id": "same-rate-per-specimen-rounding-control",
+        "knowledge_cutoff": options["knowledge_cutoff"],
+        "policy": copy.deepcopy(full_report["policy"]),
+        "quotes": copy.deepcopy(full_report["quote_snapshots"]),
+        "usage": [],
+        "objects": [],
+    }
+    selected_quote = control["quotes"][0]
+    for index in range(6):
+        specimen = f"control-specimen-{index}"
+        control["objects"].append({"id": specimen, "kind": "specimen"})
+        for step, quantity in (
+            ("labwork", "5"),
+            ("admin", {"numerator": "5", "denominator": "6"}),
+        ):
+            identity = f"{specimen}-{step}"
+            control["usage"].append(
+                {
+                    "id": identity,
+                    "use_id": identity,
+                    "kind": "resource_use",
+                    "target": selected_quote["target"],
+                    "unit": "minute",
+                    "quantity": quantity,
+                    "service_date": options["service_date"],
+                    "quote_id": selected_quote["id"],
+                    "source": {
+                        "id": "synthetic-rounding-control",
+                        "version": "1",
+                        "evidence": "synthetic",
+                        "access": "public",
+                        "validation": "unvalidated",
+                        "locator": "Independent nominal-six-specimen ledger comparison",
+                    },
+                    "object_ids": [specimen],
+                    "attribution_object_id": specimen,
+                }
+            )
+    control_report = dapane.evaluate(control)
+    assert exact(control_report["totals"]["exact"]) == Fraction(1612303, 60000)
+    assert control_report["totals"]["rounded"] == "26.88"
+    assert full_report["totals"]["rounded"] == "26.87"
+    assert {item["total"] for item in control_report["object_totals"]} == {"4.48"}
+    native_parity(control, args.cli, control_report)
+
     workbook = args.provider_root / (
         "data/Microcosting - Study 1 - Utilisation and Microcosts v15 (20230902).xlsm"
     )
@@ -272,6 +319,16 @@ def genomics(args, dapane):
     historical_report = dapane.evaluate(historical_request)
     native_parity(historical_request, args.cli, historical_report)
     comparison = history.compare_manual_extraction_workbook(workbook, full_report)
+    sheet_module = importlib.import_module("genomics_microcosting.sheet_manager")
+    engine_module = importlib.import_module("genomics_microcosting.calculation_engine")
+    manager = sheet_module.SheetManager(workbook)
+    legacy_engine = engine_module.CalculationEngine(manager)
+    legacy_values = adapter.historical_manual_extraction(legacy_engine)
+    for cell in ("AB22", "AB23", "AB24"):
+        assert legacy_values[cell] is not None
+        assert abs(
+            Fraction(str(legacy_values[cell])) - Fraction(observations["cells"][cell]["cached"])
+        ) <= Fraction(1, 10**12)
     assert observations["workbook_sha256"] == (
         "2990ff57504a51c5a9152b053a8e7cfa0e490f27a75bb356810f3564f96b5eb4"
     )
@@ -305,8 +362,10 @@ def genomics(args, dapane):
         "six-batch-occupancies-and-native-parity",
         "failed-attempt-and-retry-per-batch-allocation",
         "source-ledger-and-allocated-views-not-double-counted",
+        "same-rate-rounding-granularity-difference-separated-from-source-change",
         "source-dates-digest-and-role-mapping-rejections",
         "historical-workbook-inspection-and-native-replay",
+        "installed-legacy-calculator-entry-point-and-cache-parity",
     ]
 
 
