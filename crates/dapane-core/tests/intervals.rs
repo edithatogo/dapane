@@ -520,3 +520,86 @@ fn numeric_literals_unknown_fields_and_duplicate_json_keys_are_not_accepted() {
     );
     assert!(evaluate_json(&duplicate).is_err());
 }
+
+#[test]
+fn component_overlap_diagnostic_points_to_the_actual_interval_field() {
+    let mut input = disjoint_components();
+    for quote in &mut input["quotes"].as_array_mut().unwrap()[2..] {
+        quote["components"] = json!(["salary"]);
+    }
+    let failure = error(&input);
+    assert_eq!(failure.code, "component_overlap");
+    assert_eq!(failure.path, "/interval_usage/1/quote_ids");
+    assert!(input.pointer(&failure.path).is_some());
+}
+
+#[test]
+fn interval_precision_errors_retain_caller_indices_after_normalization() {
+    // Distinct prime denominators cannot cancel from their reciprocal sum.
+    // Five hundred day-long periods exceed the 4096-bit accumulated bound.
+    let primes: Vec<usize> = (2..5000)
+        .filter(|candidate| {
+            (2..)
+                .take_while(|divisor| divisor * divisor <= *candidate)
+                .all(|divisor| candidate % divisor != 0)
+        })
+        .take(500)
+        .collect();
+    assert_eq!(primes.len(), 500);
+    let start = chrono::NaiveDate::from_ymd_opt(2026, 1, 1).unwrap();
+    let mut input = base();
+    let template = input["quotes"][0].clone();
+    let ids: Vec<_> = (0..500).map(|index| format!("rate-{index:04}")).collect();
+    input["quotes"] = Value::Array(
+        primes
+            .iter()
+            .enumerate()
+            .map(|(index, prime)| {
+                let mut quote = template.clone();
+                quote["id"] = json!(ids[index]);
+                quote["amount"] = json!("1");
+                quote["per_quantity"] = json!(prime.to_string());
+                quote["valid_from"] =
+                    json!((start + chrono::Duration::days(index as i64)).to_string());
+                quote["valid_to"] =
+                    json!((start + chrono::Duration::days(index as i64 + 1)).to_string());
+                quote
+            })
+            .collect(),
+    );
+    let mut simple = input["interval_usage"][0].clone();
+    simple["id"] = json!("z-simple");
+    simple["use_id"] = json!("simple-use");
+    simple["quantity"] = json!("1");
+    simple["end_date"] = json!((start + chrono::Duration::days(1)).to_string());
+    simple["quote_ids"] = json!([ids[0]]);
+    let mut overflow = input["interval_usage"][0].clone();
+    overflow["id"] = json!("a-overflow");
+    overflow["use_id"] = json!("overflow-use");
+    overflow["quantity"] = json!("500");
+    overflow["end_date"] = json!((start + chrono::Duration::days(500)).to_string());
+    overflow["quote_ids"] = json!(ids);
+    input["interval_usage"] = json!([simple, overflow]);
+    for expected in ["/interval_usage/1", "/interval_usage/0"] {
+        let failure = error(&input);
+        assert_eq!(failure.code, "precision_limit");
+        assert_eq!(failure.path, expected);
+        assert_eq!(input.pointer(&failure.path).unwrap()["id"], "a-overflow");
+        input["interval_usage"].as_array_mut().unwrap().reverse();
+    }
+}
+
+#[test]
+fn typed_interval_api_matches_json_and_rejects_earlier_profile_versions() {
+    let input = base();
+    let typed: dapane_core::Request = serde_json::from_value(input.clone()).unwrap();
+    let result = dapane_core::evaluate(&typed).unwrap();
+    assert_eq!(serde_json::to_value(result).unwrap(), report(&input));
+    for version in ["0.1", "0.2"] {
+        let mut downgraded = typed.clone();
+        downgraded.schema_version = version.to_owned();
+        let failure = dapane_core::evaluate(&downgraded).unwrap_err();
+        assert_eq!(failure.code, "invalid_request");
+        assert_eq!(failure.path, "/interval_usage");
+    }
+}
