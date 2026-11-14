@@ -226,8 +226,15 @@ def test_invalid_revision_history_is_rejected(contract, mutation):
         records[1]["series_id"] = "another-series"
         seal(records[1])
     elif mutation == "backdated":
-        records[1]["recorded_on"] = "2026-02-01"
+        records[0]["recorded_on"] = "2026-02-11"
+        seal(records[0])
+        records[1]["previous_digest"] = records[0]["bundle_digest"]
         seal(records[1])
+        records[2]["previous_digest"] = records[1]["bundle_digest"]
+        seal(records[2])
+        checkpoint = records[-1]["bundle_digest"]
+        for record in records:
+            assert contract.verify_bundle(record)
     elif mutation == "duplicate_id":
         records[1]["bundle_id"] = "original"
         seal(records[1])
@@ -238,8 +245,10 @@ def test_invalid_revision_history_is_rejected(contract, mutation):
         checkpoint = records[-1]["bundle_digest"]
     else:
         records = records[:-1]
-    with pytest.raises(contract.BundleError):
+    with pytest.raises(contract.BundleError) as failure:
         contract.verify_history(records, expected_head_digest=checkpoint, as_of="2026-02-20")
+    if mutation == "backdated":
+        assert failure.value.code == "backdated_revision"
 
 
 def test_capital_treatments_are_alternative_not_additive(contract):

@@ -70,6 +70,24 @@ Release dates satisfy publication <= quote known-from <= retrieval <= recording.
 Retrieval can occur after a historical cutoff when reconstructing an as-known
 analysis; it never permits use of a quote known after that cutoff.
 
+Within a complete history, `(source_id, version)` identifies an immutable release:
+its publication date and any declared non-null content digests must agree.
+Repeated `(source_id, version, quote_id)` identities retain the exact supplied
+quote snapshot, including decimal spelling and provenance declarations. A corrected
+quote requires a new source version and a replacement bundle; recalculating a
+report and its digest cannot legitimise conflicting release content. This check
+remembers all prior snapshots, so dropping a quote from one snapshot and restoring
+it later does not erase its identity. Conflicts return `release_conflict`.
+
+Supplied quote subsets, quote/release list order and retrieval dates can change.
+An undeclared content digest remains unknown, not proof of a different release;
+declaring conflicting non-null digests is rejected even for different quote IDs
+in the same snapshot. Exact snapshot preservation means changes to a repeated
+quote's optional fields also require a new version. The verifier cannot establish
+source authenticity, recognise undisclosed aliases, or compare histories that
+the caller has not supplied. The independent correction reference changes a rate
+from 90 to 100 under a new version: 1/2 hour at 100 plus 2/3 hour at 120 is 130.
+
 An interval crossing a rate boundary must be explicitly segmented by its producer.
 The independent reference uses 1/3 hour at 90 plus 2/3 hour at 120: 30 + 80 = 110.
 Correcting the first duration to 1/2 gives 45 + 80 = 125. The interval/time model

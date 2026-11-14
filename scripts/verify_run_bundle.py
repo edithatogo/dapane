@@ -173,6 +173,31 @@ def _releases(bundle: dict) -> None:
         fail("missing_release", "/rate_releases", "all supplied quotes need a release snapshot")
 
 
+def _release_history(bundle: dict, releases: dict, quotes: dict, digests: dict) -> None:
+    """Remember immutable release facts, including facts absent from later subsets."""
+    if bundle["request"] is None:
+        return
+    for release in bundle["rate_releases"]:
+        identity = (release["source_id"], release["version"])
+        published = release["published_on"]
+        if identity in releases and releases[identity] != published:
+            fail("release_conflict", "/rate_releases", "publication changed without a new version")
+        releases[identity] = published
+    for quote in bundle["request"]["quotes"]:
+        source = quote["source"]
+        identity = (source["id"], source["version"])
+        digest = source.get("content_digest")
+        if digest is not None:
+            if identity in digests and digests[identity] != digest:
+                fail("release_conflict", "/rate_releases", "conflicting source digests")
+            digests[identity] = digest
+        quote_identity = (*identity, quote["id"])
+        snapshot = canonical(quote)
+        if quote_identity in quotes and quotes[quote_identity] != snapshot:
+            fail("release_conflict", "/rate_releases", "quote changed without a new source version")
+        quotes[quote_identity] = snapshot
+
+
 def _scope(bundle: dict) -> None:
     request = bundle["request"]
     window = bundle["observation_window"]
@@ -229,6 +254,7 @@ def verify_bundle(bundle: dict) -> str:
     if bundle["change"] == "retract":
         return bundle["bundle_digest"]
     _releases(bundle)
+    _release_history(bundle, {}, {}, {})
     _scope(bundle)
     try:
         import dapane
@@ -252,6 +278,7 @@ def verify_history(records: list, *, expected_head_digest: str, as_of: str) -> d
     if len(canonical(records)) > MAX_HISTORY_BYTES:
         fail("limit_exceeded", "/", "history exceeds byte limit")
     previous, selected, identities = None, None, set()
+    releases, quotes, digests = {}, {}, {}
     for position, bundle in enumerate(records):
         verify_bundle(bundle)
         if bundle["bundle_id"] in identities:
@@ -269,6 +296,7 @@ def verify_history(records: list, *, expected_head_digest: str, as_of: str) -> d
                 fail("broken_chain", f"/{position}", "predecessor digest does not match")
             if bundle["recorded_on"] < previous["recorded_on"]:
                 fail("backdated_revision", f"/{position}", "recording dates must be nondecreasing")
+        _release_history(bundle, releases, quotes, digests)
         previous = bundle
         if bundle["recorded_on"] <= as_of:
             selected = bundle

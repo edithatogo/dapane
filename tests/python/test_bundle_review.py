@@ -170,3 +170,118 @@ def test_cli_replay_and_rejection_have_separate_output_channels(tmp_path):
     assert invalid.returncode == 2
     assert not invalid.stdout
     assert json.loads(invalid.stderr)["error"]["code"] == "duplicate_key"
+
+
+def reseal_records(records):
+    """Rebuild legitimate native reports and links, keeping the history ordered."""
+    import dapane
+
+    for position, bundle in enumerate(records):
+        if bundle["request"] is not None:
+            bundle["report"] = dapane.evaluate(bundle["request"])
+        if position:
+            bundle["previous_digest"] = records[position - 1]["bundle_digest"]
+        REFERENCE.seal(bundle)
+    return records[-1]["bundle_digest"]
+
+
+@pytest.mark.parametrize("intervening_subset", [False, True])
+def test_quote_correction_requires_new_source_version(contract, intervening_subset):
+    records = REFERENCE.history()[:2]
+    records[-1]["request"]["quotes"][0]["amount"] = "100"
+    if intervening_subset:
+        subset = copy.deepcopy(records[0])
+        subset.update(
+            bundle_id="subset",
+            change="replace",
+            reason="only the second interval segment is in scope",
+            recorded_on="2026-02-05",
+        )
+        subset["request"]["usage"] = subset["request"]["usage"][1:]
+        subset["request"]["quotes"] = subset["request"]["quotes"][1:]
+        subset["rate_releases"] = subset["rate_releases"][1:]
+        records.insert(1, subset)
+    checkpoint = reseal_records(records)
+    assert records[-1]["report"]["totals"]["rounded"] == "130.00"
+    for record in records:
+        assert contract.verify_bundle(record)
+    with pytest.raises(contract.BundleError) as failure:
+        contract.verify_history(records, expected_head_digest=checkpoint, as_of="2026-02-10")
+    assert failure.value.code == "release_conflict"
+
+
+def test_corrected_quote_with_new_source_version_preserves_prior_report(contract):
+    records = REFERENCE.history()[:2]
+    original = copy.deepcopy(records[0])
+    quote = records[1]["request"]["quotes"][0]
+    quote.update(amount="100", known_from="2026-02-05")
+    quote["source"]["version"] = "before-corrected"
+    records[1]["rate_releases"][0].update(
+        version="before-corrected", published_on="2026-02-05", retrieved_on="2026-02-10"
+    )
+    checkpoint = reseal_records(records)
+    result = contract.verify_history(records, expected_head_digest=checkpoint, as_of="2026-02-10")
+    expected = json.loads(REFERENCE.REFERENCES.read_text())["expected"]
+    assert result["report"]["totals"]["rounded"] == expected["corrected_rate"] == "130.00"
+    assert records[0] == original
+    earlier = contract.verify_history(records, expected_head_digest=checkpoint, as_of="2026-02-02")
+    assert earlier["report"]["totals"]["rounded"] == "110.00"
+
+
+def test_release_publication_date_cannot_change_under_same_version(contract):
+    records = REFERENCE.history()[:2]
+    records[1]["rate_releases"][0]["published_on"] = "2025-12-31"
+    checkpoint = reseal_records(records)
+    with pytest.raises(contract.BundleError) as failure:
+        contract.verify_history(records, expected_head_digest=checkpoint, as_of="2026-02-10")
+    assert failure.value.code == "release_conflict"
+
+
+def test_release_digest_conflict_is_rejected_across_different_quote_ids(contract):
+    records = REFERENCE.history()[:2]
+    records[0]["request"]["quotes"][0]["source"]["content_digest"] = "sha256:" + "a" * 64
+    quote = records[1]["request"]["quotes"][0]
+    quote["source"]["content_digest"] = "sha256:" + "b" * 64
+    quote["id"] = "another-quote"
+    records[1]["request"]["usage"][0]["quote_id"] = "another-quote"
+    records[1]["rate_releases"][0]["quote_ids"] = ["another-quote"]
+    checkpoint = reseal_records(records)
+    with pytest.raises(contract.BundleError) as failure:
+        contract.verify_history(records, expected_head_digest=checkpoint, as_of="2026-02-10")
+    assert failure.value.code == "release_conflict"
+
+
+def test_one_snapshot_cannot_declare_conflicting_release_digests(contract):
+    bundle = REFERENCE.bundle_for()
+    first, second = bundle["request"]["quotes"]
+    first["source"]["content_digest"] = "sha256:" + "a" * 64
+    second["source"].update(version=first["source"]["version"], content_digest="sha256:" + "b" * 64)
+    bundle["rate_releases"][0]["quote_ids"].append(second["id"])
+    bundle["rate_releases"] = bundle["rate_releases"][:1]
+    reseal_records([bundle])
+    with pytest.raises(contract.BundleError) as failure:
+        contract.verify_bundle(bundle)
+    assert failure.value.code == "release_conflict"
+
+
+def test_release_retrieval_order_and_quote_subsets_can_change(contract):
+    records = REFERENCE.history()[:2]
+    second = records[1]
+    second["request"]["quotes"].reverse()
+    second["rate_releases"].reverse()
+    for release in second["rate_releases"]:
+        release["retrieved_on"] = "2026-02-10"
+    subset = copy.deepcopy(second)
+    subset.update(bundle_id="subset", recorded_on="2026-02-11", reason="second segment only")
+    subset["request"]["usage"] = subset["request"]["usage"][1:]
+    subset["request"]["quotes"] = subset["request"]["quotes"][:1]
+    subset["rate_releases"] = subset["rate_releases"][:1]
+    records.append(subset)
+    restored = copy.deepcopy(second)
+    restored.update(bundle_id="restored-scope", recorded_on="2026-02-12", reason="restore scope")
+    records.append(restored)
+    checkpoint = reseal_records(records)
+    expected = {"2026-02-10": "125.00", "2026-02-11": "80.00", "2026-02-12": "125.00"}
+    for as_of, total in expected.items():
+        result = contract.verify_history(records, expected_head_digest=checkpoint, as_of=as_of)
+        assert result["report"]["totals"]["rounded"] == total

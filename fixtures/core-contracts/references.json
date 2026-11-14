@@ -5,14 +5,16 @@
     "original": "110.00",
     "corrected": "125.00",
     "acquisition": "12000.00",
-    "accounting_charge": "200.00"
+    "accounting_charge": "200.00",
+    "corrected_rate": "130.00"
   },
   "derivations": {
     "original": "(1/3)*90 + (2/3)*120 = 30 + 80 = 110",
     "corrected": "(1/2)*90 + (2/3)*120 = 45 + 80 = 125",
     "acquisition": "1 * 12000 = 12000, purchase view only",
     "accounting_charge": "Prepared candidate 12000 / 60 months = 200; not a runtime depreciation method",
-    "invalid_capital_mix": "12000 + 200 = 12200 is arithmetic but an invalid combination of declared treatments of the same asset"
+    "invalid_capital_mix": "12000 + 200 = 12200 is arithmetic but an invalid combination of declared treatments of the same asset",
+    "corrected_rate": "(1/2)*100 + (2/3)*120 = 50 + 80 = 130; corrected quotation requires a new source version"
   },
   "request": {
     "schema_version": "0.1",
@@ -25,7 +27,10 @@
       "price_year": 2026,
       "perspective": "provider",
       "basis": "financial_cost",
-      "rounding": {"scale": 2, "mode": "half_even"}
+      "rounding": {
+        "scale": 2,
+        "mode": "half_even"
+      }
     },
     "quotes": [
       {
@@ -38,7 +43,9 @@
         "currency": "AUD",
         "price_year": 2026,
         "basis": "financial_cost",
-        "components": ["labour"],
+        "components": [
+          "labour"
+        ],
         "valid_from": "2026-01-01",
         "valid_to": "2026-02-01",
         "known_from": "2026-01-01",
@@ -60,7 +67,9 @@
         "currency": "AUD",
         "price_year": 2026,
         "basis": "financial_cost",
-        "components": ["labour"],
+        "components": [
+          "labour"
+        ],
         "valid_from": "2026-02-01",
         "valid_to": "2026-03-01",
         "known_from": "2026-01-01",
@@ -80,7 +89,10 @@
         "kind": "resource_use",
         "target": "scientist-time",
         "unit": "hour",
-        "quantity": {"numerator": "1", "denominator": "3"},
+        "quantity": {
+          "numerator": "1",
+          "denominator": "3"
+        },
         "service_date": "2026-01-31",
         "quote_id": "before",
         "source": {
@@ -97,7 +109,10 @@
         "kind": "resource_use",
         "target": "scientist-time",
         "unit": "hour",
-        "quantity": {"numerator": "2", "denominator": "3"},
+        "quantity": {
+          "numerator": "2",
+          "denominator": "3"
+        },
         "service_date": "2026-02-01",
         "quote_id": "after",
         "source": {

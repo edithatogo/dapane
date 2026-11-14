@@ -14,6 +14,9 @@ An interval spans a quotation boundary: 1/3 h at 90 plus 2/3 h at 120 gives
 30 + 80 = 110. Correcting the first duration to 1/2 h gives 45 + 80 = 125.
 The original report remains 110; its replacement is 125; a later withdrawal
 returns no financial report. These three records do not total 235 or zero.
+An explicit new source version correcting the first rate to 100 gives
+1/2 * 100 + 2/3 * 120 = 50 + 80 = 130. Reusing the old source version for this
+different quote is invalid, even with a valid native report and rebuilt digests.
 Using the old quote on its excluded end date is invalid. An automatic interval
 field or negative retraction is unsupported rather than silently converted.
 
