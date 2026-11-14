@@ -13,7 +13,7 @@ declared uniformly distributed over calendar days.
 | Fixture | Independent derivation | Expected parent result |
 | --- | --- | --- |
 | [rate-boundary.json](rate-boundary.json) | Ten hours over ten days; four hours at 2 and six at 3: `4 × 2 + 6 × 3 = 26`. Quote periods extend beyond the usage interval and must be clipped. | Exact `26/1`; `26.00`, directly attributed once to the episode. Event process/activity are preserved through context inheritance. |
-| [rational.json](rational.json) | One third of an hour over three days; first two days receive `2/9` hour at 3 and last day `1/9` hour at 6. Each segment costs `2/3`; sum `4/3`. | Exact `4/3`; `1.33`; adjustment `133/100 − 4/3 = −1/300`. |
+| [rational.json](rational.json) | One third of an hour over three days. The first two days receive two ninths of an hour at rate three; the final day receives one ninth at rate six. Each segment costs two thirds, giving a total of four thirds. | Rounded result `1.33`; the rounding adjustment is negative one three-hundredth. Exact rational pairs are retained in the expected fixture. |
 | [rounding.json](rounding.json) | Two hours over two days, one hour per day at `0.005`. Each exact segment is `1/200`; their parent is `1/100` and rounds once to one cent. | `0.01`. An equal three-recipient pool assigns its single minor unit to lexical recipient `a`; `b` and `c` receive zero. |
 
 The rounding case also has an equivalent uninterrupted rate: extend the first

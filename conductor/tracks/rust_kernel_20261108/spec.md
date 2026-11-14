@@ -40,6 +40,22 @@ No external provider runtime is required for this track.
 5. Repeated native runs reproduce the agreed output digest after excluding explicitly non-semantic metadata; no implicit current date or network selection changes results.
 6. The minimal feature build runs without Arrow/Polars, ontology, simulation, GPU or web-service dependencies.
 
+### Completeness interpretation for the implemented profiles
+
+Criterion 3 distinguishes computational completeness from input evidence.
+A successful report has `status: complete`; capacity observations can still be
+explicitly unknown or incomplete, with unknown shares and unallocated value
+preserved. Invalid or missing required financial inputs return a structured
+error and no partial financial report. The kernel does not introduce an
+`incomplete` report variant. This retains the published 0.1/0.2 contract and
+applies the same rule to 0.3; it does not imply empirical or source completeness.
+
+Profile 0.3 implements automatic rate-boundary segmentation only for explicit
+uniform calendar-day exposure, with exact segment quantities and rounding once
+per original parent usage line. Other exposure methods remain unsupported.
+See [contract 0.3](../../../docs/contract-v0.3.md) and the
+[review](review.md) for the bounded acceptance mapping.
+
 ## Risks and constraints
 
 A passing calculation test is not empirical validation of a costing method. Parallel reductions and fixed-width decimals can change results unless precision, overflow and ordering are bounded explicitly.

@@ -15,7 +15,6 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
-
 from validate_contract import (
     CONTEXT_IDS,
     ContractFailure,

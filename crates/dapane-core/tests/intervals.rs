@@ -30,8 +30,10 @@ fn base() -> Value {
 }
 
 fn report(input: &Value) -> Value {
-    serde_json::from_str(&evaluate_json(&input.to_string()).expect("valid independent interval case"))
-        .unwrap()
+    serde_json::from_str(
+        &evaluate_json(&input.to_string()).expect("valid independent interval case"),
+    )
+    .unwrap()
 }
 
 fn error(input: &Value) -> DapaneError {
@@ -320,8 +322,7 @@ fn point_and_interval_source_lines_share_one_conserving_allocation_ledger() {
 #[test]
 fn interval_direct_attribution_does_not_duplicate_expenditure() {
     let mut input = base();
-    input["objects"] =
-        json!([{"id":"a","kind":"recipient"},{"id":"context","kind":"context"}]);
+    input["objects"] = json!([{"id":"a","kind":"recipient"},{"id":"context","kind":"context"}]);
     input["interval_usage"][0]["object_ids"] = json!(["a", "context"]);
     input["interval_usage"][0]["attribution_object_id"] = json!("a");
     input["usage"] = json!([point("point-line", "point-use", "1")]);
@@ -349,9 +350,7 @@ fn interval_pool_can_retain_unknown_capacity_without_recovery_assumptions() {
     assert_eq!(output["totals"]["rounded"], "26.00");
     assert_eq!(output["totals"]["unattributed"], "26.00");
     assert_eq!(output["capacity_allocations"][0]["unallocated"], "26.00");
-    assert!(
-        output["capacity_allocations"][0]["shares"][0]["rounded"].is_null()
-    );
+    assert!(output["capacity_allocations"][0]["shares"][0]["rounded"].is_null());
 }
 
 fn disjoint_components() -> Value {
@@ -408,8 +407,7 @@ fn duplicate_components_and_inconsistent_underlying_intervals_are_rejected() {
 #[test]
 fn inherited_and_explicit_equivalent_context_remain_one_underlying_interval() {
     let mut input = disjoint_components();
-    input["processes"] =
-        json!([{"id":"process","model_id":"synthetic","model_version":"1"}]);
+    input["processes"] = json!([{"id":"process","model_id":"synthetic","model_version":"1"}]);
     input["events"] = json!([{"id":"event","occurred_on":"2026-01-01",
         "process_id":"process","activity_id":"activity"}]);
     for line in input["interval_usage"].as_array_mut().unwrap() {
@@ -446,7 +444,10 @@ fn collection_and_schedule_permutations_do_not_change_identity() {
     let original = disjoint_components();
     let mut reordered = original.clone();
     reordered["quotes"].as_array_mut().unwrap().reverse();
-    reordered["interval_usage"].as_array_mut().unwrap().reverse();
+    reordered["interval_usage"]
+        .as_array_mut()
+        .unwrap()
+        .reverse();
     for interval in reordered["interval_usage"].as_array_mut().unwrap() {
         interval["quote_ids"].as_array_mut().unwrap().reverse();
     }
@@ -496,8 +497,7 @@ fn interval_precision_and_collection_limits_fail_without_partial_results() {
     input["interval_usage"][0]["quantity"] = json!("9".repeat(97));
     rejected(&input, "precision_limit");
     input = base();
-    input["interval_usage"][0]["quantity"] =
-        json!({"numerator":"1","denominator":"0"});
+    input["interval_usage"][0]["quantity"] = json!({"numerator":"1","denominator":"0"});
     rejected(&input, "zero_denominator");
     input = base();
     let interval = input["interval_usage"][0].clone();
