@@ -176,6 +176,42 @@ small delivered scope. No dependency, runtime package version, provider owner or
 release status changes. Typed Rust struct literals require the new empty vector;
 0.1 JSON/CLI/Python inputs and the five original fixture digests remain compatible.
 
+## ADR-012 — Version immutable candidate evidence separately from valuation
+
+Status: implemented bounded direction, **15 November 2026**. Requirements:
+RQ-01, RQ-02, RQ-03. The core-contracts track owns definition and reference
+acceptance; its [verification record](tracks/core_contracts_20261108/verification.md)
+identifies the reviewed revision, executed checks and qualification limits.
+
+Run-bundle profile 0.1 wraps unchanged request/report profiles 0.1 and 0.2.
+It binds full snapshots, predecessor digests, a declared source revision,
+observation windows, rate releases, exclusions and alternative asset treatments.
+Corrections replace the full snapshot; withdrawal creates a nonfinancial
+tombstone. Historical selection verifies the complete chain against a separately
+retained head checkpoint and never sums versions.
+
+Retain the complete quote snapshot when source ID, source version and quote ID
+are unchanged. Each source release retains one publication date and consistent
+non-null declared content digests across all seen revisions. Different quote
+subsets, quote ordering and retrieval dates are allowed. Quote correction requires
+a new source version; intermediate omission does not erase identity history.
+Provider owners retain source truth, eligibility, rights and qualification of
+actual corrected releases.
+
+Repository conformance tooling checks structure, dates, lineage and declared
+economic-view consistency, then replays every full valuation snapshot through
+an installed Rust wheel. All financial arithmetic remains in Rust. The interval
+reference uses explicitly prepared dated segments; capital references use
+alternative prepared quotations with declared assumptions.
+
+Consequence: [bundle 0.1](../docs/run-bundle-v0.1.md) has its own schema and
+digest namespace. Retain numerical method identities, original expectations
+and prior schema implementations. Candidate integrity/replay does not establish
+signed provenance, binary-to-source attestation, economic validity or production
+publication. Automatic interval integration, new capital methods, real provider
+adapters and release qualification remain with their existing owners. The
+registry and verification evidence determine completion and archival status.
+
 ## ADR-013 — Explicit calendar exposure and parent-level interval rounding
 
 Status: implemented bounded direction, 15 November 2026; qualification is recorded
@@ -221,7 +257,7 @@ not approve a licence or a release. Cargo publication remains disabled.
 
 | Decision | Owner and constraint |
 | --- | --- |
-| Wider schemas and compatibility windows | Contracts 0.1, bounded 0.2 capacity and explicit 0.3 calendar intervals are implemented; further profiles remain in their owning tracks and require explicit migration. |
+| Wider schemas and compatibility windows | Request profiles 0.1/0.2/0.3 are implemented; bundle 0.1 admits only 0.1/0.2. Further profiles and bundle admission need explicit versioning, independent references and migration coordinated with the owning kernel/provider track. |
 | Wider numeric methods and platform matrix | First Rust/CPython versions and precision bounds are recorded in the technology stack and runtime evidence; other methods/platforms remain unqualified. |
 | Project licence and package registry identities | Release/consolidation track; the empty repository supplied no licence or published package identity. |
 | First real newborn programme and data access | Newborn-screening track; separate synthetic arithmetic from sourced programme validity. |

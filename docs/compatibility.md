@@ -40,6 +40,34 @@ The separate run-bundle lifecycle under core-contract PR #9 has its own version
 and acceptance. This kernel increment does not widen its admitted request
 profiles or claim the bundle verifier accepts 0.3.
 
+## Immutable candidate bundles
+
+The separate [run-bundle contract 0.1](run-bundle-v0.1.md) wraps request/report
+profiles 0.1 and 0.2 without changing their schemas or numerical methods.
+Its `bundle_version` and digest namespace identify envelope/lifecycle semantics
+independently. Retain the matching schema, verifier and numerical implementation
+for historical replay when introducing a later profile.
+
+A replacement retains the original full snapshot; withdrawal creates a
+tombstone with no financial report. A separately retained head checkpoint
+detects missing history suffixes. It is not a signature, and a declared source
+revision does not attest the installed binary.
+
+Repeated source ID/version/quote ID identities retain their complete quote
+snapshot throughout the history. Each source release has one publication date,
+and any non-null declared content digests must agree across revisions.
+Quote subsets, quote-list order and retrieval dates may change. Quote correction
+requires a new source version, including after an intermediate omission.
+External source rights, eligibility and correction qualification remain
+provider responsibilities.
+
+The verifier is repository tooling that replays full valuation snapshots through
+an installed Rust wheel. Its qualification is synthetic candidate evidence;
+automatic interval integration, financial reversals, capital formulae and
+production publication remain separately qualified capabilities. The
+[core-contract record](../conductor/tracks/core_contracts_20261108/verification.md)
+identifies the reviewed implementation and executed checks.
+
 ## Namespaces and extensions
 
 Use stable provider-owned identifiers when exchanging data, for example

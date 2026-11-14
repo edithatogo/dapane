@@ -25,6 +25,10 @@ Current repository areas:
 | `crates/dapane-cli/` | Offline file/stdin JSON interface and CLI boundary checks |
 | `crates/dapane-python/`, `python/dapane/`, `pyproject.toml` | Thin PyO3 extension and Python exact-value transport |
 | `schemas/0.1/`, `schemas/0.2/`, `schemas/scenarios/` | Original and explicit capacity contracts; synthetic candidate preparation schema |
+| `schemas/bundles/0.1.schema.json` | Independently versioned immutable candidate snapshot and withdrawal envelope |
+| `fixtures/core-contracts/` | Independent presegmented rate-boundary and alternative-capital calculations |
+| `scripts/verify_run_bundle.py` | Repository checks for snapshot/history, declared release consistency and replay through the installed Rust wheel |
+| `conductor/tracks/core_contracts_20261108/verification.md` | Reviewed implementation identity, acceptance evidence and qualification limits |
 | `fixtures/` | Five synthetic inputs and independently authored expected results |
 | `tests/python/` | Installed-wheel consumer, transport, error and concurrency checks |
 | `scripts/validate_contract.py` | Structural checks and independent CLI result/digest verification |

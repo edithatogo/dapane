@@ -264,13 +264,13 @@ def validate(root: Path) -> tuple[list[str], dict[str, int]]:
             errors.append(f"{track_id}: no actionable plan tasks")
         if state == "new" and any(marker != " " for marker, _ in tasks):
             errors.append(f"{track_id}: new track contains started/completed/blocked tasks")
-        if state == "completed" and any(marker not in {"x", "-"} for marker, _ in tasks):
-            errors.append(f"{track_id}: completed track contains unfinished tasks")
+        if state in {"completed", "archived"} and any(marker not in {"x", "-"} for marker, _ in tasks):
+            errors.append(f"{track_id}: {state} track contains unfinished tasks")
         verification = metadata["verification"]
         if not isinstance(verification, dict) or not isinstance(verification.get("commands"), list):
             errors.append(f"{track_id}: verification requires a commands list")
-        elif state == "completed" and verification.get("status") != "passed":
-            errors.append(f"{track_id}: completed track lacks passed verification")
+        elif state in {"completed", "archived"} and verification.get("status") != "passed":
+            errors.append(f"{track_id}: {state} track lacks passed verification")
         for requirement in metadata["requirement_ids"]:
             if requirement not in requirements:
                 errors.append(f"{track_id}: unknown requirement {requirement!r}")

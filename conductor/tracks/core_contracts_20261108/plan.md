@@ -36,9 +36,14 @@ the existing Python consumer track. PR #2 was integrated at
 separate owner and is untouched. CareOps consumes qualified bundles; its files
 and valuation implementation are outside this increment.
 
+## Independent review and closeout — 15 November 2026
+
+- [~] C5.1 Verify immutable release identity across the complete history and the specific chronology guard through the installed-wheel regression cases.
+- [~] C5.2 Reconcile context and review evidence, verify the final PR checks and archive the completed contract track in place.
+
 ## Evidence record
 
-The implemented profile is [contract 0.1](../../../docs/contract-v0.1.md), with [schemas](../../../schemas/README.md), [compatibility](../../../docs/compatibility.md) and [provider mappings](../../../docs/provider-boundaries.md). C2.3/C3.3 remain active for the broader correction/interval/capital scope and its acceptance cases. Unsupported fields are rejected in 0.1; this does not silently complete those profiles.
+The implemented profile is [contract 0.1](../../../docs/contract-v0.1.md), with [schemas](../../../schemas/README.md), [compatibility](../../../docs/compatibility.md) and [provider mappings](../../../docs/provider-boundaries.md). C2.3/C3.3 now cover final assurance of the separate run-bundle 0.1 envelope and context reconciliation. Explicitly segmented intervals and alternative prepared capital quotations define the accepted contract boundary; automatic interval integration and capital methods remain with the kernel/provider tracks. See [closeout verification](verification.md) and the [independent review](independent-review.md).
 
 Full scope and observed commands/results are recorded in [runtime verification](../../../docs/runtime-verification.md). This track remains in progress.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.

@@ -20,6 +20,13 @@ explicit uniform calendar-day intervals, exact rate-boundary segmentation and
 rounding once per parent usage record. The package remains an unpublished candidate.
 Documentation validation alone does not establish numerical or empirical validity.
 
+The separate [run-bundle profile 0.1](docs/run-bundle-v0.1.md) adds immutable
+snapshots, replacement histories and nonfinancial withdrawal tombstones. Its
+repository verifier checks declared release consistency and replays each full
+valuation snapshot through the installed Rust wheel. The
+[core-contract evidence](conductor/tracks/core_contracts_20261108/verification.md)
+records the reviewed revision, executed checks and qualification limits.
+
 Installed provider adapters, additional exposure/economic methods, R/Julia,
 reporting exports, Power Apps and process execution remain
 separate work. See the [implemented contract](docs/contract-v0.1.md),
