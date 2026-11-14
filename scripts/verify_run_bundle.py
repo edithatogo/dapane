@@ -106,7 +106,7 @@ def _validator() -> Draft202012Validator:
         SchemaError,
         CannotDetermineSpecification,
     ) as exc:
-        raise BundleError("schema_unavailable", "/", "local schema set is unreadable or invalid") from exc
+        raise BundleError("schema_unavailable", "/", "invalid local schema set") from exc
     if target is None:
         fail("schema_unavailable", "/", "run-bundle schema is missing")
     # No retrieval function: unregistered references cannot fetch a URL.
@@ -159,15 +159,15 @@ def _releases(bundle: dict) -> None:
             fail("duplicate_release", "/rate_releases", "release identities must be unique")
         releases.add(identity)
         if not release["published_on"] <= release["retrieved_on"] <= bundle["recorded_on"]:
-            fail("invalid_release_dates", "/rate_releases", "publication/retrieval order is invalid")
+            fail("invalid_release_dates", "/rate_releases", "invalid publication/retrieval order")
         for ident in release["quote_ids"]:
             if ident not in quotes or ident in covered:
-                fail("invalid_release", "/rate_releases", "quote must belong to exactly one release")
+                fail("invalid_release", "/rate_releases", "quote requires exactly one release")
             quote = quotes[ident]
             if (quote["source"]["id"], quote["source"]["version"]) != identity:
                 fail("invalid_release", "/rate_releases", "quote source differs from release")
             if not release["published_on"] <= quote["known_from"] <= release["retrieved_on"]:
-                fail("invalid_release_dates", "/rate_releases", "knowledge date outside source dates")
+                fail("invalid_release_dates", "/rate_releases", "invalid quote knowledge date")
             covered.add(ident)
     if covered != set(quotes):
         fail("missing_release", "/rate_releases", "all supplied quotes need a release snapshot")
@@ -193,7 +193,7 @@ def _scope(bundle: dict) -> None:
     assets, claimed = set(), set()
     for treatment in bundle["capital_treatments"]:
         if treatment["asset_id"] in assets:
-            fail("mixed_capital", "/capital_treatments", "one treatment per declared asset and view")
+            fail("mixed_capital", "/capital_treatments", "one treatment per asset and view")
         assets.add(treatment["asset_id"])
         basis = (
             "economic_cost"
@@ -201,7 +201,7 @@ def _scope(bundle: dict) -> None:
             else "financial_cost"
         )
         if request["policy"]["basis"] != basis:
-            fail("capital_basis", "/capital_treatments", "treatment incompatible with valuation basis")
+            fail("capital_basis", "/capital_treatments", "treatment and valuation basis disagree")
         for ident in treatment["source_line_ids"]:
             if ident not in lines or ident in claimed:
                 fail("invalid_capital_line", "/capital_treatments", "line must exist and map once")
@@ -219,7 +219,7 @@ def verify_bundle(bundle: dict) -> str:
     try:
         error = next(_validator().iter_errors(bundle), None)
     except (Unresolvable, RecursionError) as exc:
-        raise BundleError("schema_unavailable", "/", "local schema reference cannot be resolved") from exc
+        raise BundleError("schema_unavailable", "/", "unresolvable local schema reference") from exc
     if error is not None:
         path = "/" + "/".join(str(part) for part in error.absolute_path)
         fail("invalid_bundle", path, "bundle does not match the supported schema")
@@ -233,11 +233,11 @@ def verify_bundle(bundle: dict) -> str:
     try:
         import dapane
     except ImportError as exc:
-        raise BundleError("runtime_unavailable", "/report", "install the matching native wheel") from exc
+        raise BundleError("runtime_unavailable", "/report", "install the matching wheel") from exc
     try:
         replay = dapane.evaluate(copy.deepcopy(bundle["request"]))
     except dapane.DapaneError as exc:
-        raise BundleError("native_rejection", "/request", "Rust rejected the supplied request") from exc
+        raise BundleError("native_rejection", "/request", "Rust rejected request") from exc
     # Canonical bytes, not Python equality: 2026 and 2026.0 must not compare equal.
     if canonical(replay) != canonical(bundle["report"]):
         fail("replay_mismatch", "/report", "stored report does not match native replay")
@@ -259,7 +259,7 @@ def verify_history(records: list, *, expected_head_digest: str, as_of: str) -> d
         identities.add(bundle["bundle_id"])
         if previous is None:
             if bundle["change"] != "create":
-                fail("missing_origin", f"/{position}", "history must begin with its original snapshot")
+                fail("missing_origin", f"/{position}", "history must begin with create")
         else:
             if bundle["change"] == "create" or previous["change"] == "retract":
                 fail("invalid_transition", f"/{position}", "create/retraction lifecycle violated")

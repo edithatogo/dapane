@@ -233,9 +233,7 @@ def test_invalid_revision_history_is_rejected(contract, mutation):
         seal(records[1])
     elif mutation == "after_retract":
         extra = copy.deepcopy(records[1])
-        extra.update(
-            bundle_id="resurrected", recorded_on="2026-02-13", previous_digest=checkpoint
-        )
+        extra.update(bundle_id="resurrected", recorded_on="2026-02-13", previous_digest=checkpoint)
         records.append(seal(extra))
         checkpoint = records[-1]["bundle_digest"]
     else:
