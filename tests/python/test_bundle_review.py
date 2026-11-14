@@ -19,7 +19,9 @@ def load_module(name, path):
     return module
 
 
-REFERENCE = load_module("bundle_reference", Path(__file__).with_name("test_core_contract_completion.py"))
+REFERENCE = load_module(
+    "bundle_reference", Path(__file__).with_name("test_core_contract_completion.py")
+)
 
 
 @pytest.fixture
@@ -50,7 +52,9 @@ def test_new_identity_fields_enforce_utf8_byte_limit(contract, location):
 
 
 @pytest.mark.parametrize("failure", ["missing", "malformed", "unregistered_reference"])
-def test_unavailable_local_schemas_fail_structurally_without_network(contract, monkeypatch, tmp_path, failure):
+def test_unavailable_local_schemas_fail_structurally_without_network(
+    contract, monkeypatch, tmp_path, failure
+):
     bundle = REFERENCE.bundle_for()
     destination = tmp_path / "schemas/bundles"
     destination.mkdir(parents=True)
@@ -122,7 +126,9 @@ def test_same_day_order_is_explicit_and_history_is_not_mutated(contract):
 @pytest.mark.parametrize("invalid", [[], [{}] * 101, {}, None])
 def test_history_shape_and_revision_bound(contract, invalid):
     with pytest.raises(contract.BundleError):
-        contract.verify_history(invalid, expected_head_digest="sha256:" + "0" * 64, as_of="2026-02-10")
+        contract.verify_history(
+            invalid, expected_head_digest="sha256:" + "0" * 64, as_of="2026-02-10"
+        )
 
 
 @pytest.mark.parametrize("raw", ['[{"id":1,"id":2}]', "[NaN]", "[Infinity]", "{}", "["])
