@@ -26,6 +26,15 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
+## Bounded owner quality pass — 15 November 2026
+
+- [~] D1.Q1 Reproduce and correct the five received Rust formatting failures; run exact-source format, warnings-denied Clippy, all 37 D1/T1 tests and Conductor checks, then publish scoped review/evidence to the existing PR and coordinator.
+
+Received head: `f9f85e5f54a38447eab91ae459aad2f372bcbb7e`. Coordinator
+registry and standalone CI changes are present and must be preserved. The fresh
+hosted receipt passed Clippy and 37 tests; formatting alone failed. This pass
+does not change numerical methods or complete later provider/release obligations.
+
 The bounded phase-1 implementation and synthetic tests are in
 [the isolated adapter](../../../adapters/decision_draws/README.md). Current-source
 native qualification is blocked: the execution environment became unavailable

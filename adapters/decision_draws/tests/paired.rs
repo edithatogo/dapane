@@ -27,29 +27,53 @@ fn actual_cost_model_uses_correlated_draws_and_independent_outcomes() {
     let report = output(&fixture());
     let rows = report["rows"].as_array().unwrap();
     assert_eq!(rows.len(), 4);
-    let observed: Vec<_> = rows.iter().map(|r| (
-        r["key"]["strategy_id"].as_str().unwrap(),
-        r["key"]["draw_id"].as_str().unwrap(),
-        r["cost_report"]["totals"]["rounded"].as_str().unwrap(),
-        r["outcome"]["value"].clone(),
-    )).collect();
-    assert_eq!(observed, vec![
-        ("alternative", "draw-a", "20.00", rational("3", "2")),
-        ("alternative", "draw-b", "80.00", rational("5", "2")),
-        ("reference", "draw-a", "10.00", rational("1", "1")),
-        ("reference", "draw-b", "40.00", rational("2", "1")),
-    ]);
-    assert_eq!(report["outcome_contract"]["model"]["id"], "synthetic-health-model");
+    let observed: Vec<_> = rows
+        .iter()
+        .map(|r| {
+            (
+                r["key"]["strategy_id"].as_str().unwrap(),
+                r["key"]["draw_id"].as_str().unwrap(),
+                r["cost_report"]["totals"]["rounded"].as_str().unwrap(),
+                r["outcome"]["value"].clone(),
+            )
+        })
+        .collect();
+    assert_eq!(
+        observed,
+        vec![
+            ("alternative", "draw-a", "20.00", rational("3", "2")),
+            ("alternative", "draw-b", "80.00", rational("5", "2")),
+            ("reference", "draw-a", "10.00", rational("1", "1")),
+            ("reference", "draw-b", "40.00", rational("2", "1")),
+        ]
+    );
+    assert_eq!(
+        report["outcome_contract"]["model"]["id"],
+        "synthetic-health-model"
+    );
     assert_eq!(report["draws"]["axis"], "epistemic_parameters");
-    assert_eq!(report["design"]["replication_axis"], "conditional_replication");
+    assert_eq!(
+        report["design"]["replication_axis"],
+        "conditional_replication"
+    );
 }
 
 #[test]
 fn outer_row_and_axis_reordering_is_byte_reproducible() {
     let original = fixture();
     let mut changed = original.clone();
-    for path in ["/draws/rows", "/models", "/outcomes/rows", "/design/strategies"] {
-        changed.pointer_mut(path).unwrap().as_array_mut().unwrap().reverse();
+    for path in [
+        "/draws/rows",
+        "/models",
+        "/outcomes/rows",
+        "/design/strategies",
+    ] {
+        changed
+            .pointer_mut(path)
+            .unwrap()
+            .as_array_mut()
+            .unwrap()
+            .reverse();
     }
     for model in changed["models"].as_array_mut().unwrap() {
         model["bindings"].as_array_mut().unwrap().reverse();
@@ -66,9 +90,15 @@ fn missing_extra_and_duplicate_outcomes_are_rejected() {
         let mut input = fixture();
         let rows = input["outcomes"]["rows"].as_array_mut().unwrap();
         match mode {
-            "missing" => { rows.pop(); }
-            "extra" => { rows[0]["key"]["draw_id"] = json!("not-in-draw-set"); }
-            _ => { rows.push(rows[0].clone()); }
+            "missing" => {
+                rows.pop();
+            }
+            "extra" => {
+                rows[0]["key"]["draw_id"] = json!("not-in-draw-set");
+            }
+            _ => {
+                rows.push(rows[0].clone());
+            }
         }
         assert_eq!(
             evaluate_paired_json(&input.to_string()).unwrap_err().code,
@@ -86,28 +116,46 @@ fn joint_draw_identity_cannot_be_replaced_by_marginal_labels() {
         "draw_digest_mismatch",
     );
     refresh_draw_digest(&mut input);
-    assert_eq!(output(&input)["rows"][0]["cost_report"]["totals"]["rounded"], "20.66");
+    assert_eq!(
+        output(&input)["rows"][0]["cost_report"]["totals"]["rounded"],
+        "20.66"
+    );
 }
 
 #[test]
 fn incomplete_draw_values_and_duplicate_draws_fail_closed() {
     let mut input = fixture();
-    input["draws"]["rows"][0]["values"].as_object_mut().unwrap().remove("rate");
-    assert_eq!(evaluate_paired_json(&input.to_string()).unwrap_err().code, "draw_parameters");
+    input["draws"]["rows"][0]["values"]
+        .as_object_mut()
+        .unwrap()
+        .remove("rate");
+    assert_eq!(
+        evaluate_paired_json(&input.to_string()).unwrap_err().code,
+        "draw_parameters"
+    );
     let mut input = fixture();
     let second = input["draws"]["rows"][0].clone();
     input["draws"]["rows"][1] = second;
-    assert_eq!(evaluate_paired_json(&input.to_string()).unwrap_err().code, "duplicate_identity");
+    assert_eq!(
+        evaluate_paired_json(&input.to_string()).unwrap_err().code,
+        "duplicate_identity"
+    );
 }
 
 #[test]
 fn missing_model_cell_or_silently_pooled_subgroup_is_rejected() {
     let mut input = fixture();
     input["models"].as_array_mut().unwrap().pop();
-    assert_eq!(evaluate_paired_json(&input.to_string()).unwrap_err().code, "model_panel_mismatch");
+    assert_eq!(
+        evaluate_paired_json(&input.to_string()).unwrap_err().code,
+        "model_panel_mismatch"
+    );
     let mut input = fixture();
     input["outcomes"]["rows"][0]["key"]["subgroup_id"] = json!("pooled");
-    assert_eq!(evaluate_paired_json(&input.to_string()).unwrap_err().code, "pairing_mismatch");
+    assert_eq!(
+        evaluate_paired_json(&input.to_string()).unwrap_err().code,
+        "pairing_mismatch"
+    );
 }
 
 #[test]
@@ -169,9 +217,18 @@ fn unsupported_method_unknown_fields_and_numeric_floats_are_rejected() {
 fn duplicate_json_keys_are_rejected_at_every_boundary() {
     let valid = fixture().to_string();
     for (before, after) in [
-        ("\"draw_id\":\"draw-a\"", "\"draw_id\":\"draw-a\",\"draw_id\":\"draw-a\""),
-        ("\"quantity\":\"1\"", "\"quantity\":\"1\",\"quantity\":\"2\""),
-        ("\"numerator\":\"30\"", "\"numerator\":\"30\",\"numerator\":\"60\""),
+        (
+            "\"draw_id\":\"draw-a\"",
+            "\"draw_id\":\"draw-a\",\"draw_id\":\"draw-a\"",
+        ),
+        (
+            "\"quantity\":\"1\"",
+            "\"quantity\":\"1\",\"quantity\":\"2\"",
+        ),
+        (
+            "\"numerator\":\"30\"",
+            "\"numerator\":\"30\",\"numerator\":\"60\"",
+        ),
     ] {
         assert!(valid.contains(before));
         let bad = valid.replacen(before, after, 1);
@@ -189,7 +246,10 @@ fn binding_targets_and_units_must_be_unambiguous_and_compatible() {
             "parameter" => input["models"][0]["bindings"][0]["parameter_id"] = json!("absent"),
             _ => {
                 let b = input["models"][0]["bindings"][0].clone();
-                input["models"][0]["bindings"].as_array_mut().unwrap().push(b);
+                input["models"][0]["bindings"]
+                    .as_array_mut()
+                    .unwrap()
+                    .push(b);
             }
         }
         refresh_draw_digest(&mut input);
@@ -205,7 +265,10 @@ fn embedded_core_errors_abort_the_entire_batch() {
     assert!(error.path.starts_with("/models/"));
     let mut input = fixture();
     input["models"][0]["request"]["capacity_allocations"] = json!([]);
-    assert!(evaluate_paired_json(&input.to_string()).is_err(), "raw 0.1 must stay strict");
+    assert!(
+        evaluate_paired_json(&input.to_string()).is_err(),
+        "raw 0.1 must stay strict"
+    );
 }
 
 #[test]
@@ -213,11 +276,15 @@ fn perspective_currency_and_source_mismatches_are_rejected() {
     for mode in ["perspective", "currency", "source", "year", "basis"] {
         let mut input = fixture();
         match mode {
-            "perspective" => input["models"][0]["request"]["policy"]["perspective"] = json!("societal"),
+            "perspective" => {
+                input["models"][0]["request"]["policy"]["perspective"] = json!("societal")
+            }
             "currency" => input["models"][0]["request"]["policy"]["currency"] = json!("NZD"),
             "year" => input["models"][0]["request"]["policy"]["price_year"] = json!(2025),
             "basis" => input["models"][0]["request"]["policy"]["basis"] = json!("funding"),
-            _ => input["models"][0]["request"]["quotes"][0]["source"]["evidence"] = json!("observed"),
+            _ => {
+                input["models"][0]["request"]["quotes"][0]["source"]["evidence"] = json!("observed")
+            }
         }
         assert!(evaluate_paired_json(&input.to_string()).is_err(), "{mode}");
     }
@@ -228,8 +295,13 @@ fn negative_outcomes_are_preserved_but_negative_cost_parameters_are_rejected() {
     let mut input = fixture();
     input["outcomes"]["rows"][0]["value"] = rational("-1", "2");
     let r = output(&input);
-    assert!(r["rows"].as_array().unwrap().iter()
-        .any(|r| r["outcome"]["value"] == rational("-1", "2")));
+    assert!(
+        r["rows"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|r| r["outcome"]["value"] == rational("-1", "2"))
+    );
     input["draws"]["rows"][0]["values"]["hours"] = rational("-1", "3");
     refresh_draw_digest(&mut input);
     assert_eq!(
@@ -254,9 +326,14 @@ fn malformed_exact_values_and_resource_bounds_fail_closed() {
     let mut input = fixture();
     input["design"]["replications"] =
         json!((0..300).map(|i| format!("rep-{i}")).collect::<Vec<_>>());
-    assert_eq!(evaluate_paired_json(&input.to_string()).unwrap_err().code, "input_limit");
     assert_eq!(
-        evaluate_paired_json(&" ".repeat(4 * 1024 * 1024 + 1)).unwrap_err().code,
+        evaluate_paired_json(&input.to_string()).unwrap_err().code,
+        "input_limit"
+    );
+    assert_eq!(
+        evaluate_paired_json(&" ".repeat(4 * 1024 * 1024 + 1))
+            .unwrap_err()
+            .code,
         "input_limit",
     );
 }
@@ -266,7 +343,8 @@ fn interval_evaluation_retains_per_generated_segment_rounding() {
     let mut input = fixture();
     let mut envelope: Value = serde_json::from_str(include_str!(
         "../../../fixtures/intervals/rate-boundary.json"
-    )).unwrap();
+    ))
+    .unwrap();
     envelope["request"]["policy"]["perspective"] = json!("health_system");
     envelope["request"]["quotes"][0]["amount"] = json!("0.01");
     envelope["request"]["quotes"][1]["amount"] = json!("0.01");
@@ -278,8 +356,14 @@ fn interval_evaluation_retains_per_generated_segment_rounding() {
     }
     let result = output(&input);
     for row in result["rows"].as_array().unwrap() {
-        assert_eq!(row["cost_report"]["method_version"], "dapane-intervals-v0.1.0");
-        assert_eq!(row["cost_report"]["report"]["totals"]["exact"], rational("1", "100"));
+        assert_eq!(
+            row["cost_report"]["method_version"],
+            "dapane-intervals-v0.1.0"
+        );
+        assert_eq!(
+            row["cost_report"]["report"]["totals"]["exact"],
+            rational("1", "100")
+        );
         assert_eq!(row["cost_report"]["report"]["totals"]["rounded"], "0.00");
     }
 }
@@ -290,7 +374,8 @@ fn prepared_requests_replay_to_identical_native_reports() {
     for row in result["rows"].as_array().unwrap() {
         let replay: Value = serde_json::from_str(
             &dapane_core::evaluate_json(&row["prepared_request"].to_string()).unwrap(),
-        ).unwrap();
+        )
+        .unwrap();
         assert_eq!(replay, row["cost_report"]);
     }
 }
@@ -300,7 +385,8 @@ fn capacity_contract_and_unknown_values_survive_the_adapter() {
     let mut input = fixture();
     let mut request: Value = serde_json::from_str(include_str!(
         "../../../fixtures/genomics-capacity/time-unknown-capacity.json"
-    )).unwrap();
+    ))
+    .unwrap();
     request["policy"]["perspective"] = json!("health_system");
     input["money"] = json!({
         "currency": request["policy"]["currency"],
@@ -312,9 +398,8 @@ fn capacity_contract_and_unknown_values_survive_the_adapter() {
         model["request"] = request.clone();
         model["bindings"] = json!([]);
     }
-    let expected: Value = serde_json::from_str(
-        &dapane_core::evaluate_json(&request.to_string()).unwrap(),
-    ).unwrap();
+    let expected: Value =
+        serde_json::from_str(&dapane_core::evaluate_json(&request.to_string()).unwrap()).unwrap();
     for row in output(&input)["rows"].as_array().unwrap() {
         assert_eq!(row["cost_report"], expected);
         assert_eq!(
@@ -328,7 +413,11 @@ fn capacity_contract_and_unknown_values_survive_the_adapter() {
 fn output_digest_is_independently_reconstructible() {
     use sha2::{Digest, Sha256};
     let mut result = output(&fixture());
-    let stored = result.as_object_mut().unwrap().remove("output_digest").unwrap();
+    let stored = result
+        .as_object_mut()
+        .unwrap()
+        .remove("output_digest")
+        .unwrap();
     let mut hash = Sha256::new();
     hash.update(b"dapane:paired-output:0.1\n");
     hash.update(serde_json::to_vec(&result).unwrap());

@@ -25,6 +25,15 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
+## Bounded owner quality pass — 15 November 2026
+
+- [~] T1.Q1 Apply only the received Rust formatting corrections and verify the unchanged synthetic fiscal contract with exact-source quality/tests; retain the production signed-fiscal method/profile and security gates as open.
+
+This is the shared D1/T1 owner repair at received head
+`f9f85e5f54a38447eab91ae459aad2f372bcbb7e`. The integrator has reconciled
+the registry and added standalone CI. No shared implementation or CI edit is
+part of this pass.
+
 The bounded phase-1 implementation and synthetic tests are in
 [the isolated adapter](../../../adapters/decision_draws/README.md). Current-source
 native qualification is blocked: the execution environment became unavailable

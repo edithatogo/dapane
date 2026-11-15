@@ -82,8 +82,8 @@ pub(crate) fn parse<T: DeserializeOwned>(input: &str) -> Result<T, DapaneError> 
     if input.len() > INPUT_BYTES {
         return Err(error("input_limit", "Input exceeds 4 MiB", "/"));
     }
-    let raw: UniqueJson = serde_json::from_str(input)
-        .map_err(|e| error("invalid_json", &e.to_string(), "/"))?;
+    let raw: UniqueJson =
+        serde_json::from_str(input).map_err(|e| error("invalid_json", &e.to_string(), "/"))?;
     serde_json::from_value(raw.0).map_err(|e| error("invalid_request", &e.to_string(), "/"))
 }
 

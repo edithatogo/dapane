@@ -21,7 +21,11 @@ fn set_view(input: &mut Value, perspective: &str, rule: &str) {
     input["aggregation_rule"] = json!(rule);
     // These invented references assume equal economic and budgetary amounts.
     // The runtime supplies no conversion by merely changing a perspective label.
-    let basis = if perspective == "societal" { "economic_cost" } else { "public_expenditure" };
+    let basis = if perspective == "societal" {
+        "economic_cost"
+    } else {
+        "public_expenditure"
+    };
     input["resource_basis"] = json!(basis);
     for line in input["lines"].as_array_mut().unwrap() {
         if line["kind"] != "discounted_tax_transfer" {
@@ -52,15 +56,24 @@ fn nz_differential_discounting_and_perspectives_have_independent_exact_answers()
     // Medical=80, enforcement=16, receipts=40, payer=-40; internal net=0.
     let input = fixture();
     let report = result(&input);
-    assert_eq!(report["resources"]["health_system_direct_cost"], r("80", "1"));
-    assert_eq!(report["resources"]["enforcement_resource_cost"], r("16", "1"));
+    assert_eq!(
+        report["resources"]["health_system_direct_cost"],
+        r("80", "1")
+    );
+    assert_eq!(
+        report["resources"]["enforcement_resource_cost"],
+        r("16", "1")
+    );
     assert_eq!(report["tax_transfers"]["government_receipts"], r("40", "1"));
     assert_eq!(report["tax_transfers"]["payer_outflows"], r("-40", "1"));
     assert_eq!(report["tax_transfers"]["net_within_boundary"], r("0", "1"));
     assert_eq!(report["selected_resource_cost"], r("80", "1"));
     assert_eq!(report["net_monetary_benefit"], r("20", "1"));
     assert_eq!(report["net_public_outlay"], Value::Null);
-    assert_eq!(report["excluded_line_ids"], json!(["enforcement", "excise", "gst"]));
+    assert_eq!(
+        report["excluded_line_ids"],
+        json!(["enforcement", "excise", "gst"])
+    );
 
     let mut societal = input.clone();
     set_view(&mut societal, "societal", "societal_net_domestic_transfers");
@@ -120,8 +133,14 @@ fn each_flow_uses_its_own_time_and_explicit_zero_is_not_missing() {
     input["lines"][1]["time_step"] = json!(2);
     input["lines"][2]["undiscounted_amount"]["amount"] = r("0", "1");
     let result = result(&input);
-    assert_eq!(result["resources"]["health_system_direct_cost"], r("100", "1"));
-    assert_eq!(result["resources"]["enforcement_resource_cost"], r("64", "5"));
+    assert_eq!(
+        result["resources"]["health_system_direct_cost"],
+        r("100", "1")
+    );
+    assert_eq!(
+        result["resources"]["enforcement_resource_cost"],
+        r("64", "5")
+    );
     assert_eq!(result["tax_transfers"]["government_receipts"], r("8", "1"));
     assert_eq!(result["net_monetary_benefit"], r("0", "1"));
 }
@@ -151,7 +170,10 @@ fn reduced_tax_receipts_raise_public_outlay_with_the_correct_sign() {
     input["lines"][2]["undiscounted_amount"]["amount"] = r("-40", "1");
     input["lines"][3]["undiscounted_amount"]["amount"] = r("-10", "1");
     let report = result(&input);
-    assert_eq!(report["tax_transfers"]["government_receipts"], r("-40", "1"));
+    assert_eq!(
+        report["tax_transfers"]["government_receipts"],
+        r("-40", "1")
+    );
     assert_eq!(report["tax_transfers"]["payer_outflows"], r("40", "1"));
     assert_eq!(report["net_public_outlay"], r("136", "1"));
 }
@@ -165,16 +187,27 @@ fn invalid_perspective_rule_combinations_fail_closed() {
     ] {
         let mut input = fixture();
         set_view(&mut input, view, wrong_rule);
-        assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "perspective_rule");
+        assert_eq!(
+            evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+            "perspective_rule"
+        );
     }
     let mut input = fixture();
     input["key"]["perspective"] = json!("societal");
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "perspective_key");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "perspective_key"
+    );
 }
 
 #[test]
 fn accounting_kind_cannot_silently_relabel_a_transfer_as_a_cost() {
-    for mode in ["kind", "missing_transfer", "source_perspective", "unlabelled_addition"] {
+    for mode in [
+        "kind",
+        "missing_transfer",
+        "source_perspective",
+        "unlabelled_addition",
+    ] {
         let mut input = fixture();
         match mode {
             "kind" => input["lines"][2]["kind"] = json!("health_system_direct_cost"),
@@ -190,13 +223,22 @@ fn accounting_kind_cannot_silently_relabel_a_transfer_as_a_cost() {
 fn currency_price_year_units_and_jurisdiction_are_mandatory_and_consistent() {
     for field in ["currency", "price_year", "unit"] {
         let mut input = fixture();
-        input["lines"][0]["undiscounted_amount"].as_object_mut().unwrap().remove(field);
-        assert!(evaluate_fiscal_json(&input.to_string()).is_err(), "missing {field}");
+        input["lines"][0]["undiscounted_amount"]
+            .as_object_mut()
+            .unwrap()
+            .remove(field);
+        assert!(
+            evaluate_fiscal_json(&input.to_string()).is_err(),
+            "missing {field}"
+        );
     }
     for (path, wrong) in [
         ("/lines/0/undiscounted_amount/currency", json!("AUD")),
         ("/lines/0/undiscounted_amount/price_year", json!(2025)),
-        ("/lines/0/undiscounted_amount/unit", json!("currency_per_qaly")),
+        (
+            "/lines/0/undiscounted_amount/unit",
+            json!("currency_per_qaly"),
+        ),
         ("/health/threshold/currency", json!("AUD")),
         ("/health/threshold/unit", json!("currency")),
         ("/price_year", json!(0)),
@@ -213,7 +255,10 @@ fn duplicate_flows_and_unknown_accounts_are_rejected() {
     let mut input = fixture();
     let line = input["lines"][0].clone();
     input["lines"].as_array_mut().unwrap().push(line);
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "duplicate_identity");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "duplicate_identity"
+    );
     for (path, wrong) in [
         ("/lines/2/transfer/boundary", "cross_border"),
         ("/lines/2/transfer/payer", "unknown"),
@@ -234,19 +279,28 @@ fn signed_costs_and_health_changes_remain_exact() {
     // -50 health - (-80 costs) = +30 NMB.
     assert_eq!(result(&input)["net_monetary_benefit"], r("30", "1"));
     input["health"]["threshold"]["amount"] = r("-100", "1");
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "negative_threshold");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "negative_threshold"
+    );
 }
 
 #[test]
 fn health_inputs_are_required_only_for_explicit_health_valuation_views() {
     let mut input = fixture();
     input["health"] = Value::Null;
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "health_contract");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "health_contract"
+    );
     let mut input = fixture();
     input["perspective"] = json!("public_finance");
     input["key"]["perspective"] = json!("public_finance");
     input["aggregation_rule"] = json!("public_finance_net_outlay");
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "health_contract");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "health_contract"
+    );
 }
 
 #[test]
@@ -261,8 +315,14 @@ fn order_and_unicode_subgroup_identity_are_preserved_without_pooling() {
     assert_eq!(result(&input)["key"], input["key"]);
     let mut changed = input.clone();
     changed["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
-    assert_ne!(result(&input)["input_digest"], result(&changed)["input_digest"]);
-    assert_eq!(result(&changed)["key"]["subgroup_id"], "non-Māori / NZDep-1");
+    assert_ne!(
+        result(&input)["input_digest"],
+        result(&changed)["input_digest"]
+    );
+    assert_eq!(
+        result(&changed)["key"]["subgroup_id"],
+        "non-Māori / NZDep-1"
+    );
 }
 
 #[test]
@@ -274,7 +334,10 @@ fn unsupported_discounting_and_precision_fail_closed() {
         ("/discount/transfer_rate", r("1", "0")),
         ("/discount/step_years", r("0", "1")),
         ("/lines/0/time_step", json!(1201)),
-        ("/lines/0/undiscounted_amount/amount", r(&"9".repeat(97), "1")),
+        (
+            "/lines/0/undiscounted_amount/amount",
+            r(&"9".repeat(97), "1"),
+        ),
     ] {
         let mut input = fixture();
         *input.pointer_mut(path).unwrap() = bad;
@@ -283,7 +346,10 @@ fn unsupported_discounting_and_precision_fail_closed() {
     let mut input = fixture();
     input["discount"]["resource_rate"] = r("1", &"9".repeat(96));
     input["lines"][0]["time_step"] = json!(1200);
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "precision_limit");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "precision_limit"
+    );
 }
 
 #[test]
@@ -309,12 +375,17 @@ fn duplicate_keys_unlabelled_float_and_oversized_inputs_are_rejected() {
         "\"price_year\":2026,\"price_year\":2025",
         1,
     );
-    assert_eq!(evaluate_fiscal_json(&duplicate).unwrap_err().code, "invalid_json");
+    assert_eq!(
+        evaluate_fiscal_json(&duplicate).unwrap_err().code,
+        "invalid_json"
+    );
     let mut input = fixture();
     input["lines"][0]["undiscounted_amount"]["amount"] = json!(100.0);
     assert!(evaluate_fiscal_json(&input.to_string()).is_err());
     assert_eq!(
-        evaluate_fiscal_json(&" ".repeat(4 * 1024 * 1024 + 1)).unwrap_err().code,
+        evaluate_fiscal_json(&" ".repeat(4 * 1024 * 1024 + 1))
+            .unwrap_err()
+            .code,
         "input_limit",
     );
 }
@@ -325,7 +396,11 @@ fn output_digest_and_input_snapshot_support_independent_replay() {
     let report = result(&fixture());
     assert_eq!(result(&report["input_snapshot"]), report);
     let mut unsigned = report.clone();
-    let declared = unsigned.as_object_mut().unwrap().remove("output_digest").unwrap();
+    let declared = unsigned
+        .as_object_mut()
+        .unwrap()
+        .remove("output_digest")
+        .unwrap();
     let mut hash = Sha256::new();
     hash.update(b"dapane:fiscal-output:0.1\n");
     hash.update(serde_json::to_vec(&unsigned).unwrap());
@@ -338,14 +413,23 @@ fn resource_values_do_not_silently_become_budgetary_outlays() {
     let mut input = fixture();
     set_view(&mut input, "public_finance", "public_finance_net_outlay");
     input["resource_basis"] = json!("economic_cost");
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "resource_basis");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "resource_basis"
+    );
     let mut input = fixture();
     set_view(&mut input, "societal", "societal_net_domestic_transfers");
     input["resource_basis"] = json!("public_expenditure");
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "resource_basis");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "resource_basis"
+    );
     let mut input = fixture();
     input["lines"][0]["basis"] = json!("economic_cost");
-    assert_eq!(evaluate_fiscal_json(&input.to_string()).unwrap_err().code, "accounting_kind");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "accounting_kind"
+    );
     input["lines"][0]["basis"] = json!("funding");
     assert!(evaluate_fiscal_json(&input.to_string()).is_err());
 }
@@ -354,7 +438,10 @@ fn resource_values_do_not_silently_become_budgetary_outlays() {
 fn absent_accounting_categories_do_not_become_zero() {
     for removed in ["medical", "enforcement", "excise", "gst"] {
         let mut input = fixture();
-        input["lines"].as_array_mut().unwrap().retain(|line| line["id"] != removed);
+        input["lines"]
+            .as_array_mut()
+            .unwrap()
+            .retain(|line| line["id"] != removed);
         assert_eq!(
             evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
             "incomplete_ledger",

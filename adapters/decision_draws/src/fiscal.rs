@@ -330,7 +330,11 @@ struct Input {
 impl Input {
     fn validate(&mut self) -> Result<Rates, DapaneError> {
         if self.schema_version != SCHEMA_VERSION {
-            return Err(error("unsupported_schema", "Unsupported fiscal contract", "/schema_version"));
+            return Err(error(
+                "unsupported_schema",
+                "Unsupported fiscal contract",
+                "/schema_version",
+            ));
         }
         common::identifier(&self.run_id, "/run_id")?;
         self.key.validate("/key")?;
@@ -406,12 +410,20 @@ impl Input {
                 ));
             }
         }
-        let taxes: BTreeSet<_> = self.lines.iter()
+        let taxes: BTreeSet<_> = self
+            .lines
+            .iter()
             .filter(|line| line.kind == LineKind::DiscountedTaxTransfer)
             .filter_map(|line| line.transfer.as_ref().map(|t| t.tax))
             .collect();
-        if !self.lines.iter().any(|line| line.kind == LineKind::HealthSystemDirectCost)
-            || !self.lines.iter().any(|line| line.kind == LineKind::EnforcementResourceCost)
+        if !self
+            .lines
+            .iter()
+            .any(|line| line.kind == LineKind::HealthSystemDirectCost)
+            || !self
+                .lines
+                .iter()
+                .any(|line| line.kind == LineKind::EnforcementResourceCost)
             || taxes != BTreeSet::from([Tax::Excise, Tax::Gst])
         {
             return Err(error(
@@ -425,13 +437,19 @@ impl Input {
             (Perspective::PublicFinance, None) => {}
             (Perspective::HealthSystem | Perspective::Societal, Some(health)) => {
                 health.model.validate("/health/model")?;
-                health.threshold_source.validate("/health/threshold_source")?;
-                if health.threshold.validate(
-                    self.currency,
-                    self.price_year,
-                    MoneyUnit::CurrencyPerQaly,
-                    "/health/threshold",
-                )?.is_negative() {
+                health
+                    .threshold_source
+                    .validate("/health/threshold_source")?;
+                if health
+                    .threshold
+                    .validate(
+                        self.currency,
+                        self.price_year,
+                        MoneyUnit::CurrencyPerQaly,
+                        "/health/threshold",
+                    )?
+                    .is_negative()
+                {
                     return Err(error(
                         "negative_threshold",
                         "Willingness-to-pay threshold must be nonnegative",
@@ -449,7 +467,11 @@ impl Input {
                 for flow in &health.flows {
                     common::identifier(&flow.id, "/health/flows")?;
                     if !ids.insert(&flow.id) {
-                        return Err(error("duplicate_identity", "Repeated health flow ID", "/health/flows"));
+                        return Err(error(
+                            "duplicate_identity",
+                            "Repeated health flow ID",
+                            "/health/flows",
+                        ));
                     }
                 }
                 health.flows.sort_by(|a, b| a.id.cmp(&b.id));
@@ -484,7 +506,12 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
     let mut excluded = Vec::new();
     for (i, line) in input.lines.iter().enumerate() {
         let path = format!("/lines/{i}");
-        let amount = line.validate(input.currency, input.price_year, input.resource_basis, &path)?;
+        let amount = line.validate(
+            input.currency,
+            input.price_year,
+            input.resource_basis,
+            &path,
+        )?;
         let rate = if line.kind == LineKind::DiscountedTaxTransfer {
             &rates.transfer
         } else {
@@ -510,7 +537,10 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
                 if input.perspective != Perspective::PublicFinance {
                     excluded.push(line.id.clone());
                 }
-                (Some(common::wire(&discounted)), Some(common::wire(&(-&discounted))))
+                (
+                    Some(common::wire(&discounted)),
+                    Some(common::wire(&(-&discounted))),
+                )
             }
         };
         valued_lines.push(serde_json::json!({
@@ -550,10 +580,8 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
         for (i, flow) in health.flows.iter().enumerate() {
             let path = format!("/health/flows/{i}");
             let discount_factor = factor(&rates.health, flow.time_step, &path)?;
-            let discounted = common::bounded(
-                common::exact(&flow.value, &path)? * &discount_factor,
-                &path,
-            )?;
+            let discounted =
+                common::bounded(common::exact(&flow.value, &path)? * &discount_factor, &path)?;
             qaly = common::bounded(qaly + &discounted, &path)?;
             valued_health.push(serde_json::json!({
                 "id": flow.id,

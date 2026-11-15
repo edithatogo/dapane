@@ -79,7 +79,11 @@ impl DrawSet {
         for draw in &self.rows {
             common::identifier(&draw.draw_id, "/draws/rows")?;
             if !ids.insert(&draw.draw_id) {
-                return Err(error("duplicate_identity", "Repeated draw ID", "/draws/rows"));
+                return Err(error(
+                    "duplicate_identity",
+                    "Repeated draw ID",
+                    "/draws/rows",
+                ));
             }
             if !draw.values.keys().eq(self.parameters.keys()) {
                 return Err(error(
@@ -166,7 +170,11 @@ impl Design {
                 .checked_mul(axis.len())
                 .ok_or_else(|| error("input_limit", "Design size overflow", "/design"))?;
             if count > MAX_EVALUATIONS {
-                return Err(error("input_limit", "Design exceeds 256 evaluations", "/design"));
+                return Err(error(
+                    "input_limit",
+                    "Design exceeds 256 evaluations",
+                    "/design",
+                ));
             }
             for id in axis.iter() {
                 common::identifier(id, "/design")?;
@@ -276,14 +284,23 @@ impl CostModel {
             common::identifier(&b.parameter_id, path)?;
             common::identifier(&b.target_id, path)?;
             if !targets.insert((b.kind, &b.target_id)) {
-                return Err(error("duplicate_binding", "A model field has more than one binding", path));
+                return Err(error(
+                    "duplicate_binding",
+                    "A model field has more than one binding",
+                    path,
+                ));
             }
-            let parameter_unit = draws.parameters.get(&b.parameter_id)
-                .ok_or_else(|| error("unknown_parameter", "Binding parameter is undeclared", path))?;
+            let parameter_unit = draws.parameters.get(&b.parameter_id).ok_or_else(|| {
+                error("unknown_parameter", "Binding parameter is undeclared", path)
+            })?;
             let (array_path, field, unit_field) = self.binding_location(b.kind, path)?;
-            let rows = self.request.pointer(&array_path).and_then(Value::as_array)
+            let rows = self
+                .request
+                .pointer(&array_path)
+                .and_then(Value::as_array)
                 .ok_or_else(|| error("binding_target", "Target collection is missing", path))?;
-            let found: Vec<_> = rows.iter()
+            let found: Vec<_> = rows
+                .iter()
                 .filter(|v| v["id"].as_str() == Some(&b.target_id))
                 .collect();
             if found.len() != 1 || found[0].get(field).is_none() {
@@ -315,14 +332,22 @@ impl CostModel {
         kind: BindingKind,
         path: &str,
     ) -> Result<(String, &'static str, &'static str), DapaneError> {
-        let prefix = if self.method == CostMethod::Intervals { "/request" } else { "" };
+        let prefix = if self.method == CostMethod::Intervals {
+            "/request"
+        } else {
+            ""
+        };
         match kind {
             BindingKind::QuoteAmount => Ok((format!("{prefix}/quotes"), "amount", "currency")),
             BindingKind::UsageQuantity => Ok((format!("{prefix}/usage"), "quantity", "unit")),
             BindingKind::IntervalQuantity if self.method == CostMethod::Intervals => {
                 Ok(("/intervals".to_owned(), "quantity", "unit"))
             }
-            _ => Err(error("binding_target", "Interval binding requires interval method", path)),
+            _ => Err(error(
+                "binding_target",
+                "Interval binding requires interval method",
+                path,
+            )),
         }
     }
 
@@ -338,9 +363,18 @@ impl CostModel {
                 ));
             }
             let (array_path, field, _) = self.binding_location(b.kind, path)?;
-            let rows = request.pointer_mut(&array_path).and_then(Value::as_array_mut)
-                .ok_or_else(|| error("binding_target", "Missing validated target collection", path))?;
-            let row = rows.iter_mut()
+            let rows = request
+                .pointer_mut(&array_path)
+                .and_then(Value::as_array_mut)
+                .ok_or_else(|| {
+                    error(
+                        "binding_target",
+                        "Missing validated target collection",
+                        path,
+                    )
+                })?;
+            let row = rows
+                .iter_mut()
                 .find(|v| v["id"].as_str() == Some(&b.target_id))
                 .ok_or_else(|| error("binding_target", "Missing validated target", path))?;
             row[field] = common::value(&common::wire(&number))?;
@@ -423,10 +457,17 @@ struct Input {
 pub fn evaluate_paired_json(input: &str) -> Result<String, DapaneError> {
     let mut input: Input = common::parse(input)?;
     if input.schema_version != SCHEMA_VERSION {
-        return Err(error("unsupported_schema", "Unsupported paired-draw schema", "/schema_version"));
+        return Err(error(
+            "unsupported_schema",
+            "Unsupported paired-draw schema",
+            "/schema_version",
+        ));
     }
     common::identifier(&input.run_id, "/run_id")?;
-    if !matches!(input.money.basis, ValuationBasis::EconomicCost | ValuationBasis::FinancialCost) {
+    if !matches!(
+        input.money.basis,
+        ValuationBasis::EconomicCost | ValuationBasis::FinancialCost
+    ) {
         return Err(error(
             "unsupported_basis",
             "Cost pairing does not admit funding or charge as resource costs",
@@ -444,7 +485,12 @@ pub fn evaluate_paired_json(input: &str) -> Result<String, DapaneError> {
     }
     let cells = input.design.cells(input.draws.rows.len())?;
     if input.models.len() != cells.len()
-        || input.models.iter().map(|m| m.cell.clone()).collect::<BTreeSet<_>>() != cells
+        || input
+            .models
+            .iter()
+            .map(|m| m.cell.clone())
+            .collect::<BTreeSet<_>>()
+            != cells
     {
         return Err(error(
             "model_panel_mismatch",
@@ -455,11 +501,18 @@ pub fn evaluate_paired_json(input: &str) -> Result<String, DapaneError> {
     input.outcomes.model.validate("/outcomes/model")?;
     common::identifier(&input.outcomes.measure_id, "/outcomes/measure_id")?;
     common::identifier(&input.outcomes.unit, "/outcomes/unit")?;
-    let keys: BTreeSet<_> = cells.iter()
+    let keys: BTreeSet<_> = cells
+        .iter()
         .flat_map(|cell| input.draws.rows.iter().map(move |d| cell.key(&d.draw_id)))
         .collect();
     if input.outcomes.rows.len() != keys.len()
-        || input.outcomes.rows.iter().map(|o| o.key.clone()).collect::<BTreeSet<_>>() != keys
+        || input
+            .outcomes
+            .rows
+            .iter()
+            .map(|o| o.key.clone())
+            .collect::<BTreeSet<_>>()
+            != keys
     {
         return Err(error(
             "pairing_mismatch",
@@ -498,8 +551,8 @@ pub fn evaluate_paired_json(input: &str) -> Result<String, DapaneError> {
                 "cost_report": report,
                 "outcome": outcomes[&key],
             });
-            output_bytes = output_bytes
-                .saturating_add(common::encoded_size(&row, common::OUTPUT_BYTES)?);
+            output_bytes =
+                output_bytes.saturating_add(common::encoded_size(&row, common::OUTPUT_BYTES)?);
             if output_bytes > common::OUTPUT_BYTES {
                 return Err(error("output_limit", "Batch report exceeds 16 MiB", "/"));
             }
@@ -524,8 +577,7 @@ pub fn evaluate_paired_json(input: &str) -> Result<String, DapaneError> {
         },
         "rows": results.into_values().collect::<Vec<_>>(),
     });
-    report["output_digest"] =
-        Value::String(common::digest("dapane:paired-output:0.1\n", &report)?);
+    report["output_digest"] = Value::String(common::digest("dapane:paired-output:0.1\n", &report)?);
     common::encoded_size(&report, common::OUTPUT_BYTES)?;
     common::canonical(&report)
 }
