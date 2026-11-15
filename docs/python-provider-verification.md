@@ -1,8 +1,8 @@
 # Python provider qualification
 
 Track: [python_two_consumers_20261108](../conductor/tracks/python_two_consumers_20261108/index.md).
-Status: installed-provider and Dapane hosted acceptance passed; final genomics coverage remediation in progress,
-15 November 2026 (Australia/Brisbane; execution receipts dated 14 November UTC).
+Status: completed and archived in place after implementation, review and fixes,
+15 November 2026 (Australia/Brisbane; earlier local receipts dated 14 November UTC).
 
 ## Delivered boundary
 
@@ -170,9 +170,9 @@ reports, including the actual installed legacy calculator route.
 | Installed Dapane native boundary, original candidate | 74 tests passed on Python 3.15.1. |
 | Installed Dapane boundary plus newly merged core-contract checks | 133 tests passed against main `224cf91dbcf513feaa022b2cf5aa310a965472ce`; Rust and Python package source remained unchanged. |
 | Earlier hosted runtime matrix | [Run 43651005666](https://github.com/edithatogo/dapane/actions/runs/43651005666), revision `68d8ab37688893e3b5619dbe102c1d1c47ce994b`: native and Python 3.12–3.15 jobs passed. |
-| Hosted Dapane qualification | Revision `bc96cc17f10edf604159f70d477f5e114326833e`: [installed providers](https://github.com/edithatogo/dapane/actions/runs/43653483642), [runtime matrix](https://github.com/edithatogo/dapane/actions/runs/43653483613), Conductor, privacy and CodeQL all passed. |
+| Earlier hosted Dapane checkpoint | Revision `bc96cc17f10edf604159f70d477f5e114326833e`: [installed providers](https://github.com/edithatogo/dapane/actions/runs/43653483642), [runtime matrix](https://github.com/edithatogo/dapane/actions/runs/43653483613), Conductor and privacy passed. CodeQL analysis jobs completed, but aggregate check `132630870452` failed with the workflow alert subsequently fixed below. An earlier summary conflated analysis execution with gate acceptance; this record corrects that classification. |
 | Hosted workforce qualification | Revision `c351a7c6420a356c4c13d2da3010bc7e7d0341f9`: [1,085 tests passed, 91.58% coverage](https://github.com/edithatogo/microcosting_healthworkforce/actions/runs/43653350876/job/132626435859), with every required security check passing. PR 305 merged as `8fa5882e2fda6cdba9ae93c46542c5b0b874c260`. |
-| Hosted genomics qualification | The prior functional, quality, integration, package and privacy gates passed, but patch coverage was 80.48% against 90%. Tests-only remediation `be2451f34a389f90e618cf37a5e8e1fcbb148dea` is in [run 43656442325](https://github.com/edithatogo/microcosting_genomics/actions/runs/43656442325). |
+| Hosted genomics qualification | Final revision `be2451f34a389f90e618cf37a5e8e1fcbb148dea`: [CI 43656442325](https://github.com/edithatogo/microcosting_genomics/actions/runs/43656442325) and [privacy 43656442324](https://github.com/edithatogo/microcosting_genomics/actions/runs/43656442324) passed. Codecov patch coverage passed at 97.25% against the unchanged 90% target. The [integration job](https://github.com/edithatogo/microcosting_genomics/actions/runs/43656442325/job/132641751668) passed 17 edge-case tests and 2,894 legacy comparisons. PR 173 merged as `b218f1464abb334fb60b3851af837325a238fa1a`. |
 
 The earlier broad local workforce run passed 1,082 tests; three tests requiring
 LibreOffice lacked that local executable. The final hosted run installed
@@ -239,6 +239,52 @@ Ruff lint/format, strict typing, the final wheel build and package checks passed
 
 The new genomics wheel is version `0.2.1.dev26+gbe2451f34`, SHA-256
 `8cae36ec2bb2496616cdebac4436b2dd362a30c1285b8822fa970e4bc7f1edae`.
-The coordinator pins the new revision and reruns its installed-consumer job;
-its preceding artifact identities remain dated evidence, not a claim that the
-new wheel has the old version or hash.
+The coordinator pins and qualifies this new revision. The preceding artifact
+identities remain dated evidence; the new wheel has the version and hash above.
+
+## Final integration and archive
+
+At coordinator revision `c1333839f2faadaaecd8c7356d0a520557a477ed`, the
+[installed-provider run](https://github.com/edithatogo/dapane/actions/runs/43656667239)
+and [native/Python runtime matrix](https://github.com/edithatogo/dapane/actions/runs/43656667279)
+passed with the final provider pins and integrated Rust implementation.
+[Conductor validation](https://github.com/edithatogo/dapane/actions/runs/43656667197)
+and [privacy](https://github.com/edithatogo/dapane/actions/runs/43656667198) also
+passed. Each Python 3.12–3.15 job passed 133 tests; native acceptance included
+62 Rust tests and 11 tooling regression tests. The three CodeQL analyses executed
+successfully, but their aggregate check reported one high-severity workflow alert;
+that revision is not recorded as a security-gate pass.
+
+### Workflow security remediation
+
+CodeQL check `132642895898` identified
+`actions/cache-poisoning/poisonable-step`: manual dispatch could execute checked-out
+provider code with default-branch cache-write capability. Read-only repository
+permissions do not remove that separate cache capability. Independent review of
+the [official query guidance](https://codeql.github.com/codeql-query-help/actions/actions-cache-poisoning-poisonable-step/)
+and event model confirmed the minimal fix: commit
+`d4d6500e144944824a4988b0a85ea800832b15c0` removes only the optional
+`workflow_dispatch` trigger. Pull-request and push-to-main qualification remain.
+The runner, provider pins, native implementation and acceptance checks are unchanged.
+
+The subsequent [CodeQL run](https://github.com/edithatogo/dapane/actions/runs/43659232549)
+and its aggregate gate passed on `d4d6500`. The
+[installed-provider run](https://github.com/edithatogo/dapane/actions/runs/43659236985),
+[runtime matrix](https://github.com/edithatogo/dapane/actions/runs/43659236986),
+[Conductor validation](https://github.com/edithatogo/dapane/actions/runs/43659236969)
+and [privacy check](https://github.com/edithatogo/dapane/actions/runs/43659236977)
+also passed on that revision. The hosted checkout was synthetic merge
+`cf9a7ad68bec32f2631a8b35dcf05a1f9b84569f`, combining `d4d6500` with
+receiving main `c229a16d07b75bc67989368b502c898ea7a946c4`. Its Conductor
+job passed 14 tracks, 12 requirements, 153 tasks, 525 local links and all
+12 lifecycle regression tests. Those are the pre-archive integrated counts.
+
+The closeout incorporates receiving main `c229a16d07b75bc67989368b502c898ea7a946c4`, including its
+setup, core-contract and Rust-kernel archive records. This reconciliation retains
+the stricter lifecycle validator, its regression suite and the archive-test
+fixture correction without changing numerical runtime source.
+The completed plan, index, metadata, registry and archive entry agree; local
+Conductor validation passed for 14 tracks, 12 requirements, 153 tasks and
+532 local links. The 12 lifecycle regression tests also passed. The track retains its original directory and
+its earlier observations. [PR 13](https://github.com/edithatogo/dapane/pull/13)
+records the final archive-commit checks and merge.

@@ -23,10 +23,14 @@ repeat an approval already supplied in the session.
 | `[!]` | Blocked with a named reason and next action | `blocked` when the entire track cannot advance |
 | `[-]` | Intentionally omitted with rationale | Does not itself imply `cancelled` or `archived` |
 
-Track states also permit `cancelled` and `archived`. Keep metadata, registry and
-track index consistent. A date or completion checkbox is not evidence of a
-runtime capability. Retain earlier evidence as a dated observation when a later
-change invalidates its relevance.
+Track states also permit `cancelled` and `archived`. Keep metadata, registry,
+track index and the plan's single `Status:` heading consistent. The index also
+has exactly one status declaration. Archived tracks retain finished or explicitly
+omitted tasks and passed verification; unfinished or cancelled work retains its
+own state rather than using archival as completion.
+Follow the [archive policy](archive/README.md) to preserve stable links and evidence.
+A date or completion checkbox is not evidence of a runtime capability. Retain
+earlier evidence as a dated observation when a later change invalidates its relevance.
 
 ## Execute and verify
 
@@ -53,11 +57,14 @@ counting, allocation imbalance, malformed transport and unsupported methods.
 
 ```sh
 python3 scripts/validate_conductor.py
+python3 -m unittest discover -s tests -p 'test_conductor_validation.py' -v
 ```
 
 This checks required context, relative links, metadata/registry consistency,
-requirement ownership and acyclic local dependencies. It never marks numerical,
-clinical, source or deployment validity. Runtime commands and actual outcomes
+requirement ownership and acyclic local dependencies. The regression suite checks
+that lifecycle inconsistencies and incomplete archival are rejected. Neither
+establishes numerical, clinical, source or deployment validity. Runtime commands
+and actual outcomes
 are recorded in [runtime verification](../docs/runtime-verification.md) and the
 affected tracks.
 

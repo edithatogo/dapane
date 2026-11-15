@@ -11,5 +11,5 @@
     "commit": "be2451f34a389f90e618cf37a5e8e1fcbb148dea",
     "python": "3.15.1"
   },
-  "qualification": "passed_local_installed_checks"
+  "qualification": "passed"
 }

@@ -28,7 +28,9 @@ def project(root, *, marker="x", verification="passed"):
     track.mkdir(parents=True)
     (track / "index.md").write_text("# Synthetic track\n\nStatus: archived\n")
     (track / "spec.md").write_text("# Synthetic acceptance specification\n")
-    (track / "plan.md").write_text(f"# Synthetic plan\n\n- [{marker}] T1 Verify behaviour\n")
+    (track / "plan.md").write_text(
+        f"# Synthetic plan\n\nStatus: archived\n\n- [{marker}] T1 Verify behaviour\n"
+    )
     metadata = {
         "track_id": "synthetic",
         "type": "feature",
