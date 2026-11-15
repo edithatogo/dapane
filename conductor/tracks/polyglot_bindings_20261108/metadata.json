@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "blocked",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-15T05:21:18Z",
+  "updated_at": "2026-11-15T08:17:24.328524Z",
   "description": "Expose the same Rust numerical implementation to R and Julia with explicit ownership, exact transport and installed-artifact parity. R and Julia are independent delivery branches.",
   "repositories": [
     "."
@@ -24,30 +24,31 @@
     "R is direct extendr and independent of C ABI, Julia and Python.",
     "C ABI proposes immutable opaque handles and caller-owned output buffers; foreign pointers remain documented caller preconditions.",
     "Do not implement Julia until the native C consumer qualifies the ABI.",
-    "Recovered source and lockfiles require fresh exact-head validation; pre-interruption results are historical evidence only."
+    "Original recovery evidence remains historical; the integrator replayed exact received source and each later head requires its own source-bound qualification.",
+    "Shared namespace/registry/standalone CI requests accepted in PR20; this owner repair preserves those objects and does not implement Julia."
   ],
   "requirement_ids": [
     "RQ-09",
     "RQ-02"
   ],
-  "capability_status": "R and ABI implementation candidates; published source replay pending; C consumer unexecuted; Julia gated",
+  "capability_status": "Bounded installed Linux R/native C execution evidenced; owner quality corrected; total ABI acceptance, optional dependency/legal gates, other hosts and Julia remain open",
   "verification": {
     "status": "partial",
     "commands": [
-      "EXECUTED before interruption: root cargo build --offline --locked --release -p dapane-cli (passed).",
-      "EXECUTED before interruption: R cargo test (1 panic-containment test passed); cargo fmt; cargo clippy --offline --locked --all-targets -- -D warnings (passed).",
-      "EXECUTED before interruption: prepare_cases.py (24 synthetic cases prepared and independent projections checked).",
-      "EXECUTED before interruption: stage_r.py, R CMD build and R CMD INSTALL --preclean into a fresh library (passed).",
-      "EXECUTED before interruption: installed.R (24 cases, host rejection, GC stress and two independent interpreter processes passed).",
-      "EXECUTED before interruption: packaging unittest suite (3 passed; new fourth path-recursion regression remains unexecuted).",
-      "EXECUTED before interruption: ABI cargo test (5 passed), cargo build --offline --locked --release (passed).",
-      "UNEXECUTED: final published-source qualification, native C consumer/sanitizers, ABI Clippy/format result, artifact hashes, Julia, dependency/advisory release gates.",
-      "UNEXECUTED handoff command: bash bindings/polyglot/qualify.sh /absolute/new-output."
+      "RECEIVED hosted source 8716c423f15c6449940df902fbabfab870d38f4d: installed R/native C acceptance passed; ABI Clippy and Python formatting failed.",
+      "CORRECTION source 988e41158a17d6613006b9bffe59cd59a3aa9cca: Ruff checks, R/ABI formatting, ABI Clippy -D warnings, 5 ABI tests, 4 packaging tests, locked/offline builds, 24 cases/400 ordinary native calls, Conductor and 12 regressions passed.",
+      "FAILED local sanitizer execution: LeakSanitizer cannot run under ptrace; no pass inferred.",
+      "HOSTED CORRECTION 988e41158a17d6613006b9bffe59cd59a3aa9cca: all 41 binding commands passed, including R installation/host acceptance and C ASan/UBSan with leak detection; 228 source files and 103 retained entries verified. Final documentation head replay remains separate."
     ],
-    "evidence": "verification.md",
+    "evidence": "owner-quality-20261115.md",
+    "receipt": "owner-quality-20261115.json",
     "final_source_qualified": false,
     "implementation_commit": "9904252c1e3a94f63ff5dd89c4e855a2ef617f4d",
-    "handoff": "handoff.md"
+    "owner_correction_commit": "988e41158a17d6613006b9bffe59cd59a3aa9cca",
+    "handoff": "handoff.md",
+    "hosted_correction_receipt": "omitted_from_git_due_to_gitleaks_workflow_sha_pattern_see_owner_quality_20261115_json",
+    "hosted_correction_run": 43693257570,
+    "total_abi_qualified": false
   },
   "completion_evidence": [
     "The R wrapper calls the core directly and can be completed without the C ABI, Julia or Python bindings.",

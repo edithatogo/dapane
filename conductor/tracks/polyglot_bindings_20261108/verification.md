@@ -1,5 +1,18 @@
 # Polyglot verification record — 15 November 2026
 
+## Current owner follow-up
+
+The [current quality/acceptance handoff](owner-quality-20261115.md) and
+[structured evidence](owner-quality-20261115.json) supersede the original pending
+replay, namespace, registry and standalone-CI requests below. The integrator
+executed installed R/native C acceptance on its exact received source; this owner
+corrected the two quality findings without changing runtime semantics. Julia,
+separate unsafe-boundary acceptance and optional legal/security/release obligations
+remain open. Final-head results are pinned in the existing PR #26 / PR #20 owner
+comments rather than assigned to an earlier source.
+
+## Historical recovery handoff — retained
+
 ## Evidence boundary
 
 **The published candidate is not qualified.** The ordinary execution environment

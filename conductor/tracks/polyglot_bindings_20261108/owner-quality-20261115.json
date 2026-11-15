@@ -1,0 +1,893 @@
+{
+  "format": "dapane-polyglot-owner-quality/1",
+  "received_source": "8716c423f15c6449940df902fbabfab870d38f4d",
+  "correction_source": "988e41158a17d6613006b9bffe59cd59a3aa9cca",
+  "correction_tree": "757c1ee74d575ed0e21d9f6e11b99dad72b11053",
+  "recorded_at": "2026-11-15T08:17:24.327442+00:00",
+  "scope": [
+    "bindings/polyglot/",
+    "conductor/tracks/polyglot_bindings_20261108/"
+  ],
+  "received_hosted_receipt": "https://github.com/edithatogo/dapane/blob/497cd6472b1eb282ea6bd79271a7c76a881e9cec/conductor/roadmap-evidence-2026-11-15/attempt-2/pr26/qualification.json",
+  "baseline": {
+    "source": "8716c423f15c6449940df902fbabfab870d38f4d",
+    "clean": true,
+    "commands": [
+      {
+        "name": "python-format",
+        "arguments": [
+          "python3",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "bindings/polyglot/stage_r.py",
+          "bindings/polyglot/tests"
+        ],
+        "exit_code": 1,
+        "seconds": 0.043,
+        "log": "baseline-python-format.log",
+        "sha256": "6cd99b6a6c568a73c529f3f4b1a568b717d225a2d0006a5f1463948cb451c825"
+      },
+      {
+        "name": "abi-clippy",
+        "arguments": [
+          "cargo",
+          "clippy",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--offline",
+          "--locked",
+          "--all-targets",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-debug",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "exit_code": 101,
+        "seconds": 5.007,
+        "log": "baseline-abi-clippy.log",
+        "sha256": "3b962f9d31446f2178045041f8e1bb46a3d73a8b424c36f9e4ff146daeece77d"
+      }
+    ]
+  },
+  "local": {
+    "format": "dapane-polyglot-owner-native/1",
+    "source": "988e41158a17d6613006b9bffe59cd59a3aa9cca",
+    "tree": "757c1ee74d575ed0e21d9f6e11b99dad72b11053",
+    "source_clean_before": true,
+    "started_at": "2026-11-15T08:11:08.165010+00:00",
+    "scope": "Local Linux x86_64 quality and ordinary native C acceptance; full sanitizers and R acceptance are separate hosted checks. Prior sanitizer failure under traced execution remains recorded.",
+    "environment": {
+      "CARGO_HOME": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/cargo-home",
+      "TMPDIR": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/tmp",
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_BUILD_JOBS": "2",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "LC_ALL": "C.UTF-8",
+      "TZ": "UTC",
+      "PYTHONHASHSEED": "0"
+    },
+    "commands": [
+      {
+        "name": "rust-version",
+        "arguments": [
+          "rustc",
+          "--version",
+          "--verbose"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.025471,
+        "output": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n",
+        "output_sha256": "f22d5e4e9ced367e774ce5bc140d9e6b1235c1882fec80d011044851f3ae6369"
+      },
+      {
+        "name": "cargo-version",
+        "arguments": [
+          "cargo",
+          "--version"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.0051,
+        "output": "cargo 1.99.1 (5f94df478 2026-08-27)\n",
+        "output_sha256": "c35608815f43d0b8788a9b826fad2bb17384f49fb328dc4fe64da9db5f5ef4d6"
+      },
+      {
+        "name": "gcc-version",
+        "arguments": [
+          "gcc",
+          "--version"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.001148,
+        "output": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "output_sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+      },
+      {
+        "name": "python-version",
+        "arguments": [
+          "python3",
+          "--version"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.001821,
+        "output": "Python 3.12.14\n",
+        "output_sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+      },
+      {
+        "name": "ruff-version",
+        "arguments": [
+          "python3",
+          "-m",
+          "ruff",
+          "--version"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.019091,
+        "output": "ruff 0.17.4\n",
+        "output_sha256": "773f0ef311f89fca4363d46ab94f339dcbc4e61fb6d0ca6e6fcad0ea7dfd84bc"
+      },
+      {
+        "name": "python-lint",
+        "arguments": [
+          "python3",
+          "-m",
+          "ruff",
+          "check",
+          "bindings/polyglot/stage_r.py",
+          "bindings/polyglot/tests"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.022327,
+        "output": "All checks passed!\n",
+        "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      },
+      {
+        "name": "python-format",
+        "arguments": [
+          "python3",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "bindings/polyglot/stage_r.py",
+          "bindings/polyglot/tests"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.024978,
+        "output": "3 files already formatted\n",
+        "output_sha256": "eee76f865de5a9f2456950f710ae5d5f9b5bd0ea02aa54f614c5eed6642a0bfd"
+      },
+      {
+        "name": "r-format",
+        "arguments": [
+          "cargo",
+          "fmt",
+          "--manifest-path",
+          "bindings/polyglot/r/src/rust/Cargo.toml",
+          "--all",
+          "--check"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.062349,
+        "output": "",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "abi-format",
+        "arguments": [
+          "cargo",
+          "fmt",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--all",
+          "--check"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.067015,
+        "output": "",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "abi-clippy",
+        "arguments": [
+          "cargo",
+          "clippy",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--offline",
+          "--locked",
+          "--all-targets",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-debug",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.079589,
+        "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s\n",
+        "output_sha256": "99f71393b9903dca098310bb446022a4bdee195ea9996f351a787195555210a6"
+      },
+      {
+        "name": "abi-tests",
+        "arguments": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--offline",
+          "--locked",
+          "--all-targets",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-debug"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.189083,
+        "output": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s\n     Running unittests src/lib.rs (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-debug/debug/deps/dapane_abi-ce955630569b76b3)\n\nrunning 5 tests\ntest tests::exhausted_identifier_space_fails_closed ... ok\ntest tests::handles_are_not_reused_and_storage_is_reclaimed ... ok\ntest tests::panics_cannot_unwind_out_of_the_common_boundary ... ok\ntest tests::saturation_rejects_and_free_restores_capacity ... ok\ntest tests::result_byte_limit_rejects_without_retaining_a_partial_value ... ok\n\ntest result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s\n\n",
+        "output_sha256": "eec71d3fda9e2bee2296070d445b557fc45036f885d2c9d312daa4b8fdcfed75"
+      },
+      {
+        "name": "packaging-tests",
+        "arguments": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "bindings/polyglot/tests",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.083271,
+        "output": "test_inheritance_resolution_preserves_core_dependency_features (test_packaging.PackagingTests.test_inheritance_resolution_preserves_core_dependency_features) ... ok\ntest_root_locked_packages_are_not_silently_upgraded (test_packaging.PackagingTests.test_root_locked_packages_are_not_silently_upgraded) ... ok\ntest_staging_refuses_a_new_directory_inside_source (test_packaging.PackagingTests.test_staging_refuses_a_new_directory_inside_source) ... ok\ntest_staging_refuses_overwrite (test_packaging.PackagingTests.test_staging_refuses_overwrite) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.003s\n\nOK\n",
+        "output_sha256": "2c6dc62361854942d2dcb83894bbed1295721861e9db06364670f998009926a3"
+      },
+      {
+        "name": "native-build",
+        "arguments": [
+          "cargo",
+          "build",
+          "--offline",
+          "--locked",
+          "--release",
+          "-p",
+          "dapane-cli",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.017465,
+        "output": "    Finished `release` profile [optimized] target(s) in 0.01s\n",
+        "output_sha256": "6bfa9e18ffdef821c711a542cfebd7db0982665615563e5a191285e489609c6f"
+      },
+      {
+        "name": "cases",
+        "arguments": [
+          "python3",
+          "bindings/polyglot/tests/prepare_cases.py",
+          "--cli",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release/release/dapane",
+          "--output",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/evidence/published-correction/cases"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.056851,
+        "output": "Prepared 24 synthetic parity cases\n",
+        "output_sha256": "954553a8af3e7117f0b70ac49498d031ef9bf6304037fcfdca4e90e967df62cc"
+      },
+      {
+        "name": "abi-build",
+        "arguments": [
+          "cargo",
+          "build",
+          "--offline",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.043103,
+        "output": "    Finished `release` profile [optimized] target(s) in 0.02s\n",
+        "output_sha256": "222a02ed477d249a21359df8cae975864a62d848f4739cadc5b00b6190a963c6"
+      },
+      {
+        "name": "c-compile",
+        "arguments": [
+          "gcc",
+          "-std=c11",
+          "-O1",
+          "-g",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/bindings/polyglot/abi/include",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/bindings/polyglot/tests/c_consumer.c",
+          "-L",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release/release",
+          "-Wl,-rpath,/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release/release",
+          "-ldapane_abi",
+          "-pthread",
+          "-o",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/evidence/published-correction/c-consumer"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.088872,
+        "output": "",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "c-consumer",
+        "arguments": [
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/evidence/published-correction/c-consumer",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/evidence/published-correction/cases"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.010038,
+        "output": "24 shared cases; lifecycle, bounds and 400 concurrent native calls passed\n",
+        "output_sha256": "59639e36cc6fb45d3e93b45bd8d182c7fcbd3028583fc6f7d27c2b843cf0480e"
+      },
+      {
+        "name": "abi-exports",
+        "arguments": [
+          "nm",
+          "-D",
+          "--defined-only",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release/release/libdapane_abi.so"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.001752,
+        "output": "000000000003d1f8 T dapane_abi_version\n000000000003d200 T dapane_v1_evaluate\n000000000003d4e0 T dapane_v1_result_copy\n000000000003d7e0 T dapane_v1_result_free\n000000000003dcd0 T dapane_v1_result_length\n",
+        "output_sha256": "699e4849fe9ea631848d962492ad194f20b3507f66a35c5dea2263935f1c6b3e"
+      },
+      {
+        "name": "conductor",
+        "arguments": [
+          "python3",
+          "scripts/validate_conductor.py"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.080615,
+        "output": "Conductor validation passed: 14 tracks, 12 requirements, 156 tasks, 536 local links.\nThis checks project records only; runtime and scientific qualification remain separate.\n",
+        "output_sha256": "4578d5ad6dbb10393bfd3392a8a96f28bb87a38baeffd03e92eba0ff8de5b38c"
+      },
+      {
+        "name": "conductor-regressions",
+        "arguments": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_conductor_validation.py",
+          "-v"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.981217,
+        "output": "test_archived_track_rejects_unfinished_tasks (test_conductor_validation.ConductorValidationTests.test_archived_track_rejects_unfinished_tasks) ... ok\ntest_archived_track_requires_passed_verification (test_conductor_validation.ConductorValidationTests.test_archived_track_requires_passed_verification) ... ok\ntest_cancellation_is_distinct_from_verified_archival (test_conductor_validation.ConductorValidationTests.test_cancellation_is_distinct_from_verified_archival) ... ok\ntest_conflicting_status_lines_are_rejected (test_conductor_validation.ConductorValidationTests.test_conflicting_status_lines_are_rejected) ... ok\ntest_duplicate_status_lines_are_rejected (test_conductor_validation.ConductorValidationTests.test_duplicate_status_lines_are_rejected) ... ok\ntest_plan_requires_status_line (test_conductor_validation.ConductorValidationTests.test_plan_requires_status_line) ... ok\ntest_plan_status_must_match_metadata (test_conductor_validation.ConductorValidationTests.test_plan_status_must_match_metadata) ... ok\ntest_single_status_accepts_plain_and_paired_backticks (test_conductor_validation.ConductorValidationTests.test_single_status_accepts_plain_and_paired_backticks) ... ok\ntest_status_backticks_must_be_paired (test_conductor_validation.ConductorValidationTests.test_status_backticks_must_be_paired) ... ok\ntest_status_value_cannot_cross_lines (test_conductor_validation.ConductorValidationTests.test_status_value_cannot_cross_lines) ... ok\ntest_valid_archive_remains_a_registered_dependency (test_conductor_validation.ConductorValidationTests.test_valid_archive_remains_a_registered_dependency) ... ok\ntest_valid_completed_track_passes (test_conductor_validation.ConductorValidationTests.test_valid_completed_track_passes) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.904s\n\nOK\n",
+        "output_sha256": "41b5f9fb61905ea551f3c1df2ae502ab8d57360f40378fa3f85f07146fc4de6a"
+      },
+      {
+        "name": "diff-check",
+        "arguments": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.001834,
+        "output": "",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "artifacts": {
+      "libdapane_abi.so": {
+        "bytes": 1674416,
+        "sha256": "8d719c1fc50ae4833480629d41760a388dce88d927ad7d9433ceb47669f76f99"
+      },
+      "dapane": {
+        "bytes": 1719480,
+        "sha256": "e8221d60d1993954444831a54ee4a8d9b054e9c8bdd59c6fd4540affb6c456c5"
+      },
+      "c-consumer": {
+        "bytes": 39376,
+        "sha256": "1193b5c05484ae133e243d94c69f02251fffaeb4a245b641806c921ad559d8f1"
+      }
+    },
+    "source_clean_after": true,
+    "finished_at": "2026-11-15T08:11:10.040574+00:00",
+    "status": "passed_ordinary_native_only"
+  },
+  "prior_local_sanitizer_failure": {
+    "format": "dapane-polyglot-owner-native/1",
+    "source": "26325a08f7d14fa24a60e486bfabbf53f16932ff",
+    "tree": "757c1ee74d575ed0e21d9f6e11b99dad72b11053",
+    "source_clean_before": true,
+    "started_at": "2026-11-15T08:07:36.562659+00:00",
+    "scope": "Local Linux x86_64 quality and native C acceptance; R acceptance is a separate hosted run.",
+    "environment": {
+      "CARGO_HOME": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/cargo-home",
+      "TMPDIR": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/tmp",
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_BUILD_JOBS": "2",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "LC_ALL": "C.UTF-8",
+      "TZ": "UTC",
+      "PYTHONHASHSEED": "0"
+    },
+    "commands": [
+      {
+        "name": "rust-version",
+        "arguments": [
+          "rustc",
+          "--version",
+          "--verbose"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.023582,
+        "output": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n",
+        "output_sha256": "f22d5e4e9ced367e774ce5bc140d9e6b1235c1882fec80d011044851f3ae6369"
+      },
+      {
+        "name": "cargo-version",
+        "arguments": [
+          "cargo",
+          "--version"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.006512,
+        "output": "cargo 1.99.1 (5f94df478 2026-08-27)\n",
+        "output_sha256": "c35608815f43d0b8788a9b826fad2bb17384f49fb328dc4fe64da9db5f5ef4d6"
+      },
+      {
+        "name": "gcc-version",
+        "arguments": [
+          "gcc",
+          "--version"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.002645,
+        "output": "gcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "output_sha256": "4dc9a4e32fd9e06d42fb307688c59d6d889f0ff90ce034cbefed21b0d451fd81"
+      },
+      {
+        "name": "python-version",
+        "arguments": [
+          "python3",
+          "--version"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.001486,
+        "output": "Python 3.12.14\n",
+        "output_sha256": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8"
+      },
+      {
+        "name": "ruff-version",
+        "arguments": [
+          "python3",
+          "-m",
+          "ruff",
+          "--version"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.02963,
+        "output": "ruff 0.17.4\n",
+        "output_sha256": "773f0ef311f89fca4363d46ab94f339dcbc4e61fb6d0ca6e6fcad0ea7dfd84bc"
+      },
+      {
+        "name": "python-lint",
+        "arguments": [
+          "python3",
+          "-m",
+          "ruff",
+          "check",
+          "bindings/polyglot/stage_r.py",
+          "bindings/polyglot/tests"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.03056,
+        "output": "All checks passed!\n",
+        "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      },
+      {
+        "name": "python-format",
+        "arguments": [
+          "python3",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "bindings/polyglot/stage_r.py",
+          "bindings/polyglot/tests"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.039326,
+        "output": "3 files already formatted\n",
+        "output_sha256": "eee76f865de5a9f2456950f710ae5d5f9b5bd0ea02aa54f614c5eed6642a0bfd"
+      },
+      {
+        "name": "r-format",
+        "arguments": [
+          "cargo",
+          "fmt",
+          "--manifest-path",
+          "bindings/polyglot/r/src/rust/Cargo.toml",
+          "--all",
+          "--check"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.06557,
+        "output": "",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "abi-format",
+        "arguments": [
+          "cargo",
+          "fmt",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--all",
+          "--check"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.107275,
+        "output": "",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "abi-clippy",
+        "arguments": [
+          "cargo",
+          "clippy",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--offline",
+          "--locked",
+          "--all-targets",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-debug",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.136588,
+        "output": "    Checking dapane-abi v0.1.0 (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/bindings/polyglot/abi)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s\n",
+        "output_sha256": "d367e4d0cd7d6731d1116d77685e2c3f7a9e0161a7536a4e74fedc94c99053d7"
+      },
+      {
+        "name": "abi-tests",
+        "arguments": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--offline",
+          "--locked",
+          "--all-targets",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-debug"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 5.701952,
+        "output": "   Compiling typenum v1.20.1\n   Compiling num-traits v0.2.19\n   Compiling serde_core v1.0.229\n   Compiling hybrid-array v0.4.15\n   Compiling crypto-common v0.2.2\n   Compiling block-buffer v0.12.1\n   Compiling num-integer v0.1.47\n   Compiling const-oid v0.10.2\n   Compiling digest v0.11.3\n   Compiling num-bigint v0.4.8\n   Compiling zmij v1.0.23\n   Compiling cfg-if v1.0.5\n   Compiling cpufeatures v0.3.1\n   Compiling memchr v2.8.3\n   Compiling itoa v1.0.18\n   Compiling num-rational v0.4.2\n   Compiling serde_json v1.0.154\n   Compiling sha2 v0.11.1\n   Compiling serde v1.0.229\n   Compiling chrono v0.4.45\n   Compiling dapane-core v0.1.0 (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/crates/dapane-core)\n   Compiling dapane-abi v0.1.0 (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/bindings/polyglot/abi)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.66s\n     Running unittests src/lib.rs (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-debug/debug/deps/dapane_abi-ce955630569b76b3)\n\nrunning 5 tests\ntest tests::handles_are_not_reused_and_storage_is_reclaimed ... ok\ntest tests::panics_cannot_unwind_out_of_the_common_boundary ... ok\ntest tests::exhausted_identifier_space_fails_closed ... ok\ntest tests::saturation_rejects_and_free_restores_capacity ... ok\ntest tests::result_byte_limit_rejects_without_retaining_a_partial_value ... ok\n\ntest result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s\n\n",
+        "output_sha256": "d83d4aa2e51719f850388f37749df4cf47673cccaf772eca18df3233d067a025"
+      },
+      {
+        "name": "packaging-tests",
+        "arguments": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "bindings/polyglot/tests",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.060782,
+        "output": "test_inheritance_resolution_preserves_core_dependency_features (test_packaging.PackagingTests.test_inheritance_resolution_preserves_core_dependency_features) ... ok\ntest_root_locked_packages_are_not_silently_upgraded (test_packaging.PackagingTests.test_root_locked_packages_are_not_silently_upgraded) ... ok\ntest_staging_refuses_a_new_directory_inside_source (test_packaging.PackagingTests.test_staging_refuses_a_new_directory_inside_source) ... ok\ntest_staging_refuses_overwrite (test_packaging.PackagingTests.test_staging_refuses_overwrite) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.002s\n\nOK\n",
+        "output_sha256": "776f2f70998f8a874868554838d610c53058379105a38caf470a5d199f2bd930"
+      },
+      {
+        "name": "native-build",
+        "arguments": [
+          "cargo",
+          "build",
+          "--offline",
+          "--locked",
+          "--release",
+          "-p",
+          "dapane-cli",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 17.674136,
+        "output": "   Compiling autocfg v1.5.1\n   Compiling proc-macro2 v1.0.107\n   Compiling unicode-ident v1.0.27\n   Compiling num-traits v0.2.19\n   Compiling quote v1.0.47\n   Compiling typenum v1.20.1\n   Compiling hybrid-array v0.4.15\n   Compiling serde_core v1.0.229\n   Compiling zmij v1.0.23\n   Compiling syn v3.0.9\n   Compiling block-buffer v0.12.1\n   Compiling crypto-common v0.2.2\n   Compiling num-integer v0.1.47\n   Compiling const-oid v0.10.2\n   Compiling serde_json v1.0.154\n   Compiling serde v1.0.229\n   Compiling digest v0.11.3\n   Compiling num-bigint v0.4.8\n   Compiling serde_derive v1.0.229\n   Compiling memchr v2.8.3\n   Compiling itoa v1.0.18\n   Compiling cpufeatures v0.3.1\n   Compiling cfg-if v1.0.5\n   Compiling sha2 v0.11.1\n   Compiling num-rational v0.4.2\n   Compiling chrono v0.4.45\n   Compiling dapane-core v0.1.0 (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/crates/dapane-core)\n   Compiling dapane-cli v0.1.0 (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/crates/dapane-cli)\n    Finished `release` profile [optimized] target(s) in 17.66s\n",
+        "output_sha256": "b4d8e327283bc6c388f51a63c9fad6faa285afc3fef666f60ccdd253685b93ab"
+      },
+      {
+        "name": "cases",
+        "arguments": [
+          "python3",
+          "bindings/polyglot/tests/prepare_cases.py",
+          "--cli",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release/release/dapane",
+          "--output",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/evidence/correction/cases"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.05732,
+        "output": "Prepared 24 synthetic parity cases\n",
+        "output_sha256": "954553a8af3e7117f0b70ac49498d031ef9bf6304037fcfdca4e90e967df62cc"
+      },
+      {
+        "name": "abi-build",
+        "arguments": [
+          "cargo",
+          "build",
+          "--offline",
+          "--locked",
+          "--release",
+          "--manifest-path",
+          "bindings/polyglot/abi/Cargo.toml",
+          "--target-dir",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 14.988329,
+        "output": "   Compiling typenum v1.20.1\n   Compiling num-traits v0.2.19\n   Compiling serde_core v1.0.229\n   Compiling hybrid-array v0.4.15\n   Compiling crypto-common v0.2.2\n   Compiling block-buffer v0.12.1\n   Compiling num-integer v0.1.47\n   Compiling const-oid v0.10.2\n   Compiling digest v0.11.3\n   Compiling num-bigint v0.4.8\n   Compiling zmij v1.0.23\n   Compiling itoa v1.0.18\n   Compiling cpufeatures v0.3.1\n   Compiling cfg-if v1.0.5\n   Compiling memchr v2.8.3\n   Compiling num-rational v0.4.2\n   Compiling serde_json v1.0.154\n   Compiling sha2 v0.11.1\n   Compiling serde v1.0.229\n   Compiling chrono v0.4.45\n   Compiling dapane-core v0.1.0 (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/crates/dapane-core)\n   Compiling dapane-abi v0.1.0 (/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/bindings/polyglot/abi)\n    Finished `release` profile [optimized] target(s) in 14.98s\n",
+        "output_sha256": "acf18cdcdb014e7b0f0a0b0cf58c5ffde970b6270aeb062bc5d5f01e7714d830"
+      },
+      {
+        "name": "c-compile",
+        "arguments": [
+          "gcc",
+          "-std=c11",
+          "-O1",
+          "-g",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-I",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/bindings/polyglot/abi/include",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo/bindings/polyglot/tests/c_consumer.c",
+          "-L",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release/release",
+          "-Wl,-rpath,/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/target-release/release",
+          "-ldapane_abi",
+          "-pthread",
+          "-o",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/evidence/correction/c-consumer"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {},
+        "exit_code": 0,
+        "elapsed_seconds": 0.122808,
+        "output": "",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "c-consumer",
+        "arguments": [
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/evidence/correction/c-consumer",
+          "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/evidence/correction/cases"
+        ],
+        "cwd": "/dev/shm/dapane-polyglot-repair-7520c8b2a839-9eX9BX/repo",
+        "environment_additions": {
+          "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+          "UBSAN_OPTIONS": "halt_on_error=1"
+        },
+        "exit_code": 1,
+        "elapsed_seconds": 0.168138,
+        "output": "==983==LeakSanitizer has encountered a fatal error.\n==983==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1\n==983==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)\n",
+        "output_sha256": "dc5e5da6a4971e830affc4c45db30133457345eb53de8dfa4b305a11276a77f0"
+      }
+    ],
+    "artifacts": {},
+    "status": "partial_with_failed_local_sanitizer",
+    "local_sanitizer_blocker": "LeakSanitizer fatal error: executor is traced; no sanitizer result is converted to a pass.",
+    "source_clean_after": true
+  },
+  "focused_review": {
+    "format": "dapane-polyglot-owner-review/1",
+    "received": "8716c423f15c6449940df902fbabfab870d38f4d",
+    "reviewed": "988e41158a17d6613006b9bffe59cd59a3aa9cca",
+    "tree": "757c1ee74d575ed0e21d9f6e11b99dad72b11053",
+    "reviewer": "same author, separate focused review; not independent release or unsafe-boundary sign-off",
+    "changed_files": [
+      "bindings/polyglot/abi/Cargo.toml",
+      "bindings/polyglot/stage_r.py",
+      "bindings/polyglot/tests/prepare_cases.py",
+      "conductor/tracks/polyglot_bindings_20261108/plan.md"
+    ],
+    "python_ast_unchanged": {
+      "bindings/polyglot/stage_r.py": true,
+      "bindings/polyglot/tests/prepare_cases.py": true
+    },
+    "preserved_objects": {
+      ".github": "b21826a85db776213dcd32ce610981fa000e4f4b",
+      "scripts": "3be914d1d26c74868e18d34b88194b9cee7375af",
+      "tests": "08f8a248cbd22ce5cef09b102b499ef45dc7cdce",
+      "Cargo.toml": "2b1be775d33715291eceae75ee91ee941e666952",
+      "Cargo.lock": "a852346d85a8fcb25e1fa6a49db54a52e4167157",
+      "conductor/tracks.md": "7ff45afc6bab5a875b0ba5e949aafd5fcecaa1da",
+      "crates": "afb466cf006038f64b4fec87e50808a742a03284",
+      "schemas": "f21627556b57596c0712a8704152e3e0228c9047",
+      "fixtures": "f072606a1ea500958604cb41f9f05593007ef895",
+      "bindings/polyglot/abi/src": "ddde9438f6c40f73bd2bc4b438009f088dc4b902",
+      "bindings/polyglot/abi/include": "97f012940ac42f00c6fc7ea9b633731b70ec6ce6",
+      "bindings/polyglot/abi/Cargo.lock": "e1fef98096bae1a849ca05a89f1c3c44499a58d2",
+      "bindings/polyglot/r": "aa7d2cbc65f1ee98920cd7e2cf739e7edd21911c",
+      "bindings/polyglot/tests/c_consumer.c": "65617efa2cf058846a4024eb9d377b85ddc0999a",
+      "bindings/polyglot/tests/installed.R": "bc88c0a5363bce5db8772c2cd7d6d0c195e7e6c1",
+      "bindings/polyglot/tests/test_packaging.py": "a89923820d70e1dce7b9ffe4ac4fa360816ad441",
+      "bindings/polyglot/qualify.sh": "be1cba43be787f59dc833d76a31c6b16c133ba9a"
+    },
+    "manifest_change": "Only all group priority -1; warn level, undocumented_unsafe_blocks deny and unsafe_op_in_unsafe_fn deny preserved.",
+    "remaining_findings": [
+      "No new defect in the bounded formatter/lint-precedence diff.",
+      "Local LeakSanitizer execution failed under traced executor; hosted ASan/UBSan result required.",
+      "Separate unsafe-boundary acceptance, optional advisory/SBOM/notices, staged legal payloads and other hosts remain open.",
+      "Julia needs accepted native C-qualified exact library bytes and its own lifetime/artifact acceptance."
+    ],
+    "fixture_file_hash_parity": {
+      "files": 49,
+      "differences": [],
+      "originalSource": "8716c423f15c6449940df902fbabfab870d38f4d",
+      "currentSource": "988e41158a17d6613006b9bffe59cd59a3aa9cca"
+    }
+  },
+  "hosted_correction": {
+    "source": "988e41158a17d6613006b9bffe59cd59a3aa9cca",
+    "run": 43693257570,
+    "qualification_status": "passed",
+    "aggregate_status": "queued_when_recorded",
+    "artifact": {
+      "id": 14152499497,
+      "name": "roadmap-lane-bindings",
+      "size_in_bytes": 7015604,
+      "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14152499497",
+      "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14152499497/zip",
+      "expired": false,
+      "created_at": "2026-11-15T08:14:58Z",
+      "expires_at": "2026-12-15T08:14:56Z",
+      "updated_at": "2026-11-15T08:14:58Z",
+      "digest": "sha256:88c663ff2def309f1ff52035134120f14fc2fb77d5234e5c2af6152b9e2904dd",
+      "workflow_run": {
+        "id": 43693257570,
+        "repository_id": 1449950543,
+        "head_repository_id": 1449950543,
+        "head_branch": "feat/polyglot-r-abi-20261115",
+        "head_sha": "988e41158a17d6613006b9bffe59cd59a3aa9cca"
+      }
+    },
+    "raw_receipt": "omitted_from_git_due_to_gitleaks_workflow_sha_pattern",
+    "verification": {
+      "source": "988e41158a17d6613006b9bffe59cd59a3aa9cca",
+      "tree": "757c1ee74d575ed0e21d9f6e11b99dad72b11053",
+      "status": "passed",
+      "commands": 41,
+      "source_files_verified": 228,
+      "retained_entries_verified": 103,
+      "artifact_id": 14152499497,
+      "archive_sha256": "88c663ff2def309f1ff52035134120f14fc2fb77d5234e5c2af6152b9e2904dd",
+      "receipt_sha256": "bcaf145ad4a151da11e234d27bbb30ddececc569efe79e413f2f1c7ebcae18e2",
+      "abi_library": {
+        "bytes": 1673400,
+        "sha256": "365d837305783862f1dda8078d14a531486f4931414bf2f291a314a2ef9f362e"
+      },
+      "r_library": {
+        "bytes": 7788624,
+        "sha256": "f7f86c1d9a9b379eb7b710d6a5277bec04d367123ddbc02db27bd46b064f274b"
+      },
+      "r_source": {
+        "bytes": 3331275,
+        "sha256": "286f322be73c84d32a6561dbb43fe0ff34c441beae8ca0c767bcc52ab6e12358"
+      },
+      "selected_logs": {
+        "abi-clippy": "   Compiling autocfg v1.5.1\n   Compiling proc-macro2 v1.0.107\n    Checking typenum v1.20.1\n   Compiling unicode-ident v1.0.27\n   Compiling quote v1.0.47\n   Compiling serde_core v1.0.229\n   Compiling num-traits v0.2.19\n   Compiling zmij v1.0.23\n    Checking hybrid-array v0.4.15\n   Compiling syn v3.0.9\n    Checking num-integer v0.1.47\n    Checking const-oid v0.10.2\n   Compiling serde v1.0.229\n    Checking block-buffer v0.12.1\n    Checking crypto-common v0.2.2\n   Compiling serde_json v1.0.154\n    Checking num-bigint v0.4.8\n    Checking digest v0.11.3\n    Checking memchr v2.8.3\n    Checking itoa v1.0.18\n    Checking cpufeatures v0.3.1\n    Checking cfg-if v1.0.5\n    Checking num-rational v0.4.2\n    Checking sha2 v0.11.1\n    Checking chrono v0.4.45\n   Compiling serde_derive v1.0.229\n    Checking dapane-core v0.1.0 (/home/runner/work/dapane/dapane/dapane/crates/dapane-core)\n    Checking dapane-abi v0.1.0 (/home/runner/work/dapane/dapane/dapane/bindings/polyglot/abi)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.90s\n",
+        "python-format": "3 files already formatted\n",
+        "abi-tests": "   Compiling typenum v1.20.1\n   Compiling num-traits v0.2.19\n   Compiling serde_core v1.0.229\n   Compiling const-oid v0.10.2\n   Compiling zmij v1.0.23\n   Compiling cpufeatures v0.3.1\n   Compiling cfg-if v1.0.5\n   Compiling memchr v2.8.3\n   Compiling num-integer v0.1.47\n   Compiling hybrid-array v0.4.15\n   Compiling num-bigint v0.4.8\n   Compiling itoa v1.0.18\n   Compiling chrono v0.4.45\n   Compiling crypto-common v0.2.2\n   Compiling block-buffer v0.12.1\n   Compiling digest v0.11.3\n   Compiling sha2 v0.11.1\n   Compiling serde_json v1.0.154\n   Compiling serde v1.0.229\n   Compiling num-rational v0.4.2\n   Compiling dapane-core v0.1.0 (/home/runner/work/dapane/dapane/dapane/crates/dapane-core)\n   Compiling dapane-abi v0.1.0 (/home/runner/work/dapane/dapane/dapane/bindings/polyglot/abi)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.87s\n     Running unittests src/lib.rs (/home/runner/work/_temp/roadmap-bindings/work/abi-target/debug/deps/dapane_abi-1dbb7d995a13a158)\n\nrunning 5 tests\ntest tests::exhausted_identifier_space_fails_closed ... ok\ntest tests::handles_are_not_reused_and_storage_is_reclaimed ... ok\ntest tests::panics_cannot_unwind_out_of_the_common_boundary ... ok\ntest tests::saturation_rejects_and_free_restores_capacity ... ok\ntest tests::result_byte_limit_rejects_without_retaining_a_partial_value ... ok\n\ntest result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s\n\n",
+        "r-tests": "   Compiling typenum v1.20.1\n   Compiling num-traits v0.2.19\n   Compiling serde_core v1.0.229\n   Compiling const-oid v0.10.2\n   Compiling zmij v1.0.23\n   Compiling memchr v2.8.3\n   Compiling num-integer v0.1.47\n   Compiling hybrid-array v0.4.15\n   Compiling num-bigint v0.4.8\n   Compiling itoa v1.0.18\n   Compiling cfg-if v1.0.5\n   Compiling cpufeatures v0.3.1\n   Compiling chrono v0.4.45\n   Compiling block-buffer v0.12.1\n   Compiling crypto-common v0.2.2\n   Compiling digest v0.11.3\n   Compiling sha2 v0.11.1\n   Compiling serde_json v1.0.154\n   Compiling serde v1.0.229\n   Compiling num-rational v0.4.2\n   Compiling extendr-ffi v0.9.0\n   Compiling once_cell v1.21.4\n   Compiling extendr-api v0.9.0\n   Compiling dapane-core v0.1.0 (/home/runner/work/dapane/dapane/dapane/crates/dapane-core)\n   Compiling dapane-r v0.1.0 (/home/runner/work/dapane/dapane/dapane/bindings/polyglot/r/src/rust)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.09s\n     Running unittests src/lib.rs (/home/runner/work/_temp/roadmap-bindings/work/r-target/debug/deps/dapane_r-a8e695b0610b8637)\n\nrunning 1 test\ntest tests::core_panic_becomes_error_without_a_partial_result ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "packaging-tests": "test_inheritance_resolution_preserves_core_dependency_features (test_packaging.PackagingTests.test_inheritance_resolution_preserves_core_dependency_features) ... ok\ntest_root_locked_packages_are_not_silently_upgraded (test_packaging.PackagingTests.test_root_locked_packages_are_not_silently_upgraded) ... ok\ntest_staging_refuses_a_new_directory_inside_source (test_packaging.PackagingTests.test_staging_refuses_a_new_directory_inside_source) ... ok\ntest_staging_refuses_overwrite (test_packaging.PackagingTests.test_staging_refuses_overwrite) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.004s\n\nOK\n",
+        "r-installed": "24 shared cases; host rejection, GC and two interpreter checks passed\n",
+        "c-consumer": "24 shared cases; lifecycle, bounds and 400 concurrent native calls passed\n"
+      }
+    }
+  },
+  "remaining_requirements": [
+    "Final documentation head must receive its own hosted replay; correction source passed all 41 binding commands. Mandatory offline/security and aggregate gates are separate.",
+    "Separate unsafe-boundary acceptance and optional advisory/SBOM/notices/staged legal payloads.",
+    "The original qualify.sh remains unexecuted as a whole.",
+    "Other hosts and Julia/JLL acceptance remain unexecuted.",
+    "Julia may only consume accepted exact C-qualified library bytes; no Julia implementation in this repair."
+  ]
+}

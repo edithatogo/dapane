@@ -14,12 +14,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [x] B2.1 Create the thin extendr wrapper and rextendr package around direct Rust calls.
 - [x] B2.2 Implement missing-value, ownership/lifetime and main-thread API handling with exact quantity/rate transport.
-- [!] B2.3 Build and install the source package in a clean R environment; run shared fixtures and host-specific negative cases.
+- [x] B2.3 Build and install the source package in a clean R environment; run shared fixtures and host-specific negative cases.
 
 ## Phase 3 — C ABI and Julia branch
 
 - [~] B3.1 Specify and implement the versioned ABI, owned-buffer/handle lifecycle, error transport and panic boundary.
-- [!] B3.2 Exercise a minimal C consumer with allocation/free, malformed input and version-mismatch cases before binding Julia.
+- [x] B3.2 Exercise a minimal C consumer with allocation/free, malformed input and version-mismatch cases before binding Julia.
 - [ ] B3.3 Implement Julia direct calls, GC preservation and target-native artifact resolution; use BinaryBuilder/JLL packaging when selected for release.
 - [ ] B3.4 Install the Julia package against its packaged library and verify shared fixtures, lifetime cases and artifact resolution.
 
@@ -30,35 +30,27 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
-The [verification record](verification.md) distinguishes executed local evidence
-from the reconstructed candidate's pending exact-head checks. The local installed
-R package passed 24 synthetic cases, host rejection, GC stress and two independent
-R processes before the executor disconnected. Five ABI Rust unit tests and a
-release build passed; the native C consumer did not run. Julia remains gated.
+[Current owner evidence](owner-quality-20261115.md) and its
+[structured receipt](owner-quality-20261115.json) distinguish each tested source.
+The received integrator source `8716c423f15c6449940df902fbabfab870d38f4d` passed installed R
+and native C cases in hosted execution, with two owner quality failures retained.
+B2.3 and the bounded B3.2 consumer exercise are complete for that recorded Linux
+matrix. They do not establish total ABI or release qualification.
 
-B2.3 stays blocked until the published source is rebuilt and installed. B3.1 is a
-proposed implementation with historical Rust unit evidence; B3.2 requires the
-actual native consumer and source-bound artifact hashes. B3.3/B3.4 remain pending.
-B4.1 records separate maturity/rollback states; B4.2 remains outside this bounded,
-non-publication handoff.
+The correction source `988e41158a17d6613006b9bffe59cd59a3aa9cca` fixes only lint precedence and
+Python formatting. Local exact-source quality checks and ordinary native C
+acceptance passed; the local sanitizer attempt failed under traced execution.
+The correction source then passed all 41 hosted binding commands, including
+installed R and ASan/UBSan C acceptance. Final-head execution remains separately
+source-bound. B3.1 stays partial pending
+unsafe-boundary acceptance. B3.3/B3.4 and B4.2 remain open.
 
-The lane owns `bindings/polyglot/` and this track only, selected after inspecting
-main at `e34f87c9df39a2132fecee142431cdeefb732471`. The subsequently inspected
-coordination PR #20 reserves alternate binding roots; reconcile this existing
-dedicated path claim through the integrator, without duplicate implementations.
-
-The integrator must change the central registry row to `[!]` / `blocked`.
-This lane intentionally does not edit that shared file. The Conductor consistency
-gate remains mandatory and is expected to reject the unreconciled row.
+The integrator accepted `bindings/polyglot/`, reconciled the blocked registry and
+added standalone CI. Those shared requests are no longer blockers. Original
+recovery/outage evidence remains in [verification](verification.md).
 
 ## Bounded owner quality follow-up — 2026-11-15
 
-Received head: `8716c423f15c6449940df902fbabfab870d38f4d`. The sole
-integrator has accepted this namespace, reconciled the registry and executed
-installed R/native C acceptance. The preceding intake statements are historical;
-the exact shared receipt in PR #20 supersedes them. This pass preserves all
-shared commits and keeps Julia outside the authorised repair.
-
-- [~] B5.1 Correct ABI lint-group precedence and apply pinned Python formatting without changing behaviour or weakening gates.
-- [ ] B5.2 Re-run exact-source quality/native acceptance and independently inspect the semantic diff and shared-file preservation.
-- [ ] B5.3 Record source/artifact identities, actual outcomes and remaining ABI/release requirements in the existing handoff.
+- [x] B5.1 Correct ABI lint-group precedence and apply pinned Python formatting without changing behaviour or weakening gates.
+- [x] B5.2 Re-run exact-source quality/native acceptance and independently inspect the semantic diff and shared-file preservation.
+- [x] B5.3 Record source/artifact identities, actual outcomes and remaining ABI/release requirements in the existing handoff.

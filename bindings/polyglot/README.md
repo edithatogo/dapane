@@ -6,12 +6,12 @@ validation, exact arithmetic, method identities, digests and per-generated-segme
 half-even rounding stay in `dapane-core`. No Python/provider runtime is required.
 All cases are synthetic.
 
-**Current status:** source preserved after the execution environment became
-unavailable. An installed R candidate passed local tests before the interruption;
-the reconstructed published source requires its own replay. C-consumer
-qualification is unfinished. Julia has deliberately not been implemented because
-the prerequisite ABI is not yet qualified. See the track's
-[verification record](../../conductor/tracks/polyglot_bindings_20261108/verification.md).
+**Current status:** the integrator replayed installed Linux R and native C
+acceptance and added standalone CI. The owner corrected ABI lint precedence and
+Python formatting without changing runtime source or fixture assertions. See the
+[current source-bound evidence](../../conductor/tracks/polyglot_bindings_20261108/owner-quality-20261115.md).
+Total ABI acceptance, optional legal/security/release requirements and other hosts
+remain open. Julia has deliberately not been implemented in this repair.
 
 ## R direct Rust boundary
 
@@ -87,9 +87,11 @@ are not converted into diagnostics.
 
 The C consumer tests all 24 prepared reports/errors, null/UTF-8/size/version
 failures, too-small sentinel buffers, stale/double-free handles, request lifetime,
-handle saturation/recovery and 400 calls across four native threads. **These
-C-consumer tests have not yet executed.** The five Rust unit tests passed before
-the interruption; that does not establish C ABI acceptance.
+handle saturation/recovery and 400 calls across four native threads. The integrator
+executed those cases with the five Rust unit tests; the owner reran ordinary
+native acceptance on the correction source. Exact host/library identities and
+the local sanitizer limitation are recorded in the linked evidence. These bounded
+results do not establish total ABI or other-host acceptance.
 
 ## One reproduction command
 
@@ -117,12 +119,14 @@ capacity reference calculations.
 This lane changes only `bindings/polyglot/` and its own track. Each optional
 Rust crate has a standalone workspace/lockfile. No root Cargo/CI, existing crate,
 schema, provider manifest or root document changes are needed to inspect the
-candidate. Root registry synchronization, installed-host CI, dependency/advisory
-and notice coverage, and the shared path map are integrator requests.
+candidate. The integrator has accepted the path, synchronized the blocked registry
+and added installed-host/native CI. Optional dependency/advisory, notice and
+staged legal-payload accounting remain integrator requirements.
 
 Preserve ABI major 1 only after qualification. An incompatible ownership or wire
 change needs a new major/symbol prefix; numerical changes need their own core
 method/contract decision. Until release qualification exists, rollback consists
 of retaining the existing Rust/CLI/Python surfaces and omitting this namespace.
-No host other than the observed Linux x86_64 R run is implied tested; the final
-published candidate remains unqualified pending replay.
+Only the exact Linux x86_64 combinations and artifacts in the evidence are tested.
+Julia must consume accepted C-qualified library bytes; rebuilding the same source
+does not establish binary identity or transfer acceptance to another host.
