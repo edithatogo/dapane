@@ -9,7 +9,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [~] T1.1 Freeze the versioned contract distinguishing `health_system_direct_cost`, `enforcement_resource_cost` and `discounted_tax_transfer` (excise/GST) with mandatory currency, price-year and perspective tags.
 - [~] T1.2 Construct independent exact arithmetic reference cases for NZ/AU tobacco excise transfers, differential discounting and societal versus health-system net monetary benefit.
-- [!] T1.3 Verify that invalid perspective combinations, missing price-year metadata or unlabelled transfer additions fail closed.
+- [~] T1.3 Verify that invalid perspective combinations, missing price-year metadata or unlabelled transfer additions fail closed.
 
 ## Phase 2 — Cohort occupancy valuation and subgroup equity preservation
 
@@ -23,30 +23,27 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [ ] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.
 - [ ] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.
 
-## Evidence record
-
 ## Bounded owner quality pass — 15 November 2026
 
-- [~] T1.Q1 Apply only the received Rust formatting corrections and verify the unchanged synthetic fiscal contract with exact-source quality/tests; retain the production signed-fiscal method/profile and security gates as open.
+- [x] T1.Q1 Resolve the received Rust formatting failures; verify the unchanged bounded synthetic implementation with exact-source format, warnings-denied Clippy, all 37 D1/T1 tests and Conductor checks; record the scoped review and handoff.
 
-This is the shared D1/T1 owner repair at received head
-`f9f85e5f54a38447eab91ae459aad2f372bcbb7e`. The integrator has reconciled
-the registry and added standalone CI. No shared implementation or CI edit is
-part of this pass.
+## Evidence record
 
-The bounded phase-1 implementation and synthetic tests are in
-[the isolated adapter](../../../adapters/decision_draws/README.md). Current-source
-native qualification is blocked: the execution environment became unavailable
-after earlier local tests and before those sources were pushed. The published
-implementation was reconstructed from recorded patches. Earlier local results
-do not qualify the recovered bytes.
+The [owner quality record](../decision_integrations_20261108/owner-quality-20261115.md) and [local command receipt](../decision_integrations_20261108/evidence/owner-quality-20261115.json)
+record clean-source checks at `9c177166899e588dc3dacadb13e4a0a3750bbce2`. Formatting, Clippy, locked/offline
+dependency resolution, 18 D1 + 19 T1 tests, Conductor validation and 12 lifecycle
+tests passed. The existing half-even generated-segment case passed unchanged.
 
-T1.1 and T1.2 retain active markers pending exact-SHA qualification and any
-integrator method/profile decision; T1.3 is blocked. Later phases remain
-pending and no provider method is qualified by this PR.
+The integrator has completed source replay, both central registry corrections
+and explicit standalone CI. These shared files are preserved. Earlier recovery
+limitations and failed formatting outcomes remain historical evidence; they are
+not relabelled as current passes.
+
+Phase-1 tasks remain active for coordinator acceptance of the bounded candidate;
+the previous execution-environment block is resolved. Production signed-fiscal
+method/profile qualification, later provider phases and required security/release
+gates remain open. This quality repair does not complete the full track.
 
 See [verification](VERIFICATION.md), [review](REVIEW.md), [metadata](metadata.json)
-and the [exact-SHA handoff](HANDOFF.md). The central [registry](../../tracks.md)
-still records `new`; changing its two rows to `[~]` / `in_progress` is a
-concrete request to the sole integrator, who owns that shared file. The resulting
-validation mismatch is an open integration requirement, not a waived gate.
+and the [exact-SHA handoff](HANDOFF.md). The [registry](../../tracks.md) already
+matches this track's `in_progress` state.

@@ -4,16 +4,17 @@ This optional Rust crate implements the bounded D1 paired-draw envelope and T1
 synthetic fiscal reference contract. It lives in the `adapters/decision_draws/`
 namespace reserved for this lane in
 [ownership PR #20](https://github.com/edithatogo/dapane/pull/20).
-It has its own manifest and lockfile. The root workspace, core/CLI/Python crates,
-schemas and CI are unchanged.
+It has its own manifest and lockfile. Shared registry and standalone CI wiring
+were subsequently added by the sole integrator; shared core/CLI/Python and
+schemas are unchanged by this adapter lane.
 
-**Qualification is blocked for the published source.** The execution environment
-became unavailable after the earlier local D1 18-test and T1 19-test runs and
-before the local implementation was pushed. This source was reconstructed from
-recorded patches, moved from the unpublished `adapters/decision-fiscal/` path to
-the reserved namespace, and statically reviewed. Those earlier results do not
-qualify these recovered bytes. See the [verification record](../../conductor/tracks/decision_integrations_20261108/VERIFICATION.md)
-and [exact-SHA handoff](../../conductor/tracks/decision_integrations_20261108/HANDOFF.md).
+**The bounded native quality checks now pass at `9c177166899e588dc3dacadb13e4a0a3750bbce2`.** The received source
+had already passed 37 hosted tests and Clippy; this owner pass resolves its five
+Rust formatting failures and reruns format, lint, tests and locked dependency
+resolution on the exact corrected commit. The [owner quality record](../../conductor/tracks/decision_integrations_20261108/owner-quality-20261115.md)
+and [handoff](../../conductor/tracks/decision_integrations_20261108/HANDOFF.md)
+separate this evidence from the earlier source-recovery history and remaining
+production-method, provider and security/release gates.
 
 ## Interfaces
 
@@ -71,7 +72,7 @@ not every possible societal effect. AU/AUD uniform-rate and annual/subannual
 references are in [the fiscal tests](tests/fiscal.rs); no current tax schedules,
 discount recommendations or demographic estimates are encoded.
 
-## Re-execution required
+## Reproduce the bounded checks
 
 From a checkout of the final PR revision, with the pinned toolchain and a populated
 cache, execute:
@@ -82,16 +83,14 @@ cargo clippy --manifest-path adapters/decision_draws/Cargo.toml --locked --offli
 cargo test --manifest-path adapters/decision_draws/Cargo.toml --locked --offline --all-targets
 ```
 
-There are 18 D1 and 19 T1 test declarations. Counting declarations is not executing
-tests. If formatting or compilation finds recovery defects, fix only owned paths,
-rerun the commands, and record the new exact SHA. An offline dependency-cache
-failure is a blocked execution, not a test pass. The supplied lockfile selects
-27 registry packages with identities/checksums already present in main's
-lockfile; `cargo --locked` acceptance of the recovered lock remains unexecuted.
+The exact-checkpoint run executed 18 D1 and 19 T1 tests with no failures or
+ignored cases; it also passed formatting, warnings-denied Clippy and locked/offline
+metadata resolution. An absent offline cache is a blocked run, not a pass.
+The existing manifests and lockfiles were not changed by the formatting repair.
 
-Root CI does not discover this nested workspace. The integrator must add explicit
-manifest-path commands and reconcile the two central registry status rows.
-No gate has been disabled or waived.
+The integrator's standalone workflow explicitly executes this nested workspace.
+The central registry now matches both owned tracks. Each new head still needs
+its own hosted results; no ordinary quality pass waives a security/release gate.
 
 ## Boundaries
 

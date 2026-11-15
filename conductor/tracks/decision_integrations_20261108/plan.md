@@ -9,7 +9,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [~] D1.1 Specify parameter draws, correlation inputs, scenario/strategy/replication keys and separation of epistemic uncertainty from heterogeneity.
 - [~] D1.2 Evaluate the supported costing model for explicit indexed draws; accept outcomes only through a separately identified model contract.
-- [!] D1.3 Verify pairing, reproducibility, missing-draw rejection and scenario-comparison cases against independent expectations.
+- [~] D1.3 Verify pairing, reproducibility, missing-draw rejection and scenario-comparison cases against independent expectations.
 
 ## Phase 2 — Provider adapters
 
@@ -24,30 +24,27 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [ ] D3.2 Document method maturity, source assumptions, external outcome limitations and alternative-perspective interpretations.
 - [ ] D3.3 Run the selected installed/provider integration cases and confirm that disabling all decision adapters leaves static costing available.
 
-## Evidence record
-
 ## Bounded owner quality pass — 15 November 2026
 
-- [~] D1.Q1 Reproduce and correct the five received Rust formatting failures; run exact-source format, warnings-denied Clippy, all 37 D1/T1 tests and Conductor checks, then publish scoped review/evidence to the existing PR and coordinator.
+- [x] D1.Q1 Resolve the received Rust formatting failures; verify the unchanged bounded synthetic implementation with exact-source format, warnings-denied Clippy, all 37 D1/T1 tests and Conductor checks; record the scoped review and handoff.
 
-Received head: `f9f85e5f54a38447eab91ae459aad2f372bcbb7e`. Coordinator
-registry and standalone CI changes are present and must be preserved. The fresh
-hosted receipt passed Clippy and 37 tests; formatting alone failed. This pass
-does not change numerical methods or complete later provider/release obligations.
+## Evidence record
 
-The bounded phase-1 implementation and synthetic tests are in
-[the isolated adapter](../../../adapters/decision_draws/README.md). Current-source
-native qualification is blocked: the execution environment became unavailable
-after earlier local tests and before those sources were pushed. The published
-implementation was reconstructed from recorded patches. Earlier local results
-do not qualify the recovered bytes.
+The [owner quality record](owner-quality-20261115.md) and [local command receipt](evidence/owner-quality-20261115.json)
+record clean-source checks at `9c177166899e588dc3dacadb13e4a0a3750bbce2`. Formatting, Clippy, locked/offline
+dependency resolution, 18 D1 + 19 T1 tests, Conductor validation and 12 lifecycle
+tests passed. The existing half-even generated-segment case passed unchanged.
 
-D1.1 and D1.2 retain active markers pending exact-SHA qualification and any
-integrator method/profile decision; D1.3 is blocked. Later phases remain
-pending and no provider method is qualified by this PR.
+The integrator has completed source replay, both central registry corrections
+and explicit standalone CI. These shared files are preserved. Earlier recovery
+limitations and failed formatting outcomes remain historical evidence; they are
+not relabelled as current passes.
+
+Phase-1 tasks remain active for coordinator acceptance of the bounded candidate;
+the previous execution-environment block is resolved. Production signed-fiscal
+method/profile qualification, later provider phases and required security/release
+gates remain open. This quality repair does not complete the full track.
 
 See [verification](VERIFICATION.md), [review](REVIEW.md), [metadata](metadata.json)
-and the [exact-SHA handoff](HANDOFF.md). The central [registry](../../tracks.md)
-still records `new`; changing its two rows to `[~]` / `in_progress` is a
-concrete request to the sole integrator, who owns that shared file. The resulting
-validation mismatch is an open integration requirement, not a waived gate.
+and the [exact-SHA handoff](HANDOFF.md). The [registry](../../tracks.md) already
+matches this track's `in_progress` state.

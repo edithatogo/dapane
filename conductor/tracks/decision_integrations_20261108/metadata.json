@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-15T05:25:01Z",
+  "updated_at": "2026-11-15T08:10:09.323942+00:00",
   "description": "Connect correctly paired cost outputs to Voiage, Innovate and Paignia while retaining their existing ownership of decision methods, adoption mechanisms and strategic models.",
   "repositories": [
     "."
@@ -28,19 +28,36 @@
     "RQ-02",
     "RQ-03"
   ],
-  "capability_status": "synthetic_phase1_candidate_recovered_unqualified",
+  "capability_status": "synthetic_phase1_native_checks_passed_broader_qualification_open",
   "verification": {
-    "status": "blocked",
-    "commands": [],
-    "current_source_execution": "not_run",
-    "reason": "The execution environment became unavailable before the local implementation was pushed. Published source is reconstructed from recorded patches; historical local results cannot qualify these bytes.",
-    "observation_record": "evidence/historical-execution-observations.json",
-    "static_record": "evidence/recovery-static-checks.json",
-    "historical_local_tests_observed": 18,
+    "status": "partial",
+    "commands": [
+      "rustc --version",
+      "cargo --version",
+      "rustfmt --version",
+      "cargo fmt --manifest-path adapters/decision_draws/Cargo.toml --all --check",
+      "cargo clippy --manifest-path adapters/decision_draws/Cargo.toml --locked --offline --all-targets -- -D warnings",
+      "cargo test --manifest-path adapters/decision_draws/Cargo.toml --locked --offline --all-targets",
+      "cargo metadata --manifest-path adapters/decision_draws/Cargo.toml --locked --offline --format-version 1",
+      "python3 scripts/validate_conductor.py",
+      "python3 -m unittest discover -s tests -p test_conductor_validation.py -v",
+      "git diff --check"
+    ],
+    "validated_source_sha": "9c177166899e588dc3dacadb13e4a0a3750bbce2",
+    "current_source_execution": "passed_bounded_native_scope",
+    "native_quality_status": "passed",
+    "reason": "All named bounded synthetic checks pass; production signed-fiscal profile, later provider phases and security/release gates remain open.",
+    "owner_quality_record": "owner-quality-20261115.md",
+    "execution_receipt": "evidence/owner-quality-20261115.json",
     "exact_sha_handoff": "HANDOFF.md",
-    "central_registry_update": "pending_integrator",
-    "source_checkpoint_sha": "dc9c42877bdab05967de731023ff9901541fc7f9",
-    "publication_readback": "evidence/publication-readback.json"
+    "central_registry_update": "completed_by_integrator",
+    "standalone_ci": "added_by_integrator_new_head_execution_separate",
+    "received_source_sha": "f9f85e5f54a38447eab91ae459aad2f372bcbb7e",
+    "initial_recovery_checkpoint_sha": "dc9c42877bdab05967de731023ff9901541fc7f9",
+    "historical_observation_record": "evidence/historical-execution-observations.json",
+    "initial_recovery_static_record": "evidence/recovery-static-checks.json",
+    "initial_publication_readback": "evidence/publication-readback.json",
+    "provider_methods_qualified": []
   },
   "completion_evidence": [
     "Repeated evaluation uses the actual model; demonstration random outputs cannot substitute for missing calculation capability.",

@@ -1,9 +1,10 @@
 # D1 and T1 contract candidate, version 0.1
 
 This document describes the isolated synthetic implementation in this directory.
-Native qualification of the reconstructed PR source is pending. It does not
-register a production numerical method, change a core schema, or establish
-consumer/provider compatibility.
+Bounded synthetic native checks are recorded in the
+[owner quality evidence](../../conductor/tracks/decision_integrations_20261108/owner-quality-20261115.md).
+They do not register a production numerical method, change a core schema, or
+establish consumer/provider compatibility.
 
 ## Shared transport and identity
 
@@ -241,8 +242,8 @@ Literal subgroup/replication keys are retained without aggregation.
 Input and output domains are `dapane:fiscal-input:0.1\n` and
 `dapane:fiscal-output:0.1\n`; output omits only its own `output_digest` when
 hashing. Ledger lines and health flows are sorted by ID before input hashing.
-Replaying `input_snapshot` should reproduce the canonical report; qualification
-of the recovered source against this assertion is still required.
+The bounded replay test passed at the exact corrected source recorded in the
+owner quality evidence. It checks `input_snapshot` reproduces the canonical report.
 
 ## Deferred capabilities
 

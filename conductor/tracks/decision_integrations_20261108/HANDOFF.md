@@ -1,5 +1,31 @@
 # D1/T1 lane handoff
 
+## Current owner follow-up — 15 November 2026
+
+The [bounded quality repair](owner-quality-20261115.md) records clean-source execution at
+`9c177166899e588dc3dacadb13e4a0a3750bbce2` (tree `db6e32d39ae8960da9d30a24ed37eb965caea36d`). Rustfmt, Clippy with `-D warnings`,
+18 D1 + 19 T1 tests, locked/offline Cargo metadata, Conductor validation and
+12 lifecycle tests passed. The five Rust changes exactly equal pinned formatter
+output; assertions, fixtures, manifests, locks, numerical methods and shared
+coordinator files are unchanged.
+
+Handoff requests 1–3 are satisfied within the bounded computational scope:
+the integrator supplied recovered-source replay, registry reconciliation and
+standalone CI; this owner corrected the remaining formatting failure. The final
+documentation descendant is checked separately and its exact-head results are
+handed to PR23/PR20. No earlier result is relabelled as evidence for a later head.
+
+Request 4 (production signed-fiscal method/profile), D2/D3, T2/T3, required
+offline-security and coordinator privacy/release acceptance remain open. No
+provider method is qualified, no extra worker created, and no merge or release
+performed. Both tracks remain `in_progress` and PR23 remains draft.
+
+## Initial recovery record — historical, superseded where stated above
+
+The retained text below describes the earlier recovery-stage source and blockers.
+Its not-run, registry-pending and missing-CI statements are historical; current
+execution and request dispositions are recorded above and in the owner follow-up.
+
 Owner: **Dapane — Release assurance and consolidation**, chat
 `6af8e445-ffd4-83ec-8e51-ff6b596f11b1`.
 
@@ -8,7 +34,7 @@ T1.1–T1.3. Current-source native qualification is blocked. It must remain a dr
 until re-executed and the integrator-owned requirements below are resolved.
 No later phase, provider qualification, merge or release is requested here.
 
-## Revision boundaries
+### Revision boundaries
 
 - Base/main inspected: `e34f87c9df39a2132fecee142431cdeefb732471`.
 - Main tree: `c07a6b2589b9d665f619f5d977d66e513180bab4`.
@@ -35,7 +61,7 @@ identities and SHA-256 content digests. These checks establish publication
 identity, not native execution. At 2026-11-15 05:25:01 UTC, all five source-commit
 hosted workflows were queued with no conclusion; none is claimed passed.
 
-## Owned changes
+### Owned changes
 
 Only `adapters/decision_draws/`,
 `conductor/tracks/decision_integrations_20261108/` and
@@ -54,9 +80,9 @@ enforcement, excise and GST flows, signed increments, compatible perspectives,
 resource basis and effective per-step discounting. Tax payer/recipient legs
 balance exactly within the declared domestic boundary.
 
-## Concrete integrator requests
+### Concrete integrator requests
 
-### 1. Re-execute the exact recovered source
+#### 1. Re-execute the exact recovered source
 
 Run the three isolated crate commands in [verification](VERIFICATION.md), fix
 recovery/formatting findings in owned paths, record the resulting exact SHA,
@@ -64,7 +90,7 @@ and preserve raw logs. Earlier local D1 18-test and T1 19-test passes do not clo
 this gate. The last local T1 Clippy and all recovered-source native checks were
 unexecuted. Do not promote phase-1 completion based on static checks alone.
 
-### 2. Update the two shared registry rows
+#### 2. Update the two shared registry rows
 
 In the integrator-owned `conductor/tracks.md`, change only the two following
 track rows from `[ ]` / `new` to `[~]` / `in_progress`:
@@ -78,7 +104,7 @@ therefore predicts two central marker/status mismatches. This lane does not
 edit the registry or waive the validation gate. Run the actual validator after
 the coordinated integration update.
 
-### 3. Add explicit isolated adapter CI coverage
+#### 3. Add explicit isolated adapter CI coverage
 
 The root workflow at the base SHA runs only its workspace. It will not discover
 this nested optional crate. Add scoped formatting, Clippy and tests in the shared
@@ -95,7 +121,7 @@ manifest-path execution suffices for the current isolation. Keep all existing
 core/CLI/Python, source/privacy, security and release gates. This lane requests
 no new core API, CLI command, Python binding or shared schema.
 
-### 4. Decide any production signed-fiscal method/profile
+#### 4. Decide any production signed-fiscal method/profile
 
 The local T1 evaluator is a synthetic reference candidate. Before a production
 bridge or public core method is considered, explicitly decide:
@@ -117,7 +143,7 @@ These choices are fully described in
 a decision, not permission to bypass it. T2/T3 and broad production support
 remain open.
 
-## Upstream inspection and non-duplication
+### Upstream inspection and non-duplication
 
 At the pinned Tobac revision, `src/tobac/economics.py` and
 `src/tobac/decision.py` from the original plan are absent. Related functions
@@ -134,7 +160,7 @@ not an already-qualified fiscal consumer.
 and its owner remain untouched. Upstream inspection was read-only. No empirical
 observation, clinical record, current legal/tax rate or private source was used.
 
-## Acceptance that remains open
+### Acceptance that remains open
 
 Current-source Rustfmt/Clippy/tests/lock acceptance; central Conductor registry
 reconciliation; explicit adapter CI; and any production numerical-method

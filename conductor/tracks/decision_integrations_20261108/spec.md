@@ -6,7 +6,8 @@ Connect correctly paired cost outputs to Voiage, Innovate and Paignia while reta
 
 This specification retains the full track scope. The bounded phase-1 candidate
 is implemented in an isolated synthetic adapter; later phases remain planned.
-Native qualification of the recovered PR source is blocked. See
+Bounded native quality/tests are now evidenced at an exact corrected source.
+Production/provider and security/release qualification remains separate. See
 [verification](VERIFICATION.md) and [handoff](HANDOFF.md).
 
 ## Scope and requirements

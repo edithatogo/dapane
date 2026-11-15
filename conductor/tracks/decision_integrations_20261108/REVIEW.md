@@ -1,10 +1,36 @@
 # Bounded self-review and fixes
 
+## Current owner follow-up — 15 November 2026
+
+The [bounded quality repair](owner-quality-20261115.md) records clean-source execution at
+`9c177166899e588dc3dacadb13e4a0a3750bbce2` (tree `db6e32d39ae8960da9d30a24ed37eb965caea36d`). Rustfmt, Clippy with `-D warnings`,
+18 D1 + 19 T1 tests, locked/offline Cargo metadata, Conductor validation and
+12 lifecycle tests passed. The five Rust changes exactly equal pinned formatter
+output; assertions, fixtures, manifests, locks, numerical methods and shared
+coordinator files are unchanged.
+
+Handoff requests 1–3 are satisfied within the bounded computational scope:
+the integrator supplied recovered-source replay, registry reconciliation and
+standalone CI; this owner corrected the remaining formatting failure. The final
+documentation descendant is checked separately and its exact-head results are
+handed to PR23/PR20. No earlier result is relabelled as evidence for a later head.
+
+Request 4 (production signed-fiscal method/profile), D2/D3, T2/T3, required
+offline-security and coordinator privacy/release acceptance remain open. No
+provider method is qualified, no extra worker created, and no merge or release
+performed. Both tracks remain `in_progress` and PR23 remains draft.
+
+## Initial recovery record — historical, superseded where stated above
+
+The retained text below describes the earlier recovery-stage source and blockers.
+Its not-run, registry-pending and missing-CI statements are historical; current
+execution and request dispositions are recorded above and in the owner follow-up.
+
 This is the implementing agent's self-review, not an independent review by a
 second worker. User instructions prohibited creating more workers. Native
 re-execution of the recovered source remains blocked; see [verification](VERIFICATION.md).
 
-## Findings resolved in the local implementation and carried into recovery
+### Findings resolved in the local implementation and carried into recovery
 
 | Finding | Consequence | Resolution / evidence boundary |
 | --- | --- | --- |
@@ -22,7 +48,7 @@ by two additional tests; the historical local T1 suite increased from 17 to 19
 passing tests. The recovered tree carries those fixes, but those earlier passes
 are not exact-tree qualification.
 
-## Recovered-source inspection
+### Recovered-source inspection
 
 Manual review traced input limits/duplicate handling, typed unknown-field
 rejection, exact rational bounds, stable-ID binding targets, template-before-draw
@@ -37,7 +63,7 @@ A static path check admits only this adapter namespace and the two assigned
 track directories. Root Cargo files, shared crates, schemas, CI, registry and
 upstream repositories were not edited.
 
-## Open findings / integration gates
+### Open findings / integration gates
 
 1. Reconstructed source has not been compiled, linted, formatted or tested at its
    published SHA. Recovery errors and formatting differences remain possible.

@@ -1,6 +1,32 @@
 # Verification and source-recovery limits
 
-## Current acceptance state
+## Current owner follow-up — 15 November 2026
+
+The [bounded quality repair](owner-quality-20261115.md) records clean-source execution at
+`9c177166899e588dc3dacadb13e4a0a3750bbce2` (tree `db6e32d39ae8960da9d30a24ed37eb965caea36d`). Rustfmt, Clippy with `-D warnings`,
+18 D1 + 19 T1 tests, locked/offline Cargo metadata, Conductor validation and
+12 lifecycle tests passed. The five Rust changes exactly equal pinned formatter
+output; assertions, fixtures, manifests, locks, numerical methods and shared
+coordinator files are unchanged.
+
+Handoff requests 1–3 are satisfied within the bounded computational scope:
+the integrator supplied recovered-source replay, registry reconciliation and
+standalone CI; this owner corrected the remaining formatting failure. The final
+documentation descendant is checked separately and its exact-head results are
+handed to PR23/PR20. No earlier result is relabelled as evidence for a later head.
+
+Request 4 (production signed-fiscal method/profile), D2/D3, T2/T3, required
+offline-security and coordinator privacy/release acceptance remain open. No
+provider method is qualified, no extra worker created, and no merge or release
+performed. Both tracks remain `in_progress` and PR23 remains draft.
+
+## Initial recovery record — historical, superseded where stated above
+
+The retained text below describes the earlier recovery-stage source and blockers.
+Its not-run, registry-pending and missing-CI statements are historical; current
+execution and request dispositions are recorded above and in the owner follow-up.
+
+### Current acceptance state
 
 Native qualification of this PR's recovered source is **blocked / not run**.
 The local execution environment became unavailable before publication. The
@@ -14,7 +40,7 @@ tree compiles or passes. Rustfmt, Clippy, Cargo lockfile acceptance and all nati
 tests must be rerun at the published SHA. The lane remains a draft and both
 phase-1 acceptance tasks remain open.
 
-## Earlier local executions actually observed
+### Earlier local executions actually observed
 
 These are historical observations from tool results during this session, not
 byte-preserved log files or an attestation for the recovered source. The
@@ -59,7 +85,7 @@ was corrected explicitly.
 records this separation in machine-readable form. Original temporary logs are
 unavailable; this receipt was written from the observed session outputs.
 
-## Static recovery checks
+### Static recovery checks
 
 [Recovery checks](evidence/recovery-static-checks.json) records checks executed
 in the available JavaScript orchestration runtime: fixture/metadata JSON parsing,
@@ -69,7 +95,7 @@ exact arithmetic for the reference values. These checks inspect text and data.
 They do not compile Rust, execute Rust tests, run rustfmt/Clippy or certify a
 complete Conductor validation.
 
-## Required exact-SHA re-execution
+### Required exact-SHA re-execution
 
 Use the source and handoff SHAs in [HANDOFF.md](HANDOFF.md); checkout the final
 PR revision, record `git rev-parse HEAD`, and run from the repository root:
@@ -93,7 +119,7 @@ owned `in_progress` metadata/index/plan. The native Conductor command above has
 not been executed in this recovery environment. Its registry fix belongs to
 the integrator; the mismatch is not waived.
 
-## Coverage and unexecuted boundaries
+### Coverage and unexecuted boundaries
 
 D1 test cases cover actual point-model expected costs, all six keys, correlated
 vector identity, complete Cartesian panels, independently supplied outcomes,
