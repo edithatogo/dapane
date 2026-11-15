@@ -1,0 +1,16 @@
+test_actual_static_declarations_pass (test_qualify_kernel.KernelQualificationTests.test_actual_static_declarations_pass) ... ok
+test_changed_checksum_is_rejected (test_qualify_kernel.KernelQualificationTests.test_changed_checksum_is_rejected) ... ok
+test_clock_features_are_rejected (test_qualify_kernel.KernelQualificationTests.test_clock_features_are_rejected) ... ok
+test_default_wrapper_is_rejected (test_qualify_kernel.KernelQualificationTests.test_default_wrapper_is_rejected) ... ok
+test_fetched_manifest_drift_is_rejected (test_qualify_kernel.KernelQualificationTests.test_fetched_manifest_drift_is_rejected) ... ok
+test_missing_or_duplicate_inventory_record_is_rejected (test_qualify_kernel.KernelQualificationTests.test_missing_or_duplicate_inventory_record_is_rejected) ... ok
+test_resolved_publication_gate_is_enforced (test_qualify_kernel.KernelQualificationTests.test_resolved_publication_gate_is_enforced) ... ok
+test_stable_version_comparison_preserves_cargo_patch_independence (test_qualify_kernel.KernelQualificationTests.test_stable_version_comparison_preserves_cargo_patch_independence) ... ok
+test_synthetic_resolved_closure_excludes_wrapper (test_qualify_kernel.KernelQualificationTests.test_synthetic_resolved_closure_excludes_wrapper) ... ok
+test_unreviewed_licence_and_unsupported_msrv_are_rejected (test_qualify_kernel.KernelQualificationTests.test_unreviewed_licence_and_unsupported_msrv_are_rejected) ... ok
+test_wrapper_build_dependency_in_native_closure_is_rejected (test_qualify_kernel.KernelQualificationTests.test_wrapper_build_dependency_in_native_closure_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.015s
+
+OK

@@ -71,7 +71,7 @@ impl<'de> Deserialize<'de> for UniqueValue {
     }
 }
 
-pub(crate) fn parse(input: &str) -> Result<Request, DapaneError> {
+pub(crate) fn parse_value(input: &str) -> Result<Value, DapaneError> {
     if input.len() > MAX_JSON_BYTES {
         return Err(DapaneError::new(
             "input_limit",
@@ -81,8 +81,13 @@ pub(crate) fn parse(input: &str) -> Result<Request, DapaneError> {
     }
     let value: UniqueValue = serde_json::from_str(input)
         .map_err(|error| DapaneError::new("invalid_json", &error.to_string(), "/"))?;
-    if value.0.get("schema_version").and_then(Value::as_str) == Some("0.1")
-        && value.0.get("capacity_allocations").is_some()
+    Ok(value.0)
+}
+
+pub(crate) fn parse(input: &str) -> Result<Request, DapaneError> {
+    let value = parse_value(input)?;
+    if value.get("schema_version").and_then(Value::as_str) == Some("0.1")
+        && value.get("capacity_allocations").is_some()
     {
         return Err(DapaneError::new(
             "invalid_request",
@@ -90,7 +95,7 @@ pub(crate) fn parse(input: &str) -> Result<Request, DapaneError> {
             "/capacity_allocations",
         ));
     }
-    serde_json::from_value(value.0)
+    serde_json::from_value(value)
         .map_err(|error| DapaneError::new("invalid_request", &error.to_string(), "/"))
 }
 
@@ -154,7 +159,7 @@ pub(crate) fn digest(domain: &str, value: &Value) -> Result<String, DapaneError>
     Ok(format!("sha256:{hexadecimal}"))
 }
 
-pub(crate) fn check_typed_size(request: &Request) -> Result<(), DapaneError> {
+pub(crate) fn encoded_size<T: Serialize>(request: &T) -> Result<usize, DapaneError> {
     struct LimitWriter(usize);
     impl std::io::Write for LimitWriter {
         fn write(&mut self, buffer: &[u8]) -> std::io::Result<usize> {
@@ -168,6 +173,12 @@ pub(crate) fn check_typed_size(request: &Request) -> Result<(), DapaneError> {
             Ok(())
         }
     }
-    serde_json::to_writer(LimitWriter(0), request)
-        .map_err(|_| DapaneError::new("input_limit", "Typed request exceeds 4 MiB", "/"))
+    let mut writer = LimitWriter(0);
+    serde_json::to_writer(&mut writer, request)
+        .map_err(|_| DapaneError::new("input_limit", "Typed request exceeds 4 MiB", "/"))?;
+    Ok(writer.0)
+}
+
+pub(crate) fn check_typed_size<T: Serialize>(request: &T) -> Result<(), DapaneError> {
+    encoded_size(request).map(|_| ())
 }
