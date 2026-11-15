@@ -1,0 +1,168 @@
+{
+  "record_kind": "published_source_readback_and_scope_receipt",
+  "recorded_at": "2026-11-15T05:25:01Z",
+  "pull_request": "https://github.com/edithatogo/dapane/pull/23",
+  "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "source_checkpoint_sha": "dc9c42877bdab05967de731023ff9901541fc7f9",
+  "source_tree_sha": "4eeb598fb4101296d0c9fbf1ddd02c01aad665f9",
+  "remote_compare": {
+    "status": "ahead",
+    "ahead_by": 1,
+    "behind_by": 0,
+    "changed_files": 29,
+    "all_paths_within_owned_roots": true,
+    "owned_roots": [
+      "adapters/decision_draws/",
+      "conductor/tracks/decision_integrations_20261108/",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/"
+    ],
+    "paths": [
+      "adapters/decision_draws/.gitignore",
+      "adapters/decision_draws/CONTRACT.md",
+      "adapters/decision_draws/Cargo.lock",
+      "adapters/decision_draws/Cargo.toml",
+      "adapters/decision_draws/README.md",
+      "adapters/decision_draws/fixtures/fiscal-nz-synthetic.json",
+      "adapters/decision_draws/fixtures/paired-synthetic.json",
+      "adapters/decision_draws/src/common.rs",
+      "adapters/decision_draws/src/fiscal.rs",
+      "adapters/decision_draws/src/lib.rs",
+      "adapters/decision_draws/src/paired.rs",
+      "adapters/decision_draws/tests/fiscal.rs",
+      "adapters/decision_draws/tests/paired.rs",
+      "conductor/tracks/decision_integrations_20261108/HANDOFF.md",
+      "conductor/tracks/decision_integrations_20261108/REVIEW.md",
+      "conductor/tracks/decision_integrations_20261108/VERIFICATION.md",
+      "conductor/tracks/decision_integrations_20261108/evidence/historical-execution-observations.json",
+      "conductor/tracks/decision_integrations_20261108/evidence/recovery-static-checks.json",
+      "conductor/tracks/decision_integrations_20261108/index.md",
+      "conductor/tracks/decision_integrations_20261108/metadata.json",
+      "conductor/tracks/decision_integrations_20261108/plan.md",
+      "conductor/tracks/decision_integrations_20261108/spec.md",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/HANDOFF.md",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/REVIEW.md",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/VERIFICATION.md",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/index.md",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/metadata.json",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/plan.md",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/spec.md"
+    ]
+  },
+  "adapter_readback": [
+    {
+      "path": "adapters/decision_draws/.gitignore",
+      "blob_sha": "b83d22266ac8aa2f8df2edef68082c789727841d",
+      "content_sha256": "sha256:306fd52e74fca6746e12acc750f232de15e71da917756a1270d74c91f5eb7368",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/Cargo.toml",
+      "blob_sha": "4fcf55384b3fcc544190a3bfe6663f22515b6a40",
+      "content_sha256": "sha256:5e296561befff24b5518e1d6ef3fad890a0400ff362c804548a7f454025bfded",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/src/lib.rs",
+      "blob_sha": "ff817e144c27d4bb749a300c60ef12195611de82",
+      "content_sha256": "sha256:e77df8f96499da3962c58b4e55b0b1e6834e38d99129e802a195bfc5ed37b784",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/Cargo.lock",
+      "blob_sha": "b7ef42396897f26d47404dcacbdf6579d0522c96",
+      "content_sha256": "sha256:8e97ff7648eb1a75dad774aa6da897db646ff756c73db95adfd28dbcdc577080",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/src/common.rs",
+      "blob_sha": "3256bf6af7f776cb97addcc61911f4c373285120",
+      "content_sha256": "sha256:0d80cfbe0c45a28f3effafe1103b7e618e819f1932dfdcfb06702603cc3b97b0",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/src/paired.rs",
+      "blob_sha": "e20b674ec87571e44094cd6de2508b62202f9db1",
+      "content_sha256": "sha256:3a88d4b595a9542254d83f44970e5fcb0dc2ad6087c93dbe44aff10db89d6364",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/src/fiscal.rs",
+      "blob_sha": "fd213695d6d1d08b5e9757ee794c5da8b2cc77a6",
+      "content_sha256": "sha256:a6c684d7fd4e91850aa186926bd43aba1699ca6f325777fb1373a3e56ed90a8c",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/fixtures/paired-synthetic.json",
+      "blob_sha": "bba43baa07285ce28f89fc206034d1c0e76eea53",
+      "content_sha256": "sha256:896e40463601850e02c67017062e6ce9e82d547f50d97d4b2c3215092036b042",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/fixtures/fiscal-nz-synthetic.json",
+      "blob_sha": "36251f701f3949238e91bb066a8c0e5eda91fa61",
+      "content_sha256": "sha256:1740f719d03fa8f5cd2dd50a55c0fd5334578c5eee309b1c7a9d9111c9f953b6",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/tests/paired.rs",
+      "blob_sha": "61a9ad5f0aaefa377e7388bc5095568fe0d99b11",
+      "content_sha256": "sha256:f1b3466f6ab3cdf99b54a6e5bfbe5066b646415af3f3ecebf3a1939b8e0caf6b",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/tests/fiscal.rs",
+      "blob_sha": "13bf30cf02f11cb8756535557bbe0491c2cdee1b",
+      "content_sha256": "sha256:d21dc2f601605fb243f763cc3e01c55336731fa9b076646e93008fd63aeb426f",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/README.md",
+      "blob_sha": "cd0b791623591306df0660985cec6ccce51ecc21",
+      "content_sha256": "sha256:d147a0ffa300a55b3993dcb61762664fdfab5cddf8de3aae891a2a1f4b40941b",
+      "content_matches_prepared_source": true
+    },
+    {
+      "path": "adapters/decision_draws/CONTRACT.md",
+      "blob_sha": "f338f49a0f6c59bf36b9fdeecced725331345827",
+      "content_sha256": "sha256:65c6b80defa0f74432df415a5da526241f4f51957f32c0aa303b49f401c2564c",
+      "content_matches_prepared_source": true
+    }
+  ],
+  "all_adapter_files_match_prepublication_content": true,
+  "recovered_source_native_qualification": "not_run_blocked",
+  "source_workflows_at_observation": [
+    {
+      "id": 43680959237,
+      "name": "Offline AI security",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 43680959037,
+      "name": "Conductor validation",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 43680959071,
+      "name": "Runtime",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 43680959064,
+      "name": "Installed provider consumers",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 43680959057,
+      "name": "Privacy and secrets",
+      "status": "queued",
+      "conclusion": null
+    }
+  ],
+  "workflow_scope_limit": "Root workflows do not test this nested adapter manifest. Queued jobs are unexecuted evidence, not passes.",
+  "handoff_commit_rule": "This receipt and final handoff documents are a descendant documentation-only commit whose parent is source_checkpoint_sha; adapter source stays unchanged.",
+  "primary_handoff": "../HANDOFF.md"
+}

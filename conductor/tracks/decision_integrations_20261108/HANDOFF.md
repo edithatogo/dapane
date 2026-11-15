@@ -14,13 +14,26 @@ No later phase, provider qualification, merge or release is requested here.
 - Main tree: `c07a6b2589b9d665f619f5d977d66e513180bab4`.
 - Integrator PR #17 inspected at `a4ddde7ae7a799e37a5d594cde9c195ff057bc5e`.
 - Ownership PR #20 inspected at `e615454c9f3f41f96e9e310f446d2440d98cf5eb`.
-- Source checkpoint: recorded in the subsequent handoff-only commit after this
-  source snapshot is published. Earlier unpublished local D1 commit
+- Published [source checkpoint](https://github.com/edithatogo/dapane/commit/dc9c42877bdab05967de731023ff9901541fc7f9):
+  `dc9c42877bdab05967de731023ff9901541fc7f9`.
+- Source tree: `4eeb598fb4101296d0c9fbf1ddd02c01aad665f9`.
+- Draft PR: [#23](https://github.com/edithatogo/dapane/pull/23), branch `feat/paired-decisions-fiscal-d1-t1`.
+- This final handoff is carried by a documentation-only child of that source
+  checkpoint. Adapter source/test/fixture/lock bytes are unchanged in the child.
+- Earlier unpublished local D1 commit
   `8c2a8589e005bf14a6cde5365fb218ed09f3ca98` is not a usable remote dependency.
 - Read-only upstream Tobac: `891f79e07292b7754f78d7193130623bd5f9e243`.
 
 The recovered source is not asserted to be byte-identical to the earlier tested
 checkout. See [verification](VERIFICATION.md) and [review](REVIEW.md).
+
+All 13 published adapter files were fetched from the exact source checkpoint
+and matched the prepared content byte-for-byte. The remote base/source comparison
+reported 29 changed files, all within the three owned roots.
+[The publication receipt](evidence/publication-readback.json) records Git blob
+identities and SHA-256 content digests. These checks establish publication
+identity, not native execution. At 2026-11-15 05:25:01 UTC, all five source-commit
+hosted workflows were queued with no conclusion; none is claimed passed.
 
 ## Owned changes
 

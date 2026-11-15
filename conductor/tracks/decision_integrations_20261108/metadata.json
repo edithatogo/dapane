@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-15T05:20:51Z",
+  "updated_at": "2026-11-15T05:25:01Z",
   "description": "Connect correctly paired cost outputs to Voiage, Innovate and Paignia while retaining their existing ownership of decision methods, adoption mechanisms and strategic models.",
   "repositories": [
     "."
@@ -38,7 +38,9 @@
     "static_record": "evidence/recovery-static-checks.json",
     "historical_local_tests_observed": 18,
     "exact_sha_handoff": "HANDOFF.md",
-    "central_registry_update": "pending_integrator"
+    "central_registry_update": "pending_integrator",
+    "source_checkpoint_sha": "dc9c42877bdab05967de731023ff9901541fc7f9",
+    "publication_readback": "evidence/publication-readback.json"
   },
   "completion_evidence": [
     "Repeated evaluation uses the actual model; demonstration random outputs cannot substitute for missing calculation capability.",
@@ -60,6 +62,7 @@
     "provider_methods_qualified": [],
     "integration_owner_chat": "6af8e445-ffd4-83ec-8e51-ff6b596f11b1",
     "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
-    "later_phases": "pending_out_of_scope"
+    "later_phases": "pending_out_of_scope",
+    "pull_request": "https://github.com/edithatogo/dapane/pull/23"
   }
 }
