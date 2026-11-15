@@ -182,6 +182,37 @@ class RoadmapControls(unittest.TestCase):
         with self.assertRaisesRegex(guard.QualificationError, "artifact inventory"):
             guard.verify_receipts(self.repo, root, ["observed"], self.sha)
 
+    def test_single_downloaded_artifact_at_flat_root_is_verified(self):
+        _, path, record = self.receipt()
+        flat = self.directory / "flat-download"
+        shutil.copytree(path.parent, flat)
+        (flat / "logs").mkdir()
+        (flat / "fixture.log").rename(flat / "logs/fixture.log")
+        record["artifacts"] = guard.artifact_inventory(flat)
+        guard.write_json(flat / "qualification.json", record)
+        result = guard.verify_receipts(self.repo, flat, ["observed"], self.sha)
+        self.assertEqual(set(result["lanes"]), {"observed"})
+        (flat / "logs/fixture.log").write_text("changed after download\n")
+        with self.assertRaisesRegex(guard.QualificationError, "artifact inventory"):
+            guard.verify_receipts(self.repo, flat, ["observed"], self.sha)
+
+    def test_mixed_flat_and_nested_receipts_are_rejected(self):
+        root, path, record = self.receipt()
+        guard.write_json(root / "qualification.json", record)
+        with self.assertRaisesRegex(guard.QualificationError, "Ambiguous mixed"):
+            guard.verify_receipts(self.repo, root, ["observed"], self.sha)
+
+    def test_unexpected_artifact_root_cannot_be_silently_ignored(self):
+        root, _, _ = self.receipt()
+        (root / "unexpected-artifact").mkdir()
+        with self.assertRaisesRegex(guard.QualificationError, "Unexpected artifact root"):
+            guard.verify_receipts(self.repo, root, ["observed"], self.sha)
+
+    def test_flat_artifact_cannot_replace_a_multiple_lane_matrix(self):
+        _, path, _ = self.receipt()
+        with self.assertRaisesRegex(guard.QualificationError, "exactly one"):
+            guard.receipt_locations(path.parent, ["observed", "decisions"])
+
     def test_receipt_from_another_source_is_rejected(self):
         root, path, record = self.receipt()
         record["source"]["sha"] = "0" * 40
