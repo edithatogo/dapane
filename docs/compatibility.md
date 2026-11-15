@@ -49,10 +49,20 @@ provider responsibilities.
 
 The verifier is repository tooling that replays full valuation snapshots through
 an installed Rust wheel. Its qualification is synthetic candidate evidence;
-automatic interval integration, financial reversals, capital formulae and
+financial reversals, capital formulae and
 production publication remain separately qualified capabilities. The
 [core-contract record](../conductor/tracks/core_contracts_20261108/verification.md)
 identifies the reviewed implementation and executed checks.
+
+## Declared interval exposure
+
+The [interval contract 0.1](interval-contract-v0.1.md) is a separate native/CLI
+envelope with method `dapane-intervals-v0.1.0`. Existing `evaluate` inputs and
+point/capacity methods are unchanged; callers select `evaluate-intervals` explicitly.
+The original parent request and intervals remain in the result alongside exact
+segments and the expanded scalar request. Preserve the envelope and its method
+identity for replay: per-segment rounding can differ from rounding a parent total.
+The existing Python wrapper has no new interval entry point in this increment.
 
 ## Namespaces and extensions
 
@@ -90,10 +100,13 @@ process import, Kairos and operational service adapters remain optional.
 
 ## Migration and recovery
 
-There is no earlier released Dapane runtime to preserve, and no existing provider
-entry point is replaced by this change. Consumers can continue using their
-provider while an adapter is qualified. Keep historical workbooks, official
-reference inputs and independently calculated expected results in their owning
+There is no earlier released Dapane runtime to preserve. The
+[selected provider integration](python-provider-verification.md) keeps the
+workforce `src` namespace as an identity-preserving compatibility path to
+`microcosting_healthworkforce`, including bundled resources and old pickle
+loading. Its original pricing function and the genomic historical calculator
+remain explicit rollback paths. Keep historical workbooks, official reference
+inputs and independently calculated expected results in their owning
 repositories with their access restrictions intact.
 
 For a candidate evaluation, preserve the exact input JSON, report, engine source
@@ -103,7 +116,7 @@ Do not force a historical run through a corrected method while retaining the old
 method label. A later migration must retain an explicit old-version path until
 affected consumers have qualified the new result.
 
-No repository should be archived based on these synthetic tests. Real provider
-integration, compatibility/rollback evidence and review of unique assets remain
+Completing the selected provider track does not authorize repository retirement.
+Review of unique assets and functioning successors remains separate
 release/consolidation work. A project licence and registry identity are also
 unresolved release prerequisites; the workspace packages set `publish = false`.

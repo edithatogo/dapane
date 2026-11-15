@@ -48,11 +48,25 @@ registry packages and their declared licences/checksums. This is a source
 inventory, not a completed project-licence or source-data rights decision.
 Packages use `publish = false` while the project licence is unresolved.
 
+The [kernel qualification guard](../docs/kernel-dependencies.md) checks the exact
+compiler, fetched manifest declarations and the resolved native graph. Its observed
+36 registry packages and 29-package native closure retain Python/table/network/
+simulation/accelerator isolation. The [kernel evidence](tracks/rust_kernel_20261108/verification.md)
+records native builds and installed-wheel regression checks separately from that
+inventory observation; no new dependency or older-MSRV claim is introduced.
+
 Runtime CI uses the pinned checkout action above and setup-python v6 at
 `ece7cb06caefa5fff74198d8649806c4678c61a1`, inspected through its
 [tag reference](https://api.github.com/repos/actions/setup-python/git/ref/tags/v6)
 on 8 November 2026. It runs native, schema and four-interpreter installed-wheel
 checks with read-only repository permissions.
+
+The [two-provider workflow](../.github/workflows/provider-consumers.yml) keeps
+workforce on CPython 3.15.2 and genomics on 3.15.1 with their existing lockfiles.
+It builds noneditable provider wheels, passes a digest-pinned JSON release
+between separate environments and uses the same Dapane CPython 3.15 wheel.
+Provider source revisions and actual results are recorded in the
+[qualification record](../docs/python-provider-verification.md).
 
 ## Broader implementation direction
 

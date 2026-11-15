@@ -3,9 +3,11 @@
 This is the coordinating roadmap for Dapane. The repository now has a bounded
 Rust/CLI/Python candidate, exact schemas and synthetic reference consumers. Its
 [implemented contract](../docs/contract-v0.1.md) and
-[runtime evidence](../docs/runtime-verification.md) define what works. Existing
-provider migration, richer methods, deployed apps and comparative research remain
-open. [Track metadata](tracks.md) records current status.
+[runtime evidence](../docs/runtime-verification.md) define the numerical scope.
+The selected workforce and genomic labour adapters now have
+[installed qualification](../docs/python-provider-verification.md).
+Broader provider coverage, richer methods, deployed apps and comparative
+research remain open. [Track metadata](tracks.md) records current status.
 
 The [earlier MCHS design](https://github.com/edithatogo/mchs/blob/d7935044821d072a194d80e9cd4f5b9174fa9652/docs/roadmaps/dapane-framework.md)
 is the source proposal. Dapane now owns delivery of the shared framework. MCHS,
@@ -29,7 +31,7 @@ their implementation tasks and releases are not marked complete by this roadmap.
 | G0 — project context | `conductor_setup_20261108` | Navigable requirements/design, acyclic tracks, validated links/status and recorded publication. |
 | G1 — common contract | `core_contracts_20261108` | Machine-readable schemas and independent exact reference cases for resources, weighted activity, dates, valuation and allocation. |
 | G2 — native kernel | `rust_kernel_20261108` | Standalone Rust/CLI passes the supported fixtures and conservation/error checks without optional runtime dependencies. |
-| G3 — two consumers | `python_two_consumers_20261108` | Installed Python wheels run a workforce calculation and a genomic workflow through one numerical implementation. |
+| G3 — two consumers | `python_two_consumers_20261108` | Qualified: installed workforce quotation export and manual genomic extraction labour run through the same Rust implementation with preserved historical paths. |
 | G4 — first release | `release_consolidation_20261108` | Only qualified core/CLI/Python capabilities are packaged with exact compatibility, source and migration evidence. |
 | G5 — composed domains | `mchs_source_adapters_20261108`, `newborn_screening_20261108`, `reporting_profiles_20261108` | Separately qualified activity/source and newborn/reporting capabilities, preserving economic meaning and provenance. |
 | G6 — optional surfaces | `power_platform_20261108`, `polyglot_bindings_20261108` | Each selected app, R, C ABI or Julia surface has its own installed/host evidence. |
@@ -84,21 +86,29 @@ implementation includes request profiles 0.1/0.2 and the separate
 [run-bundle profile 0.1](../docs/run-bundle-v0.1.md). Its
 [acceptance/review evidence](tracks/core_contracts_20261108/verification.md)
 identifies the checked revision and limits; the registry records disposition.
-Broader G2 methods, provider-based G3 and release G4 remain open.
+G2 now includes the separately qualified [interval method](../docs/interval-contract-v0.1.md)
+and [minimal dependency boundary](../docs/kernel-dependencies.md). Its
+[kernel evidence](tracks/rust_kernel_20261108/verification.md) records completed
+bounded native acceptance. G3 is now qualified for the selected workforce release
+and manual genomic extraction labour stage. The
+[provider evidence](../docs/python-provider-verification.md) records canonical
+namespace compatibility, source/component preservation, historical comparison
+and exact native execution from separate installed Python environments.
 
-Next, qualify the real workforce release adapter and genomics recipe extraction,
-preserving jurisdiction/employer/source scope and loaded components. Resolve the
-workforce import namespace and incompatible provider interpreter pins in their
-own repositories. The [provider review](../docs/provider-boundaries.md) pins the
-actual inspected contracts and documents fields that must not be silently lost.
+Next work broadens provider recipes and sources under their own acceptance
+criteria and completes G4 release assurance. Richer numerical methods retain
+separate scope; the selected source and batch cases do not establish general
+employment, assay or economic-method validity.
 
 Contract 0.1 already verifies fractional exposure, effective/knowledge dates,
 half-even rounding, largest-remainder allocation, duplicate/component rejection,
-incompatible quotation targets and missing versus zero. Usage must be explicitly
-segmented into dated quantities. Bundle 0.1 adds immutable replacement/withdrawal
+incompatible quotation targets and missing versus zero. Point-profile usage is
+explicitly segmented into dated quantities; interval profile 0.1 can generate
+those segments from a declared uniform calendar-day exposure and pinned rates.
+Bundle 0.1 adds immutable replacement/withdrawal
 history, consistent declared release identities and historical selection with
 native replay. Its capital references use alternative prepared quotations.
-Automatic interval splitting, line-level financial corrections and capital
+Richer exposure/timestamp models, line-level financial corrections and capital
 formulae require separate kernel/provider methods and fixtures; production
 publication remains release work.
 

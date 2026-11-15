@@ -1,7 +1,7 @@
 # Python provider qualification
 
 Track: [python_two_consumers_20261108](../conductor/tracks/python_two_consumers_20261108/index.md).
-Status: installed-provider acceptance passed; final hosted checks in progress,
+Status: installed-provider and Dapane hosted acceptance passed; final genomics coverage remediation in progress,
 15 November 2026 (Australia/Brisbane; execution receipts dated 14 November UTC).
 
 ## Delivered boundary
@@ -165,19 +165,36 @@ reports, including the actual installed legacy calculator route.
 | --- | --- |
 | Workforce installed stage, Python 3.15.2 | Passed export/regeneration pin, hour/minute transport, nonterminating exposure, native parity, legacy identity/pricing, component overlap and tamper rejection. |
 | Genomics installed stage, Python 3.15.1 | Passed all six occupancies, failed/repeated attempts, per-pool allocation, same-rate rounding control, date/digest/mapping rejection, workbook inspection, historical native replay and actual legacy-cache parity. |
-| Provider focused tests | Workforce adapter/namespace/profile: 64 passed. Genomics adapter: 52 passed. |
+| Provider focused tests | Workforce adapter/namespace/profile: 64 passed. Genomics adapter/workbook: 69 passed. |
 | Provider source checks | Ruff lint/format, strict typing and Bandit passed in both owning repositories. |
 | Installed Dapane native boundary, original candidate | 74 tests passed on Python 3.15.1. |
 | Installed Dapane boundary plus newly merged core-contract checks | 133 tests passed against main `224cf91dbcf513feaa022b2cf5aa310a965472ce`; Rust and Python package source remained unchanged. |
 | Earlier hosted runtime matrix | [Run 43651005666](https://github.com/edithatogo/dapane/actions/runs/43651005666), revision `68d8ab37688893e3b5619dbe102c1d1c47ce994b`: native and Python 3.12–3.15 jobs passed. |
-| Final hosted provider/coordinator checks | Pending exact-revision confirmation before archival. |
+| Hosted Dapane qualification | Revision `bc96cc17f10edf604159f70d477f5e114326833e`: [installed providers](https://github.com/edithatogo/dapane/actions/runs/43653483642), [runtime matrix](https://github.com/edithatogo/dapane/actions/runs/43653483613), Conductor, privacy and CodeQL all passed. |
+| Hosted workforce qualification | Revision `c351a7c6420a356c4c13d2da3010bc7e7d0341f9`: [1,085 tests passed, 91.58% coverage](https://github.com/edithatogo/microcosting_healthworkforce/actions/runs/43653350876/job/132626435859), with every required security check passing. PR 305 merged as `8fa5882e2fda6cdba9ae93c46542c5b0b874c260`. |
+| Hosted genomics qualification | The prior functional, quality, integration, package and privacy gates passed, but patch coverage was 80.48% against 90%. Tests-only remediation `be2451f34a389f90e618cf37a5e8e1fcbb148dea` is in [run 43656442325](https://github.com/edithatogo/microcosting_genomics/actions/runs/43656442325). |
 
-The broad local workforce run passed 1,082 tests; three tests requiring
-LibreOffice could not pass in that local environment. The provider's hosted
-workflow installs LibreOffice and retains those tests as gates. They are not
-silently skipped or counted as passed here.
+The earlier broad local workforce run passed 1,082 tests; three tests requiring
+LibreOffice lacked that local executable. The final hosted run installed
+LibreOffice and passed all 1,085 tests, resolving that environment limitation.
+Its unchanged mutation gate passed with 45 of 46 mutants detected (97.826%),
+one survivor and no errors, timeouts or pardons.
 
-### Local artifact identities
+### Reconciliation with the completed Rust kernel
+
+Main advanced again to `172d0ef39291a936a35c6e221eb467701ccefbba` when the
+separately reviewed Rust-kernel track merged. The coordinating branch
+retains its interval capability and archive records. Both installed
+provider stages and all 133 Python tests passed again using a newly built
+wheel and CLI from that exact Rust source. This covers the actual combined
+provider integration, beyond the earlier hosted checkpoint.
+
+| Integrated artifact | SHA-256 |
+| --- | --- |
+| Dapane CPython 3.15 wheel from main `172d0ef` | `f3bbba92172ec56273130ca2d7ff6f1ac3ac474ba0364886309bd2a171084790` |
+| Native CLI from the same source | `912d62222ead99ef701078b00e517b1a91cd0faf9204678f44fe64eb7f807dac` |
+
+### Earlier local artifact identities
 
 | Artifact | SHA-256 |
 | --- | --- |
@@ -203,3 +220,25 @@ stopped at formatting before any consumer qualification; that correction passed
 locally. Earlier interrupted setup and failed attempts are not acceptance
 evidence. Generated requests, workbook observations and reports stay in temporary
 qualification storage; the workflow does not upload them.
+
+## Coverage-gate remediation
+
+The genomics production code, interpreter pin, dependency lock and source data
+are byte-unchanged from the reviewed `90eb19d` implementation. Commit
+`be2451f34a389f90e618cf37a5e8e1fcbb148dea` adds only meaningful regression
+tests for synthetic workbook inspection, shared formulas, raw-cache preservation,
+exact historical exposures, comparison classification and native delegation/error
+propagation. Its test-local digest override never labels the synthetic fixture
+as the original workbook evidence.
+
+Independent review passed. On exact Python 3.15.1, the full local suite passed
+**1,318 tests with four existing skips**; all 69 focused cases passed. The three
+new production modules cover **319 of 328 statements (about 97.26%)**; overall
+repository coverage is 78.50%. The existing 90% patch threshold is unchanged.
+Ruff lint/format, strict typing, the final wheel build and package checks passed.
+
+The new genomics wheel is version `0.2.1.dev26+gbe2451f34`, SHA-256
+`8cae36ec2bb2496616cdebac4436b2dd362a30c1285b8822fa970e4bc7f1edae`.
+The coordinator pins the new revision and reruns its installed-consumer job;
+its preceding artifact identities remain dated evidence, not a claim that the
+new wheel has the old version or hash.

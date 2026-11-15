@@ -1,5 +1,10 @@
 # First runtime verification
 
+Later increment: the [kernel completion record](../conductor/tracks/rust_kernel_20261108/verification.md)
+adds interval profile 0.1, dependency-boundary qualification and the latest
+installed-artifact observations. The dated observations below remain the historical
+evidence for the original runtime; they do not themselves qualify the later code.
+
 Review date: **8 November 2026**. Scope: the unpublished Dapane `0.1.0` candidate,
 JSON contract `0.1`, method `dapane-exact-v0.1.0`. All economic values and domain
 examples are synthetic. This record qualifies the bounded implementation and

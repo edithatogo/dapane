@@ -25,9 +25,20 @@ valuation snapshot through the installed Rust wheel. The
 [core-contract evidence](conductor/tracks/core_contracts_20261108/verification.md)
 records the reviewed revision, executed checks and qualification limits.
 
-Installed provider adapters, automatic interval segmentation, richer economic
-methods, R/Julia, reporting exports, Power Apps and process execution remain
-separate work. See the [implemented contract](docs/contract-v0.1.md),
+The separate [interval profile 0.1](docs/interval-contract-v0.1.md) adds native/CLI
+rate-boundary segmentation for explicitly declared uniform calendar-day exposure.
+It preserves the original point/capacity methods and returns parent snapshots,
+exact segment quantities and a replayable scalar request. The
+[kernel qualification](conductor/tracks/rust_kernel_20261108/verification.md)
+records independent review, installed artifacts and the supported bounds.
+
+The selected [installed provider composition](docs/python-provider-verification.md)
+connects a dated workforce base-pay quotation to manual DNA-extraction labour,
+with canonical/legacy compatibility and an explicit historical calculator path.
+The two provider environments keep their exact Python 3.15.2 and 3.15.1 pins.
+
+Broader provider coverage, richer exposure and economic methods, R/Julia,
+reporting exports, Power Apps and process execution remain separate work. See the [implemented contract](docs/contract-v0.1.md),
 [compatibility policy](docs/compatibility.md) and
 [runtime verification](docs/runtime-verification.md) for exact limits and evidence.
 
@@ -57,6 +68,17 @@ The synthetic newborn example values collections at 10 each, a shared batch at
 **60 and 90**. Other fixtures cover fractional workforce time, genomics,
 activity-only funding and sub-cent allocation. None contains an official rate
 or real patient data.
+
+An explicitly declared interval can use pinned quotations across a rate boundary:
+
+```sh
+target/release/dapane evaluate-intervals fixtures/intervals/rate-boundary.json
+```
+
+That synthetic example distributes one hour over three calendar days and produces
+`(1/3 × 90) + (2/3 × 120) = 110`. Exposure is supplied by the caller; the engine
+does not infer working hours or utilisation from dates. Interval access is currently
+Rust/CLI; the Python wrapper continues to expose the existing scalar methods.
 
 The [synthetic genomics capacity cases](fixtures/genomics-capacity/README.md)
 compare declared time-based and sample-based allocation, distinguish maintenance

@@ -2,7 +2,7 @@
 
 Review date: **15 November 2026**.
 
-Status: **bounded static review passed after remediation; final genomics recheck passed; runtime qualification and final workforce resource-fix recheck pending**.
+Status: **final bounded review and local installed-consumer acceptance passed; final hosted gates pending**.
 
 This record reviews the [specification](spec.md), [plan](plan.md), provider-owned
 adapters and coordinating installed-consumer checks. It does not certify source
@@ -18,16 +18,16 @@ runtime results and platform evidence.
 | Dapane baseline | `d7063cecc26abe96a3f28fca575b99b450241430`; contract, Rust validation, Python transport and existing consumer tests |
 | Initial coordinator | [PR #13](https://github.com/edithatogo/dapane/pull/13), `a1d4f9f135b09d9bb2d190540082773d86ef8056`; runner, workflow, lock and track records |
 | Final coordinator runner | `scripts/verify_provider_consumers.py`, Git blob **`e1933bf3eb6427747707a77d0378171b2e3f8a60`**; actual local file and diff reviewed before commit |
-| Workforce provider | [PR #305](https://github.com/edithatogo/microcosting_healthworkforce/pull/305); initial `ea8eb6821335b12d318d2ea2cd40e44ee87d689d`, remediation rechecked at **`eddde5b2a88997e08319f42cf898f0c35a5c7958`** |
+| Workforce provider | [PR #305](https://github.com/edithatogo/microcosting_healthworkforce/pull/305); initial `ea8eb6821335b12d318d2ea2cd40e44ee87d689d`, numeric remediation at `eddde5b2a88997e08319f42cf898f0c35a5c7958`, final resource/identity recheck at **`c351a7c6420a356c4c13d2da3010bc7e7d0341f9`**, tree `5e28ad116994bb16ee2eacfddcb2d9bc2319eb0b` |
 | Genomics provider | [PR #173](https://github.com/edithatogo/microcosting_genomics/pull/173); initial `ec5f15a07f6a28b017c3c9d272869a70796b1fce`, semantic remediation through `c4a6406c9e4ce3f32ddb139c150229599a06c443`, final bounded recheck at **`90eb19dbc0868ecd1102d2d64a32fa98d0aab6ee`**, tree `67a4b379bd6a3783964d4f978b3d99bae2a101b8` |
 
 The provider baselines were workforce
 `ba86fdf6843d070d257f799e061ea14d18fba387` and genomics
-`de09042469fce2f48b1227283a9e2daa08fc7c79`. The final genomics formatting/type
-changes have been reconciled with the reviewed semantics. Workforce's subsequent
-package-resource compatibility fix still requires its final bounded recheck.
-The coordinator must pin actual qualified commit identities. A pass on an earlier
-revision does not qualify a later one.
+`de09042469fce2f48b1227283a9e2daa08fc7c79`. Final provider formatting/type changes
+and the workforce package-resource compatibility fix have been reconciled with
+the reviewed semantics. Local provider checkout identities match the published
+commit/tree pairs above. The coordinator must retain those qualified identities
+in its immutable lock. A pass on an earlier revision does not qualify a later one.
 
 ## Findings and remediation
 
@@ -36,8 +36,8 @@ revision does not qualify a later one.
 | Medium | Genomics compared the source Decimal spelling directly with its fixed-point quotation projection, rejecting valid unchanged values such as `1E+2` versus `100`. | The consumer now checks the producer's finite, bounded exact Decimal projection. Regression cases cover modest positive/negative exponents, altered amounts and unsupported values. This is transport conversion, not valuation. |
 | Medium | Genomics scope membership accepted strings in place of employer/classification arrays, permitting substring matches in a rehashed malformed artifact. | Actual nonempty arrays of nonblank strings are required before exact membership. Both malformed scope fields have regression cases. |
 | Medium | Workforce formatted compact extreme Decimal inputs before applying the artifact byte limit, allowing excessive expansion. | Decimal digits/scale and rational components are bounded before string conversion, including explicit quantity transport. Cases cover huge exponents, precision/scale limits and supported exact values. |
-| Medium | The initial coordinator exercised the new historical Rust replay but did not qualify the real installed legacy genomic cell-read route. | The reviewed runner constructs the installed `SheetManager` and `CalculationEngine`, invokes the preserved adapter, requires nonmissing AB22/AB23/AB24 values and compares them with separately extracted raw XML caches. Execution remains a runtime gate. |
-| Medium | The provider owner reported that the restored workforce suite found a residual `importlib.resources.files("src")` anchor after the canonical namespace move. | The proposed repair uses the canonical resource anchor and aliases the legacy package root as well as its modules. Final published-fix review and resource/identity verification are pending; the earlier static review does not close this runtime finding. |
+| Medium | The initial coordinator exercised the new historical Rust replay but did not qualify the real installed legacy genomic cell-read route. | The reviewed runner constructs the installed `SheetManager` and `CalculationEngine`, invokes the preserved adapter, requires nonmissing AB22/AB23/AB24 values and compares them with separately extracted raw XML caches. The integration coordinator executed this installed route successfully. |
+| Medium | The provider owner reported that the restored workforce suite found a residual `importlib.resources.files("src")` anchor after the canonical namespace move. | Final commit `c351a7c` uses the canonical resource anchor and aliases the legacy package root after registering its submodule finder. Independent installed checks passed for both import orders, package/module identity, resource byte equality and bundled-profile loading. |
 | Low | Initial ownership assertions examined a request that the adapter evaluation helper rebuilt rather than consumed. | Snapshots now surround the direct `dapane.evaluate(request)` call. Actual workforce quantity and genomics batch inputs are checked after provider construction/evaluation. |
 | Low | Malformed source Decimal strings could escape the adapter's `ValueError` convention. | `InvalidOperation` is translated into `ValueError`; a malformed-string regression was added. |
 
@@ -58,7 +58,10 @@ The workforce namespace shim retains canonical module/class identity for the
 current flat package structure, preserves historical imports and pickle names,
 and retains the canonical module location for `python -m` execution. Its legacy
 pricing function and legacy release-digest algorithm remain separate from the
-new canonical artifact digest. Installed compatibility tests remain required.
+new canonical artifact digest. The final root alias gives both package names the
+same canonical specification and resource location without duplicating module
+instances. Its installed resource/identity checks passed in fresh isolated
+processes for each import order.
 
 ## Independent numerical and identity checks
 
@@ -92,21 +95,81 @@ substitute for Pydantic regeneration or installed Python execution. The reviewed
 runner additionally requires the regenerated artifact digest to match the
 independent coordinator lock before handoff.
 
+## Local installed qualification
+
+The integration coordinator executed both stages from `/tmp` using `python -I`
+and noneditable installed provider wheels. The local provider trees match the
+final published identities above. Both stages used the same Dapane 0.1.0 wheel:
+
+`dapane-0.1.0-cp315-cp315-manylinux_2_34_x86_64.whl`
+
+SHA-256: `f0b916236e7ad5ea36c905878d8d2c67cf5f38601a85e2be1ca3307d009c4c79`.
+
+The reviewer independently recomputed that wheel hash and checked the actual
+Python 3.15.2 and 3.15.1 interpreter versions. The coordinator's successful local
+execution covers:
+
+| Installed stage | Passed acceptance scope |
+| --- | --- |
+| Workforce, Python 3.15.2 | Export against the independent artifact pin; canonical/legacy identity; exact exposure and legacy pricing; complete native CLI parity |
+| Genomics, Python 3.15.1 | No workforce import; six specimen occupancies; failed/repeated attempt pools; same-rate rounding control; complete native CLI parity; selected historical replay; actual legacy engine reads and raw-cache comparison |
+
+For the final workforce resource fix, the reviewer separately ran two fresh
+isolated Python 3.15.2 processes from `/tmp`, one for each import order. Both
+verified root package identity, submodule/model identity, equal bundled-resource
+bytes and successful `load_candidate_profile()` loading. These are local
+installed-artifact results; they do not assert a hosted CI pass or additional
+platform support.
+
 ## Final assessment and remaining gates
 
 No substantive unresolved correctness finding remains in the final reviewed
-genomics semantics or coordinator runner blob. Workforce's subsequently found
-package-resource compatibility finding remains pending as stated above.
-The runner now closes the ownership,
+provider semantics or coordinator runner blob. The resource compatibility finding
+is closed by the final fix, bounded recheck and installed verification.
+The runner closes the ownership,
 legacy-entry-point, artifact-identity and controlled-rounding review findings.
 Its workflow separates the pinned workforce Python 3.15.2 and genomics Python
 3.15.1 environments, uses isolated installed imports and compares both consumers
 with the same Rust implementation.
 
-**Runtime qualification is pending in this review record.** No CI or installed
-test pass is asserted here. The coordinator must record actual final-revision
-provider checks, installed-consumer execution, selected historical-route results
-and required Dapane checks. Recheck the final workforce package-resource fix for
-semantic drift and update the immutable lock accordingly. Complete and archive
-the track only after those results are recorded; preserve this review and the
-earlier evidence. No source workbook output is copied into this record.
+**Local installed acceptance passed; final hosted gates remain pending.** The
+coordinator must record final-revision provider and Dapane check results, reconcile
+the current receiving branch and retain the final immutable provider pins.
+Complete and archive the track only after those results are recorded; preserve
+this review and the earlier evidence. No source workbook output is copied into
+this record.
+
+## Integration reconciliation
+
+The coordinator subsequently reconciled completed Rust-kernel main
+`172d0ef39291a936a35c6e221eb467701ccefbba`. Its native and Python artifacts
+were rebuilt, and both isolated installed provider stages plus all 133
+Python tests passed again. The coordinator runner remains the reviewed
+blob `e1933bf3eb6427747707a77d0378171b2e3f8a60`; provider revisions remain
+`c351a7c6420a356c4c13d2da3010bc7e7d0341f9` and
+`90eb19dbc0868ecd1102d2d64a32fa98d0aab6ee`. The qualification record
+retains both the earlier hosted checkpoint and these integrated artifact
+identities. No new provider or numerical-method change was introduced
+while reconciling the documentation.
+
+## Coverage-gate remediation
+
+Codecov reported 80.48% patch coverage on the first final genomics revision,
+below the unchanged 90% target. The tests-only fix
+`be2451f34a389f90e618cf37a5e8e1fcbb148dea` changes only
+`tests/test_dapane_adapter.py` and `tests/test_dapane_workbook.py`.
+The independent reviewer inspected both actual test files and found no issue.
+
+The synthetic workbook uses hand-authored values, formulas and raw cache strings.
+Its digest override is confined to the fixture. The tests verify source-byte
+preservation, exact historical exposures of 5 and 5/6 minutes, unchanged/rate-only/
+component-only comparison cases, structural source rejection, lazy delegation,
+request/result identity and propagation of the same import/native exception.
+The evaluator double tests transport and classification; it does not duplicate
+valuation or claim scientific validation.
+
+The owner executed 69 focused tests and the full suite (1,318 passed, four
+existing skips) on Python 3.15.1. Coverage of the three new production modules is
+319/328 statements (about 97.26%). Ruff and strict typing passed. Production code,
+source data, dependency constraints and coverage thresholds are unchanged.
+Hosted checks on the new pin remain the final gate.

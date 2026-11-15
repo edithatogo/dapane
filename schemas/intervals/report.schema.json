@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/intervals/report.schema.json",
+  "title": "Dapane interval envelope 0.1 report",
+  "description": "Complete deterministic interval evidence and unchanged scalar evaluation. Original normalized request and interval/source snapshots retain original parent allocation references; explicit parent-child lineage and expanded scalar request support independent replay. New digests use domains distinct from the nested scalar report.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "method_version": {
+      "const": "dapane-intervals-v0.1.0"
+    },
+    "input_digest": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/digest"
+    },
+    "output_digest": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/digest"
+    },
+    "request_snapshot": {
+      "oneOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/request.schema.json"
+        },
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json"
+        }
+      ]
+    },
+    "interval_snapshots": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/intervals/request.schema.json#/$defs/interval"
+      },
+      "minItems": 1,
+      "maxItems": 10000
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "interval_id": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "use_id": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "line_id": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "quote_id": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "start": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+          },
+          "end": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+          },
+          "quantity": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+          }
+        },
+        "required": [
+          "interval_id",
+          "use_id",
+          "line_id",
+          "quote_id",
+          "start",
+          "end",
+          "quantity"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 10000
+    },
+    "expanded_request": {
+      "oneOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/request.schema.json"
+        },
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json"
+        }
+      ]
+    },
+    "report": {
+      "oneOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json"
+        },
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/report.schema.json"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "method_version",
+    "input_digest",
+    "output_digest",
+    "request_snapshot",
+    "interval_snapshots",
+    "segments",
+    "expanded_request",
+    "report"
+  ]
+}
