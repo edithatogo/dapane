@@ -26,6 +26,7 @@ limited to the existing core context. Full track acceptance remains open.
 - [Author review and open findings](review.md)
 - [Dependency inspection](dependency-inspection.json)
 - [Integrator requests](integration-requests.md)
+- [Exact-source handoff](handoff.md) and [machine-readable receipt](handoff.json)
 
 Owner: Dapane — Observed XES and OCEL imports. This lane owns this track and
 `adapters/observed_events/`. The sole integrator remains Dapane — Release

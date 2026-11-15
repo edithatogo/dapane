@@ -47,7 +47,9 @@
       "conductor/tracks/process_models_20261108/review.md",
       "conductor/tracks/process_models_20261108/dependency-inspection.json",
       "conductor/tracks/process_models_20261108/integration-requests.md",
-      "adapters/observed_events/fixtures/expected.json"
+      "adapters/observed_events/fixtures/expected.json",
+      "conductor/tracks/process_models_20261108/handoff.md",
+      "conductor/tracks/process_models_20261108/handoff.json"
     ]
   },
   "completion_evidence": [
@@ -81,6 +83,8 @@
     "raw_import_status": "blocked_dependency_qualification",
     "recovered_source_status": "exact_head_reexecution_required",
     "publication": "disabled",
-    "merge": "integrator_only"
+    "merge": "integrator_only",
+    "implementation_commit": "9df8aa1aedcd54a9bcd5f205f4c13f8e5dee57d2",
+    "implementation_tree": "93f3ee798acfb53893e816c9507256ca76bb91aa"
   }
 }
