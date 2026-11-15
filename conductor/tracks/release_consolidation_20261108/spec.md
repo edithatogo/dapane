@@ -52,7 +52,10 @@ Retain old artifacts, source packs and consumer adapters; use a new corrective r
 
 ## Open implementation decisions
 
-Choose release channels and package licensing explicitly when publishing. Retain a small capability manifest rather than requiring an additional approval board or duplicated evidence store.
+Project licensing is resolved as Apache-2.0 by the owner's explicit instruction.
+Choose release channels and the corresponding registry accounts before publishing.
+Retain a small capability manifest rather than requiring an additional approval
+board or duplicated evidence store.
 
 ## Execution and verification
 

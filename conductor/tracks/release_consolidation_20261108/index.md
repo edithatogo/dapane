@@ -2,16 +2,35 @@
 
 Track: `release_consolidation_20261108`
 
-Status: new
+Status: blocked
 
-Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.
+Setup, core contracts, the Rust kernel and Python/two-consumer archives are
+incorporated on main. Their existing owners' records supply the bounded provider
+qualification. Hosted release assurance passed at source 5f03f28, including the
+complete dependency/Rust standard-library notices and the existing provider
+verifier consuming the exact release artifacts. Publication stays disabled pending channel/account
+choices. The central offline security jobs remain queued without a runner.
+Optional language, domain and deployment tracks do not gate this bounded first release.
 
 - [Specification](spec.md)
 - [Implementation plan](plan.md)
 - [Metadata](metadata.json)
+- [Execution and review evidence](evidence.md)
+- [Current handoff, archive incorporation and qualification](../../../docs/release-handoff-2026-11-15.md)
+- [Exact-source hosted artifact receipt](../../../docs/release-qualification-5f03f28.json)
+- [Integration, licensing and archive audit](../../../docs/release-integration-2026-11-15.md)
+- [Dated local qualification](../../../docs/release-verification-2026-11-15.md)
+- [Candidate assurance](../../../docs/release-assurance.md)
+- [Supply-chain controls](../../../docs/release-controls.md)
+- [Migration and recovery](../../../docs/release-migration.md)
+- [Consolidation disposition](../../../docs/release-consolidation.md)
 - [Track registry](../../tracks.md)
 - [Roadmap](../../roadmap.md)
 
 Requirements: RQ-12, RQ-04.
 
-Capability status: planned. A documented plan is not implementation or release evidence.
+Capability status: selected-provider candidate with distribution notices and passed
+ordinary hosted checks; central security execution is still queued and public release remains
+disabled. The user requested archival
+after review and fixes. Retain this track until its required acceptance evidence
+is complete; no external repository archive has been selected.

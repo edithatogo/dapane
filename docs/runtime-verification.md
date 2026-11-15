@@ -150,6 +150,10 @@ detect repeated charges; a loaded aggregate quote is not automatically decompose
 Source evidence/access/validation are preserved caller declarations. An output
 digest proves identity of encoded input/result, not correctness of a source claim.
 Real programme and provider evidence, reporting/ontology adapters, deployment,
-licence selection, registry publication and archive decisions remain open in
+registry publication and external repository archive decisions remain open in
 [Conductor](../conductor/tracks.md). No full runtime track is marked complete solely
 on these synthetic and installed-artifact checks.
+
+Project licensing was subsequently resolved as Apache-2.0 in ADR-014; the
+[release integration record](release-integration-2026-11-15.md) preserves that
+decision separately from the historical runtime results above.

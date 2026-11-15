@@ -1,6 +1,6 @@
 {
   "reviewed_on": "2026-11-08",
-  "scope": "Declared licence and version inventory from fetched Cargo.lock registry packages; not a complete licence compatibility or source-data rights review. Dapane project licence remains unselected.",
+  "scope": "Declared licence and version inventory from fetched Cargo.lock registry packages; not a complete licence compatibility or source-data rights review. Dapane project licensing was subsequently resolved as Apache-2.0 in ADR-014; dependency entries retain their original declarations.",
   "packages": [
     {
       "name": "autocfg",

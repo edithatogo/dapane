@@ -23,7 +23,7 @@ A completed planning task does not change a runtime capability from planned to q
 | [ ] | [R and Julia bindings](./tracks/polyglot_bindings_20261108/index.md) | new | RQ-09, RQ-02 |
 | [~] | [Observed events, Petri nets and BPMN adapters](./tracks/process_models_20261108/index.md) | in_progress | RQ-10, RQ-01, RQ-03 |
 | [ ] | [Uncertainty and decision-library integration](./tracks/decision_integrations_20261108/index.md) | new | RQ-11, RQ-02, RQ-03 |
-| [ ] | [Release assurance and conditional consolidation](./tracks/release_consolidation_20261108/index.md) | new | RQ-12, RQ-04 |
+| [!] | [Release assurance and conditional consolidation](./tracks/release_consolidation_20261108/index.md) | blocked | RQ-12, RQ-04 |
 | [ ] | [Frontier research and comparative benchmarks](./tracks/frontier_benchmarks_20261108/index.md) | new | RQ-12, RQ-06, RQ-10, RQ-11 |
 | [ ] | [Regulatory public-finance and health-system valuation handoff for tobac](./tracks/tobac_regulatory_fiscal_valuation_20261110/index.md) | new | RQ-01, RQ-02, RQ-07, RQ-11 |
 
@@ -57,6 +57,12 @@ progress. Next work addresses their acceptance criteria, broader provider and
 quantity/correction semantics, and release prerequisites. The first release follows contracts → Rust kernel →
 installed Python and two real provider consumers → release assurance.
 Power Platform, R/Julia, process models and decision integrations are independently qualified optional branches.
+
+The [release handoff](../docs/release-handoff-2026-11-15.md) consumes all four
+incorporated archives and the existing provider qualification. Release work
+completes distribution notices and verifies the exact candidate artifacts.
+Publication remains disabled pending channel/account choices; final qualification
+also retains the separate centrally managed offline-security execution gate.
 
 ## Synchronisation
 

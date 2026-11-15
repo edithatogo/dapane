@@ -269,7 +269,9 @@ def main() -> int:
             for package in recorded.values()
             if package.get("declared_rust_version") is None
         ),
-        "project_licence": "unselected",
+        "project_licence": tomllib.loads((ROOT / "Cargo.toml").read_text())["workspace"][
+            "package"
+        ].get("license", "unselected"),
         "release_qualified": False,
         "compilation_verified_by_this_script": False,
     }
