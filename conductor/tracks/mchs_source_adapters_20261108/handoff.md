@@ -11,8 +11,13 @@ Owner: **Dapane — MCHS and atlas adapters**. Recipient: the existing sole
   `e615454c9f3f41f96e9e310f446d2440d98cf5eb`.
 - Changed roots: this track and `adapters/mchs_sources/` only.
 - Runtime import namespace: `dapane_mchs_atlas`.
-- Source commit/tree receipt will be pinned in the next documentation commit;
-  the final PR description records its exact final head.
+- Implementation commit: [`44b33969ed8254964dc95d3dbc74732d62bc8529`](https://github.com/edithatogo/dapane/commit/44b33969ed8254964dc95d3dbc74732d62bc8529).
+- Implementation tree: `8d3e0c62fc0e630bc7bf9dba79a773824bef0935`.
+- All 22 uploaded implementation/track files were read back at that immutable
+  commit and matched the submitted content. This checks publication integrity,
+  not Python execution. The final PR head is a documentation-only successor.
+- The [machine-readable receipt](receipt.json) pins code blobs, native artifact
+  identities and pending qualification. The PR description records its final head.
 
 The source candidate contains strict MCHS activity and Atlas exact-supplement
 adapters; separate funding, tariff and resource-cost native requests; payment

@@ -2,7 +2,7 @@
 
 ## Current qualification state
 
-**Final recovered source: not executed.** The execution environment became
+**Recovered implementation `44b33969ed8254964dc95d3dbc74732d62bc8529`: not executed.** The execution environment became
 unavailable during verification. No usable local execution environment remained.
 Source and tests were recovered from this session's authored edits and published
 through the authorised GitHub connection. Recovery is not byte-for-byte proof
@@ -100,3 +100,13 @@ do not establish that these 34 tests ran.
 
 Live-provider installed consumers, official rate releases, cross-platform claims,
 new package release assurance and M3 migration remain unexecuted.
+
+## Publication integrity checks
+
+All 22 authored files were read back from GitHub at implementation commit
+`44b33969ed8254964dc95d3dbc74732d62bc8529` and matched the submitted text.
+The implementation tree is `8d3e0c62fc0e630bc7bf9dba79a773824bef0935`.
+JSON documents parsed, all changed paths were within the two owned roots, and
+candidate Markdown links resolved against the pinned base plus authored files.
+These read-only publication checks do not execute Python, run Ruff, verify an
+installed wheel, or satisfy the Conductor lifecycle gate.
