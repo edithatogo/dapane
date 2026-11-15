@@ -9,6 +9,14 @@ See the [machine-readable intake](roadmap-intake-2026-11-15.json) for full sourc
 tree, ownership and execution identities, and the
 [ownership map](parallel-ownership.md) for the continuing boundaries.
 
+Latest owner follow-up: #21 is now at
+`96d0984f495c9b2ffd886539a654868155c9fd09` and passes its explicit hosted
+standalone workflow. The current standalone outcome is **three passes (#21,
+#22 and #27), with four owner quality failures (#23–26)**. The machine-readable
+record's `current_head` fields distinguish current sources from the preserved
+received and shared-integration snapshots below. Required offline-security and
+coordination privacy gates remain outstanding; no PR is merged.
+
 ## Received live sources
 
 The initial intake verified main at
@@ -128,16 +136,18 @@ Fresh Ruff 0.17.4 checks identify owner fixes on the received source:
 | #26 | Passed | `stage_r.py` and `tests/prepare_cases.py` within `bindings/polyglot/` |
 | #27 | Passed | Passed |
 
-These failures are retained for the existing feature owners. No formatter, lint
-configuration or feature file is changed to turn them into passes. Passing
+These received-source failures are retained for the existing feature owners.
+No formatter, lint configuration or feature file is changed by the integrator
+to turn them into passes. Passing
 behavioural tests does not close an outstanding required formatting/lint check.
 
 ### Hosted integration outcomes
 
 The machine-readable record and [retained execution evidence](roadmap-evidence-2026-11-15/index.md)
 distinguish the received owner source from both subsequent shared-only commits
-and their exact-head hosted results. Package source, tests, fixtures and owned
-track evidence have the same Git objects as received. The archive/provider records
+and their exact-head hosted results. Those two integrator commits preserve
+package source, tests, fixtures and owned track evidence as received. Subsequent
+owner commits have separate receipts and scope review. The archive/provider records
 and accepted core, Python, schema and Cargo objects were also compared explicitly.
 Reconstructed-source historical passes are never relabelled as current passes.
 
@@ -156,9 +166,9 @@ corrected verifier also accepted both actual downloaded flat receipts locally.
 The correction was committed separately on all seven branches, requiring new
 hosted execution rather than relabelling the first attempt.
 
-### Completed execution on the corrected heads
+### Completed shared-integration execution snapshot
 
-Snapshot: **15 November 2026, 06:52 UTC**. All seven final source
+Historical snapshot: **15 November 2026, 06:52 UTC**. All seven corrected source
 identities and downloaded artifact archives/inventories were verified. All
 ordinary Runtime (native and Python 3.12–3.15), provider, Conductor, privacy
 and CodeQL checks passed on these exact heads. All seven shared controller
@@ -201,11 +211,30 @@ Both complete raw result JSON files are retained as readable, byte-identical
 UTF-8 text. The original compressed packaging and its SHA-256 identities remain
 preserved in history and the historical compression records.
 
+### Observed owner follow-up
+
+The existing #21 owner subsequently supplied formatting commit
+`0621fecedd41bc99957d0042e32338e780f42dd2` and an owned evidence update at
+`96d0984f495c9b2ffd886539a654868155c9fd09`, tree
+`d20a7802b66a578fc64e5b28624f6b28c14be316`. The changes stay within
+`adapters/observed_events/` and its existing process-model track. Independent
+review found Rust whitespace/optional trailing-comma changes and an unchanged
+Python test AST; fixtures, manifest, lockfile and all shared paths are unchanged.
+
+[Hosted run 43688739281](https://github.com/edithatogo/dapane/actions/runs/43688739281)
+passed all 15 qualification commands, including formatting, lint, Clippy,
+37 Rust tests, 12 fixture audits and source guards. Final aggregation also passed. The
+downloaded archive, source/tree identities and complete member inventory were
+verified independently. The [new raw receipt and execution record](roadmap-evidence-2026-11-15/index.md#observed-owner-follow-up)
+supplement the two earlier failed receipts; those outcomes are not rewritten.
+All ordinary checks passed on this newer head. Its two offline-security jobs
+remain queued. Typed X1 contracts do not qualify raw XES/OCEL decoding or Rust4PM,
+and X1.3 remains partial under the Mailweft blocker below.
+
 ### Owner fixes still required
 
 | PR | Required correction in the existing owned files |
 | --- | --- |
-| #21 | Rust formatting in `adapters/observed_events/src/lib.rs` and `tests/contracts.rs`; Python formatting in `tests/test_fixtures.py`. |
 | #23 | Rust formatting in `adapters/decision_draws/src/common.rs`, `src/fiscal.rs`, `src/paired.rs`, `tests/fiscal.rs` and `tests/paired.rs`. |
 | #24 | Python formatting in `benchmarks/static/build.py`, `oracle.py`, `run.py`, `verify.py` and `tests/test_bundle_gate.py`. |
 | #25 | Ruff I001 in `adapters/mchs_sources/tests/installed_smoke.py`; formatting in its README code example, `src/dapane_mchs_atlas/adapter.py`, `tests/installed_smoke.py` and `tests/test_adapters.py`. |
@@ -288,6 +317,16 @@ also correct the separately reported binary coverage gap without altering their
 original bytes. The [value-free review and bounded central request](roadmap-evidence-2026-11-15/privacy-review.md)
 preserve the failed scan and required next step. No privacy workflow, central
 pin, rule, scope, suppression mechanism or history is changed.
+
+The actual follow-up scan of `7c8c8485bebc90d1f7feec62456e1e1b36642b15`
+reported **47/47 selected files scanned, complete coverage, zero blocking
+Presidio findings and nine advisory matches**, with the same 16 blocking
+Gitleaks digest findings. The advisory contexts are six elapsed durations,
+one timestamp and two derived benchmark ratios. The newly retained #21 owner
+receipt contains one additional independently verified workflow-digest
+coordinate; its inclusion requires a fresh coordination scan and does not
+create a scanner admission. Exact central review remains required for every
+actual finding in the complete submitted history.
 
 ### Existing release gates
 

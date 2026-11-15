@@ -39,6 +39,24 @@ byte counts and hashes; they describe the earlier packaging, not an additional
 current binary file. All fourteen qualification receipts remain byte-for-byte
 unchanged.
 
+The [actual follow-up job](https://github.com/edithatogo/dapane/actions/runs/43689131043/job/132735814376)
+on `7c8c8485bebc90d1f7feec62456e1e1b36642b15` confirmed **complete Presidio
+coverage: 47/47 selected files, zero skipped files and zero blocking findings**.
+Its nine advisory matches are six elapsed durations, one execution timestamp
+and two derived benchmark ratios. Gitleaks still reports the same sixteen
+blocking digest findings; the plaintext correction did not waive them.
+
+## Later owner receipt
+
+The existing observed-import owner subsequently supplied a passing exact-head
+receipt at `96d0984f495c9b2ffd886539a654868155c9fd09`, retained separately under
+`owner-followup/pr21/`. Its workflow-file SHA-256 has also been recomputed from
+the immutable source and matches. This is one additional verified digest
+coordinate, not an executed scanner count or an approved exception. Adding the
+receipt requires a fresh coordination scan; any further finding must receive
+its own exact provenance and review. The original fourteen receipts remain
+unchanged, including their failed qualification outcomes.
+
 ## Central review request; gate remains blocked
 
 The [pinned privacy standard](https://github.com/edithatogo/repository-standards/blob/985503bc8eae58e7d6ef36a6e5427d0077e0193c/docs/privacy-secrets-standard.md)
@@ -57,8 +75,10 @@ specific SHA-256 admissions and nearby real-positive/mismatch controls. It did
 not exempt arbitrary hashes, and the underlying Gitleaks configuration remains
 unchanged. Updating Dapane's pin alone would not clear these historical findings.
 
-The existing central owner can resolve this through sixteen exact registry
-entries, without a new scanner implementation or generic hash allowlist. Each
+The existing central owner can resolve this through exact registry entries for
+every actual reviewed finding in the complete submitted history, including the
+original sixteen and any findings from later receipts, without a new scanner
+implementation or generic hash allowlist. Each
 entry needs the actual scanner commit, canonical path, rule, starting line and
 SHA-256 of the actual matched UTF-8 value, plus immutable nonsecret proof. Raw
 values/reports must stay private. This receipt does not claim those exact
@@ -82,5 +102,5 @@ No central repository is changed by this follow-up. No consumer allowlist,
 scanner bypass, reduced scope, force-push or history rewrite is introduced.
 Until a reviewed central resolution is available, **coordination PR #20's
 privacy gate remains blocked**, separately from the queued offline-security
-jobs and the five lanes' owner quality findings. Publication and merging remain
+jobs and the four lanes' current owner quality findings. Publication and merging remain
 disabled under the continuing release boundary.

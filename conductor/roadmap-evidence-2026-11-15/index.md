@@ -26,6 +26,17 @@ or Julia distribution must retain and identify its accepted artifact bytes.
 | 1 | #27 | `71ecabf21402f9f8cff62071a2ba6b8a04ba19c8` | passed | failure | [receipt](attempt-1/pr27/qualification.json) | [execution](attempt-1/pr27/execution.json) |
 | 2 | #27 | `0fbed5e8b8d6d0ae24cf2fbf6720c003226f9b10` | passed | success | [receipt](attempt-2/pr27/qualification.json) | [execution](attempt-2/pr27/execution.json) |
 
+## Observed-owner follow-up
+
+After the initial two-attempt intake, the existing #21 owner supplied formatting
+and owned-track evidence at `96d0984f495c9b2ffd886539a654868155c9fd09`.
+[Run 43688739281](https://github.com/edithatogo/dapane/actions/runs/43688739281)
+passed all checks, including 37 Rust tests, 12 fixture audits and the aggregate.
+The original failures above remain historical outcomes. The new [raw receipt](owner-followup/pr21/qualification.json)
+and [execution record](owner-followup/pr21/execution.json) retain the independently
+verified archive/source/artifact identities. This does not qualify raw decoding
+or Rust4PM, and the current offline jobs remain queued.
+
 ## Complete static result records
 
 The static result payloads are the original uncompressed UTF-8 JSON bytes,
