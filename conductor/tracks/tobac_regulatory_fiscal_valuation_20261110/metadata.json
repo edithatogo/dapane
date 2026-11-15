@@ -1,9 +1,9 @@
 {
   "track_id": "tobac_regulatory_fiscal_valuation_20261110",
   "type": "feature",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-10T00:00:00Z",
-  "updated_at": "2026-11-10T00:00:00Z",
+  "updated_at": "2026-11-15T05:20:51Z",
   "description": "Provide versioned public-finance and health-system perspective valuation, excise/GST tax-transfer separation and subgroup equity-weighting interfaces for tobac regulatory policy evaluation.",
   "repositories": [
     "."
@@ -20,17 +20,26 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "D1/T1 are isolated in adapters/decision_draws; only phase 1 is in scope. Shared core/CLI/Python/schema/workspace/CI/registry changes belong to the sole release integrator."
+  ],
   "requirement_ids": [
     "RQ-01",
     "RQ-02",
     "RQ-07",
     "RQ-11"
   ],
-  "capability_status": "planned",
+  "capability_status": "synthetic_phase1_candidate_recovered_unqualified",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "blocked",
+    "commands": [],
+    "current_source_execution": "not_run",
+    "reason": "The execution environment became unavailable before the local implementation was pushed. Published source is reconstructed from recorded patches; historical local results cannot qualify these bytes.",
+    "observation_record": "../decision_integrations_20261108/evidence/historical-execution-observations.json",
+    "static_record": "../decision_integrations_20261108/evidence/recovery-static-checks.json",
+    "historical_local_tests_observed": 19,
+    "exact_sha_handoff": "HANDOFF.md",
+    "central_registry_update": "pending_integrator"
   },
   "completion_evidence": [
     "Health-system direct medical costs and public-finance excise/GST transfers are represented as distinct typed accounting lines; societal totals never add transfer payments to real resource costs without an explicit net-transfer rule.",
@@ -38,5 +47,19 @@
     "Subgroup and equity-stratum identities survive valuation and discounting without silent pooling across Maori / non-Maori or socioeconomic quintiles.",
     "Paired parameter/replication draw keys are preserved end-to-end when exporting valued net-benefit tables to tobac and voiage.",
     "Disabling the optional dapane adapter in tobac leaves tobac's standalone reference oracle intact."
-  ]
+  ],
+  "lane_scope": {
+    "phases": [
+      "T1.1",
+      "T1.2",
+      "T1.3"
+    ],
+    "implementation_path": "adapters/decision_draws",
+    "synthetic_only": true,
+    "upstream_read_only": true,
+    "provider_methods_qualified": [],
+    "integration_owner_chat": "6af8e445-ffd4-83ec-8e51-ff6b596f11b1",
+    "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+    "later_phases": "pending_out_of_scope"
+  }
 }

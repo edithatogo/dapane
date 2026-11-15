@@ -1,15 +1,15 @@
 # Implementation plan: Regulatory public-finance and health-system valuation handoff for tobac
 
-Status: new
+Status: in_progress
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
 
 ## Phase 1 — Perspective and fiscal-transfer contracts
 
-- [ ] T1.1 Freeze the versioned contract distinguishing `health_system_direct_cost`, `enforcement_resource_cost` and `discounted_tax_transfer` (excise/GST) with mandatory currency, price-year and perspective tags.
-- [ ] T1.2 Construct independent exact arithmetic reference cases for NZ/AU tobacco excise transfers, differential discounting and societal versus health-system net monetary benefit.
-- [ ] T1.3 Verify that invalid perspective combinations, missing price-year metadata or unlabelled transfer additions fail closed.
+- [~] T1.1 Freeze the versioned contract distinguishing `health_system_direct_cost`, `enforcement_resource_cost` and `discounted_tax_transfer` (excise/GST) with mandatory currency, price-year and perspective tags.
+- [~] T1.2 Construct independent exact arithmetic reference cases for NZ/AU tobacco excise transfers, differential discounting and societal versus health-system net monetary benefit.
+- [!] T1.3 Verify that invalid perspective combinations, missing price-year metadata or unlabelled transfer additions fail closed.
 
 ## Phase 2 — Cohort occupancy valuation and subgroup equity preservation
 
@@ -25,5 +25,19 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
-No runtime acceptance evidence is recorded by this initial plan.
-Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.
+The bounded phase-1 implementation and synthetic tests are in
+[the isolated adapter](../../../adapters/decision_draws/README.md). Current-source
+native qualification is blocked: the execution environment became unavailable
+after earlier local tests and before those sources were pushed. The published
+implementation was reconstructed from recorded patches. Earlier local results
+do not qualify the recovered bytes.
+
+T1.1 and T1.2 retain active markers pending exact-SHA qualification and any
+integrator method/profile decision; T1.3 is blocked. Later phases remain
+pending and no provider method is qualified by this PR.
+
+See [verification](VERIFICATION.md), [review](REVIEW.md), [metadata](metadata.json)
+and the [exact-SHA handoff](HANDOFF.md). The central [registry](../../tracks.md)
+still records `new`; changing its two rows to `[~]` / `in_progress` is a
+concrete request to the sole integrator, who owns that shared file. The resulting
+validation mismatch is an open integration requirement, not a waived gate.

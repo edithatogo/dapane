@@ -1,0 +1,131 @@
+# D1/T1 lane handoff
+
+Owner: **Dapane — Release assurance and consolidation**, chat
+`6af8e445-ffd4-83ec-8e51-ff6b596f11b1`.
+
+This is the bounded synthetic implementation candidate for D1.1–D1.3 and
+T1.1–T1.3. Current-source native qualification is blocked. It must remain a draft
+until re-executed and the integrator-owned requirements below are resolved.
+No later phase, provider qualification, merge or release is requested here.
+
+## Revision boundaries
+
+- Base/main inspected: `e34f87c9df39a2132fecee142431cdeefb732471`.
+- Main tree: `c07a6b2589b9d665f619f5d977d66e513180bab4`.
+- Integrator PR #17 inspected at `a4ddde7ae7a799e37a5d594cde9c195ff057bc5e`.
+- Ownership PR #20 inspected at `e615454c9f3f41f96e9e310f446d2440d98cf5eb`.
+- Source checkpoint: recorded in the subsequent handoff-only commit after this
+  source snapshot is published. Earlier unpublished local D1 commit
+  `8c2a8589e005bf14a6cde5365fb218ed09f3ca98` is not a usable remote dependency.
+- Read-only upstream Tobac: `891f79e07292b7754f78d7193130623bd5f9e243`.
+
+The recovered source is not asserted to be byte-identical to the earlier tested
+checkout. See [verification](VERIFICATION.md) and [review](REVIEW.md).
+
+## Owned changes
+
+Only `adapters/decision_draws/`,
+`conductor/tracks/decision_integrations_20261108/` and
+`conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/` are changed.
+The single optional crate shares strict transport, exact values and six-key
+identity between D1 and T1. Its nested workspace deliberately leaves root Cargo
+files untouched; no parent adapter index is added.
+
+D1 evaluates existing point/interval cost models over complete explicit joint
+vectors and joins separately identified outcomes. It retains full native
+reports, raw request boundaries, unknown capacity and the accepted generated
+segment rounding rule.
+
+T1 specifies and implements an isolated synthetic exact reference for medical,
+enforcement, excise and GST flows, signed increments, compatible perspectives,
+resource basis and effective per-step discounting. Tax payer/recipient legs
+balance exactly within the declared domestic boundary.
+
+## Concrete integrator requests
+
+### 1. Re-execute the exact recovered source
+
+Run the three isolated crate commands in [verification](VERIFICATION.md), fix
+recovery/formatting findings in owned paths, record the resulting exact SHA,
+and preserve raw logs. Earlier local D1 18-test and T1 19-test passes do not close
+this gate. The last local T1 Clippy and all recovered-source native checks were
+unexecuted. Do not promote phase-1 completion based on static checks alone.
+
+### 2. Update the two shared registry rows
+
+In the integrator-owned `conductor/tracks.md`, change only the two following
+track rows from `[ ]` / `new` to `[~]` / `in_progress`:
+
+- `decision_integrations_20261108`
+- `tobac_regulatory_fiscal_valuation_20261110`
+
+Owned metadata, indexes and plans already state `in_progress`; acceptance
+tasks stay active/blocked and later phases pending. The unchanged validator
+therefore predicts two central marker/status mismatches. This lane does not
+edit the registry or waive the validation gate. Run the actual validator after
+the coordinated integration update.
+
+### 3. Add explicit isolated adapter CI coverage
+
+The root workflow at the base SHA runs only its workspace. It will not discover
+this nested optional crate. Add scoped formatting, Clippy and tests in the shared
+workflow, using the existing pinned Rust 1.99.1 toolchain:
+
+```sh
+cargo fmt --manifest-path adapters/decision_draws/Cargo.toml --all --check
+cargo clippy --manifest-path adapters/decision_draws/Cargo.toml --locked --all-targets -- -D warnings
+cargo test --manifest-path adapters/decision_draws/Cargo.toml --locked --all-targets
+```
+
+A separate shared workspace-membership decision is optional; explicit
+manifest-path execution suffices for the current isolation. Keep all existing
+core/CLI/Python, source/privacy, security and release gates. This lane requests
+no new core API, CLI command, Python binding or shared schema.
+
+### 4. Decide any production signed-fiscal method/profile
+
+The local T1 evaluator is a synthetic reference candidate. Before a production
+bridge or public core method is considered, explicitly decide:
+
+| Concern | Proposed reference contract |
+| --- | --- |
+| Input sign | Signed strategy-minus-comparator increments; cost increases positive; tax increases positive government receipts |
+| Resource basis | Public finance requires public expenditure; societal requires economic cost; no automatic conversion |
+| Transfer | Matching signed government/household legs within the domestic economy; exact net zero; no deadweight or cross-border model |
+| Timing | Integer k at k × explicit step-years; rates effective per declared step, independent for resources/health/transfers |
+| Numerical method | Exact rational `(1+r)^(-k)`; no fractional-power/continuous approximation |
+| Precision | 96 digits per input component, 4096-bit intermediates, at most 1200 steps and 256 flows per collection |
+| Rounding | Reference output remains exact; existing core per-generated-segment half-even remains unchanged; production bridge must specify whether it consumes native exact or rounded values |
+| NMB scope | Medical only for health-system; declared medical+enforcement resources for societal; no NMB in pure public-finance view |
+| Qualification | No provider method is registered or selected; published-source native tests and a reviewed production boundary are prerequisites |
+
+These choices are fully described in
+[CONTRACT.md](../../../adapters/decision_draws/CONTRACT.md). This handoff requests
+a decision, not permission to bypass it. T2/T3 and broad production support
+remain open.
+
+## Upstream inspection and non-duplication
+
+At the pinned Tobac revision, `src/tobac/economics.py` and
+`src/tobac/decision.py` from the original plan are absent. Related functions
+are in [health.py](https://github.com/edithatogo/tobac/blob/891f79e07292b7754f78d7193130623bd5f9e243/src/tobac/health.py)
+(blob `af8024367001bf75fa849267d73fd1b0dcb12927`):
+`discounted_qalys`, `_discounted_flows`, `discounted_resource_cost` and
+`discounted_tax_transfer`. Their float/annual-time interface is not presumed
+equivalent to this exact per-step reference.
+[interchange.py](https://github.com/edithatogo/tobac/blob/891f79e07292b7754f78d7193130623bd5f9e243/src/tobac/interchange.py)
+(blob `786a93cb037a07823865718e34bb372f53aed755`) handles evidence packets,
+not an already-qualified fiscal consumer.
+
+[Tobac source-adjudication issue #3](https://github.com/edithatogo/tobac/issues/3)
+and its owner remain untouched. Upstream inspection was read-only. No empirical
+observation, clinical record, current legal/tax rate or private source was used.
+
+## Acceptance that remains open
+
+Current-source Rustfmt/Clippy/tests/lock acceptance; central Conductor registry
+reconciliation; explicit adapter CI; and any production numerical-method
+qualification remain open. D2/D3 and T2/T3 have not been implemented or tested.
+No claims are made for installed package, OS-matrix, VOI, game, cohort, equity
+or upstream consumer parity. Integration and all merges/releases remain solely
+with the named owner.
