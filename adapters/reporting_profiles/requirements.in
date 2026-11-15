@@ -1,0 +1,4 @@
+# Optional reporting tooling; the native wheel has no RDF dependency.
+jsonschema==4.26.0
+rdflib==7.6.0
+pyshacl==0.31.0
