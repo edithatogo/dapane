@@ -1,0 +1,33 @@
+{
+  "format": "dapane-roadmap-intake-execution/1",
+  "attempt": 2,
+  "pr": 22,
+  "source": "720807a66b206ba16cc863480807986e22f125f3",
+  "tree": "beb51180e7bd5665d5d9469e0653a7fb383b11bb",
+  "run": 43686526117,
+  "artifact": {
+    "id": 14150927892,
+    "name": "roadmap-lane-newborn",
+    "size_in_bytes": 1288723,
+    "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150927892",
+    "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150927892/zip",
+    "expired": false,
+    "created_at": "2026-11-15T06:47:01Z",
+    "expires_at": "2026-12-15T06:47:00Z",
+    "updated_at": "2026-11-15T06:47:01Z",
+    "digest": "sha256:b7139e6e19b1666ba1c00f69aded532591371d73d38d03aff68b9fd602927ee8",
+    "workflow_run": {
+      "id": 43686526117,
+      "repository_id": 1449950543,
+      "head_repository_id": 1449950543,
+      "head_branch": "feat/newborn-synthetic-n1-n2-20261115",
+      "head_sha": "720807a66b206ba16cc863480807986e22f125f3"
+    }
+  },
+  "receipt_sha256": "ea5fbf8fa0c5909cc2578b00735bd1c62e2929bdd397df643c98c2087d23de57",
+  "source_and_retained_inventory_verified": true,
+  "selected_command_logs": {
+    "native-installed-identity": "",
+    "newborn-tests": "...............................................................          [100%]\n63 passed in 0.60s\n"
+  }
+}

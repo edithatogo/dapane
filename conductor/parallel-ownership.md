@@ -31,6 +31,11 @@ Workers must refresh main, open PRs, review threads and published path claims
 before editing or submitting. Record their actual base and tested heads. Never
 overwrite a newer owner claim or assume this snapshot remains current.
 
+The subsequent [seven-PR intake](roadmap-intake-2026-11-15.md) records the
+published lane heads, their existing handoffs, accepted namespace reconciliation,
+integrator-owned registry/CI changes and actual execution limits. The original
+baseline above remains historical evidence; it is not the latest PR inventory.
+
 ## Exclusive ownership
 
 Each row represents one existing worker, identified by its bounded lane rather
@@ -44,12 +49,12 @@ contracts, dependency proposals and evidence together there.
 
 | Lane | Existing track and authorised slice | Reserved new-file roots |
 | --- | --- | --- |
-| Newborn synthetic | [newborn_screening_20261108](tracks/newborn_screening_20261108/index.md): N1.1–N1.3 and N2.1–N2.3. Preserve the already qualified N2.1 example. | `adapters/newborn_screening/` |
+| Newborn synthetic | [newborn_screening_20261108](tracks/newborn_screening_20261108/index.md): N1.1–N1.3 and N2.1–N2.3. Preserve the already qualified N2.1 example. | Published PR #22 claim: `fixtures/newborn-synthetic/` and the single new `tests/python/test_newborn_synthetic.py` file. |
 | MCHS and atlas | [mchs_source_adapters_20261108](tracks/mchs_source_adapters_20261108/index.md): M1.1–M1.3 and M2.1–M2.3. | `adapters/mchs_sources/` |
 | Reporting JSON-LD/SHACL | [reporting_profiles_20261108](tracks/reporting_profiles_20261108/index.md): E1.1–E1.3 and E2.1–E2.3. | `adapters/reporting_profiles/` |
 | Observed XES/OCEL imports | [process_models_20261108](tracks/process_models_20261108/index.md): X1.1–X1.3 only. | `adapters/observed_events/` |
-| Polyglot | [polyglot_bindings_20261108](tracks/polyglot_bindings_20261108/index.md): B1.1–B1.2, then R B2.1–B2.3; the same owner retains the subsequent ABI/Julia branch. | `bindings/r/`, `bindings/cabi/`, `bindings/julia/` |
-| Paired draws and Tobac fiscal | [decision_integrations_20261108](tracks/decision_integrations_20261108/index.md): D1.1–D1.3; [tobac_regulatory_fiscal_valuation_20261110](tracks/tobac_regulatory_fiscal_valuation_20261110/index.md): T1.1–T1.3. | `adapters/decision_draws/`, `adapters/tobac_fiscal/` |
+| Polyglot | [polyglot_bindings_20261108](tracks/polyglot_bindings_20261108/index.md): B1.1–B1.2, then R B2.1–B2.3; the same owner retains the subsequent ABI/Julia branch. | Published PR #26 claim: `bindings/polyglot/`; this does not assign the parent `bindings/` directory. |
+| Paired draws and Tobac fiscal | [decision_integrations_20261108](tracks/decision_integrations_20261108/index.md): D1.1–D1.3; [tobac_regulatory_fiscal_valuation_20261110](tracks/tobac_regulatory_fiscal_valuation_20261110/index.md): T1.1–T1.3. | Both published modules are under `adapters/decision_draws/`. |
 | Independent synthetic static benchmarks | [frontier_benchmarks_20261108](tracks/frontier_benchmarks_20261108/index.md): F1.1–F1.3 and F2.1–F2.2. | `benchmarks/static/` |
 
 The existing polyglot plan places **C ABI and Julia in B3.1–B3.4**, not B2.
@@ -64,6 +69,11 @@ retain that work and send its exact path claim to the integrator for reconciliat
 Do not create a competing implementation or rename another owner's files. New
 shared parent files, such as a common adapter index, remain integrator-owned.
 
+The accepted published claims above replace the unused provisional newborn and
+separate R/C ABI/Julia roots. The joint D1/T1 owner needs no duplicate fiscal
+implementation under the unused `adapters/tobac_fiscal/` reservation. Owners
+retain their published dedicated files when making subsequent fixes.
+
 The **integrator exclusively owns**:
 
 - `crates/dapane-core/`, `crates/dapane-cli/`, `crates/dapane-python/`, and
@@ -75,7 +85,8 @@ The **integrator exclusively owns**:
 - The Conductor registry, project context/root documentation, this ownership
   map, release/consolidation track and integration/merge decisions.
 
-All existing files outside a worker's own track are read-only to that worker.
+Files present at the pinned baseline outside a worker's own track remain
+read-only to that worker, as do subsequent integrator-owned shared files.
 New files outside its reserved roots require an integrator path decision. An
 adapter-local schema can be proposed inside its own root; promotion into shared
 `schemas/` requires a shared-change request. The bundle verifier recursively
