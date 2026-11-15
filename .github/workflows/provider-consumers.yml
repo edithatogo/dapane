@@ -1,0 +1,103 @@
+name: Installed provider consumers
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: provider-consumers-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  installed-providers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Read immutable provider revisions
+        id: pins
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          pins = json.loads(Path("docs/provider-consumers.lock.json").read_text())
+          assert pins["schema_version"] == "1"
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              for name in ("workforce", "genomics"):
+                  commit = pins[name]["commit"]
+                  assert re.fullmatch("[0-9a-f]{40}", commit), commit
+                  output.write(f"{name}_ref={commit}\n")
+          PY
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: edithatogo/microcosting_healthworkforce
+          ref: ${{ steps.pins.outputs.workforce_ref }}
+          path: providers/workforce
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: edithatogo/microcosting_genomics
+          ref: ${{ steps.pins.outputs.genomics_ref }}
+          path: providers/genomics
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version: '0.13.8'
+      - name: Build the shared native interfaces
+        run: |
+          uv python install 3.15.1 3.15.2
+          uv venv --python 3.15.1 "$RUNNER_TEMP/dapane-build"
+          uv pip install --python "$RUNNER_TEMP/dapane-build/bin/python" -r requirements-dev.txt
+          "$RUNNER_TEMP/dapane-build/bin/ruff" check scripts/verify_provider_consumers.py
+          "$RUNNER_TEMP/dapane-build/bin/ruff" format --check --diff scripts/verify_provider_consumers.py
+          rustup toolchain install 1.99.1 --profile minimal
+          cargo build --locked --release -p dapane-cli
+          "$RUNNER_TEMP/dapane-build/bin/maturin" build --locked --release --interpreter "$RUNNER_TEMP/dapane-build/bin/python" --out "$RUNNER_TEMP/dapane-wheels"
+          uv pip install --python "$RUNNER_TEMP/dapane-build/bin/python" --no-deps "$RUNNER_TEMP"/dapane-wheels/*.whl
+      - name: Install the locked workforce provider wheel
+        working-directory: providers/workforce
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/workforce-installed
+        run: |
+          uv sync --locked --no-install-project --python 3.15.2
+          uv build --wheel --python "$UV_PROJECT_ENVIRONMENT/bin/python" --out-dir "$RUNNER_TEMP/workforce-wheels"
+          uv pip install --python "$UV_PROJECT_ENVIRONMENT/bin/python" --no-deps "$RUNNER_TEMP"/workforce-wheels/*.whl "$RUNNER_TEMP"/dapane-wheels/*.whl
+      - name: Install the locked genomics provider wheel
+        working-directory: providers/genomics
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/genomics-installed
+        run: |
+          uv sync --locked --no-install-project --python 3.15.1
+          uv build --wheel --python "$UV_PROJECT_ENVIRONMENT/bin/python" --out-dir "$RUNNER_TEMP/genomics-wheels"
+          uv pip install --python "$UV_PROJECT_ENVIRONMENT/bin/python" --no-deps "$RUNNER_TEMP"/genomics-wheels/*.whl "$RUNNER_TEMP"/dapane-wheels/*.whl
+      - name: Exercise workforce and export the pinned quotation artifact
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/workforce-installed/bin/python" -I "$GITHUB_WORKSPACE/scripts/verify_provider_consumers.py" workforce \
+            --provider-root "$GITHUB_WORKSPACE/providers/workforce" \
+            --dapane-root "$GITHUB_WORKSPACE" \
+            --cli "$GITHUB_WORKSPACE/target/release/dapane" \
+            --output "$RUNNER_TEMP/provider-evidence"
+      - name: Compose the installed genomics consumer and verify historical scope
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/genomics-installed/bin/python" -I "$GITHUB_WORKSPACE/scripts/verify_provider_consumers.py" genomics \
+            --provider-root "$GITHUB_WORKSPACE/providers/genomics" \
+            --dapane-root "$GITHUB_WORKSPACE" \
+            --cli "$GITHUB_WORKSPACE/target/release/dapane" \
+            --output "$RUNNER_TEMP/provider-evidence"
+      - name: Check installed native-boundary regressions
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/dapane-build/bin/python" -I -m pytest --import-mode=importlib "$GITHUB_WORKSPACE/tests/python" -q

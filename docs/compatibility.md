@@ -100,10 +100,13 @@ process import, Kairos and operational service adapters remain optional.
 
 ## Migration and recovery
 
-There is no earlier released Dapane runtime to preserve, and no existing provider
-entry point is replaced by this change. Consumers can continue using their
-provider while an adapter is qualified. Keep historical workbooks, official
-reference inputs and independently calculated expected results in their owning
+There is no earlier released Dapane runtime to preserve. The
+[selected provider integration](python-provider-verification.md) keeps the
+workforce `src` namespace as an identity-preserving compatibility path to
+`microcosting_healthworkforce`, including bundled resources and old pickle
+loading. Its original pricing function and the genomic historical calculator
+remain explicit rollback paths. Keep historical workbooks, official reference
+inputs and independently calculated expected results in their owning
 repositories with their access restrictions intact.
 
 For a candidate evaluation, preserve the exact input JSON, report, engine source
@@ -113,7 +116,7 @@ Do not force a historical run through a corrected method while retaining the old
 method label. A later migration must retain an explicit old-version path until
 affected consumers have qualified the new result.
 
-No repository should be archived based on these synthetic tests. Real provider
-integration, compatibility/rollback evidence and review of unique assets remain
+Completing the selected provider track does not authorize repository retirement.
+Review of unique assets and functioning successors remains separate
 release/consolidation work. A project licence and registry identity are also
 unresolved release prerequisites; the workspace packages set `publish = false`.

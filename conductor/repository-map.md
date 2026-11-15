@@ -41,12 +41,16 @@ Current repository areas:
 | `conductor/tracks/rust_kernel_20261108/verification.md` | Kernel acceptance, independent review and installed-artifact evidence |
 | `docs/` | Implemented contract, provider review, quickstart, compatibility and runtime evidence |
 | `.github/workflows/runtime.yml` | Native and four-interpreter installed-wheel CI |
+| `scripts/verify_provider_consumers.py`, `.github/workflows/provider-consumers.yml` | Two separately installed providers, exact quotation exchange, native parity and selected historical qualification |
+| `docs/provider-consumers.lock.json`, `docs/python-provider-verification.md` | Immutable provider/source identities, actual commands/results and bounded compatibility evidence |
 
 The first runtime candidate is implemented and locally built; its precise scope
 is recorded in [the contract](../docs/contract-v0.1.md) and
 [verification](../docs/runtime-verification.md). Build outputs remain outside
-version control. There is no registry release or deployment, and provider
-adapters, R/Julia, reporting and process execution remain planned.
+version control. The selected workforce and manual extraction adapters are
+implemented in their owning providers and qualified through installed wheels.
+Registry releases, deployments, broader domain adapters, R/Julia, reporting and
+process execution retain separate gates.
 
 ## Source-of-truth boundaries
 

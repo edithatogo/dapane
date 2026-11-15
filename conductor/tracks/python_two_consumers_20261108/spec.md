@@ -4,7 +4,7 @@
 
 Prove that the common core is a useful independent package by running a workforce calculation and a genomics workflow through installed Python bindings and the same Rust implementation.
 
-This is the full acceptance specification. The first bounded profile is implemented; [runtime evidence](../../../docs/runtime-verification.md) records its scope. Unmet criteria below remain open.
+This acceptance specification is satisfied for the selected workforce quotation and manual DNA-extraction labour workflow. The [provider qualification record](../../../docs/python-provider-verification.md) identifies actual revisions, installed checks and scope limits; the [review](review.md) records remediation. Earlier [runtime evidence](../../../docs/runtime-verification.md) remains a separate dated checkpoint.
 
 ## Scope and requirements
 
@@ -49,9 +49,9 @@ Source-tree imports can conceal a broken wheel. Duplicated formulas can make ind
 
 Domain packages retain an explicit adapter to their previous qualified engine or release until the new consumer path passes. Preserve old source/workbook identities and record any intentional output changes.
 
-## Open implementation decisions
+## Qualified implementation decisions
 
-Choose the first supported domain capabilities and platform matrix from available source evidence and build results. A wider advertised matrix needs new installed-artifact evidence.
+The selected capability composes the source-selected QLD HP3.1 base-pay quotation with the manual extraction labour stage. Workforce retains Python 3.15.2 and genomics 3.15.1 in separate environments. The tested native platform is Linux x86_64; broader platform, source-pack or assay support requires its own installed-artifact and domain evidence.
 
 ## Execution and verification
 

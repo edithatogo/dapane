@@ -25,6 +25,7 @@ their repository owners.
 
 - [Implemented contract 0.1](../docs/contract-v0.1.md), [quickstart](../docs/quickstart.md) and [runtime verification](../docs/runtime-verification.md): the working bounded Rust/CLI/Python candidate.
 - [Event/process/object model](../docs/event-process-object-model.md) and [provider boundaries](../docs/provider-boundaries.md): independent core and optional Kairos/provider integration.
+- [Installed workforce and genomics consumers](../docs/python-provider-verification.md): dated quotation composition, canonical/legacy imports and selected historical-workbook qualification.
 
 - [Roadmap](roadmap.md): capability milestones and optional delivery paths.
 - [Track registry](tracks.md): status and entry points for all tracks.

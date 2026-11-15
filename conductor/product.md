@@ -71,6 +71,10 @@ The first candidate implements the bounded [0.1 contract](../docs/contract-v0.1.
 in Rust, a CLI and thin Python bindings. Synthetic workforce, genomics, funding,
 newborn and allocation examples exercise the same arithmetic. See
 [runtime verification](../docs/runtime-verification.md) for actual installed-artifact
-and numerical evidence. Existing provider packages have not been migrated; real
-programme support, distributions, deployments and comparative research remain
-open in the [requirements](requirements.md), [roadmap](roadmap.md) and [tracks](tracks.md).
+and numerical evidence. The selected workforce quotation exporter and manual
+DNA extraction adapter now have [installed provider qualification](../docs/python-provider-verification.md),
+including the workforce namespace migration and explicit historical rollback.
+The scope is one dated base-pay quotation and one labour stage. Full programme
+support, published distributions, deployments and comparative research retain
+their own gates in the [requirements](requirements.md), [roadmap](roadmap.md)
+and [tracks](tracks.md).

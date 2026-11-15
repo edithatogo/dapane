@@ -5,6 +5,11 @@ review. They establish what the provider exposes; they do not establish that a
 Dapane adapter has been implemented or that a source rate has been validated.
 The executable Dapane contract is owned by this repository.
 
+The later [installed-provider qualification](python-provider-verification.md)
+records the delivered workforce namespace/exporter and manual genomic extraction
+slice, with immutable provider revisions and separate Python 3.15.2/3.15.1
+environments. The snapshots below remain the historical discovery record.
+
 ## Dapane does not require Kairos
 
 Dapane values explicit quantities under explicit valuation policies. Its inputs
@@ -92,11 +97,11 @@ without a stated annual-hours/capacity method. A new Rust multiplication test
 does not demonstrate payroll or employment-rule parity.
 
 The [manifest](https://github.com/edithatogo/microcosting_healthworkforce/blob/ae523fa65b45500a0b37bdfece23316808d12b73/pyproject.toml)
-currently requires exactly Python 3.15.2, Pydantic `>=2.14.3,<3` and installs the
-generic top-level package `src`. Its dependency closure also contains table and
+in that snapshot required exactly Python 3.15.2, Pydantic `>=2.14.3,<3` and installed the
+generic top-level package `src`. Its dependency closure also contained table and
 workbook libraries. Keep these provider requirements outside Dapane's minimal
-kernel and test any future installed adapter with explicit supported versions.
-Renaming the provider namespace is a separate compatibility change.
+kernel. The later installed qualification retains the Python pin and verifies
+the canonical namespace migration through its explicit legacy compatibility path.
 
 ## Genomics: extract domain inputs, do not transplant the workbook engine
 
@@ -125,9 +130,10 @@ explicit semantics in the plugin; they must not be inferred from spreadsheet
 row positions. Existing demonstration PSA/VOI or aggregate outputs are not
 independent reference values for the new kernel. The
 [manifest](https://github.com/edithatogo/microcosting_genomics/blob/f2926486f54bc2b0c79a7fa3b84a0d4bacde4f41/pyproject.toml)
-still advertises Python `>=3.8` and a broad pandas/NumPy/SciPy/Flask/workbook
-dependency set. This is a different support surface from workforce and should
-not dictate Dapane's core dependencies.
+in that historical snapshot advertised Python `>=3.8` and a broad
+pandas/NumPy/SciPy/Flask/workbook dependency set. The selected installed provider
+revision now requires exactly 3.15.1; its existing lock remains unchanged by
+the adapter. Neither dependency set dictates Dapane's core dependencies.
 
 ## MCHS: activity and funding are separate from resource use
 
