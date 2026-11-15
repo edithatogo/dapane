@@ -3,7 +3,18 @@
 Review type: author review, with no additional worker or independent-review claim.
 Base: `e34f87c9df39a2132fecee142431cdeefb732471`.
 
-## Findings and disposition
+## Current follow-up
+
+Findings 1 and 3 below were addressed by the coordinator's exact-source replay
+and dedicated CI. The replay exposed formatting failures in three owner files;
+the [owner review and receipt](owner-quality-20261115.md) records their correction
+at `0621fecedd41bc99957d0042e32338e780f42dd2`. All affected checks passed.
+Rust files match formatter output from the received source, the Python AST is
+unchanged, and fixture/manifests/shared files are unchanged. No semantic finding
+remains in this focused correction. Finding 2 and native-import acceptance stay
+open; this is still author review, not an independent review or release approval.
+
+## Historical findings at source recovery
 
 1. **Blocking: recovered source has no exact-head execution evidence.**
    The environment became unavailable before commit/push. Reconstructed source,

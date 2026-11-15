@@ -1,5 +1,10 @@
 # X1 exact-source handoff
 
+This is the original recovery handoff. The later [owner formatting follow-up](owner-quality-20261115.md)
+records the coordinator's accepted intake, executed replay and owner fixes.
+The original source identities and unexecuted-at-recovery evidence below are
+retained as history; they are not the current standalone-check status.
+
 ## Source identity and ownership
 
 - Base main: [`e34f87c9df39a2132fecee142431cdeefb732471`](https://github.com/edithatogo/dapane/commit/e34f87c9df39a2132fecee142431cdeefb732471).

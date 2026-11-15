@@ -1,6 +1,16 @@
 # X1 verification and recovery record
 
-## Qualification state
+## Current source verification
+
+The coordinator replayed the recovered source at
+`63e3f8368510641513b5fd84ae3074bb80e79c6f`: 37 Rust tests and 12 fixture audits
+passed, with two formatting checks failing. The [owner follow-up](owner-quality-20261115.md)
+records the formatting-only correction and successful exact-source checks at
+`0621fecedd41bc99957d0042e32338e780f42dd2`. Native import remains blocked.
+The recovery checkpoint below is historical; its missing replay and CI coverage
+were subsequently supplied. Its native qualification limits still apply.
+
+## Historical qualification state before coordinator intake
 
 **The recovered published snapshot is not execution-qualified.** A local candidate
 was implemented and tested, then the execution environment became unavailable
@@ -59,7 +69,7 @@ duplicate-JSON-member input. The OCEL fixture includes all five native attribute
 types and timed batch-state history. The source-byte manifest marks every native
 decoder execution false.
 
-## Unexecuted or unresolved
+## Unexecuted or unresolved at the recovery checkpoint
 
 - Recovered exact-head Rust compilation/tests, rustfmt, Clippy, Python fixture
   tests and Ruff. Existing root workflows do not discover this package.

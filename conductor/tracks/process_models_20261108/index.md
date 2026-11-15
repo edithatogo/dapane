@@ -14,8 +14,9 @@ Produce resource-use records from observed or explicitly executed process models
 
 Requirements: RQ-10, RQ-01, RQ-03.
 
-Capability status: independent X1 contracts implemented; recovered-source checks
-pending and raw XES/OCEL imports blocked on dependency qualification.
+Capability status: independent X1 contracts implemented and source-verified;
+raw XES/OCEL imports remain blocked on dependency qualification. Verification
+is bound to the commits in the owner follow-up, not to an arbitrary later head.
 Historical [runtime evidence](../../../docs/runtime-verification.md) remains
 limited to the existing core context. Full track acceptance remains open.
 
@@ -27,6 +28,7 @@ limited to the existing core context. Full track acceptance remains open.
 - [Dependency inspection](dependency-inspection.json)
 - [Integrator requests](integration-requests.md)
 - [Exact-source handoff](handoff.md) and [machine-readable receipt](handoff.json)
+- [Owner formatting follow-up](owner-quality-20261115.md) and [executed command receipt](owner-quality-20261115.json)
 
 Owner: Dapane — Observed XES and OCEL imports. This lane owns this track and
 `adapters/observed_events/`. The sole integrator remains Dapane — Release

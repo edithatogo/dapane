@@ -79,8 +79,9 @@ The native model/source remains authoritative for typed attributes, history,
 qualifiers and unprojected data. The costing projection is not a replacement
 OCEL implementation. Full schema/round-trip, unknown native data, duplicate
 members, resource limits and XML safety require the selected qualified Rust4PM
-revision. Final source verification is additionally pending after environment
-loss and reconstruction; see [verification](verification.md).
+revision. The recovered typed-contract source has now been replayed and its
+formatting findings corrected; see [verification](verification.md) for exact
+source identities. This does not qualify native parsing or projection.
 
 Shared schema/core/CLI/Python and root Cargo/CI/registry changes are
 [integrator requests](integration-requests.md). Accepted per-generated-segment

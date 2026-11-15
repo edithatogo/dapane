@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-15T05:16:59Z",
+  "updated_at": "2026-11-15T07:09:31Z",
   "description": "Produce resource-use records from observed or explicitly executed process models while keeping resource execution, discovery and monetary valuation independently owned.",
   "repositories": [
     "."
@@ -28,20 +28,20 @@
     "RQ-01",
     "RQ-03"
   ],
-  "capability_status": "x1_contracts_recovered_verification_pending_raw_imports_blocked",
+  "capability_status": "x1_contracts_source_verified_raw_imports_blocked",
   "verification": {
-    "status": "recovered_source_unverified_historical_contract_checks_passed",
-    "scope": "Independent typed contracts and synthetic fixtures. Local pre-outage tests passed, but this reconstructed snapshot requires exact-head rerun. Native XES/OCEL, full schemas/round-trip, shared projection and Kairos execution remain unqualified.",
+    "status": "exact_source_contract_checks_passed_native_imports_blocked",
+    "scope": "Standalone typed contracts and synthetic fixture audit executed at 0621fecedd41bc99957d0042e32338e780f42dd2 after coordinator replay and owner formatting fixes. Native XES/OCEL, full schemas/round-trip, shared projection and Kairos execution remain unqualified.",
     "commands": [
-      "cargo fmt --manifest-path adapters/observed_events/Cargo.toml --check",
+      "cargo fmt --manifest-path adapters/observed_events/Cargo.toml --all --check",
       "cargo clippy --manifest-path adapters/observed_events/Cargo.toml --locked --offline --all-targets -- -D warnings",
-      "cargo test --manifest-path adapters/observed_events/Cargo.toml --locked --offline",
+      "cargo test --manifest-path adapters/observed_events/Cargo.toml --locked --offline --all-targets",
       "python3 -m unittest discover -s adapters/observed_events/tests -p 'test_fixtures.py' -v",
       "ruff check adapters/observed_events/tests/test_fixtures.py",
       "ruff format --check adapters/observed_events/tests/test_fixtures.py",
       "python3 scripts/validate_conductor.py"
     ],
-    "commands_status": "required_after_recovery_not_executed_on_this_snapshot",
+    "commands_status": "passed_at_0621fecedd41bc99957d0042e32338e780f42dd2_exact_arguments_in_owner_receipt",
     "evidence": [
       "conductor/tracks/process_models_20261108/verification.md",
       "conductor/tracks/process_models_20261108/review.md",
@@ -49,8 +49,12 @@
       "conductor/tracks/process_models_20261108/integration-requests.md",
       "adapters/observed_events/fixtures/expected.json",
       "conductor/tracks/process_models_20261108/handoff.md",
-      "conductor/tracks/process_models_20261108/handoff.json"
-    ]
+      "conductor/tracks/process_models_20261108/handoff.json",
+      "conductor/tracks/process_models_20261108/owner-quality-20261115.md",
+      "conductor/tracks/process_models_20261108/owner-quality-20261115.json"
+    ],
+    "source_commit": "0621fecedd41bc99957d0042e32338e780f42dd2",
+    "source_tree": "19e0fb8c86d7ef1daf079aa3f377a204458b49f3"
   },
   "completion_evidence": [
     "Infant/specimen/assay/batch object relationships survive observed-event import without forcing one flat independent case per event.",
@@ -81,10 +85,11 @@
     ],
     "integration_owner_chat": "6af8e445-ffd4-83ec-8e51-ff6b596f11b1",
     "raw_import_status": "blocked_dependency_qualification",
-    "recovered_source_status": "exact_head_reexecution_required",
+    "recovered_source_status": "exact_source_replayed_formatting_corrected",
     "publication": "disabled",
     "merge": "integrator_only",
     "implementation_commit": "9df8aa1aedcd54a9bcd5f205f4c13f8e5dee57d2",
-    "implementation_tree": "93f3ee798acfb53893e816c9507256ca76bb91aa"
+    "implementation_tree": "93f3ee798acfb53893e816c9507256ca76bb91aa",
+    "received_coordinator_head": "63e3f8368510641513b5fd84ae3074bb80e79c6f"
   }
 }

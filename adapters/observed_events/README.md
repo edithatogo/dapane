@@ -6,13 +6,13 @@ implements the independent contracts/fixtures fallback authorised for Dapane's
 not a raw-file decoder, a substitute native OCEL model or a process execution
 engine. There is no XES/OCEL file input API.
 
-**Verification notice:** the local candidate passed contract and fixture checks,
-but its execution environment became unavailable before commit/push. This
-snapshot was reconstructed through the GitHub connector and placed under the
-integrator's newly reserved `adapters/observed_events/` namespace. Repeat the
-commands below on the exact published head; earlier local successes do not
-qualify these recovered bytes. See the
-[evidence record](../../conductor/tracks/process_models_20261108/verification.md).
+**Verification:** the coordinator executed the recovered source in dedicated
+hosted CI. Its two formatting failures are corrected in
+`0621fecedd41bc99957d0042e32338e780f42dd2`, where all 37 Rust contract tests,
+12 fixture audits, formatting and lint checks passed. The
+[owner follow-up](../../conductor/tracks/process_models_20261108/owner-quality-20261115.md)
+retains exact commands, outputs and review evidence. These checks qualify the
+typed contracts and synthetic fixture audit; native import remains blocked.
 
 The crate has no external dependencies, monetary arithmetic or default
 workspace/CLI/Python integration. Its separate Cargo workspace preserves the
@@ -181,9 +181,10 @@ python3 scripts/validate_conductor.py
 python3 -m unittest discover -s tests -p 'test_conductor_validation.py' -v
 ```
 
-Root `cargo test` and existing CI do not discover this separate package.
-X1-IR-01 requests adoption rather than claiming that existing green checks ran
-the new tests. Repeat all commands on the recovered exact head before promotion.
+Root `cargo test` does not discover this separate package. The coordinator has
+added explicit standalone CI using the package manifest and fixture-audit path
+(X1-IR-01). Shared CI aggregation remains coordinator-owned. Repeat the checks
+for each proposed head; standalone success does not qualify raw imports.
 
 ## Primary specification references
 

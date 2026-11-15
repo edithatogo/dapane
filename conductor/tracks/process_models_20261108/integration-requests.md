@@ -10,6 +10,18 @@ no work under that path was published. Recovery adopts the reserved path.
 Shared core/CLI/Python, schemas, root manifests/lock/CI, registry and root docs
 remain untouched.
 
+## Coordinator disposition — 15 November 2026
+
+The [coordinator intake at b26ef961ab696057d088d6f5be34da441be09daf](https://github.com/edithatogo/dapane/blob/b26ef961ab696057d088d6f5be34da441be09daf/conductor/roadmap-intake-2026-11-15.md)
+accepts/applies X1-IR-00, X1-IR-01 and X1-IR-06: exact-source replay, explicit
+standalone CI and registry/intake review. The hosted replay found owner formatting
+failures; the [owner correction](owner-quality-20261115.md) records their fix and
+fresh checks. Shared CI aggregation remains with that coordinator.
+
+X1-IR-02 remains blocked on qualified Mailweft #4 evidence. X1-IR-03, X1-IR-04
+and X1-IR-05 remain open native-import, manifest/projection and core-adoption work.
+The original request details below remain the acceptance requirements.
+
 | ID | Concrete request | Reason and gate |
 | --- | --- | --- |
 | X1-IR-00 | Repeat the package checks, formatting, fixture auditor and Conductor checks on the exact recovered head before acceptance. | The local environment failed before commit/push. Source/test/fixture recovery is not byte-verified against that lost checkout; historical local results do not qualify the recovered commit. |

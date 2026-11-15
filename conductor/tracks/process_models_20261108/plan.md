@@ -7,10 +7,11 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Owner formatting follow-up — 15 November 2026
 
-- [~] Correct the three owner-file formatting findings from hosted run 43686522588
-  at `63e3f8368510641513b5fd84ae3074bb80e79c6f`, repeat the standalone checks,
-  and hand exact-source evidence to PR #20. Preserve coordinator commits and
-  shared CI/registry; native import qualification remains blocked.
+- [x] Correct the three owner-file formatting findings from hosted run 43686522588
+  at `63e3f8368510641513b5fd84ae3074bb80e79c6f`. All standalone checks and author
+  review passed at `0621fecedd41bc99957d0042e32338e780f42dd2`; see the
+  [exact-source receipt and handoff](owner-quality-20261115.md). Coordinator
+  commits and shared files are preserved; native import remains blocked.
 
 ## Phase 1 — Observed records
 
@@ -33,9 +34,9 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
-The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. That historical checkpoint left X1.1 partial. The 15 November contract specifies explicit timestamps, basis, correction rejection and censoring. X1.2 remains blocked; X1.3 retains native-import and recovered-source verification work. X3.1 and all X2 work remain pending; the earlier Kairos observation is not requalified by this lane.
+The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. That historical checkpoint left X1.1 partial. The 15 November contract specifies explicit timestamps, basis, correction rejection and censoring. X1.2 remains blocked; X1.3 retains native-import verification work. X3.1 and all X2 work remain pending; the earlier Kairos observation is not requalified by this lane.
 
-Historical core-context scope and commands remain in [runtime verification](../../../docs/runtime-verification.md). The new [verification record](verification.md) separates local pre-outage execution from the recovered, unverified source. This track remains in progress.
+Historical core-context scope and commands remain in [runtime verification](../../../docs/runtime-verification.md). The [verification record](verification.md) retains the recovery history; the [owner follow-up](owner-quality-20261115.md) records the later exact-source execution. This track remains in progress.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.
 
 ## X1 lane — 15 November 2026
@@ -59,13 +60,16 @@ decoder, competing dependency patch or advisory suppression.
 | --- | --- |
 | X1.1 | Specification complete for the typed contract: stable identity, explicit instants/pairs, correction rejection, observed/assumed/simulated basis, qualified relationships and censoring. No full correction protocol or native import claim. |
 | X1.2 | Blocked on qualified Rust4PM and native input evidence; no native parser/schema/round-trip or XML exposure pass. |
-| X1.3 | Partial: local candidate passed 37 Rust contract and 12 fixture-audit cases. The recovered exact source needs rerun, and native-import cases still need a qualified decoder. |
+| X1.3 | Partial: exact-source execution passed 37 Rust contract and 12 fixture-audit cases. Native-import cases still need a qualified decoder. |
 
 The local execution environment failed before commit/push. Source, tests and
 fixtures were reconstructed through GitHub. These bytes cannot inherit the
-earlier local results. [Review](review.md) keeps that blocking finding explicit;
-[integration requests](integration-requests.md) identify the exact rerun/adoption
-work. The PR remains draft. X2 and X3 remain outside this lane.
+earlier local results. The coordinator subsequently replayed the recovered
+source and added dedicated CI; this owner follow-up fixes the resulting format
+findings. [Review](review.md) retains that chronology and the open native gate.
+[Integration requests](integration-requests.md) record the accepted shared work.
+The PR remains draft. X2 and X3 remain outside this lane.
 
-Track state stays `in_progress`, matching the untouched registry. Root cargo/CI
-does not discover the separate package; adding that coverage is integrator-owned.
+Track state stays `in_progress`, matching the untouched registry. Root Cargo
+does not discover the package; explicit standalone CI is now integrator-owned
+and present. This owner follow-up does not change its aggregation or gates.
