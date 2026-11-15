@@ -14,7 +14,7 @@ Demonstrate the next new domain by composing workforce quotations and laboratory
 
 Requirements: RQ-06, RQ-03, RQ-07.
 
-Capability status: synthetic_recipe_n1_implemented_n2_pending. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.
+Capability status: synthetic_recipe_n1_n2_executed_pending_integration. See [runtime evidence](../../../docs/runtime-verification.md); full track acceptance remains open.
 
 See the [synthetic recipe](../../../fixtures/newborn-synthetic/README.md) and
 [plan](plan.md) for the bounded composition and evidence.

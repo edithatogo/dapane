@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-15T05:16:37Z",
+  "updated_at": "2026-11-15T05:20:00Z",
   "description": "Demonstrate the next new domain by composing workforce quotations and laboratory recipes into a versioned newborn-screening programme model, with conserved shared costs and explicit denominators.",
   "repositories": [
     "."
@@ -27,12 +27,18 @@
     "RQ-03",
     "RQ-07"
   ],
-  "capability_status": "synthetic_recipe_n1_implemented_n2_pending",
+  "capability_status": "synthetic_recipe_n1_n2_executed_pending_integration",
   "verification": {
     "status": "passed_for_bounded_profile",
-    "scope": "N1 synthetic vocabulary, disjoint workforce/laboratory composition and two assays per specimen retain 150 total and 60/90 views. Four recovered-source tests passed; N2 and real programme qualification remain open.",
+    "scope": "Thirteen prepared synthetic cases and 63 dedicated installed-wheel checks; recovered full suite 196 passed. N3 real provider/programme/reporting qualification remains open.",
     "commands": [
-      "python -m pytest --import-mode=importlib tests/python/test_newborn_synthetic.py -q"
+      "python -m pytest --import-mode=importlib tests/python -q",
+      "python scripts/validate_contract.py --cli <verified-cli>",
+      "python scripts/validate_intervals.py --cli <verified-cli>",
+      "python scripts/validate_conductor.py",
+      "python -m unittest discover -s tests -p test_conductor_validation.py -q",
+      "ruff check tests/python/test_newborn_synthetic.py",
+      "ruff format --check tests/python/test_newborn_synthetic.py"
     ],
     "evidence": [
       "fixtures/newborn-synthetic/README.md",
@@ -46,5 +52,23 @@
     "Cost per eligible birth, participating infant, valid screen, completed pathway and confirmed diagnosis have explicit denominator/window identities.",
     "Clinical probabilities, timing, assay scope and rates are versioned programme inputs; no synthetic fixture is presented as clinical evidence.",
     "When reporting support is advertised, applicable CHEERS/GHCC/AGREEDT coverage includes evidence and exclusions through the qualified optional profile adapter; lifetime outcomes remain the linked model owner's responsibility."
+  ],
+  "lane_ownership": {
+    "lane": "Newborn synthetic N1-N2",
+    "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+    "integrator_chat": "6af8e445-ffd4-83ec-8e51-ff6b596f11b1",
+    "owned_new_paths": [
+      "fixtures/newborn-synthetic/",
+      "tests/python/test_newborn_synthetic.py"
+    ],
+    "shared_change_request": "Reconcile ownership PR #20 to the explicitly user-authorised fixture/test paths; no shared runtime change is required."
+  },
+  "unqualified_capabilities": [
+    "real_provider_recipe_execution",
+    "real_programme_qualification",
+    "native_newborn_recipe_parser",
+    "production_denominator_reporting",
+    "optional_reporting_profiles",
+    "release_publication"
   ]
 }

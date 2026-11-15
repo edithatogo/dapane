@@ -74,6 +74,917 @@
         "family_time"
       ],
       "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "repeat-collection": {
+      "request": "repeat-collection.json",
+      "branch": "inadequate_specimen_then_repeat",
+      "perspective": "provider",
+      "scope": "collection_and_composed_batch_with_selected_confirmation",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": "2026-06-15",
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "inadequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-a-2",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "unresolved-failure": {
+      "request": "unresolved-failure.json",
+      "branch": "unresolved_failure",
+      "perspective": "provider",
+      "scope": "collection_and_composed_batch_with_selected_confirmation",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": null,
+          "completion_date": null,
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": "2026-06-15",
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "failed"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "failed-assay-repeat": {
+      "request": "failed-assay-repeat.json",
+      "branch": "failed_assay_then_repeat",
+      "perspective": "provider",
+      "scope": "collection_and_composed_batch_with_selected_confirmation",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-repeat-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": "2026-06-15",
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "failed"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-repeat-1",
+          "result_id": "result-a-repeat-1",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "reflex-assay": {
+      "request": "reflex-assay.json",
+      "branch": "reflex",
+      "perspective": "provider",
+      "scope": "collection_and_composed_batch_with_selected_confirmation",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": "2026-06-15",
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-reflex-1"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "reflex_required"
+        },
+        {
+          "assay_id": "assay-b-reflex-1",
+          "result_id": "result-b-reflex-1",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "partial-batch": {
+      "request": "partial-batch.json",
+      "branch": "partial_batch",
+      "perspective": "provider",
+      "scope": "collection_and_composed_batch",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time",
+        "confirmation"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "added-panel": {
+      "request": "added-panel.json",
+      "branch": "added_panel",
+      "perspective": "provider",
+      "scope": "collection_and_composed_batch_with_selected_confirmation",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2",
+            "result-a-panel-1"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": "2026-06-15",
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2",
+            "result-b-panel-1"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-panel-1",
+          "result_id": "result-a-panel-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-panel-1",
+          "result_id": "result-b-panel-1",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "family-perspective": {
+      "request": "family-perspective.json",
+      "branch": "family_inclusion",
+      "perspective": "provider_plus_family",
+      "scope": "collection_and_composed_batch_with_selected_confirmation",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": "2026-06-15",
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "capacity-below": {
+      "request": "capacity-below.json",
+      "branch": "capacity_below",
+      "perspective": "provider",
+      "scope": "collection_and_explicit_instrument_blocks_only",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time",
+        "transport",
+        "accession_qc",
+        "setup",
+        "controls",
+        "assay_material",
+        "programme_overhead",
+        "confirmation"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "capacity-at": {
+      "request": "capacity-at.json",
+      "branch": "capacity_at",
+      "perspective": "provider",
+      "scope": "collection_and_explicit_instrument_blocks_only",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time",
+        "transport",
+        "accession_qc",
+        "setup",
+        "controls",
+        "assay_material",
+        "programme_overhead",
+        "confirmation"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "capacity-above": {
+      "request": "capacity-above.json",
+      "branch": "capacity_above",
+      "perspective": "provider",
+      "scope": "collection_and_explicit_instrument_blocks_only",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-c",
+          "episode_id": "episode-c",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-c-primary-1",
+            "result-c-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-c-primary-1",
+          "result_id": "result-c-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-c-primary-2",
+          "result_id": "result-c-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-c-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time",
+        "transport",
+        "accession_qc",
+        "setup",
+        "controls",
+        "assay_material",
+        "programme_overhead",
+        "confirmation"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "capacity-missing-use": {
+      "request": "capacity-missing-use.json",
+      "branch": "capacity_missing_use",
+      "perspective": "provider",
+      "scope": "collection_and_explicit_instrument_blocks_only",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time",
+        "transport",
+        "accession_qc",
+        "setup",
+        "controls",
+        "assay_material",
+        "programme_overhead",
+        "confirmation"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    },
+    "capacity-unknown": {
+      "request": "capacity-unknown.json",
+      "branch": "capacity_unknown_availability",
+      "perspective": "provider",
+      "scope": "collection_and_explicit_instrument_blocks_only",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time",
+        "transport",
+        "accession_qc",
+        "setup",
+        "controls",
+        "assay_material",
+        "programme_overhead",
+        "confirmation"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
     }
   }
 }

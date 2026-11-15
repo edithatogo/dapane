@@ -22,6 +22,269 @@
         "completed_pathway": "75",
         "confirmed_diagnosis": "150"
       }
+    },
+    "repeat-collection": {
+      "total": "170.00",
+      "unattributed": "0.00",
+      "infant_totals": {
+        "infant-a": "80.00",
+        "infant-b": "90.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 2,
+        "completed_pathway": 2,
+        "confirmed_diagnosis": 1
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "170/3",
+        "participating_infant": "85",
+        "valid_screen": "85",
+        "completed_pathway": "85",
+        "confirmed_diagnosis": "170"
+      }
+    },
+    "unresolved-failure": {
+      "total": "150.00",
+      "unattributed": "0.00",
+      "infant_totals": {
+        "infant-a": "60.00",
+        "infant-b": "90.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 1,
+        "completed_pathway": 1,
+        "confirmed_diagnosis": 1
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "50",
+        "participating_infant": "75",
+        "valid_screen": "150",
+        "completed_pathway": "150",
+        "confirmed_diagnosis": "150"
+      }
+    },
+    "failed-assay-repeat": {
+      "total": "170.00",
+      "unattributed": "0.00",
+      "infant_totals": {
+        "infant-a": "80.00",
+        "infant-b": "90.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 2,
+        "completed_pathway": 2,
+        "confirmed_diagnosis": 1
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "170/3",
+        "participating_infant": "85",
+        "valid_screen": "85",
+        "completed_pathway": "85",
+        "confirmed_diagnosis": "170"
+      }
+    },
+    "reflex-assay": {
+      "total": "170.00",
+      "unattributed": "0.00",
+      "infant_totals": {
+        "infant-a": "60.00",
+        "infant-b": "110.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 2,
+        "completed_pathway": 2,
+        "confirmed_diagnosis": 1
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "170/3",
+        "participating_infant": "85",
+        "valid_screen": "85",
+        "completed_pathway": "85",
+        "confirmed_diagnosis": "170"
+      }
+    },
+    "partial-batch": {
+      "total": "110.00",
+      "unattributed": "0.00",
+      "infant_totals": {
+        "infant-a": "110.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 1,
+        "valid_screen": 1,
+        "completed_pathway": 1,
+        "confirmed_diagnosis": 0
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "110/3",
+        "participating_infant": "110",
+        "valid_screen": "110",
+        "completed_pathway": "110",
+        "confirmed_diagnosis": null
+      }
+    },
+    "added-panel": {
+      "total": "170.00",
+      "unattributed": "0.00",
+      "infant_totals": {
+        "infant-a": "70.00",
+        "infant-b": "100.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 2,
+        "completed_pathway": 2,
+        "confirmed_diagnosis": 1
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "170/3",
+        "participating_infant": "85",
+        "valid_screen": "85",
+        "completed_pathway": "85",
+        "confirmed_diagnosis": "170"
+      }
+    },
+    "family-perspective": {
+      "total": "180.00",
+      "unattributed": "0.00",
+      "infant_totals": {
+        "infant-a": "75.00",
+        "infant-b": "105.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 2,
+        "completed_pathway": 2,
+        "confirmed_diagnosis": 1
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "60",
+        "participating_infant": "90",
+        "valid_screen": "90",
+        "completed_pathway": "90",
+        "confirmed_diagnosis": "180"
+      }
+    },
+    "capacity-below": {
+      "total": "110.00",
+      "unattributed": "50.00",
+      "infant_totals": {
+        "infant-a": "60.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 1,
+        "valid_screen": 1,
+        "completed_pathway": 1,
+        "confirmed_diagnosis": 0
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "110/3",
+        "participating_infant": "110",
+        "valid_screen": "110",
+        "completed_pathway": "110",
+        "confirmed_diagnosis": null
+      }
+    },
+    "capacity-at": {
+      "total": "120.00",
+      "unattributed": "0.00",
+      "infant_totals": {
+        "infant-a": "60.00",
+        "infant-b": "60.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 2,
+        "completed_pathway": 2,
+        "confirmed_diagnosis": 0
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "40",
+        "participating_infant": "60",
+        "valid_screen": "60",
+        "completed_pathway": "60",
+        "confirmed_diagnosis": null
+      }
+    },
+    "capacity-above": {
+      "total": "230.00",
+      "unattributed": "50.00",
+      "infant_totals": {
+        "infant-a": "60.00",
+        "infant-b": "60.00",
+        "infant-c": "60.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 3,
+        "valid_screen": 3,
+        "completed_pathway": 3,
+        "confirmed_diagnosis": 0
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "230/3",
+        "participating_infant": "230/3",
+        "valid_screen": "230/3",
+        "completed_pathway": "230/3",
+        "confirmed_diagnosis": null
+      }
+    },
+    "capacity-missing-use": {
+      "total": "120.00",
+      "unattributed": "50.00",
+      "infant_totals": {
+        "infant-a": "60.00",
+        "infant-b": "10.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 2,
+        "completed_pathway": 2,
+        "confirmed_diagnosis": 0
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "40",
+        "participating_infant": "60",
+        "valid_screen": "60",
+        "completed_pathway": "60",
+        "confirmed_diagnosis": null
+      }
+    },
+    "capacity-unknown": {
+      "total": "120.00",
+      "unattributed": "100.00",
+      "infant_totals": {
+        "infant-a": "10.00",
+        "infant-b": "10.00"
+      },
+      "denominators": {
+        "eligible_birth": 3,
+        "participating_infant": 2,
+        "valid_screen": 2,
+        "completed_pathway": 2,
+        "confirmed_diagnosis": 0
+      },
+      "cost_per_denominator": {
+        "eligible_birth": "40",
+        "participating_infant": "60",
+        "valid_screen": "60",
+        "completed_pathway": "60",
+        "confirmed_diagnosis": null
+      }
     }
   }
 }
