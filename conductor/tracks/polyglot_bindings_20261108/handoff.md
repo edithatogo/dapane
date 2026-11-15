@@ -47,12 +47,15 @@ owner. Please record the actual existing `bindings/polyglot/` claim in
 
 ### 2. Reconcile the registry, preserving the consistency gate
 
-Apply the following change to the integrator-owned `conductor/tracks.md` row:
+In the integrator-owned `conductor/tracks.md`, locate the row for track
+`polyglot_bindings_20261108` (display name “R and Julia bindings”) and change:
 
-```diff
--| [ ] | [R and Julia bindings](./tracks/polyglot_bindings_20261108/index.md) | new | RQ-09, RQ-02 |
-+| [!] | [R and Julia bindings](./tracks/polyglot_bindings_20261108/index.md) | blocked | RQ-09, RQ-02 |
-```
+| Column | Current | Requested |
+| --- | --- | --- |
+| Marker | `[ ]` | `[!]` |
+| Status | `new` | `blocked` |
+
+Retain that row's existing link and `RQ-09, RQ-02` requirement columns.
 
 Track index, plan and metadata already agree on blocked. Run the existing
 Conductor validator and lifecycle suite after reconciliation. An unreconciled

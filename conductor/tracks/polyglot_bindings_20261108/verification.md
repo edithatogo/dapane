@@ -144,3 +144,14 @@ bash bindings/polyglot/qualify.sh /absolute/new-qualification
 Retain its exact source SHA, tool versions, log, exported symbols and artifact
 checksums. Fix real failures without suppressing tests or changing shared
 numerics. Only after the C consumer passes may the same lane implement Julia.
+
+## Hosted documentation check after publication
+
+At documentation head `5eb2e0408ace4586d2f7441b5c1bec5faeabe10d`,
+[Conductor run 43681333801](https://github.com/edithatogo/dapane/actions/runs/43681333801)
+failed with three reported errors: the expected registry/status mismatch and two
+relative links inside the proposed registry diff in `handoff.md`. The checker
+also inspects fenced text. The latter two were lane-owned documentation defects;
+the handoff now gives a column-by-column row edit without those context-dependent
+links. This correction does not change binding source or waive the remaining
+registry mismatch. Its own exact-head hosted outcome is recorded in the PR.
