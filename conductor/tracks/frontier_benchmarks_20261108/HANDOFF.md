@@ -1,3 +1,33 @@
+# Current bounded handoff — 15 November 2026
+
+**The five formatting failures are fixed and the static lane passes on
+`7137bb5e87b7e79e8c780e9c0576434606072065`.** See the
+[quality follow-up](quality-followup-20261115.md) and
+[derived exact-source receipt](evidence/quality-20261115/qualification-summary.json).
+
+Local and hosted acceptance each passed 23 tests, the same-source offline build,
+the fixed 24-comparison protocol and bundle verification. The downloaded hosted
+artifact passed source/file identity review. The initial shared registry and
+hosted invocation requests below have been fulfilled by the integrator.
+
+The documentation revision carrying this record receives separate exact-head
+qualification. Its final SHA and new execution receipt are pinned in
+[PR #24](https://github.com/edithatogo/dapane/pull/24) and handed to
+[coordination PR #20](https://github.com/edithatogo/dapane/pull/20).
+The sole integrator remains chat `6af8e445-ffd4-83ec-8e51-ff6b596f11b1`.
+
+Offline security remains queued, not passed. PR #20's independent privacy
+findings, the PR #17 receiving-tree provenance review and all release/publication
+holds remain open. Retain complete hosted artifacts before their stated expiry.
+No broader capability, within-request incremental engine, frontier or empirical
+claim is made.
+
+## Historical initial handoff — preserved as originally published
+
+The following record describes the initial publication and its then-unexecuted
+head. Its blocked/unexecuted statements are historical; they are not the current
+formatting-source result. Failed history is retained without relabelling.
+
 # Independent static benchmarks — integrator handoff
 
 Lane: **Dapane — Independent static benchmarks**. Scope: F1/F2.1–2 only.

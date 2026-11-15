@@ -14,9 +14,11 @@ Test whether evidence-linked, object-centric costing provides measurable advanta
 
 Requirements: RQ-12, RQ-06, RQ-10, RQ-11.
 
-Capability status: scoped static protocol and implementation authored; exact-head
-execution blocked after environment loss. Earlier local tests are retained as
-historical observations, not publication-head qualification.
+Capability status: the scoped synthetic static slice passed exact-source local
+and hosted qualification at `7137bb5e87b7e79e8c780e9c0576434606072065`.
+The [quality follow-up](quality-followup-20261115.md) records the formatting-only
+repair, independent computational checks and remaining integration/security holds.
+Earlier failures and unexecuted publication observations remain historical evidence.
 
 Lane: Dapane — Independent static benchmarks. Authorised slice: F1/F2.1–2.
 Implementation: `benchmarks/static/`, matching the integrator's ownership map.

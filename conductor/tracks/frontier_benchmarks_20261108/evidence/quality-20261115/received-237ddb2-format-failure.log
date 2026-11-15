@@ -1,0 +1,272 @@
+--- benchmarks/static/build.py
++++ benchmarks/static/build.py
+@@ -18,7 +18,9 @@
+ 
+ def runtime_files() -> list[str]:
+     return [
+-        "Cargo.toml", "Cargo.lock", "rust-toolchain.toml",
++        "Cargo.toml",
++        "Cargo.lock",
++        "rust-toolchain.toml",
+         *git("ls-files", "crates").splitlines(),
+     ]
+ 
+@@ -44,8 +46,15 @@
+     compiler = subprocess.check_output(["rustc", "--version", "--verbose"], text=True)
+     require(compiler.startswith("rustc 1.99.1 "), "Protocol requires Rust 1.99.1")
+     command = [
+-        "cargo", "build", "--offline", "--locked", "--release", "-p", "dapane-cli",
+-        "--target-dir", str(target),
++        "cargo",
++        "build",
++        "--offline",
++        "--locked",
++        "--release",
++        "-p",
++        "dapane-cli",
++        "--target-dir",
++        str(target),
+     ]
+     process = subprocess.run(command, cwd=REPO, capture_output=True, text=True, check=False)
+     require(process.returncode == 0, f"Locked offline build failed:\n{process.stderr}")
+@@ -64,11 +73,17 @@
+         "rustc_verbose": compiler,
+         "cargo_version": subprocess.check_output(["cargo", "--version"], text=True).strip(),
+         "compiler_environment": {
+-            key: value for key, value in os.environ.items()
+-            if key in {
+-                "RUSTFLAGS", "CARGO_ENCODED_RUSTFLAGS", "RUSTC_WRAPPER",
+-                "RUSTC_WORKSPACE_WRAPPER", "CARGO_BUILD_TARGET",
+-            } or key.startswith("CARGO_PROFILE_RELEASE_")
++            key: value
++            for key, value in os.environ.items()
++            if key
++            in {
++                "RUSTFLAGS",
++                "CARGO_ENCODED_RUSTFLAGS",
++                "RUSTC_WRAPPER",
++                "RUSTC_WORKSPACE_WRAPPER",
++                "CARGO_BUILD_TARGET",
++            }
++            or key.startswith("CARGO_PROFILE_RELEASE_")
+         },
+         "binary_sha256": file_digest(executable),
+         "binary_bytes": executable.stat().st_size,
+
+--- benchmarks/static/oracle.py
++++ benchmarks/static/oracle.py
+@@ -211,9 +211,18 @@
+     require(report["totals"] == expected["totals"], "Total oracle/conservation")
+     return dict.fromkeys(
+         (
+-            "identity", "input_digest", "output_digest", "policy", "quotes_and_sources",
+-            "context", "line_inventory", "line_sources", "line_arithmetic",
+-            "allocations", "object_totals", "totals",
++            "identity",
++            "input_digest",
++            "output_digest",
++            "policy",
++            "quotes_and_sources",
++            "context",
++            "line_inventory",
++            "line_sources",
++            "line_arithmetic",
++            "allocations",
++            "object_totals",
++            "totals",
+         ),
+         True,
+     )
+@@ -251,9 +260,7 @@
+     segments = sorted(
+         report["segments"], key=lambda row: (row["start"], row["end"], row["quote_id"])
+     )
+-    observed = [
+-        (row["start"], row["end"], row["quote_id"], row["quantity"]) for row in segments
+-    ]
++    observed = [(row["start"], row["end"], row["quote_id"], row["quantity"]) for row in segments]
+     require(observed == expected_segments, "Independent segmentation/quantity oracle")
+     expanded = report["expanded_request"]
+     require(len(expanded["usage"]) == len(segments), "Expanded line count")
+@@ -279,7 +286,9 @@
+         expected_original.setdefault(field, None)
+     require(report["interval_snapshots"] == [expected_original], "Original interval snapshot")
+     normalized_envelope = {
+-        "schema_version": "0.1", "request": normalized, "intervals": [expected_original],
++        "schema_version": "0.1",
++        "request": normalized,
++        "intervals": [expected_original],
+     }
+     require(
+         report["input_digest"]
+@@ -291,10 +300,18 @@
+     for key in ("quotes", "policy", "run_id", "knowledge_cutoff"):
+         require(expanded[key] == normalized[key], f"Expanded {key} identity")
+     coverage = _check_point(expanded, report["report"])
+-    coverage.update(dict.fromkeys(
+-        ("interval_source", "interval_snapshots", "interval_segments",
+-         "interval_input_digest", "interval_output_digest"), True,
+-    ))
++    coverage.update(
++        dict.fromkeys(
++            (
++                "interval_source",
++                "interval_snapshots",
++                "interval_segments",
++                "interval_input_digest",
++                "interval_output_digest",
++            ),
++            True,
++        )
++    )
+     return coverage
+ 
+ 
+
+--- benchmarks/static/run.py
++++ benchmarks/static/run.py
+@@ -46,17 +46,16 @@
+         for key, raw in result.reports.items():
+             ref = digest(raw)
+             value = raw.decode("utf-8")
+-            require(ref not in self.reports or self.reports[ref] == value, "Report archive collision")
++            require(
++                ref not in self.reports or self.reports[ref] == value, "Report archive collision"
++            )
+             self.reports[ref] = value
+             refs[key] = ref
+         return refs
+ 
+ 
+ def _encoded(objects: dict) -> dict[str, WorkItem]:
+-    return {
+-        key: WorkItem(command, canonical(value))
+-        for key, (command, value) in objects.items()
+-    }
++    return {key: WorkItem(command, canonical(value)) for key, (command, value) in objects.items()}
+ 
+ 
+ def _measure(operation, objects: dict) -> tuple[Result, int]:
+@@ -66,9 +65,9 @@
+ 
+ 
+ def _metrics(result: Result, elapsed_ns: int) -> dict:
+-    return {
+-        key: value for key, value in asdict(result).items() if key != "reports"
+-    } | {"wall_ns": elapsed_ns}
++    return {key: value for key, value in asdict(result).items() if key != "reports"} | {
++        "wall_ns": elapsed_ns
++    }
+ 
+ 
+ def comparison(runner: NativeCli, count: int, name: str, protocol: dict, archive: Archive) -> dict:
+@@ -101,8 +100,7 @@
+             evaluated = {}
+             for method in order:
+                 operation = (
+-                    cache.evaluate if method == "incremental"
+-                    else lambda items: full(runner, items)
++                    cache.evaluate if method == "incremental" else lambda items: full(runner, items)
+                 )
+                 result, elapsed = _measure(operation, target_objects)
+                 evaluated[method] = result
+@@ -205,7 +203,8 @@
+         "Commit source before qualification; clean checkout required",
+     )
+     source_files = [
+-        name for name in git("ls-files", "benchmarks/static").splitlines()
++        name
++        for name in git("ls-files", "benchmarks/static").splitlines()
+         if "/evidence/" not in name
+     ]
+     result = {
+@@ -257,10 +256,16 @@
+     write_json(args.output / "reports.json", archive.reports)
+     checksums = {path.name: file_digest(path) for path in sorted(args.output.iterdir())}
+     write_json(args.output / "checksums.json", checksums)
+-    print(json.dumps({
+-        "status": result["status"], "source_sha": source_sha,
+-        "comparisons": len(result["comparisons"]), "output": str(args.output),
+-    }))
++    print(
++        json.dumps(
++            {
++                "status": result["status"],
++                "source_sha": source_sha,
++                "comparisons": len(result["comparisons"]),
++                "output": str(args.output),
++            }
++        )
++    )
+     return 0 if result["status"] == "passed" else 1
+ 
+ 
+
+--- benchmarks/static/tests/test_bundle_gate.py
++++ benchmarks/static/tests/test_bundle_gate.py
+@@ -20,7 +20,9 @@
+ class BundleGateTests(unittest.TestCase):
+     def test_failed_independent_check_cannot_produce_timing_summary(self):
+         result = comparison(
+-            EchoRunner(), 2, "cold",
++            EchoRunner(),
++            2,
++            "cold",
+             {"warmup_pairs": 0, "measured_pairs": 1},
+             Archive(),
+         )
+
+--- benchmarks/static/verify.py
++++ benchmarks/static/verify.py
+@@ -59,7 +59,9 @@
+             require(pair["passed"] and pair["complete_report_bytes_equal"], "Pair gate")
+             require(pair["warmup"] == (pair["index"] < 0), "Warmup marker")
+             require(pair["full"]["native_calls"] == len(target), "Full native count")
+-            require(pair["incremental"]["native_calls"] == expected_calls, "Incremental native count")
++            require(
++                pair["incremental"]["native_calls"] == expected_calls, "Incremental native count"
++            )
+             require(pair["incremental"]["hits"] == len(target) - expected_calls, "Cache hit count")
+             left, right = pair["full"]["report_refs"], pair["incremental"]["report_refs"]
+             require(set(left) == set(right) == set(target), "Portfolio inventory")
+@@ -75,8 +77,10 @@
+                     )
+                     checked.add(identity)
+             for method in ("full", "incremental"):
+-                require(type(pair[method]["wall_ns"]) is int and pair[method]["wall_ns"] > 0,
+-                        "Invalid elapsed time")
++                require(
++                    type(pair[method]["wall_ns"]) is int and pair[method]["wall_ns"] > 0,
++                    "Invalid elapsed time",
++                )
+             pairs += 1
+         measured = [pair for pair in comparison["pairs"] if not pair["warmup"]]
+         full_median = statistics.median(pair["full"]["wall_ns"] for pair in measured)
+@@ -85,8 +89,10 @@
+         require(summary["measured_pairs"] == len(measured), "Summary pair count")
+         require(summary["median_full_wall_ns"] == full_median, "Full median")
+         require(summary["median_incremental_wall_ns"] == inc_median, "Incremental median")
+-        require(summary["median_full_over_incremental_ratio"] == full_median / inc_median,
+-                "Descriptive ratio")
++        require(
++            summary["median_full_over_incremental_ratio"] == full_median / inc_median,
++            "Descriptive ratio",
++        )
+     require(result["mutations"]["passed"], "Mutation gate")
+     require(len(result["mutations"]["cases"]) == 24, "Mutation inventory")
+     for case in result["mutations"]["cases"]:
+@@ -101,8 +107,10 @@
+             check(case["command"], decode(raw), report)
+             financial = report if case["command"] == "evaluate" else report["report"]
+             require(financial["totals"]["rounded"] == case["expected"]["rounded"], "Literal total")
+-            require(financial["totals"]["exact"] == wire(number(case["expected"]["exact"])),
+-                    "Literal exact total")
++            require(
++                financial["totals"]["exact"] == wire(number(case["expected"]["exact"])),
++                "Literal exact total",
++            )
+             if "object_totals" in case["expected"]:
+                 require(
+                     {obj["object_id"]: obj["total"] for obj in financial["object_totals"]}
+
+5 files would be reformatted, 9 files already formatted

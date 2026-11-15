@@ -18,19 +18,21 @@ comparison or frontier literature review.
 
 ## Phase 2 — Controlled experiments
 
-- [!] F2.1 Construct controlled mutations of sourced or synthetic costing cases: missing components, duplicate batches, wrong denominator/unit/date and unsupported assumptions.
-- [!] F2.2 Implement and compare incremental revaluation with full recomputation on identical inputs and policies.
+- [x] F2.1 Construct controlled mutations of sourced or synthetic costing cases: missing components, duplicate batches, wrong denominator/unit/date and unsupported assumptions.
+- [x] F2.2 Implement and compare incremental revaluation with full recomputation on identical inputs and policies.
 - [ ] F2.3 After the relevant newborn_screening and process_models capabilities are qualified, compare object-centric and flattened pathway representations using shared-batch, repeat and capacity cases; retain this experiment as pending without blocking F2.1/F2.2.
 - [ ] F2.4 After the required decision_integrations capabilities are qualified, run measurement-priority and adoption/capacity experiments; retain this experiment as pending without blocking independent static benchmarks.
 - [ ] F2.5 Verify independent expected outcomes and retain all negative/null results, environment details and complete result bundles.
 
-F2.1/F2.2 implementation is published in `benchmarks/static/`. The earlier local
-counterpart passed 21 tests, including 24 mutation cases and twelve update
-scenarios at eight independent requests. The execution environment then became
-unavailable. Reconstruction, namespace/locator changes, the new runner/verifier
-and the exact published source remain unexecuted. Both increments stay blocked
-pending exact-head tests, paired measurements and complete retained bundles.
-See [handoff](HANDOFF.md) and [review](review.md).
+F2.1/F2.2 are complete for the authorised synthetic static slice at
+`7137bb5e87b7e79e8c780e9c0576434606072065`: local and hosted runs passed 23 tests,
+24 mutation expectations, 24 comparisons across 8/32 independent requests and
+bundle verification of 144 pairs. Complete raw hosted inputs/reports/timings are
+retained as an identified artifact with an explicit expiry; durable retention is
+handed to the integrator. Source-truth detection remains 0/5. No within-request
+incremental engine or empirical/frontier claim follows. See the
+[quality follow-up](quality-followup-20261115.md), [handoff](HANDOFF.md) and
+[review](review.md). F2.5 remains open for the broader planned experiment set.
 
 ## Phase 3 — External validation and publication
 
@@ -43,9 +45,11 @@ See [handoff](HANDOFF.md) and [review](review.md).
 
 ### Owner quality follow-up — 2026-11-15
 
-- [~] Reproduce and fix the five Python formatting failures at received head
+- [x] Reproduce and fix the five Python formatting failures at received head
   `237ddb238997b0babe12266cb7775207c597dfd4`, verify source equivalence, and run
-  exact-head qualification before issuing a new scoped integrator handoff.
+  exact-head qualification at `7137bb5e87b7e79e8c780e9c0576434606072065`.
+  The [scoped handoff](quality-followup-20261115.md) retains evidence and holds;
+  its final documentation revision receives a separate exact-head hosted run.
 
 The integrator's received-head run passed 23 tests, the same-source native build,
 the fixed protocol and bundle verification. Formatting remained a failed gate.
@@ -56,8 +60,12 @@ owned benchmark namespace and this track.
 [Local observations](../../../benchmarks/static/evidence/local-observations.json)
 retain executed versus unexecuted evidence, the two corrected diagnostic assumptions
 and the loss of the original raw artifact. They do not qualify the reconstructed
-publication head. No timing, memory, frontier or empirical result is claimed.
+publication head. New exact-source results are recorded separately in the
+[quality receipt](evidence/quality-20261115/qualification-summary.json), including nulls and slower
+observations. No frontier or empirical result is claimed.
 
-The track remains in progress. The integrator owns [the registry](../../tracks.md)
-and must apply its matching lifecycle update before Conductor validation can pass.
-That expected coordination failure is not waived. F2.3–5 and F3 remain open.
+The track remains in progress. The integrator has reconciled
+[the registry](../../tracks.md) and added explicit hosted lane qualification;
+Conductor validation passed on the formatting source. This owner follow-up
+changes no shared file. F2.3–5 and F3 remain open, alongside the named security,
+receiving-tree provenance and release holds.

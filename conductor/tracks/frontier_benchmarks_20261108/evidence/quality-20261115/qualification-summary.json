@@ -1,0 +1,336 @@
+{
+  "kind": "Derived exact-source handoff receipt; complete raw hosted artifact is separately identified.",
+  "recorded_at": "2026-11-15 09:12:02 UTC",
+  "source_sha": "7137bb5e87b7e79e8c780e9c0576434606072065",
+  "source_tree": "e8935161f9e2c42c5adb2013feabf8feab45b756",
+  "received_source_sha": "237ddb238997b0babe12266cb7775207c597dfd4",
+  "runtime_base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "status": "passed_static_lane_checks",
+  "change_scope": "Five pinned-formatter outputs and owned track progress only at this source; final handoff documentation receives a separate exact-head hosted run.",
+  "hosted": {
+    "run_id": 43697346539,
+    "qualify_job_id": 132760752738,
+    "aggregate_job_id": 132760989468,
+    "required_commands": [
+      {
+        "name": "source-before",
+        "status": "passed"
+      },
+      {
+        "name": "rust-install",
+        "status": "passed"
+      },
+      {
+        "name": "rust-version",
+        "status": "passed"
+      },
+      {
+        "name": "cargo-version",
+        "status": "passed"
+      },
+      {
+        "name": "python-tools",
+        "status": "passed"
+      },
+      {
+        "name": "build-packages",
+        "status": "passed"
+      },
+      {
+        "name": "python-lint",
+        "status": "passed"
+      },
+      {
+        "name": "python-format",
+        "status": "passed"
+      },
+      {
+        "name": "static-fetch",
+        "status": "passed"
+      },
+      {
+        "name": "static-build",
+        "status": "passed"
+      },
+      {
+        "name": "static-cli",
+        "status": "passed"
+      },
+      {
+        "name": "static-tests",
+        "status": "passed"
+      },
+      {
+        "name": "static-protocol",
+        "status": "passed"
+      },
+      {
+        "name": "static-verify",
+        "status": "passed"
+      },
+      {
+        "name": "source-after",
+        "status": "passed"
+      }
+    ],
+    "tests": 23,
+    "controller_tests": 20,
+    "artifact_id": 14154424008,
+    "artifact_name": "roadmap-lane-static",
+    "archive_bytes": 774796,
+    "archive_sha256": "6887fd2fa4e2c99b300c049dc421a8623e28639f33c9e0fa32b59ee9f2adb3cd",
+    "qualification_receipt_sha256": "6cba089615862161940e25404d6010ef58ff5e46854d2d87ba1def8c813f3b84",
+    "artifact_expires_at": "2026-12-15T09:04:11Z",
+    "python": "3.12.16",
+    "native_binary_bytes": 1718592,
+    "native_binary_sha256": "5eaab52309ff9162360a9c82dd1bded8e163118fd573ff45fb8dd607a334991c",
+    "native_binary_identical_to_received_hosted_run": true,
+    "workflows": [
+      {
+        "id": 43697346465,
+        "name": "Conductor validation",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 43697346816,
+        "name": "Offline AI security",
+        "event": "pull_request",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 43697346451,
+        "name": "Privacy and secrets",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 43697346450,
+        "name": "Runtime",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 43697346539,
+        "name": "Standalone roadmap lanes",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 43697346491,
+        "name": "Installed provider consumers",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 43697341076,
+        "name": "Offline AI security",
+        "event": "push",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 43697341242,
+        "name": "PR #24",
+        "event": "dynamic",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "independently_executed_artifact_review": {
+    "archive_length_and_sha256_verified": true,
+    "immutable_git_source_files_verified": 251,
+    "retained_files_verified": 22,
+    "source_and_build_receipt_bound_to_exact_head": true,
+    "source_clean": true,
+    "shared_qualification_verifier": "passed: 15 commands; static-tests 23",
+    "offline_bundle_verifier": {
+      "verified_pairs_including_warmups": 144,
+      "distinct_request_report_checks": 70,
+      "mutation_cases": 24
+    },
+    "local_and_hosted_input_report_bytes_equal": true,
+    "scope": "Artifact/source consistency and independent numerical checks; no timing or authorship attestation."
+  },
+  "local": {
+    "python": "3.12.14",
+    "rust": "1.99.1",
+    "cargo": "1.99.1",
+    "ruff": "0.17.4",
+    "capacity_before_build": {
+      "memory_filesystem_available": "3.4 GiB",
+      "workspace_available": "5.0 MiB",
+      "action": "Used isolated memory-backed checkout, copied dependency cache and target. No existing work deleted."
+    },
+    "native_binary_sha256": "68fc3bd64d7dad4bff037b94d74c7b59e7b30632b7b251c8a01cde07ba8ddef0",
+    "commands": [
+      {
+        "command": "ruff check benchmarks/static",
+        "status": "passed"
+      },
+      {
+        "command": "ruff format --check benchmarks/static",
+        "status": "passed",
+        "files": 14
+      },
+      {
+        "command": "python3 -m benchmarks.static.build --target-dir <fresh target> --receipt <unused receipt>",
+        "status": "passed",
+        "underlying_build": "cargo build --offline --locked --release -p dapane-cli"
+      },
+      {
+        "command": "DAPANE_BENCH_CLI=<built CLI> python3 -m unittest discover -s benchmarks/static/tests -v",
+        "status": "passed",
+        "tests": 23,
+        "elapsed_seconds": 0.404
+      },
+      {
+        "command": "python3 -m benchmarks.static.run --cli <built CLI> --build-receipt <receipt> --output <unused output>",
+        "status": "passed",
+        "comparisons": 24
+      },
+      {
+        "command": "python3 -m benchmarks.static.verify <local bundle>",
+        "status": "passed",
+        "pairs_including_warmups": 144,
+        "distinct_request_report_checks": 70,
+        "mutation_cases": 24
+      },
+      {
+        "command": "python3 scripts/validate_conductor.py",
+        "status": "passed",
+        "tracks": 14,
+        "requirements": 12,
+        "tasks": 154,
+        "local_links": 545
+      },
+      {
+        "command": "python3 -m unittest discover -s tests -p test_conductor_validation.py -v",
+        "status": "passed",
+        "tests": 12
+      },
+      {
+        "command": "python3 -m unittest discover -s tests/tooling -p test_roadmap_qualification.py -v",
+        "status": "passed",
+        "tests": 20,
+        "note": "Printed failed subcases are intentional negative controls; the unittest suite passed."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed"
+      }
+    ],
+    "source_clean_before_and_after": true,
+    "environment_interruption": "Execution disconnected only after these checks and the hosted-artifact audit passed. A subsequent attempt to copy scratch evidence into track files was not executed. Raw local files are not claimed as durably retained; this receipt preserves tool-observed outcomes."
+  },
+  "results": {
+    "scope": "Same-source, synthetic complete-independent-request reuse; no within-request incremental engine or empirical/frontier claim.",
+    "controls": {
+      "accepted": 7,
+      "total": 7
+    },
+    "contract_defects": {
+      "rejected": 12,
+      "total": 12
+    },
+    "source_truth_defects": {
+      "detected": 0,
+      "total": 5,
+      "all_accepted": true
+    },
+    "per_generated_segment_half_even": {
+      "two_segments_0_005": "0.00",
+      "two_segments_0_015": "0.04"
+    },
+    "portfolios": [
+      8,
+      32
+    ],
+    "scenarios": 12,
+    "comparisons": 24,
+    "pairs_including_warmups": 144,
+    "measured_pairs": 120,
+    "distinct_request_report_checks": 70,
+    "slower_observations": {
+      "local": [
+        {
+          "portfolio_size": 8,
+          "scenario": "all_rates",
+          "full_over_incremental_ratio": 0.9440471759909087
+        },
+        {
+          "portfolio_size": 32,
+          "scenario": "cold",
+          "full_over_incremental_ratio": 0.984765045126766
+        },
+        {
+          "portfolio_size": 32,
+          "scenario": "all_rates",
+          "full_over_incremental_ratio": 0.9757463276431344
+        }
+      ],
+      "hosted": [
+        {
+          "portfolio_size": 8,
+          "scenario": "cold",
+          "full_over_incremental_ratio": 0.9970602124872472
+        },
+        {
+          "portfolio_size": 8,
+          "scenario": "all_rates",
+          "full_over_incremental_ratio": 0.9952224761187421
+        },
+        {
+          "portfolio_size": 32,
+          "scenario": "cold",
+          "full_over_incremental_ratio": 0.9926523678680776
+        }
+      ],
+      "note": "All rows and raw pairs, including faster rows, are in the complete hosted artifact. These are descriptive uncontrolled-host observations; no threshold or significance claim."
+    },
+    "memory": {
+      "local_parent_peak_rss_kib": 18016,
+      "local_max_child_rss_kib": 18016,
+      "hosted_parent_peak_rss_kib": 26556,
+      "hosted_max_child_rss_kib": 24976,
+      "per_method_peak_rss_kib": null,
+      "scope": "Whole run including probes/children, not a method comparison."
+    },
+    "unmeasured": {
+      "analyst_effort_minutes": null,
+      "diagnosis_and_repair_minutes": null,
+      "external_validity": null,
+      "transportability": null,
+      "disclosure_risk": null
+    },
+    "bundle_checksums": {
+      "inputs_json": "8d2d6eca361e0e53f234823ce53cb1574ee42d8248ee7f9d251fbfc7e3360c3b",
+      "reports_json": "2dde0bfb728b6dac4264004ecc6c695457f967a2b2de52e8f12b06cd76b6cb9d",
+      "local_results_json": "9fa698049e8649ecc962eb51fd260e54084041166b1f577e39829f1c0fb615e0",
+      "hosted_results_json": "4f5c8f1d66b09dcbde3a2f063ed1c33118f595d15931cf68a54f04b558b644c3"
+    }
+  },
+  "historical_failed_qualification": {
+    "source_sha": "237ddb238997b0babe12266cb7775207c597dfd4",
+    "run_id": 43686531920,
+    "failed_command": "python-format",
+    "files_requiring_format": 5,
+    "qualification_receipt_url": "https://github.com/edithatogo/dapane/blob/497cd6472b1eb282ea6bd79271a7c76a881e9cec/conductor/roadmap-evidence-2026-11-15/attempt-2/pr24/qualification.json",
+    "status": "retained failure; not relabelled"
+  },
+  "remaining_holds": [
+    "Both offline-security jobs observed on 7137bb5 remain queued, not passed.",
+    "Coordination PR #20 privacy findings require independent central review; lane passes do not clear them.",
+    "PR #17 receiving-tree runtime/provenance revision and requalification remain required before combination.",
+    "Independent human/integrator review and all release/publication holds remain.",
+    "F2.3–5 and F3 broader process, decision, external and publication work remain open.",
+    "Complete raw hosted archive must be retained before its recorded expiry; the derived receipt is not a replacement."
+  ]
+}

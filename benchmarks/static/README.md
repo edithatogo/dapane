@@ -3,13 +3,22 @@
 This is the bounded F1/F2.1–2 implementation for
 [the existing benchmark track](../../conductor/tracks/frontier_benchmarks_20261108/index.md).
 
-**Initial published state: draft, exact-head execution blocked.** An earlier local
+**Current formatting source:** `7137bb5e87b7e79e8c780e9c0576434606072065` passed
+local and hosted 23-test acceptance, the offline native build, fixed protocol and
+bundle verification. See the
+[dated quality follow-up](../../conductor/tracks/frontier_benchmarks_20261108/quality-followup-20261115.md)
+for source identities, independent computational review, null/slower results and
+remaining holds. The final documentation head is qualified separately in PR #24.
+
+**Historical initial published state: draft, exact-head execution blocked.** An earlier local
 counterpart passed 21 tests, including the 24 mutation cases and complete-report
 comparisons for 12 update scenarios. The execution environment then became
 unavailable. The published source was reconstructed from the authored code and
 moved to the integrator's reserved `benchmarks/static/` namespace. Those earlier
 tests do **not** qualify this exact published revision. The build-receipt, timing
-runner, offline bundle verifier and two additional gate tests are unexecuted.
+runner, offline bundle verifier and two additional gate tests were then unexecuted.
+That initial state is retained as history; the later source-specific receipt above
+records their actual execution.
 
 See [protocol](PROTOCOL.md), [comparators](COMPARATORS.md),
 [protocol history and corrections](HISTORY.md), and
@@ -26,14 +35,15 @@ See [protocol](PROTOCOL.md), [comparators](COMPARATORS.md),
 - Transactional cache updates, executable and full-input identity, failed-request
   rejection, eviction, immutable output bytes and conservative invalidation.
 - A fixed paired-measurement protocol with fresh seeding per pair and honest null,
-  equal or slower observations. No performance result is currently available.
+  equal or slower observations. Source-specific descriptive results are retained
+  with their measured boundaries and do not establish a general speed advantage.
 - A result-bundle writer/verifier that retains raw inputs/reports, source/binary
   identities, raw timing pairs, measured boundaries and explicit unmeasured fields.
 
 This is test tooling, not a Dapane production API. It adds no runtime dependency
 and changes no evaluator, schema, installed wrapper, manifest, lockfile or CI.
 
-## Reproduce after restoring execution
+## Reproduce the exact source
 
 From a clean checkout of the exact PR head, with Rust 1.99.1 and Python 3.12+
 available, use a writable directory outside the checkout for evidence. The
@@ -70,7 +80,12 @@ A normal run writes `results.json`, `inputs.json`, `reports.json` and
 status and no timing summary for the failing comparison. A checksum verifies
 identity, not authorship or the accuracy of a source assertion.
 
-The [handoff](../../conductor/tracks/frontier_benchmarks_20261108/HANDOFF.md)
-requests the integrator-owned registry/CI changes. The existing workflows do not
-automatically execute this namespace. No gate is waived and no frontier,
-empirical, clinical, cross-platform or release-readiness claim is made.
+The integrator has connected this namespace to explicit standalone qualification
+and reconciled the track registry. The
+[handoff](../../conductor/tracks/frontier_benchmarks_20261108/HANDOFF.md)
+records artifact retention and remaining integration/security holds. Offline
+security remains queued, not passed; PR #20 privacy findings remain independent.
+No gate is waived and no frontier, empirical, clinical, cross-platform or
+release-readiness claim is made. The frozen protocol's publication-status text
+describes its original registration state; later qualification is recorded in
+separate exact-source receipts without altering that protocol.

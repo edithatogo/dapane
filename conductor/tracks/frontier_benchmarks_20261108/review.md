@@ -1,3 +1,43 @@
+# Current scoped quality review — 15 November 2026
+
+Received source: `237ddb238997b0babe12266cb7775207c597dfd4`.
+Reviewed formatting source: `7137bb5e87b7e79e8c780e9c0576434606072065`.
+
+The review found the five reported Ruff formatting failures and stale initial
+execution-status prose. Formatting was applied with the repository's pinned
+Ruff 0.17.4, and current track/README prose now distinguishes historical results
+from the new exact-source execution.
+
+Independent mechanical checks confirmed unchanged ASTs, comments and exact
+formatter output for all five files. Fixtures, literal expectations, protocol,
+cache semantics, half-even, fail-closed behavior and production/shared sources
+remain unchanged. The received failed formatting diff is retained.
+
+The independent Fraction oracle and existing negative controls passed in the
+23-test suite. Both local and hosted fixed-protocol bundles passed verification.
+A separate artifact review recomputed the downloaded archive identity, 251
+immutable source-file hashes and 22 retained-file identities; local and hosted
+input/report bytes were equal. The existing shared controller's 20 negative
+control tests also passed. See the
+[full follow-up](quality-followup-20261115.md) and
+[source-review receipt](evidence/quality-20261115/source-review.json).
+
+These checks provide independent computational evidence. The prose/diff review
+was performed by the implementation owner; no independent human/security review
+or second worker is claimed. The final documentation head must receive fresh
+hosted qualification and read-back scope verification, recorded in the PR.
+
+Remaining holds: queued offline security; separate PR #20 privacy findings;
+reviewed runtime/provenance update before combining PR #17; integrator acceptance;
+broader F2.3–5 and F3. The local environment disconnected after the completed
+checks, so its unsaved raw files are not described as durable evidence.
+
+## Historical initial implementation review — retained
+
+The following findings and blockers describe the initial publication. Current
+execution closes its reconstruction/runner-test, registry and hosted-coverage
+gaps for the source above. The missing original local artifacts remain missing.
+
 # Scoped review — 2026-11-15
 
 This is an implementation-owner review, not an independent human or security audit.

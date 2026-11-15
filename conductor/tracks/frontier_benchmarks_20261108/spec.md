@@ -67,7 +67,9 @@ Record actual commands, source/artifact identities and outcomes in the metadata 
 This lane implements F1 and F2.1–2 in `benchmarks/static/` using synthetic inputs
 and complete-request caching around the unchanged native evaluator. See the
 [protocol](../../../benchmarks/static/PROTOCOL.md) and [handoff](HANDOFF.md).
-The original acceptance criteria above remain unchanged. Exact-head execution,
-paired timing and full bundle retention are blocked after environment loss;
-earlier local tests do not qualify reconstructed published source. Broader
-process, decision, external-validation and publication work remains pending.
+The original acceptance criteria above remain unchanged. The
+[quality follow-up](quality-followup-20261115.md) records exact-source local and
+hosted execution of the synthetic static slice at `7137bb5`. Earlier local tests
+and the initial environment-loss blockers remain historical evidence. Complete
+hosted artifacts have a stated retention deadline; upstream qualification holds
+and broader process, decision, external-validation and publication work remain open.
