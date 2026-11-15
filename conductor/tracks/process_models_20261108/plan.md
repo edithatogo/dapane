@@ -5,6 +5,13 @@ Status: in_progress
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
 
+## Owner formatting follow-up — 15 November 2026
+
+- [~] Correct the three owner-file formatting findings from hosted run 43686522588
+  at `63e3f8368510641513b5fd84ae3074bb80e79c6f`, repeat the standalone checks,
+  and hand exact-source evidence to PR #20. Preserve coordinator commits and
+  shared CI/registry; native import qualification remains blocked.
+
 ## Phase 1 — Observed records
 
 - [x] X1.1 Specify event/object identity, timestamps, correction rules and mapping of observed/assumed/simulated usage.

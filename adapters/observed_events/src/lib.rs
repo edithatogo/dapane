@@ -386,11 +386,7 @@ fn unique_ids<'a>(
     Ok(seen)
 }
 
-fn object_reference(
-    id: &str,
-    objects: &BTreeSet<&str>,
-    path: &str,
-) -> Result<(), ContractError> {
+fn object_reference(id: &str, objects: &BTreeSet<&str>, path: &str) -> Result<(), ContractError> {
     if !objects.contains(id) {
         return fail(ErrorCode::UnknownReference, path);
     }

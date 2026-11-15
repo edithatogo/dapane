@@ -49,9 +49,7 @@ def xes_events(name):
     """Inspect fixture attributes, retaining repeated event records."""
     root = ET.parse(FIXTURES / name).getroot()
     return [
-        unique_members(
-            [(child.attrib["key"], child.attrib["value"]) for child in event]
-        )
+        unique_members([(child.attrib["key"], child.attrib["value"]) for child in event])
         for event in root.findall("xes:trace/xes:event", NS)
     ]
 
@@ -59,9 +57,7 @@ def xes_events(name):
 def canonical_ocel_fixture(value):
     """Compare known fixture sets, including full attribute history."""
     if isinstance(value, dict):
-        return {
-            key: canonical_ocel_fixture(item) for key, item in sorted(value.items())
-        }
+        return {key: canonical_ocel_fixture(item) for key, item in sorted(value.items())}
     if isinstance(value, list):
         return sorted(
             (canonical_ocel_fixture(item) for item in value),
@@ -83,9 +79,7 @@ class SyntheticFixtureTests(unittest.TestCase):
         for case in self.expected["cases"]:
             with self.subTest(file=case["file"]):
                 self.assertFalse(case["raw_decoder_executed"])
-                digest = hashlib.sha256(
-                    (FIXTURES / case["file"]).read_bytes()
-                ).hexdigest()
+                digest = hashlib.sha256((FIXTURES / case["file"]).read_bytes()).hexdigest()
                 self.assertEqual(digest, case["sha256"])
 
     def test_three_hand_stated_uses_are_not_multiplied_by_related_objects(self):
@@ -120,17 +114,13 @@ class SyntheticFixtureTests(unittest.TestCase):
             for rel in obj["relationships"]
         }
         expected = {
-            (rel["from"], rel["to"], rel["qualifier"])
-            for rel in self.expected["object_relations"]
+            (rel["from"], rel["to"], rel["qualifier"]) for rel in self.expected["object_relations"]
         }
         self.assertEqual(actual, expected)
         self.assertEqual(len(actual), 8)
         for specimen in ["specimen-a", "specimen-b"]:
             self.assertTrue(
-                {
-                    (specimen, assay, "tested-by")
-                    for assay in ["assay-a", "assay-b"]
-                } <= actual
+                {(specimen, assay, "tested-by") for assay in ["assay-a", "assay-b"]} <= actual
             )
         for event in raw["events"]:
             if event["id"] in ["run-start", "run-complete"]:
@@ -138,9 +128,7 @@ class SyntheticFixtureTests(unittest.TestCase):
 
     def test_ocel_retains_five_native_attribute_types_and_timed_history(self):
         raw = fixture_json("many-to-many.ocel.json")
-        definition = next(
-            t for t in raw["eventTypes"] if t["name"] == "run-complete"
-        )
+        definition = next(t for t in raw["eventTypes"] if t["name"] == "run-complete")
         self.assertEqual(
             {a["type"] for a in definition["attributes"]},
             {"integer", "float", "boolean", "string", "time"},
@@ -153,9 +141,7 @@ class SyntheticFixtureTests(unittest.TestCase):
         self.assertEqual(values["sample-count"], 2)
         self.assertEqual(values["control-ratio"], 0.5)
         self.assertEqual(values["label"], "synthetic-run")
-        self.assertEqual(
-            instant(values["calibrated-at"]), instant("2026-01-01T00:00:00Z")
-        )
+        self.assertEqual(instant(values["calibrated-at"]), instant("2026-01-01T00:00:00Z"))
         batch = next(o for o in raw["objects"] if o["id"] == "batch-1")
         self.assertEqual(
             [(a["time"], a["value"]) for a in batch["attributes"]],
@@ -170,9 +156,7 @@ class SyntheticFixtureTests(unittest.TestCase):
         original = fixture_json("many-to-many.ocel.json")
         reordered = fixture_json("reordered.ocel.json")
         self.assertNotEqual(original, reordered)
-        self.assertEqual(
-            canonical_ocel_fixture(original), canonical_ocel_fixture(reordered)
-        )
+        self.assertEqual(canonical_ocel_fixture(original), canonical_ocel_fixture(reordered))
 
     def test_explicit_event_instants_match_independent_epoch_values(self):
         raw = fixture_json("many-to-many.ocel.json")
@@ -202,9 +186,7 @@ class SyntheticFixtureTests(unittest.TestCase):
 
     def test_duplicate_id_cases_are_exact_duplicates_not_different_resource_use(self):
         raw = fixture_json("duplicate-id.ocel.json")
-        self.assertEqual(
-            Counter(e["id"] for e in raw["events"])["collect-a"], 2
-        )
+        self.assertEqual(Counter(e["id"] for e in raw["events"])["collect-a"], 2)
         self.assertEqual(raw["events"][0], raw["events"][-1])
         xes = xes_events("duplicate-id.xes")
         first = self.expected["xes_event_identity_map"]["collect-a"]
@@ -246,16 +228,10 @@ class SyntheticFixtureTests(unittest.TestCase):
             {e["identity:id"]: e for e in reordered},
         )
         identity = self.expected["xes_event_identity_map"]
-        self.assertEqual(
-            {e["identity:id"] for e in original}, set(identity.values())
-        )
+        self.assertEqual({e["identity:id"] for e in original}, set(identity.values()))
         by_id = {e["identity:id"]: e for e in original}
-        self.assertEqual(
-            by_id[identity["run-start"]]["lifecycle:transition"], "start"
-        )
-        self.assertEqual(
-            by_id[identity["run-complete"]]["lifecycle:transition"], "complete"
-        )
+        self.assertEqual(by_id[identity["run-start"]]["lifecycle:transition"], "start")
+        self.assertEqual(by_id[identity["run-complete"]]["lifecycle:transition"], "complete")
         self.assertEqual(by_id[identity["run-start"]]["concept:name"], "run")
         self.assertEqual(by_id[identity["run-complete"]]["concept:name"], "run")
 

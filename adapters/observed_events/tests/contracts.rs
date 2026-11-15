@@ -51,8 +51,16 @@ fn baseline() -> Snapshot {
         ("instrument-1", "resource"),
     ];
     let events = vec![
-        event("collect-a", 0, &[("infant-a", "subject"), ("specimen-a", "output")]),
-        event("collect-b", 60, &[("infant-b", "subject"), ("specimen-b", "output")]),
+        event(
+            "collect-a",
+            0,
+            &[("infant-a", "subject"), ("specimen-a", "output")],
+        ),
+        event(
+            "collect-b",
+            60,
+            &[("infant-b", "subject"), ("specimen-b", "output")],
+        ),
         event("run-start", 120, &run_objects),
         event("run-complete", 1920, &run_objects),
     ];
@@ -109,8 +117,13 @@ fn baseline() -> Snapshot {
             censoring: Censoring::None,
         },
         object_ids: [
-            "infant-a", "infant-b", "specimen-a", "specimen-b",
-            "assay-a", "assay-b", "batch-1",
+            "infant-a",
+            "infant-b",
+            "specimen-a",
+            "specimen-b",
+            "assay-a",
+            "assay-b",
+            "batch-1",
         ]
         .into_iter()
         .map(String::from)
@@ -308,7 +321,10 @@ fn all_four_censoring_shapes_are_explicit_and_only_complete_is_ready() {
         if censoring == Censoring::None {
             assert_eq!(checked.require_costing_ready().unwrap().len(), 3);
         } else {
-            assert_eq!(checked.require_costing_ready().unwrap_err().code, ErrorCode::CensoredUse);
+            assert_eq!(
+                checked.require_costing_ready().unwrap_err().code,
+                ErrorCode::CensoredUse
+            );
         }
     }
 }
@@ -324,9 +340,15 @@ fn censored_endpoint_is_never_filled_from_observation_cutoff() {
     let checked = validate_contract(input).unwrap();
     assert!(matches!(
         checked.snapshot().uses[0].extent,
-        Extent::Interval { end_event_id: None, .. }
+        Extent::Interval {
+            end_event_id: None,
+            ..
+        }
     ));
-    assert_eq!(checked.require_costing_ready().unwrap_err().code, ErrorCode::CensoredUse);
+    assert_eq!(
+        checked.require_costing_ready().unwrap_err().code,
+        ErrorCode::CensoredUse
+    );
 }
 
 #[test]
@@ -378,7 +400,10 @@ fn transfer_is_retained_but_blocks_costing_selection_atomically() {
     input.uses[1].kind = UseKind::Transfer;
     let checked = validate_contract(input).unwrap();
     assert_eq!(checked.snapshot().uses.len(), 3);
-    assert_eq!(checked.require_costing_ready().unwrap_err().code, ErrorCode::TransferNotCostable);
+    assert_eq!(
+        checked.require_costing_ready().unwrap_err().code,
+        ErrorCode::TransferNotCostable
+    );
 }
 
 #[test]
@@ -388,15 +413,22 @@ fn assumed_and_simulated_quantities_are_never_promoted_to_observed() {
         input.uses[0].basis = basis;
         let checked = validate_contract(input).unwrap();
         assert_eq!(checked.snapshot().uses[1].basis, basis);
-        assert_eq!(checked.require_costing_ready().unwrap_err().code, ErrorCode::NonObservedUse);
+        assert_eq!(
+            checked.require_costing_ready().unwrap_err().code,
+            ErrorCode::NonObservedUse
+        );
     }
 }
 
 #[test]
 fn replacement_and_retraction_fail_before_any_readiness_result() {
     for correction in [
-        Correction::Replace { use_id: "prior".into() },
-        Correction::Retract { use_id: "prior".into() },
+        Correction::Replace {
+            use_id: "prior".into(),
+        },
+        Correction::Retract {
+            use_id: "prior".into(),
+        },
     ] {
         let mut input = baseline();
         input.uses[0].correction = correction;
@@ -435,8 +467,22 @@ fn exact_quantity_spelling_is_preserved_without_reduction() {
         denominator: "04".into(),
     });
     let checked = validate_contract(input).unwrap();
-    assert_eq!(checked.snapshot().uses[0].quantity.as_ref().unwrap().numerator, "02");
-    assert_eq!(checked.snapshot().uses[0].quantity.as_ref().unwrap().denominator, "04");
+    assert_eq!(
+        checked.snapshot().uses[0]
+            .quantity
+            .as_ref()
+            .unwrap()
+            .numerator,
+        "02"
+    );
+    assert_eq!(
+        checked.snapshot().uses[0]
+            .quantity
+            .as_ref()
+            .unwrap()
+            .denominator,
+        "04"
+    );
 }
 
 #[test]
@@ -468,7 +514,12 @@ fn occupancy_needs_explicit_pairing_instead_of_a_single_event() {
 fn interval_end_at_cutoff_is_an_observed_anchor() {
     let mut input = baseline();
     input.events[3].at = Some(input.window.end);
-    assert!(validate_contract(input).unwrap().require_costing_ready().is_ok());
+    assert!(
+        validate_contract(input)
+            .unwrap()
+            .require_costing_ready()
+            .is_ok()
+    );
 }
 
 #[test]
@@ -486,9 +537,18 @@ fn out_of_window_anchors_and_empty_windows_fail() {
 #[test]
 fn invalid_fraction_and_out_of_range_instants_fail() {
     for invalid in [
-        Instant { unix_seconds: 0, nanosecond: 1_000_000_000 },
-        Instant { unix_seconds: i64::MAX, nanosecond: 0 },
-        Instant { unix_seconds: -62_135_596_801, nanosecond: 0 },
+        Instant {
+            unix_seconds: 0,
+            nanosecond: 1_000_000_000,
+        },
+        Instant {
+            unix_seconds: i64::MAX,
+            nanosecond: 0,
+        },
+        Instant {
+            unix_seconds: -62_135_596_801,
+            nanosecond: 0,
+        },
     ] {
         let mut input = baseline();
         input.events[0].at = Some(invalid);
@@ -511,7 +571,10 @@ fn tokens_are_bounded_and_errors_do_not_echo_values() {
 fn unicode_identity_is_preserved_without_case_folding() {
     let mut input = baseline();
     input.source.namespace = "synthetic-δ".into();
-    input.objects.push(ObjectRef { id: "Infant-a".into(), kind: "infant".into() });
+    input.objects.push(ObjectRef {
+        id: "Infant-a".into(),
+        kind: "infant".into(),
+    });
     let checked = validate_contract(input).unwrap();
     assert_eq!(checked.snapshot().objects.len(), 9);
     assert_eq!(checked.snapshot().source.namespace, "synthetic-δ");
