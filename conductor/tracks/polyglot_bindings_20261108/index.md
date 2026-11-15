@@ -13,6 +13,7 @@ qualification. The C consumer is unexecuted; Julia remains gated on its success.
 - [Implementation plan](plan.md)
 - [Metadata](metadata.json)
 - [Executed and pending evidence](verification.md)
+- [Exact-source integrator handoff](handoff.md)
 - [Binding source and reproduction](../../../bindings/polyglot/README.md)
 - [Track registry](../../tracks.md)
 - [Roadmap](../../roadmap.md)

@@ -45,7 +45,9 @@
       "UNEXECUTED handoff command: bash bindings/polyglot/qualify.sh /absolute/new-output."
     ],
     "evidence": "verification.md",
-    "final_source_qualified": false
+    "final_source_qualified": false,
+    "implementation_commit": "9904252c1e3a94f63ff5dd89c4e855a2ef617f4d",
+    "handoff": "handoff.md"
   },
   "completion_evidence": [
     "The R wrapper calls the core directly and can be completed without the C ABI, Julia or Python bindings.",
