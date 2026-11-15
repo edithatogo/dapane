@@ -4,7 +4,11 @@
 
 Define a small domain-neutral boundary that can represent workforce resource use, genomic workflows and MCHS weighted activity without making their meanings interchangeable.
 
-This is the full acceptance specification. The first bounded profile is implemented; [runtime evidence](../../../docs/runtime-verification.md) records its scope. Unmet criteria below remain open.
+This is the retained full acceptance specification. All six criteria below are
+satisfied for the versioned synthetic contract/reference scope, as mapped in
+[closeout verification](verification.md). The criteria have not been removed or
+weakened. Archival does not complete broader kernel methods, real provider/source
+qualification, process execution or release acceptance.
 
 ## Scope and requirements
 
@@ -33,6 +37,11 @@ External readiness, checked separately from the local dependency graph:
 - edithatogo/microcosting_genomics: one source-qualified assay/workflow and historical workbook evidence.
 - edithatogo/mchs: classification edition and activity/funding contract.
 
+The [provider mappings](../../../docs/provider-boundaries.md) retain the inspected
+contracts and their limitations. Synthetic contract acceptance does not promote
+these external providers to fully qualified integrations; their owners retain
+those readiness obligations.
+
 ## Acceptance criteria
 
 1. A resource quotation and an activity-kind quotation can be represented distinctly; incompatible kinds/units are rejected.
@@ -50,12 +59,17 @@ A universal unqualified cost field would erase economic meaning. An excessively 
 
 Retain fixture/schema versions. Corrections to economic meaning receive a new method/schema version and a migration note; do not rewrite historical expected results silently.
 
-## Open implementation decisions
+## Recorded decisions and extension boundary
 
-Choose supported units, exact-number limits, first valuation methods and schema-versioning details from the three concrete examples. Do not widen the first release to every future method.
+The supported quantities, exact-number limits, first valuation methods and
+schema versions are recorded in contracts 0.1/0.2 and bundle 0.1, with
+[ADR-010–012](../../decisions.md). Do not widen their claims to every future
+method. Later methods require a separately versioned increment with their owning
+kernel/provider track and new acceptance evidence.
 
 ## Execution and verification
 
-Follow the [phased plan](plan.md) and [repository workflow](../../workflow.md).
-Commands described by pending tasks are future acceptance instructions, not executed evidence.
-Record actual commands, source/artifact identities and outcomes in the metadata when work is performed.
+The [phased plan](plan.md) and [metadata](metadata.json) retain the completed work.
+[Verification](verification.md) records actual commands, source identities,
+review fixes, merge evidence and limits. The track is archived in place;
+[repository workflow](../../workflow.md) continues to govern other work.
