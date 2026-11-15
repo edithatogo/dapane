@@ -177,7 +177,8 @@ class ContractTests(DiagnosticAssertions):
         data["quote_packs"][0]["metadata"]["effective_to_convention"] = "unknown"
         self.assert_rejected(data, "date_convention")
         for field, value in [
-            ("restriction_text", "only in eligible settings"), ("patient_amount", 1.0)
+            ("restriction_text", "only in eligible settings"),
+            ("patient_amount", 1.0),
         ]:
             data = fixture()
             data["quote_packs"][0]["quotes"][0]["item"][field] = value
@@ -210,7 +211,9 @@ class ContractTests(DiagnosticAssertions):
 
     def test_json_rejects_duplicate_keys_nonfinite_and_excessive_depth(self):
         for payload in [
-            '{"profile":"a","profile":"b"}', '{"amount":NaN}', "[" * 70 + "0" + "]" * 70
+            '{"profile":"a","profile":"b"}',
+            '{"amount":NaN}',
+            "[" * 70 + "0" + "]" * 70,
         ]:
             with self.subTest(payload=payload[:50]), self.assertRaises(AdapterError):
                 loads(payload)
@@ -273,9 +276,7 @@ class NativeTests(unittest.TestCase):
         result = evaluate(data, evaluator=self.engine)
         self.assertEqual(result["views"]["funding"]["totals"]["rounded"], "0.00")
         self.assertEqual(result["views"]["tariff"]["totals"]["rounded"], "0.02")
-        self.assertEqual(
-            result["views"]["funding"]["method_version"], "dapane-exact-v0.1.0"
-        )
+        self.assertEqual(result["views"]["funding"]["method_version"], "dapane-exact-v0.1.0")
 
     def test_failures_never_return_a_partial_complete_view(self):
         data = fixture()
@@ -294,7 +295,8 @@ class NativeTests(unittest.TestCase):
     def test_rational_quote_denominator_is_preserved_for_native_evaluation(self):
         data = fixture()
         data["quote_packs"][0]["quotes"][0]["exact"]["amount"] = {
-            "numerator": "1", "denominator": "3"
+            "numerator": "1",
+            "denominator": "3",
         }
         data["quote_packs"][0]["quotes"][0]["exact"]["per_quantity"] = "2"
         result = evaluate(data, evaluator=self.engine)

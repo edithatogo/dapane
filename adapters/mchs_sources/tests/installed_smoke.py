@@ -8,8 +8,9 @@ import json
 import sys
 from pathlib import Path
 
-import dapane
 import dapane_mchs_atlas
+
+import dapane
 
 
 def main() -> None:
@@ -32,14 +33,19 @@ def main() -> None:
         assert error.path.startswith("/requests/resource_cost/"), error
     else:
         raise AssertionError("Invalid native input must not return a complete result.")
-    print(json.dumps({
-        "status": "passed",
-        "python": sys.version.split()[0],
-        "adapter": importlib.metadata.version("dapane-mchs-atlas"),
-        "native": dapane.__version__,
-        "adapter_path": dapane_mchs_atlas.__file__,
-        "native_path": dapane.__file__,
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "status": "passed",
+                "python": sys.version.split()[0],
+                "adapter": importlib.metadata.version("dapane-mchs-atlas"),
+                "native": dapane.__version__,
+                "adapter_path": dapane_mchs_atlas.__file__,
+                "native_path": dapane.__file__,
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

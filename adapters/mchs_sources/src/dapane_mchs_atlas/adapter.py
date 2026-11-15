@@ -102,7 +102,9 @@ def _context(value: Any, path: str) -> dict[str, Any]:
     for field in CONTEXT.split():
         item = text(context[field], f"{path}/{field}")
         if item.casefold() in ("unknown", "unspecified", "pending", "none"):
-            fail("unknown_context", "Explicit classification and pricing context is required.", path)
+            fail(
+                "unknown_context", "Explicit classification and pricing context is required.", path
+            )
     return context
 
 
@@ -226,7 +228,11 @@ def _atlas_header(pack: dict[str, Any], cutoff: str, path: str) -> dict[str, Any
         "source_status",
     )
     if version["parser_status"] == "prototype" and meta["evidence"] != "synthetic":
-        fail("source_status", "Prototype parser output is admitted only for synthetic fixtures.", path)
+        fail(
+            "source_status",
+            "Prototype parser output is admitted only for synthetic fixtures.",
+            path,
+        )
     choice(snap["licence_gate"], ("permissive",), f"{path}/snapshot/licence_gate", "source_rights")
     choice(
         snap["cache_scope"],
@@ -251,9 +257,7 @@ def _atlas_header(pack: dict[str, Any], cutoff: str, path: str) -> dict[str, Any
     }
 
 
-def _quote(
-    value: Any, pack: dict[str, Any], source: dict[str, Any], path: str
-) -> dict[str, Any]:
+def _quote(value: Any, pack: dict[str, Any], source: dict[str, Any], path: str) -> dict[str, Any]:
     record = object_at(value, "id item exact application", "", path)
     text(record["id"], f"{path}/id")
     item = object_at(
@@ -278,7 +282,13 @@ def _quote(
             path,
         )
     for field in (
-        "source_id", "jurisdiction", "domain", "code_system", "item_code", "item_label", "payment_unit"
+        "source_id",
+        "jurisdiction",
+        "domain",
+        "code_system",
+        "item_code",
+        "item_label",
+        "payment_unit",
     ):
         text(item[field], f"{path}/item/{field}")
     for field in ("item_description", "setting"):
@@ -293,7 +303,9 @@ def _quote(
     for field in ("effective_from", "effective_to"):
         day(item[field], f"{path}/item/{field}")
     if not (
-        version["effective_from"] <= item["effective_from"] < item["effective_to"]
+        version["effective_from"]
+        <= item["effective_from"]
+        < item["effective_to"]
         <= version["effective_to"]
     ):
         fail("stale_quote", "Item dates must fit the declared source release interval.", path)
@@ -324,8 +336,10 @@ def _quote(
             limit=4096,
         )
     supplement = object_at(
-        record["exact"], "amount per_quantity source_field source_locator snapshot_sha256",
-        "", f"{path}/exact",
+        record["exact"],
+        "amount per_quantity source_field source_locator snapshot_sha256",
+        "",
+        f"{path}/exact",
     )
     exact(supplement["amount"], f"{path}/exact/amount")
     exact(supplement["per_quantity"], f"{path}/exact/per_quantity", positive=True)
@@ -333,7 +347,8 @@ def _quote(
     text(supplement["source_locator"], f"{path}/exact/source_locator", limit=2048)
     digest(supplement["snapshot_sha256"], f"{path}/exact/snapshot_sha256")
     equal(
-        supplement["snapshot_sha256"], pack["snapshot"]["checksum_sha256"],
+        supplement["snapshot_sha256"],
+        pack["snapshot"]["checksum_sha256"],
         f"{path}/exact/snapshot_sha256",
     )
     application = object_at(
@@ -344,7 +359,9 @@ def _quote(
     )
     context = _context(application["context"], f"{path}/application/context")
     equal(
-        application["unit"], item["payment_unit"], f"{path}/application/unit",
+        application["unit"],
+        item["payment_unit"],
+        f"{path}/application/unit",
         code="incompatible_quote",
     )
     integer(application["price_year"], 1, 9999, f"{path}/application/price_year")
@@ -379,7 +396,9 @@ def _policy(value: Any, view: str, path: str) -> dict[str, Any]:
     currency(policy["currency"], f"{path}/currency")
     integer(policy["price_year"], 1, 9999, f"{path}/price_year")
     equal(
-        policy["basis"], "funding" if view == "funding" else "charge", f"{path}/basis",
+        policy["basis"],
+        "funding" if view == "funding" else "charge",
+        f"{path}/basis",
         code="view_basis",
     )
     rounding = object_at(policy["rounding"], "scale mode", "", f"{path}/rounding")
@@ -413,7 +432,9 @@ def _request(
             fail("missing_activity", "Selected activity does not exist.", f"{spath}/activity_id")
         if selection["quote_id"] not in quotes:
             fail(
-                "missing_quote", "An explicit applicable quotation is required.", f"{spath}/quote_id"
+                "missing_quote",
+                "An explicit applicable quotation is required.",
+                f"{spath}/quote_id",
             )
         activity = activities[selection["activity_id"]]
         prepared_quote = quotes[selection["quote_id"]]
@@ -428,17 +449,19 @@ def _request(
             equal(actual, expected, spath, code="incompatible_quote")
         if not quote["valid_from"] <= activity["service_date"] < quote["valid_to"]:
             fail("stale_quote", "Quote does not apply on the activity service date.", spath)
-        use_rows.append({
-            "id": selection["line_id"],
-            "use_id": activity["id"],
-            "kind": "activity_measure",
-            "target": activity["target"],
-            "unit": activity["unit"],
-            "quantity": activity["quantity"],
-            "service_date": activity["service_date"],
-            "quote_id": quote["id"],
-            "source": activity["source"],
-        })
+        use_rows.append(
+            {
+                "id": selection["line_id"],
+                "use_id": activity["id"],
+                "kind": "activity_measure",
+                "target": activity["target"],
+                "unit": activity["unit"],
+                "quantity": activity["quantity"],
+                "service_date": activity["service_date"],
+                "quote_id": quote["id"],
+                "source": activity["source"],
+            }
+        )
         used_activities.add(activity["id"])
         selected_quotes[quote["id"]] = quote
     if used_activities != set(activities):
@@ -461,13 +484,16 @@ def _resource(value: Any, evidence: Any, run_id: str, cutoff: str) -> dict[str, 
     """Preserve the caller's separate core request; native evaluation validates it."""
     if type(value) is not dict or type(value.get("policy")) is not dict:
         fail(
-            "resource_view", "Resource costs require an existing core request and policy.",
+            "resource_view",
+            "Resource costs require an existing core request and policy.",
             "/resource_cost",
         )
     choice(value.get("schema_version"), ("0.1",), "/resource_cost/schema_version", "resource_view")
     choice(
-        value["policy"].get("basis"), ("economic_cost", "financial_cost"),
-        "/resource_cost/policy/basis", "resource_view",
+        value["policy"].get("basis"),
+        ("economic_cost", "financial_cost"),
+        "/resource_cost/policy/basis",
+        "resource_view",
     )
     declared: dict[tuple[str, str], dict[str, Any]] = {}
     for index, record in enumerate(rows(evidence, "/resource_sources", nonempty=True)):
@@ -475,7 +501,8 @@ def _resource(value: Any, evidence: Any, run_id: str, cutoff: str) -> dict[str, 
         key = (source["id"], source["version"])
         if key in declared:
             fail(
-                "duplicate_id", "Resource source declarations must be unique.",
+                "duplicate_id",
+                "Resource source declarations must be unique.",
                 f"/resource_sources/{index}",
             )
         declared[key] = source
@@ -505,14 +532,21 @@ def _resource(value: Any, evidence: Any, run_id: str, cutoff: str) -> dict[str, 
             used.add(key)
     if used != set(declared):
         fail(
-            "source_mismatch", "Resource source declarations must match the request's sources.",
+            "source_mismatch",
+            "Resource source declarations must match the request's sources.",
             "/resource_sources",
         )
     equal(
-        value.get("run_id"), f"{run_id}:resource_cost", "/resource_cost/run_id", code="resource_view"
+        value.get("run_id"),
+        f"{run_id}:resource_cost",
+        "/resource_cost/run_id",
+        code="resource_view",
     )
     equal(
-        value.get("knowledge_cutoff"), cutoff, "/resource_cost/knowledge_cutoff", code="resource_view"
+        value.get("knowledge_cutoff"),
+        cutoff,
+        "/resource_cost/knowledge_cutoff",
+        code="resource_view",
     )
     return value
 
@@ -524,15 +558,20 @@ def _payments(values: Any, activities: dict[str, Any], cutoff: str) -> list[dict
     for index, value in enumerate(rows(values, "/payments")):
         path = f"/payments/{index}"
         payment = object_at(
-            value, "id record_kind amount currency date scope_ref observation_ref model source",
-            "", path,
+            value,
+            "id record_kind amount currency date scope_ref observation_ref model source",
+            "",
+            path,
         )
         identity = text(payment["id"], f"{path}/id")
         if identity in identifiers:
             fail("duplicate_id", "Payment identifiers must be unique.", f"{path}/id")
         identifiers.add(identity)
         kind = choice(
-            payment["record_kind"], ("observation", "model"), f"{path}/record_kind", "payment_evidence"
+            payment["record_kind"],
+            ("observation", "model"),
+            f"{path}/record_kind",
+            "payment_evidence",
         )
         exact(payment["amount"], f"{path}/amount")
         currency(payment["currency"], f"{path}/currency")
@@ -540,7 +579,8 @@ def _payments(values: Any, activities: dict[str, Any], cutoff: str) -> list[dict
         text(payment["scope_ref"], f"{path}/scope_ref")
         if payment["scope_ref"] not in activities:
             fail(
-                "payment_evidence", "Payment scope must identify a supplied activity.",
+                "payment_evidence",
+                "Payment scope must identify a supplied activity.",
                 f"{path}/scope_ref",
             )
         source = _source(payment["source"], cutoff, f"{path}/source")
@@ -551,8 +591,10 @@ def _payments(values: Any, activities: dict[str, Any], cutoff: str) -> list[dict
                 )
             text(payment["observation_ref"], f"{path}/observation_ref")
             choice(
-                source["evidence"], ("observed", "synthetic"),
-                f"{path}/source/evidence", "payment_evidence",
+                source["evidence"],
+                ("observed", "synthetic"),
+                f"{path}/source/evidence",
+                "payment_evidence",
             )
             if payment["date"] > cutoff:
                 fail(
@@ -562,9 +604,7 @@ def _payments(values: Any, activities: dict[str, Any], cutoff: str) -> list[dict
                 )
             key = (source["id"], source["version"], payment["observation_ref"])
             if key in observations:
-                fail(
-                    "duplicate_id", "The same payment observation cannot be imported twice.", path
-                )
+                fail("duplicate_id", "The same payment observation cannot be imported twice.", path)
             observations.add(key)
         else:
             if payment["observation_ref"] is not None or type(payment["model"]) is not dict:
@@ -577,8 +617,10 @@ def _payments(values: Any, activities: dict[str, Any], cutoff: str) -> list[dict
             for field in ("id", "version"):
                 text(model[field], f"{path}/model/{field}")
             choice(
-                source["evidence"], ("derived", "synthetic"),
-                f"{path}/source/evidence", "payment_evidence",
+                source["evidence"],
+                ("derived", "synthetic"),
+                f"{path}/source/evidence",
+                "payment_evidence",
             )
         result.append(payment)
     return sorted(result, key=lambda row: row["id"])
@@ -594,8 +636,10 @@ def prepare(bundle: dict[str, Any]) -> dict[str, Any]:
     """
     original = snapshot(bundle)
     data = object_at(
-        original, "profile run_id knowledge_cutoff activities quote_packs views",
-        "resource_cost resource_sources payments", "",
+        original,
+        "profile run_id knowledge_cutoff activities quote_packs views",
+        "resource_cost resource_sources payments",
+        "",
     )
     choice(data["profile"], ("dapane-mchs-atlas/0.1",), "/profile", "profile")
     run_id = text(data["run_id"], "/run_id", limit=110)
@@ -615,9 +659,7 @@ def prepare(bundle: dict[str, Any]) -> dict[str, Any]:
         )
         source = _atlas_header(pack, cutoff, path)
         release_key = (source["id"], source["version"])
-        release_metadata = {
-            key: pack[key] for key in ("source_version", "snapshot", "metadata")
-        }
+        release_metadata = {key: pack[key] for key in ("source_version", "snapshot", "metadata")}
         if release_key in release_snapshots:
             equal(release_metadata, release_snapshots[release_key], path)
         release_snapshots[release_key] = release_metadata
@@ -627,7 +669,8 @@ def prepare(bundle: dict[str, Any]) -> dict[str, Any]:
             identity = quote["quote"]["id"]
             if identity in quotes:
                 fail(
-                    "duplicate_id", "Quotation identifiers must be unique across packs.",
+                    "duplicate_id",
+                    "Quotation identifiers must be unique across packs.",
                     f"{qpath}/id",
                 )
             quotes[identity] = quote
@@ -642,7 +685,8 @@ def prepare(bundle: dict[str, Any]) -> dict[str, Any]:
     if data.get("resource_cost") is not None:
         if "resource_sources" not in data:
             fail(
-                "source_rights", "Resource costs require explicit source rights/status evidence.",
+                "source_rights",
+                "Resource costs require explicit source rights/status evidence.",
                 "/resource_sources",
             )
         requests["resource_cost"] = _resource(
@@ -650,7 +694,8 @@ def prepare(bundle: dict[str, Any]) -> dict[str, Any]:
         )
     elif "resource_sources" in data and rows(data["resource_sources"], "/resource_sources"):
         fail(
-            "source_mismatch", "Resource source evidence requires its resource-cost request.",
+            "source_mismatch",
+            "Resource source evidence requires its resource-cost request.",
             "/resource_sources",
         )
     payments = _payments(data.get("payments", []), activities, cutoff)
@@ -714,9 +759,7 @@ def evaluate(
             )
         reports[name] = report
     if prepared["payments"]:
-        reports["payment"] = {
-            "records": prepared["payments"], "aggregation": "not_performed"
-        }
+        reports["payment"] = {"records": prepared["payments"], "aggregation": "not_performed"}
     return {
         "profile": "dapane-mchs-atlas-result/0.1",
         "status": "complete",

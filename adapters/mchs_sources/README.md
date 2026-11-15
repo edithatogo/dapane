@@ -43,7 +43,7 @@ from dapane_mchs_atlas import evaluate, loads, prepare
 
 bundle = loads(Path("parallel-views.json").read_text(encoding="utf-8"))
 prepared = prepare(bundle)  # status=prepared; no monetary arithmetic
-result = evaluate(bundle)   # installed Dapane native wheel required
+result = evaluate(bundle)  # installed Dapane native wheel required
 print(result["views"]["funding"]["totals"]["rounded"])
 ```
 
