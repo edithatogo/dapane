@@ -17,8 +17,9 @@ Current repository areas:
 | `conductor/*.md` | Product, requirements, architecture, decisions, workflow and roadmap |
 | `conductor/code_styleguides/` | Rust, Python/FFI and document conventions |
 | `conductor/tracks/` | Coherent implementation/research specs, task plans and metadata |
-| `conductor/archive/` | Archive policy; no archived tracks at setup |
+| `conductor/archive/` | Archive policy and catalogue; archived records retain stable track paths |
 | `scripts/validate_conductor.py` | Dependency-free structural and consistency check |
+| `tests/test_conductor_validation.py` | Standard-library regression checks for lifecycle and archival integrity |
 | `.github/workflows/conductor.yml` | Read-only documentation CI |
 | `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml` | Native workspace and pinned toolchain/dependency graph |
 | `crates/dapane-core/` | Exact contract, validation, valuation, allocation and deterministic digests |

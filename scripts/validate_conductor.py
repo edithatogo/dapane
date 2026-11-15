@@ -255,9 +255,19 @@ def validate(root: Path) -> tuple[list[str], dict[str, int]]:
             row = next(line for line in registry.splitlines() if f"tracks/{track_id}/index.md" in line)
             if STATE_MARKERS[state] not in row or not re.search(rf"\b{re.escape(state)}\b", row):
                 errors.append(f"{track_id}: registry marker/status differs from metadata")
-        index = track_contents["index.md"]
-        if not re.search(rf"^Status:\s*`?{re.escape(state)}`?\s*$", index, re.MULTILINE):
-            errors.append(f"{track_id}: index Status differs from metadata")
+        for document in ("index", "plan"):
+            contents = track_contents[f"{document}.md"]
+            status_lines = re.findall(r"^Status:(.*)$", contents, re.MULTILINE)
+            expected_status = (
+                rf"[ \t]*(?:{re.escape(state)}|`{re.escape(state)}`)[ \t]*"
+            )
+            if len(status_lines) != 1 or not re.fullmatch(
+                expected_status, status_lines[0]
+            ):
+                errors.append(
+                    f"{track_id}: {document} Status differs from metadata "
+                    "(expected exactly one well-formed Status line)"
+                )
         tasks = TASK.findall(track_contents["plan.md"])
         counts["tasks"] += len(tasks)
         if not tasks:
