@@ -1,9 +1,9 @@
 {
   "track_id": "frontier_benchmarks_20261108",
   "type": "research",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-15T05:18:00Z",
   "description": "Test whether evidence-linked, object-centric costing provides measurable advantages over strong current alternatives. Treat novelty and frontier claims as empirical questions.",
   "repositories": [
     "."
@@ -18,17 +18,71 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "F1/F2.1–2 uses complete independent request caching in benchmarks/static; every changed valuation remains in unchanged Rust CLI.",
+    "Preserve local v1 diagnostic failures and v1.1 observations; reconstructed namespace v1.2 requires exact-head reexecution before qualification."
+  ],
   "requirement_ids": [
     "RQ-12",
     "RQ-06",
     "RQ-10",
     "RQ-11"
   ],
-  "capability_status": "planned",
+  "capability_status": "static_implementation_authored_exact_head_execution_blocked",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "blocked",
+    "commands": [
+      {
+        "command": "cargo build --offline --locked --release -p dapane-cli",
+        "status": "passed",
+        "details": "Fresh target directory; unchanged core/CLI compiled using the locked cached dependency graph. Reported build duration 15.17 seconds, not a runtime benchmark."
+      },
+      {
+        "command": "python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+        "stage": "initial RED",
+        "status": "failed",
+        "details": "Expected import failure: cache module did not yet exist. Not evidence of a numerical test failure."
+      },
+      {
+        "command": "DAPANE_BENCH_CLI=<built-cli> python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+        "stage": "first native suite",
+        "status": "failed",
+        "tests": 21,
+        "failures": 1,
+        "details": "Mutation-inventory assertion failed because two preregistered diagnostic codes were wrong; both native requests were correctly rejected."
+      },
+      {
+        "command": "ruff check benchmarks/static_v1",
+        "status": "passed",
+        "scope": "Early cache/oracle/suite/tests before runner/build additions"
+      },
+      {
+        "command": "ruff format --check benchmarks/static_v1",
+        "status": "failed",
+        "details": "Two files needed formatting."
+      },
+      {
+        "command": "ruff format benchmarks/static_v1",
+        "status": "passed",
+        "details": "Two files reformatted before local acceptance commit."
+      },
+      {
+        "command": "DAPANE_BENCH_CLI=<built-cli> python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+        "stage": "local v1.1 acceptance",
+        "status": "passed",
+        "source_sha": "5cc42f41d1713afab9348d781a38717d515b6b75",
+        "tests": 21,
+        "elapsed_seconds": 0.395,
+        "details": "Test-suite duration is not a benchmark latency measurement."
+      }
+    ],
+    "local_tested_sha": "5cc42f41d1713afab9348d781a38717d515b6b75",
+    "publication_head_tested": false,
+    "remaining": [
+      "Restore execution and rebuild/test/lint the exact published head.",
+      "Execute fixed paired protocol and retain complete checksummed bundle; report null/equal/slower results.",
+      "Integrator synchronises registry and adds hosted benchmark invocation; no gates waived."
+    ]
   },
   "completion_evidence": [
     "Comparators are selected from a dated review and use equivalent inputs, methods and declared capabilities.",
@@ -38,5 +92,6 @@
     "Measurement-planning and capacity experiments use qualified decision/provider contracts and distinguish epistemic uncertainty, heterogeneity and transfers.",
     "External validation reports transportability, missingness, model limitations and analyst effort; synthetic success is not described as empirical programme validation.",
     "Any privacy-preserving or federated experiment measures disclosure risk and utility rather than merely asserting privacy."
-  ]
+  ],
+  "lane_owner": "Dapane — Independent static benchmarks"
 }

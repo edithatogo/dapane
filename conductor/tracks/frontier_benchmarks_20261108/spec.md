@@ -61,3 +61,13 @@ Set effect-size/error-detection targets and venue candidates after the comparato
 Follow the [phased plan](plan.md) and [repository workflow](../../workflow.md).
 Commands described by pending tasks are future acceptance instructions, not executed evidence.
 Record actual commands, source/artifact identities and outcomes in the metadata when work is performed.
+
+## Scoped implementation record — 2026-11-15
+
+This lane implements F1 and F2.1–2 in `benchmarks/static/` using synthetic inputs
+and complete-request caching around the unchanged native evaluator. See the
+[protocol](../../../benchmarks/static/PROTOCOL.md) and [handoff](HANDOFF.md).
+The original acceptance criteria above remain unchanged. Exact-head execution,
+paired timing and full bundle retention are blocked after environment loss;
+earlier local tests do not qualify reconstructed published source. Broader
+process, decision, external-validation and publication work remains pending.

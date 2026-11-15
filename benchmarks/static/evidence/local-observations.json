@@ -1,0 +1,310 @@
+{
+  "evidence_kind": "tool_observed_summary_not_complete_result_bundle",
+  "recorded_on": "2026-11-15",
+  "runtime_source_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "runtime_tree": "c07a6b2589b9d665f619f5d977d66e513180bab4",
+  "original_local_protocol_sha": "b9485ef60799ed0a809d9c416c8b984065c7590e",
+  "local_tested_sha": "5cc42f41d1713afab9348d781a38717d515b6b75",
+  "local_commits_pushed": false,
+  "original_namespace": "benchmarks/static_v1",
+  "publication_namespace": "benchmarks/static",
+  "exact_published_head_qualified": false,
+  "environment": {
+    "python": "3.12.14",
+    "configured_rust_toolchain": "1.99.1",
+    "ruff": "0.17.4",
+    "os_family": "Linux",
+    "kernel": null,
+    "libc": null,
+    "cli_sha256": null,
+    "limitation": "Complete environment/binary receipt was not captured before environment loss."
+  },
+  "commands": [
+    {
+      "command": "cargo build --offline --locked --release -p dapane-cli",
+      "status": "passed",
+      "details": "Fresh target directory; unchanged core/CLI compiled using the locked cached dependency graph. Reported build duration 15.17 seconds, not a runtime benchmark."
+    },
+    {
+      "command": "python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+      "stage": "initial RED",
+      "status": "failed",
+      "details": "Expected import failure: cache module did not yet exist. Not evidence of a numerical test failure."
+    },
+    {
+      "command": "DAPANE_BENCH_CLI=<built-cli> python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+      "stage": "first native suite",
+      "status": "failed",
+      "tests": 21,
+      "failures": 1,
+      "details": "Mutation-inventory assertion failed because two preregistered diagnostic codes were wrong; both native requests were correctly rejected."
+    },
+    {
+      "command": "ruff check benchmarks/static_v1",
+      "status": "passed",
+      "scope": "Early cache/oracle/suite/tests before runner/build additions"
+    },
+    {
+      "command": "ruff format --check benchmarks/static_v1",
+      "status": "failed",
+      "details": "Two files needed formatting."
+    },
+    {
+      "command": "ruff format benchmarks/static_v1",
+      "status": "passed",
+      "details": "Two files reformatted before local acceptance commit."
+    },
+    {
+      "command": "DAPANE_BENCH_CLI=<built-cli> python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+      "stage": "local v1.1 acceptance",
+      "status": "passed",
+      "source_sha": "5cc42f41d1713afab9348d781a38717d515b6b75",
+      "tests": 21,
+      "elapsed_seconds": 0.395,
+      "details": "Test-suite duration is not a benchmark latency measurement."
+    }
+  ],
+  "mutation_observations": {
+    "controls": {
+      "count": 7,
+      "rejected": 0
+    },
+    "contract_defects": {
+      "count": 12,
+      "rejected": 12
+    },
+    "source_truth_defects": {
+      "count": 5,
+      "rejected": 0
+    },
+    "all_defects": {
+      "count": 17,
+      "rejected": 12
+    },
+    "original_expectations_matched": 22,
+    "corrected_expectations_matched": 24,
+    "cases": [
+      {
+        "id": "baseline",
+        "stratum": "control",
+        "native_outcome": "accept",
+        "observed_rounded": "38.05",
+        "observed_exact": "38.05",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "valid-reorder",
+        "stratum": "control",
+        "native_outcome": "accept",
+        "observed_rounded": "38.05",
+        "observed_exact": "38.05",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "valid-zero",
+        "stratum": "control",
+        "native_outcome": "accept",
+        "observed_rounded": "35.05",
+        "observed_exact": "35.05",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "valid-rate-change",
+        "stratum": "control",
+        "native_outcome": "accept",
+        "observed_rounded": "48.05",
+        "observed_exact": "48.05",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "point-half-even",
+        "stratum": "control",
+        "native_outcome": "accept",
+        "observed_rounded": "0.02",
+        "observed_exact": "0.02",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "interval-half-even",
+        "stratum": "control",
+        "native_outcome": "accept",
+        "observed_rounded": "0.00",
+        "observed_exact": "0.01",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "interval-half-even-up",
+        "stratum": "control",
+        "native_outcome": "accept",
+        "observed_rounded": "0.04",
+        "observed_exact": "0.03",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "missing-component",
+        "stratum": "source_truth",
+        "native_outcome": "accept",
+        "observed_rounded": "35.05",
+        "observed_exact": "35.05",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "aliased-duplicate-batch",
+        "stratum": "source_truth",
+        "native_outcome": "accept",
+        "observed_rounded": "43.10",
+        "observed_exact": "43.10",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "wrong-positive-denominator",
+        "stratum": "source_truth",
+        "native_outcome": "accept",
+        "observed_rounded": "41.05",
+        "observed_exact": "41.05",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "consistently-wrong-units",
+        "stratum": "source_truth",
+        "native_outcome": "accept",
+        "observed_rounded": "38.05",
+        "observed_exact": "38.05",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "unsupported-source-assertion",
+        "stratum": "source_truth",
+        "native_outcome": "accept",
+        "observed_rounded": "38.05",
+        "observed_exact": "38.05",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "duplicate-line",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "duplicate_id",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "duplicate-use-component",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "component_overlap",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "unit-mismatch",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "quote_mismatch",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "date-outside-quote",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "quote_not_effective",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "quote-not-known",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "quote_not_known",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "zero-denominator",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "invalid_quote",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "missing-quote",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "missing_quote",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "unsupported-discount",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "invalid_request",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "unsupported-rounding",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "invalid_request",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "funding-cost-mix",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "valuation_mismatch",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "double-allocation",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "allocation_overlap",
+        "evidence_scope": "earlier local namespace only"
+      },
+      {
+        "id": "duplicate-json-key",
+        "stratum": "contract",
+        "native_outcome": "reject",
+        "observed_code": "invalid_json",
+        "evidence_scope": "earlier local namespace only"
+      }
+    ]
+  },
+  "original_mismatches": [
+    {
+      "case": "unsupported-discount",
+      "expected_code": "invalid_json",
+      "observed_code": "invalid_request",
+      "observed_message": "unknown field `discount_rate`, expected one of `id`, `version`, `currency`, `price_year`, `perspective`, `basis`, `rounding`",
+      "path": "/"
+    },
+    {
+      "case": "unsupported-rounding",
+      "expected_code": "unsupported_rounding",
+      "observed_code": "invalid_request",
+      "observed_message": "unknown variant `half_up`, expected `half_even`",
+      "path": "/"
+    }
+  ],
+  "correctness_observations": {
+    "portfolio_size": 8,
+    "scenario_count": 12,
+    "complete_report_byte_equality": "passed for all twelve scenarios in the earlier local suite",
+    "independent_oracles": "passed for those submitted-input reports",
+    "rational_decimal_tie_checks": 200,
+    "limitations": "No final published-source, 32-request, paired timing, memory or result-bundle qualification."
+  },
+  "unexecuted": {
+    "published_head_tests": null,
+    "published_head_lint": null,
+    "paired_timings": null,
+    "memory_results": null,
+    "build_receipt_runner": null,
+    "bundle_verifier": null,
+    "hosted_benchmark_tests": null
+  },
+  "interruption": "Execution environment unavailable: no usable execution environment. Local files were inaccessible; reconstruction and path changes require exact-head rerun.",
+  "raw_native_outputs_available": false,
+  "claims": {
+    "frontier": false,
+    "empirical": false,
+    "release_qualified": false,
+    "independent_human_review": false
+  }
+}

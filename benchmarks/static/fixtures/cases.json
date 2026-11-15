@@ -1,0 +1,341 @@
+{
+  "protocol_id": "dapane-static-synthetic-v1.2",
+  "cases": [
+    {
+      "id": "baseline",
+      "file": "cases/baseline.json",
+      "command": "evaluate",
+      "defect": false,
+      "stratum": "control",
+      "explanation": "Authored baseline: 30 + 3 + 5.05; shared batch split 2.53/2.52.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "38.05",
+        "exact": "38.05",
+        "object_totals": {
+          "a": "32.53",
+          "b": "5.52"
+        }
+      }
+    },
+    {
+      "id": "valid-reorder",
+      "file": "cases/valid-reorder.json",
+      "command": "evaluate",
+      "defect": false,
+      "stratum": "control",
+      "explanation": "Reordering set-like collections preserves the complete native report.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "38.05",
+        "exact": "38.05",
+        "object_totals": {
+          "a": "32.53",
+          "b": "5.52"
+        }
+      }
+    },
+    {
+      "id": "valid-zero",
+      "file": "cases/valid-zero.json",
+      "command": "evaluate",
+      "defect": false,
+      "stratum": "control",
+      "explanation": "Explicit zero use is legitimate; it is not absent data.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "35.05",
+        "exact": "35.05",
+        "object_totals": {
+          "a": "32.53",
+          "b": "2.52"
+        }
+      }
+    },
+    {
+      "id": "valid-rate-change",
+      "file": "cases/valid-rate-change.json",
+      "command": "evaluate",
+      "defect": false,
+      "stratum": "control",
+      "explanation": "An explicitly changed genuine rate gives 40 + 3 + 5.05.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "48.05",
+        "exact": "48.05",
+        "object_totals": {
+          "a": "42.53",
+          "b": "5.52"
+        }
+      }
+    },
+    {
+      "id": "point-half-even",
+      "file": "cases/point-half-even.json",
+      "command": "evaluate",
+      "defect": false,
+      "stratum": "control",
+      "explanation": "0.005 rounds down; 0.015 rounds up at scale two.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "0.02",
+        "exact": "0.02"
+      }
+    },
+    {
+      "id": "interval-half-even",
+      "file": "cases/interval-half-even.json",
+      "command": "evaluate-intervals",
+      "defect": false,
+      "stratum": "control",
+      "explanation": "Two generated 0.005 segments each round to zero.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "0.00",
+        "exact": "0.01"
+      }
+    },
+    {
+      "id": "interval-half-even-up",
+      "file": "cases/interval-half-even-up.json",
+      "command": "evaluate-intervals",
+      "defect": false,
+      "stratum": "control",
+      "explanation": "Two generated 0.015 segments each round to 0.02.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "0.04",
+        "exact": "0.03"
+      }
+    },
+    {
+      "id": "missing-component",
+      "file": "cases/missing-component.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "source_truth",
+      "explanation": "Omitted material cannot be inferred; authored truth total remains 38.05.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "35.05",
+        "exact": "35.05",
+        "object_totals": {
+          "a": "32.53",
+          "b": "2.52"
+        }
+      }
+    },
+    {
+      "id": "aliased-duplicate-batch",
+      "file": "cases/aliased-duplicate-batch.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "source_truth",
+      "explanation": "New line/use identities hide a duplicate; the extra 5.05 remains unattributed.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "43.10",
+        "exact": "43.10",
+        "object_totals": {
+          "a": "32.53",
+          "b": "5.52"
+        }
+      }
+    },
+    {
+      "id": "wrong-positive-denominator",
+      "file": "cases/wrong-positive-denominator.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "source_truth",
+      "explanation": "Positive but factually wrong denominator doubles material value; truth remains 38.05.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "41.05",
+        "exact": "41.05",
+        "object_totals": {
+          "a": "32.53",
+          "b": "8.52"
+        }
+      }
+    },
+    {
+      "id": "consistently-wrong-units",
+      "file": "cases/consistently-wrong-units.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "source_truth",
+      "explanation": "Matching but untrue unit labels lack external truth in this contract.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "38.05",
+        "exact": "38.05",
+        "object_totals": {
+          "a": "32.53",
+          "b": "5.52"
+        }
+      }
+    },
+    {
+      "id": "unsupported-source-assertion",
+      "file": "cases/unsupported-source-assertion.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "source_truth",
+      "explanation": "Caller verification assertions are preserved, not authenticated.",
+      "expected": {
+        "outcome": "accept",
+        "rounded": "38.05",
+        "exact": "38.05",
+        "object_totals": {
+          "a": "32.53",
+          "b": "5.52"
+        }
+      }
+    },
+    {
+      "id": "duplicate-line",
+      "file": "cases/duplicate-line.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Exact duplicate line identity.",
+      "expected": {
+        "outcome": "reject",
+        "code": "duplicate_id"
+      }
+    },
+    {
+      "id": "duplicate-use-component",
+      "file": "cases/duplicate-use-component.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Same use/component under a second line identity.",
+      "expected": {
+        "outcome": "reject",
+        "code": "component_overlap"
+      }
+    },
+    {
+      "id": "unit-mismatch",
+      "file": "cases/unit-mismatch.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Usage and selected quote units differ.",
+      "expected": {
+        "outcome": "reject",
+        "code": "quote_mismatch"
+      }
+    },
+    {
+      "id": "date-outside-quote",
+      "file": "cases/date-outside-quote.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Half-open effective interval excludes its end date.",
+      "expected": {
+        "outcome": "reject",
+        "code": "quote_not_effective"
+      }
+    },
+    {
+      "id": "quote-not-known",
+      "file": "cases/quote-not-known.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Quote is not known by the explicit cutoff.",
+      "expected": {
+        "outcome": "reject",
+        "code": "quote_not_known"
+      }
+    },
+    {
+      "id": "zero-denominator",
+      "file": "cases/zero-denominator.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Zero quotation denominator.",
+      "expected": {
+        "outcome": "reject",
+        "code": "invalid_quote"
+      }
+    },
+    {
+      "id": "missing-quote",
+      "file": "cases/missing-quote.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Explicit reference has no supplied quote.",
+      "expected": {
+        "outcome": "reject",
+        "code": "missing_quote"
+      }
+    },
+    {
+      "id": "unsupported-discount",
+      "file": "cases/unsupported-discount.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Undelivered discount policy cannot be silently accepted.",
+      "expected": {
+        "outcome": "reject",
+        "code": "invalid_request"
+      }
+    },
+    {
+      "id": "unsupported-rounding",
+      "file": "cases/unsupported-rounding.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Accepted method is half_even only.",
+      "expected": {
+        "outcome": "reject",
+        "code": "invalid_request"
+      }
+    },
+    {
+      "id": "funding-cost-mix",
+      "file": "cases/funding-cost-mix.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Funding cannot be priced as economic resource cost.",
+      "expected": {
+        "outcome": "reject",
+        "code": "valuation_mismatch"
+      }
+    },
+    {
+      "id": "double-allocation",
+      "file": "cases/double-allocation.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "One source line cannot enter two pools.",
+      "expected": {
+        "outcome": "reject",
+        "code": "allocation_overlap"
+      }
+    },
+    {
+      "id": "duplicate-json-key",
+      "file": "cases/duplicate-json-key.json",
+      "command": "evaluate",
+      "defect": true,
+      "stratum": "contract",
+      "explanation": "Repeated keys must not be overwritten by transport.",
+      "expected": {
+        "outcome": "reject",
+        "code": "invalid_json"
+      }
+    }
+  ]
+}

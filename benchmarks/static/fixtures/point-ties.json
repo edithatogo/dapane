@@ -1,0 +1,107 @@
+{
+  "schema_version": "0.1",
+  "run_id": "synthetic-static-point-ties",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-static-policy",
+    "version": "1",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "economic_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "q005",
+      "kind": "resource_use",
+      "target": "tiny_a",
+      "unit": "unit",
+      "amount": "0.005",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "tiny_a"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-q005",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      }
+    },
+    {
+      "id": "q015",
+      "kind": "resource_use",
+      "target": "tiny_b",
+      "unit": "unit",
+      "amount": "0.015",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "tiny_b"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-q015",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "a",
+      "use_id": "use-a",
+      "kind": "resource_use",
+      "target": "tiny_a",
+      "unit": "unit",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "q005",
+      "source": {
+        "id": "synthetic-a",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      }
+    },
+    {
+      "id": "b",
+      "use_id": "use-b",
+      "kind": "resource_use",
+      "target": "tiny_b",
+      "unit": "unit",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "q015",
+      "source": {
+        "id": "synthetic-b",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      }
+    }
+  ]
+}

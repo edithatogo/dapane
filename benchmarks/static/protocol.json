@@ -1,0 +1,35 @@
+{
+  "protocol_id": "dapane-static-synthetic-v1.2",
+  "registered_on": "2026-11-15",
+  "runtime_base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "portfolio_sizes": [
+    8,
+    32
+  ],
+  "measured_pairs": 5,
+  "warmup_pairs": 1,
+  "scenarios": [
+    "cold",
+    "unchanged",
+    "one_rate",
+    "all_rates",
+    "one_policy",
+    "one_source",
+    "one_allocation",
+    "one_unused_quote",
+    "one_reorder",
+    "one_interval_rate",
+    "insert",
+    "remove"
+  ],
+  "correctness": "Complete native report bytes identical; exact independent oracle",
+  "speed_acceptance_threshold": null,
+  "scope": "Synthetic static complete-request reuse only",
+  "human_effort": null,
+  "external_validation": null,
+  "frontier_claim": false,
+  "publication_status": "unqualified_exact_head_execution_blocked",
+  "prior_local_protocol_sha": "b9485ef60799ed0a809d9c416c8b984065c7590e",
+  "prior_local_tested_sha": "5cc42f41d1713afab9348d781a38717d515b6b75",
+  "changes_since_local_test": "Reconstruction after environment loss; namespace/fixture locators moved from benchmarks/static_v1 to reserved benchmarks/static; two observed error-code corrections retained; runner/build/verification additions are unexecuted."
+}
