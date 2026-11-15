@@ -1,0 +1,151 @@
+name: Standalone roadmap lanes
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: roadmap-lanes-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  RUSTUP_TOOLCHAIN: '1.99.1'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PIP_DISABLE_PIP_VERSION_CHECK: '1'
+
+jobs:
+  discovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      lanes: ${{ steps.lanes.outputs.lanes }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - id: lanes
+        run: python scripts/qualify_roadmap.py discover --github-output "$GITHUB_OUTPUT"
+
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Exercise failure and provenance controls
+        run: python -m unittest discover -s tests/tooling -p test_roadmap_qualification.py -v
+      - name: Install pinned lint tool
+        if: ${{ !cancelled() }}
+        run: python -m pip install ruff==0.17.4
+      - name: Lint shared qualification code
+        if: ${{ !cancelled() }}
+        run: ruff check scripts/qualify_roadmap.py tests/tooling/test_roadmap_qualification.py
+      - name: Check shared qualification formatting
+        if: ${{ !cancelled() }}
+        run: ruff format --check scripts/qualify_roadmap.py tests/tooling/test_roadmap_qualification.py
+
+  qualify:
+    needs: discovery
+    if: needs.discovery.outputs.lanes != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        lane: ${{ fromJSON(needs.discovery.outputs.lanes) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          path: dapane
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install pinned R host
+        if: matrix.lane == 'bindings'
+        uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+        with:
+          r-version: '4.5.0'
+      - name: Read the pinned UOGTO source snapshot
+        if: matrix.lane == 'reporting'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: edithatogo/UOGTO
+          ref: 7e9075b8fd77543fc8853fab20319415cb86597d
+          path: roadmap-sources/uogto
+          persist-credentials: false
+      - name: Read the pinned standards catalogue snapshot
+        if: matrix.lane == 'reporting'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: edithatogo/standards_check
+          ref: d1f1137edfa5375e0225ca2216903ce5583a44f0
+          path: roadmap-sources/standards_check
+          persist-credentials: false
+      - name: Execute all applicable independent checks and retain outcomes
+        if: ${{ !cancelled() }}
+        working-directory: dapane
+        env:
+          ROADMAP_LANE: ${{ matrix.lane }}
+          ROADMAP_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python scripts/qualify_roadmap.py run --lane "$ROADMAP_LANE" \
+            --expected-source "$ROADMAP_SOURCE" \
+            --output "$RUNNER_TEMP/roadmap-$ROADMAP_LANE" \
+            --reporting-sources "$GITHUB_WORKSPACE/roadmap-sources"
+      - name: Retain logs, installed artifacts and failed outcomes
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: roadmap-lane-${{ matrix.lane }}
+          path: ${{ runner.temp }}/roadmap-${{ matrix.lane }}/retained/
+          if-no-files-found: error
+          retention-days: 30
+
+  aggregate:
+    needs: [discovery, controls, qualify]
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Obtain this run's lane receipts
+        if: needs.discovery.outputs.lanes != '[]'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: roadmap-lane-*
+          path: ${{ runner.temp }}/roadmap-receipts
+          merge-multiple: false
+      - name: Require every discovered lane and every prerequisite to pass
+        if: ${{ !cancelled() }}
+        env:
+          ROADMAP_LANES: ${{ needs.discovery.outputs.lanes }}
+          ROADMAP_JOBS: ${{ toJSON(needs) }}
+          ROADMAP_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python scripts/qualify_roadmap.py verify \
+            --directory "$RUNNER_TEMP/roadmap-receipts" \
+            --lanes "$ROADMAP_LANES" --job-results "$ROADMAP_JOBS" \
+            --expected-source "$ROADMAP_SOURCE"
