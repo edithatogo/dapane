@@ -17,7 +17,9 @@
     "synthetic-genomics",
     "partial-capacity",
     "declared-calendar-day-intervals",
-    "versioned-run-bundles"
+    "versioned-run-bundles",
+    "installed-workforce-quotation-consumer",
+    "installed-manual-extraction-consumer"
   ],
   "targets": [
     {
@@ -74,11 +76,11 @@
     "project_license": "Apache-2.0",
     "registry_identity": "unverified",
     "source_redistribution": "project-source-Apache-2.0-external-assets-excluded",
-    "workforce_provider": "unqualified",
-    "genomics_provider": "unqualified"
+    "workforce_provider": "qualified-selected-qld-hp3p1-base-salary",
+    "genomics_provider": "qualified-manual-extraction-labour"
   },
   "source_rights": {
-    "included": "tracked-public-repository-source-and-synthetic-fixtures",
+    "included": "tracked-project-source-synthetic-fixtures-and-dependency-notices",
     "external_provider_assets": "excluded",
     "source_claims": "caller-declarations-not-independent-validation"
   },
@@ -105,5 +107,13 @@
         "0.2"
       ]
     }
+  },
+  "provider_consumers": {
+    "lock_file": "docs/provider-consumers.lock.json",
+    "qualification_record": "docs/python-provider-verification.md",
+    "workforce_scope": "selected-quotation-and-retained-legacy-entry-points",
+    "genomics_scope": "manual-dna-extraction-labour-and-bounded-historical-replay",
+    "environments": "separate-locked-provider-environments",
+    "source_asset_redistribution": "excluded"
   }
 }

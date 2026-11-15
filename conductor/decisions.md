@@ -247,17 +247,23 @@ Status: accepted and applied, **15 November 2026**. Requirements: RQ-12, RQ-04.
 The project owner explicitly selected Apache 2.0 for this release integration.
 The canonical Apache-2.0 text is retained in the root LICENSE, with project
 attribution in NOTICE. All three Rust crates inherit the workspace SPDX licence;
-the Python distribution and citation metadata declare the same licence. Nested
-crate sources and Python wheel/source distributions include the licence and notice.
+citation metadata declares the same project licence. Nested crate sources,
+Python wheel/source distributions and candidate CLI bundles include the licence,
+notice and full third-party notice bundle. Python's optional aggregate distribution
+licence expression is omitted under the documented
+[metadata boundary](../docs/release-controls.md); it is not inferred from Cargo's
+project licence or from a conservative dependency notice inventory.
 
 This decision applies to Dapane project material. Third-party dependencies and
 separately obtained provider data retain their own terms. No external provider
 assets are added by this decision. Dependency licence checks include unpublished
 workspace packages; the former private-package exemption is removed.
 
-Consequence: project-licence selection is resolved. Registry ownership, release
-qualification, provider migration and external asset inclusion retain their
-existing requirements. Package publication stays disabled pending that evidence.
+Consequence: project-licence selection is resolved. The
+[provider subset](../docs/python-provider-verification.md) is qualified with its
+own bounded evidence. Registry/channel choices, exact-source release qualification,
+broader migration and external asset inclusion retain their existing requirements.
+Package publication stays disabled pending the applicable evidence.
 
 ## Decisions intentionally left to their implementation tracks
 

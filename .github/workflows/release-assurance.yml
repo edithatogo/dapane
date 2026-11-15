@@ -4,7 +4,6 @@ on:
   pull_request:
   push:
     branches: [main]
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -30,8 +29,8 @@ jobs:
           python scripts/release_assurance.py validate
           python -m unittest discover -s tests/release -v
           python -m pip install ruff==0.17.4
-          ruff check scripts/release_assurance.py tests/release
-          ruff format --check scripts/release_assurance.py tests/release
+          ruff check scripts/release_assurance.py scripts/distribution_notices.py tests/release
+          ruff format --check scripts/release_assurance.py scripts/distribution_notices.py tests/release
           python scripts/validate_conductor.py
 
   candidate:
@@ -60,6 +59,10 @@ jobs:
         run: |
           rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
           python -m pip install -r requirements-dev.txt
+      - name: Verify locked dependency notices
+        run: |
+          cargo fetch --locked
+          python scripts/distribution_notices.py --check
       - name: Build twice from clean target directories
         shell: bash
         run: |
@@ -80,6 +83,7 @@ jobs:
             --output "$RUNNER_TEMP/dapane-candidate/reproducibility.json"
           install -m 755 "$RUNNER_TEMP/dapane-first/dapane" "$RUNNER_TEMP/dapane-candidate/dapane"
           cp "$RUNNER_TEMP/dapane-first/"*.whl "$RUNNER_TEMP/dapane-candidate/"
+          cp LICENSE NOTICE THIRD_PARTY_NOTICES.txt "$RUNNER_TEMP/dapane-candidate/"
           cargo tree --locked --no-default-features -p dapane-cli -e features > "$RUNNER_TEMP/dapane-candidate/minimal-core-features.txt"
       - name: Exercise the exact installed candidate outside the checkout
         shell: bash
@@ -121,24 +125,31 @@ jobs:
           maturin sdist --out "$artifact"
           python - <<'PY'
           import os
+          from email.parser import Parser
           from pathlib import Path
           import tarfile
 
           artifact = Path(os.environ["RUNNER_TEMP"]) / "dapane-candidate"
+          legal_files = {"LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.txt"}
           for crate in ("dapane-core", "dapane-cli", "dapane-python"):
               names = set((artifact / f"{crate}-package-files.txt").read_text().splitlines())
-              if not {"LICENSE", "NOTICE"} <= names:
+              if not legal_files <= names:
                   raise SystemExit(f"{crate} source package omits licence/notice")
           packages = list(artifact.glob("dapane-*.tar.gz"))
           if len(packages) != 1:
               raise SystemExit("Expected one Python source distribution")
           with tarfile.open(packages[0], "r:gz") as archive:
               prefix = packages[0].name.removesuffix(".tar.gz")
-              for name in ("LICENSE", "NOTICE"):
+              metadata = Parser().parsestr(archive.extractfile(f"{prefix}/PKG-INFO").read().decode())
+              if metadata["License-Expression"] is not None or metadata["License"] is not None:
+                  raise SystemExit("Source distribution must not infer an aggregate licence")
+              if set(metadata.get_all("License-File", [])) != legal_files:
+                  raise SystemExit("Source distribution licence declarations are incomplete")
+              for name in sorted(legal_files):
                   member = archive.extractfile(f"{prefix}/{name}")
                   if member is None or member.read() != Path(name).read_bytes():
                       raise SystemExit(f"Source distribution licence payload differs: {name}")
-          print("Rust package file lists and Python source distribution include LICENSE and NOTICE")
+          print("Rust package file lists and Python source distribution include complete licences and notices")
           PY
       - name: Retain source and build identities
         shell: bash
@@ -256,8 +267,14 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  provider-candidate:
+    needs: candidate
+    uses: ./.github/workflows/provider-consumers.yml
+    with:
+      use_release_candidate: true
+
   matrix:
-    needs: [candidate, supply-chain]
+    needs: [candidate, supply-chain, provider-candidate]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:

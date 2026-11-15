@@ -1,5 +1,12 @@
 # Release integration and Apache-2.0 adoption — 15 November 2026
 
+This is the historical integration audit at main `c70edf65`. The subsequent
+[handoff record](release-handoff-2026-11-15.md) confirms the now-merged setup and
+provider archives, hosted baseline and completed notice implementation. Its
+Python aggregate-metadata decision supersedes the initial packaging declaration
+below; the owner-selected Apache-2.0 project licence is unchanged. Preserve the
+following observations with their original source and time boundary.
+
 ## Decision and source boundary
 
 The project owner instructed this integration to use Apache 2.0. The canonical

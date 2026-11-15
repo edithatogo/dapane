@@ -44,9 +44,21 @@ ADDITIONAL_PROFILES = {
     },
 }
 PROJECT_LICENSE = "Apache-2.0"
-LICENSE_FILES = {"LICENSE", "NOTICE"}
+LICENSE_FILES = {"LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.txt"}
 APACHE_LICENSE_SHA256 = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
 SOURCE_REDISTRIBUTION = "project-source-Apache-2.0-external-assets-excluded"
+PROVIDER_STATES = {
+    "workforce_provider": "qualified-selected-qld-hp3p1-base-salary",
+    "genomics_provider": "qualified-manual-extraction-labour",
+}
+PROVIDER_PROFILES = {
+    "lock_file": "docs/provider-consumers.lock.json",
+    "qualification_record": "docs/python-provider-verification.md",
+    "workforce_scope": "selected-quotation-and-retained-legacy-entry-points",
+    "genomics_scope": "manual-dna-extraction-labour-and-bounded-historical-replay",
+    "environments": "separate-locked-provider-environments",
+    "source_asset_redistribution": "excluded",
+}
 TRACKS = {
     "core_contracts_20261108",
     "rust_kernel_20261108",
@@ -61,6 +73,8 @@ CAPABILITIES = {
     "partial-capacity",
     "declared-calendar-day-intervals",
     "versioned-run-bundles",
+    "installed-workforce-quotation-consumer",
+    "installed-manual-extraction-consumer",
 }
 PYTHONS = {"3.12", "3.13", "3.14", "3.15"}
 
@@ -138,9 +152,17 @@ def input_hashes(root=ROOT):
         "scripts/release_assurance.py",
         "LICENSE",
         "NOTICE",
+        "THIRD_PARTY_NOTICES.txt",
+        "scripts/distribution_notices.py",
+        "release/distribution-notices.json",
+        "release/toolchain-notices.json",
+        "docs/provider-consumers.lock.json",
+        "scripts/verify_provider_consumers.py",
+        ".github/workflows/provider-consumers.yml",
     }
     names.update(str(p.relative_to(root)) for p in (root / "fixtures").rglob("*.json"))
     names.update(str(p.relative_to(root)) for p in (root / "schemas").rglob("*.json"))
+    names.update(str(p.relative_to(root)) for p in (root / "licenses").rglob("*") if p.is_file())
     tracked = set(command(["git", "ls-files"], root).splitlines())
     require(names <= tracked, "release inputs must all be tracked")
     return {name: sha256(root / name) for name in sorted(names)}
@@ -148,6 +170,31 @@ def input_hashes(root=ROOT):
 
 def target_key(target):
     return tuple(target[k] for k in ("system", "machine", "implementation", "python"))
+
+
+def validate_provider_lock(pins):
+    require(pins.get("schema_version") == "1", "unknown provider lock format")
+    require(pins.get("qualification") == "passed", "provider qualification is incomplete")
+    expected = {
+        "workforce": ("edithatogo/microcosting_healthworkforce", "3.15.2"),
+        "genomics": ("edithatogo/microcosting_genomics", "3.15.1"),
+    }
+    for name, (repository, python) in expected.items():
+        provider = pins.get(name, {})
+        require(
+            provider.get("repository") == repository and provider.get("python") == python,
+            f"{name} provider owner or interpreter changed",
+        )
+        commit = provider.get("commit")
+        require(
+            isinstance(commit, str) and re.fullmatch(r"[0-9a-f]{40}", commit),
+            f"{name} provider needs an immutable commit",
+        )
+    artifact = pins["workforce"].get("artifact_sha256")
+    require(
+        isinstance(artifact, str) and re.fullmatch(r"[0-9a-f]{64}", artifact),
+        "workforce quotation artifact needs an external digest pin",
+    )
 
 
 def validate_manifest(manifest, root=ROOT):
@@ -158,6 +205,11 @@ def validate_manifest(manifest, root=ROOT):
         manifest["additional_profiles"] == ADDITIONAL_PROFILES,
         "additional profile or interface claims changed",
     )
+    require(
+        manifest.get("provider_consumers") == PROVIDER_PROFILES,
+        "provider capability scope exceeds the qualified profiles",
+    )
+    validate_provider_lock(read_json(root / PROVIDER_PROFILES["lock_file"]))
     capabilities = manifest["candidate_capabilities"]
     require(
         len(capabilities) == len(CAPABILITIES) and set(capabilities) == CAPABILITIES,
@@ -199,14 +251,17 @@ def validate_manifest(manifest, root=ROOT):
     require(python.get("dependencies", []) == [], "Python runtime dependencies changed")
     require(
         workspace["package"].get("license")
-        == python.get("license")
         == manifest["publication"].get("project_license")
         == PROJECT_LICENSE,
         "project licence differs across package and capability manifests",
     )
     require(
+        python.get("license") is None and "license" not in python.get("dynamic", []),
+        "aggregate distribution licence must not be inferred from the project licence",
+    )
+    require(
         set(python.get("license-files", [])) == LICENSE_FILES,
-        "Python licence files must include LICENSE and NOTICE",
+        "Python licence files must include LICENSE, NOTICE and third-party notices",
     )
     require(
         (root / "LICENSE").is_file() and sha256(root / "LICENSE") == APACHE_LICENSE_SHA256,
@@ -232,6 +287,7 @@ def publication_blockers(manifest, root=ROOT):
     resolved = {
         "project_license": PROJECT_LICENSE,
         "source_redistribution": SOURCE_REDISTRIBUTION,
+        **PROVIDER_STATES,
     }
     for name, state in manifest["publication"].items():
         if name != "enabled" and (name not in resolved or resolved[name] != state):
@@ -266,6 +322,17 @@ def verify_artifacts(records, directory):
         )
         require(
             file_record(directory / name, record["role"]) == record, f"artifact changed: {name}"
+        )
+
+
+def verify_artifact_notices(directory, root=ROOT):
+    for name in LICENSE_FILES:
+        path = directory / name
+        require(
+            path.is_file()
+            and not path.is_symlink()
+            and path.read_bytes() == (root / name).read_bytes(),
+            f"CLI distribution licence/notice differs: {name}",
         )
 
 
@@ -307,10 +374,13 @@ def verify_wheel_members(wheel, installed, version):
         require(metadata["Version"] == version, "wheel package version differs")
         require(not metadata.get_all("Requires-Dist"), "wheel has runtime dependencies")
         dist_info = metadata_name.rsplit("/", 1)[0]
-        require(metadata["License-Expression"] == PROJECT_LICENSE, "wheel licence differs")
+        require(
+            metadata["License-Expression"] is None and metadata["License"] is None,
+            "wheel aggregate licence must not be inferred from project licensing",
+        )
         require(
             set(metadata.get_all("License-File", [])) == LICENSE_FILES,
-            "wheel licence declarations must include LICENSE and NOTICE",
+            "wheel licence declarations must include project and third-party notices",
         )
         for name in LICENSE_FILES:
             member = f"{dist_info}/licenses/{name}"
@@ -661,6 +731,7 @@ def collect(cli, wheel, output, root=ROOT):
     manifest = validate_manifest(read_json(root / "release/capabilities.json"), root)
     source = source_identity(root)
     artifacts = [file_record(cli, "cli"), file_record(wheel, "wheel")]
+    verify_artifact_notices(cli.parent, root)
     module, installation = installed_identity(wheel, root, manifest)
     runtime = {
         "system": platform.system(),
@@ -710,7 +781,11 @@ def collect(cli, wheel, output, root=ROOT):
         "minimal_native_dependencies": core_dependencies(root),
         "references": references,
         "publication_blockers": publication_blockers(manifest, root),
-        "limits": "Synthetic references; no real provider, empirical, other-platform or publication qualification.",
+        "limits": (
+            "This receipt covers package identity and synthetic scalar/capacity references. "
+            "Selected-provider qualification runs separately using these exact artifacts; "
+            "no whole-assay, empirical, other-platform or publication qualification is implied."
+        ),
     }
     write_json(output, result)
     print(
@@ -746,6 +821,7 @@ def verify_evidence(evidence, artifact_dir, root=ROOT):
         "unsupported evidence target",
     )
     verify_artifacts(evidence["artifacts"], artifact_dir)
+    verify_artifact_notices(artifact_dir, root)
     wheel = next(r for r in evidence["artifacts"] if r["role"] == "wheel")
     verify_wheel_target(artifact_dir / wheel["name"], evidence["runtime"])
     comparison = read_json(artifact_dir / "reproducibility.json")

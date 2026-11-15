@@ -2,6 +2,11 @@
 
 Implementation date: **15 November 2026** (Australia/Brisbane).
 
+The sections through the initial closure boundary preserve earlier observations.
+The [current handoff receipt](../../../docs/release-handoff-2026-11-15.md) records
+the completed provider/setup merges, incorporated archives, fresh live baseline,
+notice implementation and remaining security/publication blockers.
+
 ## Reconciliation and scope
 
 The branch began at Dapane main
@@ -117,7 +122,7 @@ receipts remain retained without being relabelled as fresh results. The 36 curre
 release-control tests and source/static checks passed. Full hosted qualification of
 the integrated source remains required.
 
-## Closure boundary
+## Closure boundary at the initial audit
 
 Public package publication remains disabled. Apache-2.0 is selected for Dapane
 project material. Registry ownership, real workforce/genomics migration and external
@@ -127,3 +132,23 @@ restricted provider assets.
 The user requested review, fixes and archival. Review/fixes can be performed on
 the candidate assurance implementation now. The original track's archival must
 wait for its outstanding mandatory release acceptance evidence.
+
+## Authorised owner handoff received
+
+The later handoff was checked against live main e34f87c9 and release head d37575ec.
+All four prerequisite tracks are archived and incorporated. The existing provider
+verification and lock retain qualified workforce/genomics revisions and bounded
+historical compatibility; the earlier real-consumer blocker is resolved within
+that scope. Hosted Release assurance, provider consumers, Runtime, Conductor,
+Privacy and CodeQL passed at d37575ec. Those exact run links and the observed
+133 installed tests per target are in the current receipt.
+
+Release changes add full authenticated dependency and Rust standard-library
+notices, preserve Apache-2.0 project licensing, correct Python aggregate licence
+metadata, and call the existing provider verifier using the exact release CLI
+and wheel. The 64 local release-control tests and Ruff pass; notice generation
+has an independent review. New artifact bytes and workflow coupling require
+fresh hosted execution at the new source. The central offline security runs are
+queued without an assigned runner and have no scanner outcome. Their gate is
+preserved. Channel/account choices remain with the owner; publication is disabled.
+No external repository archive or legacy machinery removal is implied.

@@ -9,7 +9,10 @@ commit and artifacts.
 
 The [dated local qualification](release-verification-2026-11-15.md) records the
 completed installed matrix, dual-build identities, SBOM/advisory outcomes and
-measured limits at its exact source. Hosted checks remain separate.
+measured limits at its exact source. The later
+[handoff and hosted qualification record](release-handoff-2026-11-15.md) records
+the incorporated owners' work and successful hosted baseline at `d37575ec`.
+Each subsequent source revision still needs its own complete qualification.
 
 ## Scope and first-release prerequisites
 
@@ -23,17 +26,24 @@ also preserves run-bundle profile 0.1 and the Rust/CLI interval envelope 0.1,
 there is no Python interval API. Installed bundle tests and independent installed
 CLI interval checks cover those accepted additions.
 
-A first public release still requires the contracts, kernel and Python/two-consumer
-tracks, including the real workforce and genomics qualification. These are
-mandatory prerequisites. Optional MCHS/source adapters, reporting, newborn
+A first public release requires the contracts, kernel and Python/two-consumer
+tracks. All three are now archived on main with their bounded acceptance evidence;
+the setup archive is also incorporated. The
+[selected provider qualification](python-provider-verification.md) covers the
+QLD HP3.1 base-salary quotation and manual DNA-extraction labour, with retained
+legacy entry points and bounded historical replay. It does not qualify whole
+assays, all workbook behaviour or other providers. These prerequisites remain
+mandatory in the manifest. Optional MCHS/source adapters, reporting, newborn
 programme qualification, Power Platform, R/Julia, process execution, decision
 integrations and frontier research do not block this bounded first release.
 
 The owner selected Apache-2.0 for Dapane project material on 15 November 2026.
-The canonical LICENSE and NOTICE are checked in source and installed wheels;
-package metadata must agree. Third-party dependencies and external provider assets
-retain their own terms, and external provider assets remain excluded. Registry
-ownership and release qualification are still unresolved. Workspace Cargo
+The canonical LICENSE, NOTICE and THIRD_PARTY_NOTICES.txt are checked in source,
+installed wheels and candidate CLI bundles. The dependency and standard-library
+texts retain their source identities; the optional Python aggregate licence
+expression is omitted as explained in [release controls](release-controls.md).
+External provider assets remain excluded. Registry/channel choices and final
+source qualification remain open. Workspace Cargo
 publication stays disabled; this workflow has no registry publisher, release-tag
 action or repository archive operation.
 The publication check intentionally returns exit code 2 with those blockers:
@@ -84,6 +94,13 @@ installed-wheel tests additionally exercise schemas, errors and numerical
 invariants. The default native dependency closure is inspected separately from
 the workspace, which legitimately also contains the PyO3 wrapper.
 
+After all candidate builds pass, the release workflow calls the existing provider
+workflow with the same run's CPython 3.15 CLI and wheel. It verifies the candidate
+receipt before checking out the immutable providers, then uses their existing
+verifier in separate locked Python 3.15.2 and 3.15.1 environments. The aggregate
+matrix depends on this job as well as the build and supply-chain jobs. Standalone
+provider checks remain available on pull requests and pushes to main.
+
 The [supply-chain controls](release-controls.md) record dependency licences,
 advisory outcomes, the advisory database revision, CycloneDX SBOMs and the
 trusted-main provenance route. Those records supplement functional checks;
@@ -93,7 +110,8 @@ rights. A green candidate job does not resolve the publication prerequisites.
 ## Reproduce and inspect receipts
 
 Build artifacts into separate directories, each containing the CLI named
-dapane and one interpreter-specific wheel. Install one wheel into a clean
+dapane and one interpreter-specific wheel. Copy LICENSE, NOTICE and
+THIRD_PARTY_NOTICES.txt into the collected candidate directory. Install one wheel into a clean
 virtual environment. Run collection using that environment's interpreter from
 outside the repository:
 
@@ -148,5 +166,6 @@ new performance claim.
 Use the [migration and recovery procedure](release-migration.md) before changing
 a consumer. The [consolidation inventory](release-consolidation.md) selects no
 repository for archival or code removal. The original release track remains
-open until its mandatory registry and real-consumer evidence is complete;
+open until its remaining registry/channel decisions and exact-source qualification,
+including the centrally managed security execution, are complete;
 a successful documentation validator does not justify premature archival.

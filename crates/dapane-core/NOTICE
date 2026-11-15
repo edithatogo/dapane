@@ -6,3 +6,6 @@ See LICENSE for the full terms.
 
 Third-party dependencies and separately obtained provider data retain their own
 licences and attribution requirements. This notice does not relicense them.
+
+THIRD_PARTY_NOTICES.txt retains the locked dependency and Rust standard-library
+copyright, licence and attribution texts, with their source identities.

@@ -3,6 +3,8 @@
 The subsequent [integration and licensing record](release-integration-2026-11-15.md)
 records Apache-2.0 adoption and accepted kernel/contracts integration. The results
 below remain observations of the original, earlier source.
+The [later handoff record](release-handoff-2026-11-15.md) supplies the merged-owner
+receipt and hosted baseline; it does not relabel the local results below.
 
 ## Checked source and scope
 

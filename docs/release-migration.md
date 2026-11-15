@@ -25,10 +25,14 @@ inclusion, dates, units and source identities. CLI/Python equality alone only
 demonstrates interface parity. Establish an explicit explanation for any
 intentional result change.
 
-The pending Python track owns the actual workforce namespace/entry-point
-adapter, dated workforce/genomics composition and historical reproduction.
-Do not copy domain formulas into this procedure or claim synthetic cases
-complete that migration.
+The archived Python track supplies the existing workforce namespace/entry-point
+adapter, dated workforce/genomics composition and bounded historical reproduction.
+Use its [durable qualification](python-provider-verification.md) and
+[immutable provider lock](provider-consumers.lock.json). The source revisions stay
+pinned to the qualified trees even when the receiving merge commit has a different
+identity. The genomics development wheel also embeds its qualified revision.
+The selected base-salary/manual-extraction qualification does not cover a whole
+assay, the entire historical workbook or unrelated provider migration.
 
 ## Change categories
 
@@ -61,8 +65,9 @@ duration and one-time/recurrent costs retain their separate meanings.
    path. Keep the failed candidate's identity and migration explanation visible.
 
 No earlier public Dapane runtime is assumed to exist. This is a candidate recovery
-procedure; actual legacy-provider cutover/rollback must be executed and recorded
-by the Python/provider tracks before shared machinery is removed.
+procedure. The selected provider record preserves canonical/legacy entry points
+and historical calculator access; no shared machinery is removed. Any broader
+cutover/rollback still requires its own preserved inputs and executed evidence.
 
 ## Retention
 

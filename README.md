@@ -36,6 +36,10 @@ The selected [installed provider composition](docs/python-provider-verification.
 connects a dated workforce base-pay quotation to manual DNA-extraction labour,
 with canonical/legacy compatibility and an explicit historical calculator path.
 The two provider environments keep their exact Python 3.15.2 and 3.15.1 pins.
+The [release handoff record](docs/release-handoff-2026-11-15.md) confirms that the
+setup, contracts, kernel and Python/provider archives are incorporated. Release
+qualification consumes their existing records and checks the exact candidate
+artifacts; publication remains disabled.
 
 Broader provider coverage, richer exposure and economic methods, R/Julia,
 reporting exports, Power Apps and process execution remain separate work. See the [implemented contract](docs/contract-v0.1.md),
@@ -152,12 +156,15 @@ document, not assumed from a planning dependency.
 
 Dapane is licensed under the [Apache License, Version 2.0](LICENSE), selected by
 the project owner on 15 November 2026. [NOTICE](NOTICE) records project attribution.
-The Rust workspace and Python distribution declare the SPDX identifier
-`Apache-2.0`; licence and notice files accompany the package sources and wheel.
-Third-party dependencies and separately obtained provider assets retain their own
-licences and attribution requirements.
+The Rust workspace and citation metadata declare `Apache-2.0` for project material.
+[THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt) retains the locked dependencies'
+and Rust standard library's licence and attribution texts. All three legal files
+accompany crate sources, wheels, Python source distributions and candidate CLI
+bundles. Python's optional aggregate distribution licence expression is omitted;
+the [controls guide](docs/release-controls.md) explains that metadata boundary.
+Separately obtained provider assets retain their own terms and are excluded.
 
 No registry release, package-name reservation or app deployment is asserted.
 Workspace publication remains disabled pending registry ownership and release
-qualification. The [release integration record](docs/release-integration-2026-11-15.md)
+qualification. The [release handoff record](docs/release-handoff-2026-11-15.md)
 identifies the incorporated archives and remaining publication decisions.

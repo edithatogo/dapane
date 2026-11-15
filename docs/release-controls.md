@@ -62,11 +62,44 @@ It has no advisory ignore entries.
 
 Dapane project material is Apache-2.0 by the owner's explicit decision. Workspace
 packages and their third-party dependencies all undergo licence checking; there is
-no private-workspace exemption. All Rust and Python manifests must agree, each
-nested crate carries ordinary copies of LICENSE and NOTICE, and wheel payloads
+no private-workspace exemption. Each nested crate carries ordinary copies of
+LICENSE, NOTICE and THIRD_PARTY_NOTICES.txt. Wheel payloads and CLI bundle companions
 must match those root files. The 3.15 candidate also checks Cargo package file lists
-and the Python source distribution. Keeping `publish = false` does not exempt a
+and the actual Python source distribution, including its legal metadata and bytes.
+Keeping `publish = false` does not exempt a
 package from licence checking or claim verified registry ownership.
+
+[The notice generator](../scripts/distribution_notices.py) reads all 36 locked
+registry archives after checking each archive against Cargo.lock. It collects
+the upstream licence, copyright, attribution and exception files, including nested
+runtime material. It reads the authenticated archives directly. The generated
+[inventory](../release/distribution-notices.json) retains each package, source
+checksum, legal-file identity and shared-text reference. The
+[Rust supplement](../release/toolchain-notices.json) records the official 1.99.1
+compiler-archive checksum and its complete standard-library copyright inventory.
+The acquisition and coverage limits are in the [handoff record](release-handoff-2026-11-15.md).
+
+Run `cargo fetch --locked`, then
+`python scripts/distribution_notices.py --check` to reject stale or substituted
+notices. Use `--write` only when deliberately regenerating reviewed inputs, then
+copy the resulting root notice file into each workspace crate. The conservative
+inventory includes build/procedural-macro/target-specific packages; it is not a
+claim that every listed dependency is linked into every artifact. Full upstream
+licence alternatives and exceptions are retained without selecting a new project
+licence or asserting complete operating-system/compiler distribution coverage.
+
+Python's optional `License-Expression` describes the containing distribution.
+The [PyPA core metadata specification](https://packaging.python.org/en/latest/specifications/core-metadata/#license-expression)
+and [pyproject specification](https://packaging.python.org/en/latest/specifications/pyproject-toml/#license)
+distinguish it from project licensing. This candidate omits the optional expression
+and the legacy `License` field instead of inferring an aggregate expression from
+the conservative notice inventory. The project remains Apache-2.0 in LICENSE,
+NOTICE, Cargo, citation metadata and the capability manifest. `license-files`
+declares all three legal files. `license` is not dynamic: the pinned
+[Maturin 1.16.0 metadata implementation](https://github.com/PyO3/maturin/blob/v1.16.0/src/metadata.rs)
+clears an undeclared, non-dynamic field rather than inheriting Cargo's project
+licence. Wheel and sdist checks enforce the actual emitted metadata. Any future
+aggregate expression requires an artifact-specific review of bundled contents.
 
 The Python distribution declares no runtime dependencies. Separately, pip-audit
 **2.10.1** audits the resolved build and assurance requirements with strict
@@ -110,13 +143,21 @@ disabled persisted checkout credentials and immutable action references. The
 existing privacy/secret workflow is unchanged. No self-hosted runner or secret
 is required by this workflow.
 
-A separate job attests candidate bytes only after the complete matrix and
-supply-chain jobs pass on a **push to this repository's main branch**. It downloads
+A separate job attests candidate bytes only after the complete matrix, exact-artifact
+provider check and supply-chain jobs pass on a **push to this repository's main branch**. It downloads
 the successful jobs' artifacts and generates signed build provenance using
 `actions/attest` with explicit subject paths. Only that job receives
 `id-token: write` and `attestations: write`; it has no package or contents write
-permission. Storage records and registry pushes are disabled. PRs and manual
-branch runs do not receive these attestation permissions.
+permission. Storage records and registry pushes are disabled. PRs do not receive
+these attestation permissions. Release/provider workflows accept pull requests
+and pushes to main; their reusable call cannot restore a manual branch-trigger
+path into provider execution or its default-branch caches.
+
+The separate, centrally managed [offline security caller](../.github/workflows/offline-ai-security.yml)
+retains its existing pinned reusable workflow and policy. It requires the
+`self-hosted`, `linux`, `x64`, `ai-security-offline` runner labels. Its queued,
+unexecuted result is a remaining qualification blocker recorded in the handoff;
+the hosted release workflow neither provisions that infrastructure nor bypasses it.
 
 A signed build statement binds bytes to a build. It is not a statement that the
 provider has migrated, an economic method has been validated or

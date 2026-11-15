@@ -73,6 +73,30 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(release.AssuranceError, "interface claims"):
             release.validate_manifest(self.manifest)
 
+    def test_provider_qualification_keeps_registry_and_publication_blocked(self):
+        blockers = release.publication_blockers(self.manifest)
+        self.assertTrue(any("not enabled" in item for item in blockers))
+        self.assertTrue(any(item.startswith("registry_identity:") for item in blockers))
+        for name in release.PROVIDER_STATES:
+            self.assertFalse(any(item.startswith(f"{name}:") for item in blockers))
+
+    def test_unqualified_mutable_or_unpinned_provider_inputs_fail(self):
+        original = release.read_json(ROOT / "docs/provider-consumers.lock.json")
+        for section, key, value in (
+            (None, "qualification", "pending"),
+            ("workforce", "commit", "main"),
+            ("workforce", "commit", None),
+            ("genomics", "python", "3.15.2"),
+            ("workforce", "artifact_sha256", ""),
+            ("workforce", "artifact_sha256", None),
+        ):
+            with self.subTest(section=section, key=key):
+                changed = copy.deepcopy(original)
+                target = changed if section is None else changed[section]
+                target[key] = value
+                with self.assertRaises(release.AssuranceError):
+                    release.validate_provider_lock(changed)
+
     def test_null_registry_or_provider_state_remains_a_publication_blocker(self):
         for name in ("registry_identity", "workforce_provider", "genomics_provider"):
             with self.subTest(name=name):
@@ -127,6 +151,24 @@ class ArtifactTests(unittest.TestCase):
         records = release.compare_artifacts(self.first, self.second)
         release.verify_artifacts(records, self.first)
 
+    def test_cli_bundle_cannot_omit_or_substitute_dependency_notices(self):
+        expected = self.root / "legal-source"
+        expected.mkdir()
+        for name in release.LICENSE_FILES:
+            payload = f"Synthetic expected legal payload: {name}\n".encode()
+            (expected / name).write_bytes(payload)
+            (self.first / name).write_bytes(payload)
+        release.verify_artifact_notices(self.first, expected)
+        notice = self.first / "THIRD_PARTY_NOTICES.txt"
+        for payload in (None, b"Changed attribution"):
+            with self.subTest(payload=payload):
+                if payload is None:
+                    notice.unlink()
+                else:
+                    notice.write_bytes(payload)
+                with self.assertRaisesRegex(release.AssuranceError, "CLI distribution"):
+                    release.verify_artifact_notices(self.first, expected)
+
     def test_changed_cli_bytes_fail(self):
         records = release.candidate_artifacts(self.first)
         (self.first / "dapane").write_bytes(b"tampered")
@@ -177,10 +219,14 @@ class WheelTests(unittest.TestCase):
             "dapane/_native.so": b"test-only binary identity; never imported\n",
             "dapane-0.1.0.dist-info/METADATA": (
                 b"Metadata-Version: 2.4\nName: dapane\nVersion: 0.1.0\n"
-                b"License-Expression: Apache-2.0\nLicense-File: LICENSE\nLicense-File: NOTICE\n"
+                b"License-File: LICENSE\nLicense-File: NOTICE\n"
+                b"License-File: THIRD_PARTY_NOTICES.txt\n"
             ),
             "dapane-0.1.0.dist-info/licenses/LICENSE": (ROOT / "LICENSE").read_bytes(),
             "dapane-0.1.0.dist-info/licenses/NOTICE": (ROOT / "NOTICE").read_bytes(),
+            "dapane-0.1.0.dist-info/licenses/THIRD_PARTY_NOTICES.txt": (
+                ROOT / "THIRD_PARTY_NOTICES.txt"
+            ).read_bytes(),
             "dapane-0.1.0.dist-info/WHEEL": (
                 b"Wheel-Version: 1.0\nRoot-Is-Purelib: false\nTag: cp312-cp312-linux_x86_64\n"
             ),
@@ -235,11 +281,11 @@ class WheelTests(unittest.TestCase):
         with self.assertRaisesRegex(release.AssuranceError, "incomplete wheel RECORD"):
             release.verify_wheel_members(self.wheel, self.installed, "0.1.0")
 
-    def test_wheel_cannot_relabel_the_project_licence(self):
+    def test_wheel_cannot_infer_an_aggregate_distribution_licence(self):
         name = "dapane-0.1.0.dist-info/METADATA"
-        self.members[name] = self.members[name].replace(b"Apache-2.0", b"MIT")
+        self.members[name] += b"License-Expression: Apache-2.0\n"
         self.write_wheel()
-        with self.assertRaisesRegex(release.AssuranceError, "wheel licence differs"):
+        with self.assertRaisesRegex(release.AssuranceError, "wheel aggregate licence"):
             release.verify_wheel_members(self.wheel, self.installed, "0.1.0")
 
     def test_valid_record_does_not_hide_a_missing_or_changed_notice(self):
@@ -253,6 +299,12 @@ class WheelTests(unittest.TestCase):
                 self.write_wheel()
                 with self.assertRaisesRegex(release.AssuranceError, "wheel licence payload"):
                     release.verify_wheel_members(self.wheel, self.installed, "0.1.0")
+
+    def test_regenerated_record_cannot_hide_removed_dependency_notices(self):
+        self.members.pop("dapane-0.1.0.dist-info/licenses/THIRD_PARTY_NOTICES.txt")
+        self.write_wheel()
+        with self.assertRaisesRegex(release.AssuranceError, "wheel licence payload"):
+            release.verify_wheel_members(self.wheel, self.installed, "0.1.0")
 
 
 class SourceTests(unittest.TestCase):

@@ -42,8 +42,11 @@ clear every source dataset, rate, workbook or instrument for redistribution.
 ## Conditional steps not executed
 
 No archive has been selected, so successor cutover, historical-consumer
-reproduction, restore testing and removal of shared machinery are not asserted
-as complete. Any future selected archive must retain the unique history,
+reproduction and restore testing for these external archive candidates, and
+removal of shared machinery, are not asserted as complete. The separately
+[qualified workforce/genomics subset](python-provider-verification.md) does not
+establish those candidates' full preservation or successor behaviour. Any future
+selected archive must retain the unique history,
 scholarly/source assets, rights, known-good artifacts and a demonstrated
 successor/recovery path, then use authority for that particular repository action.
 

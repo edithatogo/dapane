@@ -7,8 +7,10 @@ name = "dapane"
 dynamic = ["version"]
 description = "Exact microcosting and valuation through a shared Rust kernel"
 readme = "README.md"
-license = "Apache-2.0"
-license-files = ["LICENSE", "NOTICE"]
+# Apache-2.0 is the project licence. Wheel/sdist expressions cover their whole
+# contents, so keep the optional aggregate expression undeclared rather than
+# infer one from the project or the conservative dependency notice inventory.
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.txt"]
 requires-python = ">=3.12,<3.16"
 dependencies = []
 keywords = ["microcosting", "valuation", "resource-use", "rust"]
