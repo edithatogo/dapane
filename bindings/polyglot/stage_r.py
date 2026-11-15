@@ -36,7 +36,9 @@ def resolved_core_manifest() -> str:
                     raise ValueError(f"Unsupported inherited additions: {section}.{key}")
                 values[key] = workspace[section][key]
     return "\n".join(
-        f"[{section}]\n" + "\n".join(f"{key} = {toml_value(value)}" for key, value in values.items()) + "\n"
+        f"[{section}]\n"
+        + "\n".join(f"{key} = {toml_value(value)}" for key, value in values.items())
+        + "\n"
         for section, values in core.items()
     )
 
@@ -47,7 +49,9 @@ def stage(output: Path) -> Path:
         raise FileExistsError(f"Output must be a new directory: {output}")
     if output.is_relative_to(ROOT):
         raise ValueError("Stage outside the source checkout to avoid recursive copies")
-    shutil.copytree(LANE / "r", output, ignore=shutil.ignore_patterns("target", ".cargo", "*.o", "*.so"))
+    shutil.copytree(
+        LANE / "r", output, ignore=shutil.ignore_patterns("target", ".cargo", "*.o", "*.so")
+    )
     rust = output / "src/rust"
     manifest = rust / "Cargo.toml"
     source = manifest.read_text()
@@ -71,7 +75,9 @@ def stage(output: Path) -> Path:
     shutil.copyfile(original / "Cargo.toml", provenance / "original-core-Cargo.toml")
     shutil.copyfile(ROOT / "Cargo.toml", provenance / "original-workspace-Cargo.toml")
     receipt = {
-        "repository_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "repository_commit": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+        ).strip(),
         "source_worktree_clean": not subprocess.check_output(
             ["git", "status", "--porcelain", "--untracked-files=all"], cwd=ROOT, text=True
         ).strip(),
@@ -86,8 +92,19 @@ def stage(output: Path) -> Path:
     }
     (provenance / "source.json").write_text(json.dumps(receipt, indent=2) + "\n")
     subprocess.run(
-        ["cargo", "vendor", "--locked", "--offline", "--versioned-dirs", "--manifest-path", str(manifest), str(output / "src/vendor")],
-        check=True, stdout=subprocess.PIPE, text=True,
+        [
+            "cargo",
+            "vendor",
+            "--locked",
+            "--offline",
+            "--versioned-dirs",
+            "--manifest-path",
+            str(manifest),
+            str(output / "src/vendor"),
+        ],
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
     )
     (rust / "vendor-config.toml").write_text(
         '[source.crates-io]\nreplace-with = "vendored-sources"\n\n'

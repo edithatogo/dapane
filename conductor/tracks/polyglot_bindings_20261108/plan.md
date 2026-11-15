@@ -50,3 +50,15 @@ dedicated path claim through the integrator, without duplicate implementations.
 The integrator must change the central registry row to `[!]` / `blocked`.
 This lane intentionally does not edit that shared file. The Conductor consistency
 gate remains mandatory and is expected to reject the unreconciled row.
+
+## Bounded owner quality follow-up — 2026-11-15
+
+Received head: `8716c423f15c6449940df902fbabfab870d38f4d`. The sole
+integrator has accepted this namespace, reconciled the registry and executed
+installed R/native C acceptance. The preceding intake statements are historical;
+the exact shared receipt in PR #20 supersedes them. This pass preserves all
+shared commits and keeps Julia outside the authorised repair.
+
+- [~] B5.1 Correct ABI lint-group precedence and apply pinned Python formatting without changing behaviour or weakening gates.
+- [ ] B5.2 Re-run exact-source quality/native acceptance and independently inspect the semantic diff and shared-file preservation.
+- [ ] B5.3 Record source/artifact identities, actual outcomes and remaining ABI/release requirements in the existing handoff.

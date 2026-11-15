@@ -25,15 +25,33 @@ def prepare(cli: Path, output: Path) -> int:
         cases.append((filename.removesuffix(".json"), "point", request, assertions, "ok"))
     baseline = copy.deepcopy(cases[0][2])
     for name, quantity, amount, exact, rounded in [
-        ("large-integer", "9007199254740993", "1", ("9007199254740993", "1"), "9007199254740993.00"),
+        (
+            "large-integer",
+            "9007199254740993",
+            "1",
+            ("9007199254740993", "1"),
+            "9007199254740993.00",
+        ),
         ("rational", {"numerator": "1", "denominator": "3"}, "1", ("1", "3"), "0.33"),
         ("zero", "0", "90", ("0", "1"), "0.00"),
     ]:
         request = copy.deepcopy(baseline)
         request["usage"][0]["quantity"] = quantity
         request["quotes"][0]["amount"] = amount
-        cases.append((name, "point", request, {"totals": {
-            "exact": dict(zip(("numerator", "denominator"), exact)), "rounded": rounded}}, "ok"))
+        cases.append(
+            (
+                name,
+                "point",
+                request,
+                {
+                    "totals": {
+                        "exact": dict(zip(("numerator", "denominator"), exact)),
+                        "rounded": rounded,
+                    }
+                },
+                "ok",
+            )
+        )
     request = copy.deepcopy(baseline)
     request["run_id"] = "synthetic-\u03b4-\u6f22\u5b57"
     cases.append(("unicode", "point", request, {"run_id": request["run_id"]}, "ok"))
@@ -43,15 +61,40 @@ def prepare(cli: Path, output: Path) -> int:
         request = json.loads(filename.read_text())
         cases.append((filename.stem, "point", request, {}, "ok"))
     interval = json.loads((ROOT / "fixtures/intervals/rate-boundary.json").read_text())
-    cases.append(("rate-boundary", "interval", interval, {
-        "method_version": "dapane-intervals-v0.1.0",
-        "report": {"totals": {"rounded": "110.00", "exact": {"numerator": "110", "denominator": "1"}}}}, "ok"))
+    cases.append(
+        (
+            "rate-boundary",
+            "interval",
+            interval,
+            {
+                "method_version": "dapane-intervals-v0.1.0",
+                "report": {
+                    "totals": {
+                        "rounded": "110.00",
+                        "exact": {"numerator": "110", "denominator": "1"},
+                    }
+                },
+            },
+            "ok",
+        )
+    )
     half_even = copy.deepcopy(interval)
     for quote in half_even["request"]["quotes"]:
         quote["amount"] = "0.01"
     half_even["intervals"][0].update(start="2026-01-31", end="2026-02-02", quantity="1")
-    cases.append(("segment-half-even", "interval", half_even, {
-        "report": {"totals": {"rounded": "0.00", "exact": {"numerator": "1", "denominator": "100"}}}}, "ok"))
+    cases.append(
+        (
+            "segment-half-even",
+            "interval",
+            half_even,
+            {
+                "report": {
+                    "totals": {"rounded": "0.00", "exact": {"numerator": "1", "denominator": "100"}}
+                }
+            },
+            "ok",
+        )
+    )
     invalid = [
         ("float-quantity", lambda r: r["usage"][0].update(quantity=0.5), "invalid_request"),
         ("null-quantity", lambda r: r["usage"][0].update(quantity=None), "invalid_request"),
@@ -64,8 +107,16 @@ def prepare(cli: Path, output: Path) -> int:
         request = copy.deepcopy(baseline)
         change(request)
         cases.append((name, "point", request, {}, code))
-    cases += [("duplicate-keys", "point", '{"schema_version":"0.1","schema_version":"0.2"}', {}, "invalid_json"),
-              ("malformed", "point", "{", {}, "invalid_json")]
+    cases += [
+        (
+            "duplicate-keys",
+            "point",
+            '{"schema_version":"0.1","schema_version":"0.2"}',
+            {},
+            "invalid_json",
+        ),
+        ("malformed", "point", "{", {}, "invalid_json"),
+    ]
 
     def subset(actual, assertions):
         for key, value in assertions.items():
@@ -81,7 +132,9 @@ def prepare(cli: Path, output: Path) -> int:
     for name, operation, request, assertions, status in cases:
         raw = request if isinstance(request, str) else json.dumps(request, ensure_ascii=False)
         command = "evaluate" if operation == "point" else "evaluate-intervals"
-        result = subprocess.run([str(cli), command, "-"], input=raw, text=True, capture_output=True, check=False)
+        result = subprocess.run(
+            [str(cli), command, "-"], input=raw, text=True, capture_output=True, check=False
+        )
         if status == "ok":
             assert result.returncode == 0, (name, result.stderr)
             report = result.stdout.strip()
