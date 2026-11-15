@@ -1,0 +1,21 @@
+[package]
+name = "dapane-observed-contracts"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99.1"
+license = "Apache-2.0"
+publish = false
+description = "Independent X1 observation contracts; raw import qualification is blocked"
+repository = "https://github.com/edithatogo/dapane"
+
+# The integration owner controls the root workspace. This bounded contract
+# package has no external dependencies and is checked separately until adoption.
+[workspace]
+resolver = "3"
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "deny"
+
+[lints.clippy]
+all = "warn"
