@@ -1,0 +1,29 @@
+[package]
+name = "dapane-abi"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99.1"
+publish = false
+license = "Apache-2.0"
+description = "Versioned C transport for the Dapane Rust kernel"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[workspace]
+resolver = "3"
+
+[dependencies]
+dapane-core = { path = "../../../crates/dapane-core", version = "0.1.0" }
+
+[profile.release]
+panic = "unwind"
+lto = "thin"
+codegen-units = 1
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+all = "warn"
+undocumented_unsafe_blocks = "deny"

@@ -1,9 +1,9 @@
 {
   "track_id": "polyglot_bindings_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "blocked",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-15T05:21:18Z",
   "description": "Expose the same Rust numerical implementation to R and Julia with explicit ownership, exact transport and installed-artifact parity. R and Julia are independent delivery branches.",
   "repositories": [
     "."
@@ -18,15 +18,34 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "Own only bindings/polyglot/ and this track; shared root/CI/registry changes are integrator requests.",
+    "Preserve exact JSON and existing point/capacity/interval Rust functions; no host numerical reimplementation.",
+    "R is direct extendr and independent of C ABI, Julia and Python.",
+    "C ABI proposes immutable opaque handles and caller-owned output buffers; foreign pointers remain documented caller preconditions.",
+    "Do not implement Julia until the native C consumer qualifies the ABI.",
+    "Recovered source and lockfiles require fresh exact-head validation; pre-interruption results are historical evidence only."
+  ],
   "requirement_ids": [
     "RQ-09",
     "RQ-02"
   ],
-  "capability_status": "planned",
+  "capability_status": "R and ABI implementation candidates; published source replay pending; C consumer unexecuted; Julia gated",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "partial",
+    "commands": [
+      "EXECUTED before interruption: root cargo build --offline --locked --release -p dapane-cli (passed).",
+      "EXECUTED before interruption: R cargo test (1 panic-containment test passed); cargo fmt; cargo clippy --offline --locked --all-targets -- -D warnings (passed).",
+      "EXECUTED before interruption: prepare_cases.py (24 synthetic cases prepared and independent projections checked).",
+      "EXECUTED before interruption: stage_r.py, R CMD build and R CMD INSTALL --preclean into a fresh library (passed).",
+      "EXECUTED before interruption: installed.R (24 cases, host rejection, GC stress and two independent interpreter processes passed).",
+      "EXECUTED before interruption: packaging unittest suite (3 passed; new fourth path-recursion regression remains unexecuted).",
+      "EXECUTED before interruption: ABI cargo test (5 passed), cargo build --offline --locked --release (passed).",
+      "UNEXECUTED: final published-source qualification, native C consumer/sanitizers, ABI Clippy/format result, artifact hashes, Julia, dependency/advisory release gates.",
+      "UNEXECUTED handoff command: bash bindings/polyglot/qualify.sh /absolute/new-output."
+    ],
+    "evidence": "verification.md",
+    "final_source_qualified": false
   },
   "completion_evidence": [
     "The R wrapper calls the core directly and can be completed without the C ABI, Julia or Python bindings.",

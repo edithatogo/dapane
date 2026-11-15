@@ -1,0 +1,3 @@
+useDynLib(dapaneR, .registration = TRUE)
+export(evaluate_json)
+export(evaluate_intervals_json)

@@ -1,0 +1,10 @@
+**/target/
+**/vendor/
+**/.cargo/
+**/*.o
+**/*.so
+**/*.dll
+**/*.dylib
+build/
+*.tar.gz
+__pycache__/

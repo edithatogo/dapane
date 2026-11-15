@@ -1,0 +1,20 @@
+# The staging script bundles exact core sources and locked vendor dependencies.
+# Initial qualification is Linux x86_64 only; other linker sets remain pending.
+TARGET_DIR = rust/target
+STATLIB = $(TARGET_DIR)/release/libdapane_r.a
+PKG_LIBS = $(STATLIB) -ldl -lpthread -lm
+
+all: $(SHLIB)
+
+$(SHLIB): $(STATLIB)
+
+.PHONY: $(STATLIB)
+$(STATLIB):
+	test -d vendor && test -f rust/vendor-config.toml
+	mkdir -p .cargo
+	cp rust/vendor-config.toml .cargo/config.toml
+	CARGO_HOME="$(CURDIR)/.cargo" cargo build --offline --locked --release --lib --manifest-path=rust/Cargo.toml --target-dir="$(TARGET_DIR)"
+
+clean:
+	rm -f $(SHLIB) $(OBJECTS)
+	rm -rf $(TARGET_DIR) .cargo
