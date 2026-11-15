@@ -7,7 +7,7 @@ with no branch commits, instructions, manifests, licence, source, tests or exist
 Conductor records. Its configured default branch was `main`. No content needed
 migration or deletion.
 
-The setup adds:
+Current repository areas:
 
 | Path | Current responsibility |
 | --- | --- |
@@ -17,14 +17,40 @@ The setup adds:
 | `conductor/*.md` | Product, requirements, architecture, decisions, workflow and roadmap |
 | `conductor/code_styleguides/` | Rust, Python/FFI and document conventions |
 | `conductor/tracks/` | Coherent implementation/research specs, task plans and metadata |
-| `conductor/archive/` | Archive policy; no archived tracks at setup |
+| `conductor/archive/` | Archive policy and catalogue; archived records retain stable track paths |
 | `scripts/validate_conductor.py` | Dependency-free structural and consistency check |
+| `tests/test_conductor_validation.py` | Standard-library regression checks for lifecycle and archival integrity |
 | `.github/workflows/conductor.yml` | Read-only documentation CI |
+| `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml` | Native workspace and pinned toolchain/dependency graph |
+| `crates/dapane-core/` | Exact contract, validation, valuation, allocation and deterministic digests |
+| `crates/dapane-cli/` | Offline file/stdin JSON interface and CLI boundary checks |
+| `crates/dapane-python/`, `python/dapane/`, `pyproject.toml` | Thin PyO3 extension and Python exact-value transport |
+| `schemas/0.1/`, `schemas/0.2/`, `schemas/scenarios/` | Original and explicit capacity contracts; synthetic candidate preparation schema |
+| `schemas/bundles/0.1.schema.json` | Independently versioned immutable candidate snapshot and withdrawal envelope |
+| `fixtures/core-contracts/` | Independent presegmented rate-boundary and alternative-capital calculations |
+| `scripts/verify_run_bundle.py` | Repository checks for snapshot/history, declared release consistency and replay through the installed Rust wheel |
+| `conductor/tracks/core_contracts_20261108/verification.md` | Reviewed implementation identity, acceptance evidence and qualification limits |
+| `fixtures/` | Five synthetic inputs and independently authored expected results |
+| `tests/python/` | Installed-wheel consumer, transport, error and concurrency checks |
+| `scripts/validate_contract.py` | Structural checks and independent CLI result/digest verification |
+| `scripts/benchmark_cli.py` | Bounded synthetic valuation/allocation measurements |
+| `crates/dapane-core/src/intervals.rs` | Declared calendar-day rate segmentation and bounded replay envelope |
+| `schemas/intervals/`, `fixtures/intervals/` | Interval contracts and independently derived synthetic references |
+| `scripts/validate_intervals.py` | Installed CLI reference, provenance, digest, replay and tamper checks |
+| `scripts/qualify_kernel.py`, `tests/tooling/` | Pinned toolchain, locked inventory and native dependency-boundary qualification |
+| `conductor/tracks/rust_kernel_20261108/verification.md` | Kernel acceptance, independent review and installed-artifact evidence |
+| `docs/` | Implemented contract, provider review, quickstart, compatibility and runtime evidence |
+| `.github/workflows/runtime.yml` | Native and four-interpreter installed-wheel CI |
+| `scripts/verify_provider_consumers.py`, `.github/workflows/provider-consumers.yml` | Two separately installed providers, exact quotation exchange, native parity and selected historical qualification |
+| `docs/provider-consumers.lock.json`, `docs/python-provider-verification.md` | Immutable provider/source identities, actual commands/results and bounded compatibility evidence |
 
-The first runtime tracks will establish the Cargo workspace, crate layout,
-manifests, lockfiles, schemas, fixtures and Python package. Paths described in the
-design as proposed implementation locations do not exist merely because they are
-mentioned here. There are no package releases, binary artefacts or deployments.
+The first runtime candidate is implemented and locally built; its precise scope
+is recorded in [the contract](../docs/contract-v0.1.md) and
+[verification](../docs/runtime-verification.md). Build outputs remain outside
+version control. The selected workforce and manual extraction adapters are
+implemented in their owning providers and qualified through installed wheels.
+Registry releases, deployments, broader domain adapters, R/Julia, reporting and
+process execution retain separate gates.
 
 ## Source-of-truth boundaries
 
@@ -39,3 +65,5 @@ standards_check owns original reporting-source records. See
 Update this file when implementation areas or public entry points are added or
 removed. Record actual build/test commands in the workflow and affected track.
 Do not replace executable discovery with a speculative exhaustive file tree.
+
+The [synthetic genomics capacity fixtures](../fixtures/genomics-capacity/README.md) and [0.2 contract](../docs/contract-v0.2.md) extend the reused runtime; [increment verification](../docs/genomics-capacity-verification.md) records ownership and bounded evidence.

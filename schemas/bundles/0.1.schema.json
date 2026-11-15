@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/bundles/0.1.schema.json",
+  "title": "Dapane synthetic candidate run bundle 0.1",
+  "description": "Immutable valuation snapshot or retraction tombstone. Structure is not source certification. Replay, lifecycle, dates, economic view and checkpoint checks require the repository verifier.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "token": {"$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"},
+    "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", "format": "date"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 2048, "pattern": "\\S"},
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {"from": {"$ref": "#/$defs/date"}, "to": {"$ref": "#/$defs/date"}}
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "version", "quote_ids", "published_on", "retrieved_on"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/token"},
+        "version": {"$ref": "#/$defs/token"},
+        "quote_ids": {"type": "array", "minItems": 1, "maxItems": 10000, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "published_on": {"$ref": "#/$defs/date"},
+        "retrieved_on": {"$ref": "#/$defs/date"}
+      }
+    },
+    "capital": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset_id", "treatment", "source_line_ids", "assumption"],
+      "properties": {
+        "asset_id": {"$ref": "#/$defs/token"},
+        "treatment": {"enum": ["acquisition_expenditure", "prepared_accounting_charge", "prepared_economic_charge"]},
+        "source_line_ids": {"type": "array", "minItems": 1, "maxItems": 10000, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "assumption": {"$ref": "#/$defs/reason"}
+      }
+    },
+    "exclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "state", "reason"],
+      "properties": {
+        "id": {"$ref": "#/$defs/token"},
+        "state": {"enum": ["excluded", "missing", "unsupported"]},
+        "reason": {"$ref": "#/$defs/reason"}
+      }
+    }
+  },
+  "required": ["bundle_version", "bundle_id", "series_id", "recorded_on", "change", "previous_digest", "reason", "source_revision", "qualification", "observation_window", "rate_releases", "capital_treatments", "excluded_inputs", "request", "report", "bundle_digest"],
+  "properties": {
+    "bundle_version": {"const": "0.1"},
+    "bundle_id": {"$ref": "#/$defs/token"},
+    "series_id": {"$ref": "#/$defs/token"},
+    "recorded_on": {"$ref": "#/$defs/date"},
+    "change": {"enum": ["create", "replace", "retract"]},
+    "previous_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "reason": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/reason"}]},
+    "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "qualification": {"const": "synthetic_candidate"},
+    "observation_window": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/window"}]},
+    "rate_releases": {"type": "array", "maxItems": 10000, "items": {"$ref": "#/$defs/release"}},
+    "capital_treatments": {"type": "array", "maxItems": 10000, "items": {"$ref": "#/$defs/capital"}},
+    "excluded_inputs": {"type": "array", "maxItems": 10000, "items": {"$ref": "#/$defs/exclusion"}},
+    "request": {"oneOf": [{"type": "null"}, {"$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/request.schema.json"}, {"$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/request.schema.json"}]},
+    "report": {"oneOf": [{"type": "null"}, {"$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json"}, {"$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/report.schema.json"}]},
+    "bundle_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"change": {"const": "create"}}},
+      "then": {"properties": {"previous_digest": {"type": "null"}, "reason": {"type": "null"}}},
+      "else": {"properties": {"previous_digest": {"$ref": "#/$defs/digest"}, "reason": {"$ref": "#/$defs/reason"}}}
+    },
+    {
+      "if": {"properties": {"change": {"const": "retract"}}},
+      "then": {"properties": {"request": {"type": "null"}, "report": {"type": "null"}, "observation_window": {"type": "null"}, "rate_releases": {"maxItems": 0}, "capital_treatments": {"maxItems": 0}, "excluded_inputs": {"maxItems": 0}}},
+      "else": {"properties": {"request": {"type": "object"}, "report": {"type": "object"}, "observation_window": {"type": "object"}}}
+    }
+  ]
+}

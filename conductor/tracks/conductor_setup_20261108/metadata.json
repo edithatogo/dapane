@@ -1,9 +1,9 @@
 {
   "track_id": "conductor_setup_20261108",
   "type": "chore",
-  "status": "completed",
+  "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T04:09:02Z",
+  "updated_at": "2026-11-15T00:10:40Z",
   "description": "Give the repository maintainer and coding agents a navigable, internally consistent project definition and an executable delivery plan. Dapane becomes the coordinating home for the shared framework; the earlier MCHS plan remains a provenance record and domain-consumer reference.",
   "repositories": [
     "."
@@ -26,6 +26,24 @@
     "status": "passed",
     "commands": [
       "python3 scripts/validate_conductor.py",
+      "python3 -m unittest discover -s tests -p 'test_conductor_validation.py' -v"
+    ],
+    "scope": "Conductor records and lifecycle regression tests, independently reviewed and executed by hosted CI; no numerical or scientific qualification.",
+    "baseline_commit": "d7063cecc26abe96a3f28fca575b99b450241430",
+    "reviewed_commit": "77ec86710de00eea7374b7db8c4bf0e8d1180e3d",
+    "tested_merge_commit": "38606fae3554caadc5408607f5ffad5e4b88fa5f",
+    "ci_run_url": "https://github.com/edithatogo/dapane/actions/runs/43650452721",
+    "ci_job_url": "https://github.com/edithatogo/dapane/actions/runs/43650452721/job/132617513294",
+    "ci_conclusion": "success",
+    "regression_test_methods": 12,
+    "cli_fixture_executions": 35,
+    "evidence": "review.md",
+    "archive_commit_verification": "Subsequent exact-head results are attached to PR #14; the recorded run qualifies the reviewed validator and pre-archive records."
+  },
+  "initial_setup_verification": {
+    "status": "passed",
+    "commands": [
+      "python3 scripts/validate_conductor.py",
       "python3 -m py_compile scripts/validate_conductor.py",
       "git diff --cached --check"
     ],
@@ -42,11 +60,49 @@
     "ci_conclusion": "success",
     "runtime_tests": "not_applicable_no_runtime_implemented"
   },
-  "completion_evidence": [
+  "initial_setup_completion_evidence": [
     "All project and track links resolve; metadata, registry status and task markers agree.",
     "Every requirement has at least one owning implementation track and concrete acceptance criteria.",
     "The local dependency graph is acyclic; external provider readiness is recorded separately.",
     "Only setup work is marked complete. No Rust engine, domain model, binding, deployment or archive is asserted delivered.",
     "The repository contains the reviewed files and publication outcome is recorded without claiming a runtime release."
-  ]
+  ],
+  "archived_at": "2026-11-14T23:01:49Z",
+  "archive_reason": "Completed setup and reviewed lifecycle corrections; archived in place to preserve stable links and local prerequisites.",
+  "completion_evidence": [
+    "Original setup publication and documentation CI were rechecked; initial verification and completion claims remain separately preserved.",
+    "Archived tracks retain completed or explicitly omitted tasks and passed verification.",
+    "Index and plan each require exactly one well-formed status declaration consistent with metadata and the registry.",
+    "Independent remote review of the corrected candidate found no remaining findings; hosted Conductor validation and all 12 regression tests passed.",
+    "The completed setup is archived in place with stable links, local dependency identity and documentation_ready capability status."
+  ],
+  "integration_review": {
+    "main_commit": "224cf91dbcf513feaa022b2cf5aa310a965472ce",
+    "scope": "Preserve merged core-contract and kernel work, align the archive fixture, and reconcile all three in-place archive records.",
+    "local_cli_test_methods_passed": 12,
+    "upstream_fixture_helper_cases_passed": 7,
+    "local_pytest": "passed_using_existing_qualified_kernel_environment",
+    "hosted_verification": "Latest Conductor context result required before integration, together with any repository-required checks; successful runtime and CodeQL receipts retain their exact qualified code commit.",
+    "evidence": "review.md",
+    "kernel_main_commit": "172d0ef39291a936a35c6e221eb467701ccefbba",
+    "python_version": "3.12.14",
+    "pytest_version": "9.2.0",
+    "archive_pytest_cases_passed": 7,
+    "combined_context": {
+      "tracks": 14,
+      "requirements": 12,
+      "tasks": 153,
+      "local_links": 512
+    },
+    "kernel_context": {
+      "tracks": 14,
+      "requirements": 12,
+      "tasks": 153,
+      "local_links": 501
+    },
+    "core_archive_main_commit": "c70edf65a119d9ffda410cd4e5325e1f37e9332a",
+    "qualified_code_commit": "770ed2a0ef60bc0dad8b01bcab7ded2ba52cf0a8",
+    "qualified_code_checks_passed": 11,
+    "final_reconciliation_scope": "Documentation and metadata only; validator, regression tests, runtime implementation and workflows unchanged from the qualified code commit."
+  }
 }

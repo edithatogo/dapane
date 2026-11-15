@@ -1,9 +1,9 @@
 {
   "track_id": "rust_kernel_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-14T23:33:41Z",
   "description": "Implement one authoritative numerical core for exact valuation, component accounting and shared-pool allocation. The native library and CLI must work without a language wrapper, table engine, simulator or cloud account.",
   "repositories": [
     "."
@@ -15,17 +15,52 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "ADR-010",
+    "ADR-011",
+    "ADR-013"
+  ],
   "requirement_ids": [
     "RQ-01",
     "RQ-02",
     "RQ-03",
     "RQ-12"
   ],
-  "capability_status": "planned",
+  "capability_status": "qualified_native_point_capacity_and_intervals",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "passed",
+    "scope": "Bounded native point/capacity profiles 0.1/0.2 and separate interval profile 0.1 qualified locally on Linux x86_64: 62 native tests, installed CLI independent references/provenance/replay, 11 dependency-tooling regressions, full pinned dependency boundary, and 133 installed-wheel tests on each of CPython 3.12.14, 3.13.5, 3.14.10 and 3.15.1. Core-contract PR #9 integrated without Rust/wrapper changes. Existing fixture digests unchanged. Hosted Actions queued at observation are not counted as passing; local security results are recorded separately. Project licensing, publication, real providers, richer methods and other platforms remain outside this acceptance.",
+    "commands": [
+      "cargo test --locked",
+      "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "cargo build --locked --release -p dapane-cli",
+      "python scripts/validate_contract.py --cli target/release/dapane",
+      "python scripts/benchmark_cli.py --cli target/release/dapane",
+      "cargo fmt --all --check",
+      "cargo install --locked --path crates/dapane-cli --root <clean-prefix>",
+      "cargo build --locked --release --no-default-features -p dapane-core -p dapane-cli",
+      "python scripts/validate_intervals.py --cli <independently-installed-cli>",
+      "python -m unittest discover -s tests/tooling -p test_qualify_kernel.py -v",
+      "python scripts/qualify_kernel.py",
+      "maturin build --locked --release --interpreter <qualified-python> --out <wheel-directory>",
+      "python -m pip install --no-deps <built-wheel>",
+      "env -u PYTHONPATH python -m pytest --import-mode=importlib <repository>/tests/python -q",
+      "python scripts/validate_conductor.py"
+    ],
+    "evidence": [
+      "docs/runtime-verification.md",
+      "docs/contract-v0.1.md",
+      "docs/contract-v0.2.md",
+      "docs/genomics-capacity-verification.md",
+      "docs/interval-contract-v0.1.md",
+      "docs/kernel-dependencies.md",
+      "conductor/tracks/rust_kernel_20261108/review.md",
+      "conductor/tracks/rust_kernel_20261108/verification.md",
+      "conductor/tracks/rust_kernel_20261108/evidence/manifest.json"
+    ],
+    "source_commit": "a703c93d49e782b67fe4b14588bf1fb26292bb23",
+    "source_tree": "006a11a59e33c42c42ee4ab815b5cdb632caf55e",
+    "execution": "local_native_and_installed_artifacts"
   },
   "completion_evidence": [
     "All supported exact reference cases match independently derived results; invalid quantity/unit/date/valuation combinations return structured errors.",
@@ -34,5 +69,8 @@
     "Synthetic 2.50 weighted units at 17.00 per unit produce 42.50 in the declared funding view without manufacturing resource-use records.",
     "Repeated native runs reproduce the agreed output digest after excluding explicitly non-semantic metadata; no implicit current date or network selection changes results.",
     "The minimal feature build runs without Arrow/Polars, ontology, simulation, GPU or web-service dependencies."
-  ]
+  ],
+  "implementation_decision": "conductor/decisions.md#adr-013--version-declared-calendar-day-interval-exposure-separately",
+  "completed_at": "2026-11-14T23:33:41Z",
+  "archived_at": "2026-11-14T23:33:41Z"
 }

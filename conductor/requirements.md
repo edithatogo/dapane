@@ -1,13 +1,32 @@
 # Requirements
 
-Status: design baseline, 8 November 2026. These are requirements for future
-implementation. Establishing Conductor does not implement or qualify the Rust
-engine, any language binding, a domain model or a deployment.
+Status: product acceptance baseline, 8 November 2026. The first runtime implements
+a bounded subset recorded in the [0.1 contract](../docs/contract-v0.1.md) and
+[verification evidence](../docs/runtime-verification.md). The requirements below
+remain broader than that candidate; synthetic numerical and package checks do
+not complete provider, domain, deployment or research qualification.
 
 The [product](product.md) defines scope; the [design](design.md) explains the
 implementation boundary; [decisions](decisions.md) records the chosen direction.
 The [track registry](tracks.md) owns execution status. Requirement identifiers
 remain stable when descriptions or implementation plans change.
+
+Implementation note, **15 November 2026**: the RQ-01–03 contract boundary now
+includes [run-bundle profile 0.1](../docs/run-bundle-v0.1.md) around unchanged
+request/report profiles 0.1 and 0.2. It defines snapshot replacement, nonfinancial
+withdrawal, historical selection, consistent declared release identities and
+exact native replay. Synthetic references cover explicitly segmented rate changes
+and alternative prepared capital quotations. The
+[core-contract evidence](tracks/core_contracts_20261108/verification.md) records
+the reviewed revision and executed checks. The separately versioned
+[interval profile 0.1](../docs/interval-contract-v0.1.md) implements bounded automatic
+rate-boundary segmentation under declared uniform calendar-day exposure; the
+[kernel evidence](tracks/rust_kernel_20261108/verification.md) records its qualification.
+The selected RQ-04 workforce quotation and manual genomic extraction labour
+workflow now have [installed provider qualification](../docs/python-provider-verification.md),
+including source selection, compatibility and historical replay. Richer exposure
+models, economic formulae, broader provider/source coverage and release assurance
+retain their existing owners and the broader acceptance criteria below.
 
 ## RQ-01 — Domain-neutral types and contracts
 
@@ -70,6 +89,12 @@ Acceptance:
   resource cost or cash savings.
 - Results retain valuation basis, perspective, currency, denominator, observation
   window and component lineage through aggregation.
+- Full-pool weights remain distinct from explicit capacity denominators. Incomplete
+  instrument-use records and unknown availability retain unknown/unallocated states;
+  sample throughput never becomes available equipment hours implicitly.
+- Synthetic preparation cases distinguish maintenance contract duration from
+  device useful life and one-time implementation from recurrent costs. Candidate
+  assumptions and verified arithmetic do not establish validated economic formulae.
 
 ## RQ-04 — Python delivery and two independent domain consumers
 
@@ -89,6 +114,11 @@ Acceptance:
   isolated and consumer installation does not rely on a source checkout.
 - Demonstration PSA/VOI outputs are separated from scientific reference cases;
   needed workforce namespace repairs are coordinated with its repository owner.
+
+Qualified scope: the dated QLD HP3.1 base-pay release and manual extraction
+labour recipe, separate pinned Python environments, canonical/legacy workforce
+identity and resources, native parity and explicit historical rollback. See the
+[qualification and review evidence](../docs/python-provider-verification.md).
 
 ## RQ-05 — MCHS and quotation/source adapters
 
@@ -196,7 +226,11 @@ Owner: [process models](tracks/process_models_20261108/index.md).
 
 Accept observed or simulated activity/resource events, then qualify XES, OCEL 2.0,
 a bounded Petri-net/PNML profile and a named BPMN 2.0 subset. Reuse process tooling
-and Kairos execution contracts; keep Kairos independent of valuation.
+and Kairos execution contracts; keep both Kairos and Dapane independently usable.
+Represent event, process and object context over one source ledger. Associations
+must not implicitly allocate or multiply costs; explicit attribution/allocation
+determines object views. The initial runtime preserves context but does not
+execute processes or infer usage from event duration.
 
 Acceptance:
 

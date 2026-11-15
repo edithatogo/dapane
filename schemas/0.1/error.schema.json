@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/error.schema.json",
+  "title": "Dapane 0.1 structured error",
+  "description": "Stable error shape. The code identifies a runtime failure; no partial financial total is present. Paths are JSON-pointer-like, with / for malformed JSON.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^/"
+    }
+  },
+  "required": [
+    "code",
+    "message",
+    "path"
+  ]
+}

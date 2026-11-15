@@ -1,0 +1,100 @@
+{
+  "schema_version": "0.1",
+  "run_id": "synthetic-subcent-allocation",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-economic_cost",
+    "version": "1.0.0",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "economic_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "subcent-rate",
+      "kind": "resource_use",
+      "target": "shared_material",
+      "unit": "item",
+      "amount": "0.05",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "material"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-subcent-rate",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/subcent-allocation.json"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "shared-use",
+      "use_id": "use-shared-use",
+      "kind": "resource_use",
+      "target": "shared_material",
+      "unit": "item",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "subcent-rate",
+      "source": {
+        "id": "synthetic-shared-use",
+        "version": "1.0.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/subcent-allocation.json"
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "a",
+      "kind": "recipient"
+    },
+    {
+      "id": "b",
+      "kind": "recipient"
+    },
+    {
+      "id": "c",
+      "kind": "recipient"
+    }
+  ],
+  "allocations": [
+    {
+      "id": "subcent-pool",
+      "source_line_ids": [
+        "shared-use"
+      ],
+      "weights": [
+        {
+          "object_id": "c",
+          "weight": "1"
+        },
+        {
+          "object_id": "a",
+          "weight": "1"
+        },
+        {
+          "object_id": "b",
+          "weight": "1"
+        }
+      ]
+    }
+  ]
+}

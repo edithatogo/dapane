@@ -4,7 +4,7 @@
 
 Demonstrate the next new domain by composing workforce quotations and laboratory recipes into a versioned newborn-screening programme model, with conserved shared costs and explicit denominators.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This is the full acceptance specification. The first bounded profile is implemented; [runtime evidence](../../../docs/runtime-verification.md) records its scope. Unmet criteria below remain open.
 
 ## Scope and requirements
 

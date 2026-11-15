@@ -1,10 +1,44 @@
 # Framework design
 
 Status: accepted architectural direction for implementation, 8 November 2026.
-Dapane currently contains project context and plans; the interfaces below describe
-the intended runtime, not an available API. [Requirements](requirements.md) define
+Dapane now contains a bounded Rust/CLI/Python candidate. The interfaces below
+describe the full architectural target; [contract 0.1](../docs/contract-v0.1.md)
+is the authoritative implemented API and [verification](../docs/runtime-verification.md)
+records its evidence and limits. [Requirements](requirements.md) define
 acceptance, [decisions](decisions.md) explain choices, and the [roadmap](roadmap.md)
 sequences delivery.
+
+The bounded [0.2 capacity contract](../docs/contract-v0.2.md) extends that API
+explicitly while preserving 0.1 full-pool allocation. It keeps known and unknown
+instrument-hour observations distinct, retains unallocated pool value in the
+ledger, and does not infer availability from sample throughput. Synthetic
+preparation assumptions live in a separate versioned fixture manifest; the
+runtime does not implement an economic annualisation or recurrence policy.
+
+The independently versioned [run-bundle profile 0.1](../docs/run-bundle-v0.1.md)
+wraps unchanged request/report profiles 0.1 and 0.2. It adds full immutable
+snapshots, replacement/withdrawal history, observation windows, release metadata,
+exclusions and alternative prepared capital annotations. A separately retained
+head checkpoint detects missing history suffixes. Repository tooling replays
+every full valuation snapshot through the installed Rust wheel and compares the
+complete report; native valuation remains independent of Python.
+
+Across a verified history, a repeated source ID/version/quote ID retains its
+complete quote snapshot. A release retains one publication date and consistent
+non-null declared content digests, including across intermediate omissions.
+Quote subsets, quote-list order and retrieval dates may change; quote correction
+requires a new source version. External source truth, rights and eligibility
+remain provider qualification. See [ADR-012](decisions.md) and the
+[core-contract evidence](tracks/core_contracts_20261108/verification.md).
+
+The separate [interval profile 0.1](../docs/interval-contract-v0.1.md) adds bounded
+automatic splitting at the caller's selected rate boundaries. It requires explicit
+`uniform_calendar_day` exposure over a half-open Gregorian date interval. Original
+parent identities are validated before generated child identities; quote coverage
+must be exact and non-overlapping. The result retains parent snapshots, exact
+segment quantities and the expanded request for replay through the unchanged scalar
+engine. Per-segment half-even rounding is part of its own method identity. See
+[ADR-013](decisions.md) and [kernel evidence](tracks/rust_kernel_20261108/verification.md).
 
 ## 1. Boundary and dependency direction
 
@@ -31,15 +65,19 @@ flowchart TD
     L --> D["Decision-model consumers"]
 ```
 
-Kairos produces neutral usage events when simulation is required; it does not
-depend on Dapane. UOGTO supplies optional semantic mappings. A Power App, CareOps
+Kairos is an optional producer when simulation is required; neither engine
+depends on the other. Its inspected neutral usage export remains pending, as
+recorded in the [provider review](../docs/provider-boundaries.md). Static and
+observed inputs do not wait for it. UOGTO supplies optional semantic mappings. A Power App, CareOps
 workflow or decision-model application consumes the same calculation boundary.
 Ownership and provider dependencies are detailed in [ecosystem](ecosystem.md).
 
 ## 2. Contract model
 
-Names below are design vocabulary. Final field names and schema versions are
-deliverables of the core-contracts track.
+Names below are broader design vocabulary. The implemented fields and bounds are
+in contract 0.1; unimplemented policy fields in this table are not accepted by
+the runtime. The [schemas](../schemas/README.md) and core-contracts track retain
+the distinction between structural definitions and economic semantics.
 
 | Record | Minimum meaning to preserve |
 | --- | --- |
@@ -61,6 +99,14 @@ Keep metadata axes independent: an accessible source is not necessarily official
 an official source does not validate a model; a synthetic source cannot be promoted
 through a licence label; a structurally conforming result need not be scientifically
 valid. Preserve unknown status where evidence is absent.
+
+The implemented optional context registries distinguish events, process instances
+and typed objects, with qualified object relationships. A use can link to all
+three. Context does not assign value: direct attribution or a named allocation
+pool creates the conserving object view. See the
+[event/process/object model](../docs/event-process-object-model.md). Date-level
+occurrence is currently preserved; interval derivation and simulation-time
+semantics remain adapter work.
 
 ## 3. Numerical and economic model
 
@@ -123,12 +169,13 @@ its result must first match a full recomputation.
 
 ## 5. Workspace and language boundaries
 
-The proposed workspace separates core contracts/arithmetic, optional data IO, CLI,
-Python binding, later C ABI/R binding and optional WASM. Exact crate names and
-dependency versions are implementation decisions, not established package APIs.
+The workspace currently contains `dapane-core`, `dapane-cli` and `dapane-python`.
+Default members are the core and CLI, so Python is not needed for native costing.
+Optional data IO, later C ABI/R binding and optional WASM remain separate work.
 See [technology stack](tech-stack.md) for dependency qualification.
 
-Python uses PyO3/maturin and thin Polars/Arrow conveniences. R may use extendr to
+Python uses PyO3/maturin. Thin Polars/Arrow conveniences remain optional future
+adapters. R may use extendr to
 call the same Rust core directly and need not wait for the C ABI. Julia calls the
 versioned C ABI and resolves qualified native artifacts. No wrapper requires a
 second implementation of the economic rules or another host language at runtime.

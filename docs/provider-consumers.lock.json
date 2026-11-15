@@ -1,0 +1,15 @@
+{
+  "schema_version": "1",
+  "workforce": {
+    "repository": "edithatogo/microcosting_healthworkforce",
+    "commit": "c351a7c6420a356c4c13d2da3010bc7e7d0341f9",
+    "python": "3.15.2",
+    "artifact_sha256": "9cd5e8bb48b29186b7fd4ea911f914c0e0dbf4f3fc188a1f6728cbe65947ec60"
+  },
+  "genomics": {
+    "repository": "edithatogo/microcosting_genomics",
+    "commit": "be2451f34a389f90e618cf37a5e8e1fcbb148dea",
+    "python": "3.15.1"
+  },
+  "qualification": "passed"
+}

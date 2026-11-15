@@ -57,3 +57,13 @@ Runtime package names, support versions and repository licensing are not establi
 Follow the [phased plan](plan.md) and [repository workflow](../../workflow.md).
 Commands described by pending tasks are future acceptance instructions, not executed evidence.
 Record actual commands, source/artifact identities and outcomes in the metadata when work is performed.
+
+## Review and archival follow-up, 15 November 2026
+
+The original setup acceptance above records the 8 November completion boundary.
+The user subsequently requested implementation review, corrections and archival
+of this track. Preserve the original publication evidence and archive the
+completed track in place according to [archive policy](../../archive/README.md).
+The follow-up requires consistent metadata, registry, index and plan status;
+finished tasks; passed verification; and stable dependency links. Its separate
+[review record](review.md) does not qualify any runtime or archive a repository.

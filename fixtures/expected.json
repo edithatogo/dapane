@@ -1,0 +1,390 @@
+{
+  "schema_version": "0.1",
+  "method_version": "dapane-exact-v0.1.0",
+  "provenance": "Independent hand calculations; every quantity and rate is synthetic. See fixtures/README.md.",
+  "fixtures": {
+    "workforce.json": {
+      "totals": {
+        "exact": {
+          "numerator": "30",
+          "denominator": "1"
+        },
+        "rounded": "30.00",
+        "rounding_adjustment": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "directly_attributed": "0.00",
+        "allocated": "0.00",
+        "unattributed": "30.00"
+      },
+      "lines": {
+        "workforce-exposure": {
+          "exact": {
+            "numerator": "30",
+            "denominator": "1"
+          },
+          "rounded": "30.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        }
+      },
+      "object_totals": {},
+      "allocations": {}
+    },
+    "genomics.json": {
+      "totals": {
+        "exact": {
+          "numerator": "120",
+          "denominator": "1"
+        },
+        "rounded": "120.00",
+        "rounding_adjustment": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "directly_attributed": "20.00",
+        "allocated": "100.00",
+        "unattributed": "0.00"
+      },
+      "lines": {
+        "collection-a": {
+          "exact": {
+            "numerator": "10",
+            "denominator": "1"
+          },
+          "rounded": "10.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        },
+        "collection-b": {
+          "exact": {
+            "numerator": "10",
+            "denominator": "1"
+          },
+          "rounded": "10.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        },
+        "batch": {
+          "exact": {
+            "numerator": "100",
+            "denominator": "1"
+          },
+          "rounded": "100.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        }
+      },
+      "object_totals": {
+        "specimen-a": {
+          "direct": "10.00",
+          "allocated": "50.00",
+          "total": "60.00"
+        },
+        "specimen-b": {
+          "direct": "10.00",
+          "allocated": "50.00",
+          "total": "60.00"
+        },
+        "batch-1": {
+          "direct": "0.00",
+          "allocated": "0.00",
+          "total": "0.00"
+        }
+      },
+      "allocations": {
+        "batch-allocation": {
+          "pool_exact": {
+            "numerator": "100",
+            "denominator": "1"
+          },
+          "pool_rounded": "100.00",
+          "residual": "0.00",
+          "shares": {
+            "specimen-a": {
+              "weight": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact_share": {
+                "numerator": "50",
+                "denominator": "1"
+              },
+              "rounded": "50.00"
+            },
+            "specimen-b": {
+              "weight": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact_share": {
+                "numerator": "50",
+                "denominator": "1"
+              },
+              "rounded": "50.00"
+            }
+          }
+        }
+      }
+    },
+    "activity-funding.json": {
+      "totals": {
+        "exact": {
+          "numerator": "85",
+          "denominator": "2"
+        },
+        "rounded": "42.50",
+        "rounding_adjustment": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "directly_attributed": "0.00",
+        "allocated": "0.00",
+        "unattributed": "42.50"
+      },
+      "lines": {
+        "activity": {
+          "exact": {
+            "numerator": "85",
+            "denominator": "2"
+          },
+          "rounded": "42.50",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        }
+      },
+      "object_totals": {},
+      "allocations": {}
+    },
+    "newborn-screening.json": {
+      "totals": {
+        "exact": {
+          "numerator": "150",
+          "denominator": "1"
+        },
+        "rounded": "150.00",
+        "rounding_adjustment": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "directly_attributed": "50.00",
+        "allocated": "100.00",
+        "unattributed": "0.00"
+      },
+      "lines": {
+        "collection-a": {
+          "exact": {
+            "numerator": "10",
+            "denominator": "1"
+          },
+          "rounded": "10.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        },
+        "collection-b": {
+          "exact": {
+            "numerator": "10",
+            "denominator": "1"
+          },
+          "rounded": "10.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        },
+        "batch": {
+          "exact": {
+            "numerator": "100",
+            "denominator": "1"
+          },
+          "rounded": "100.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        },
+        "confirmation-b": {
+          "exact": {
+            "numerator": "30",
+            "denominator": "1"
+          },
+          "rounded": "30.00",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        }
+      },
+      "object_totals": {
+        "infant-a": {
+          "direct": "10.00",
+          "allocated": "50.00",
+          "total": "60.00"
+        },
+        "infant-b": {
+          "direct": "40.00",
+          "allocated": "50.00",
+          "total": "90.00"
+        },
+        "specimen-a": {
+          "direct": "0.00",
+          "allocated": "0.00",
+          "total": "0.00"
+        },
+        "specimen-b": {
+          "direct": "0.00",
+          "allocated": "0.00",
+          "total": "0.00"
+        },
+        "batch-1": {
+          "direct": "0.00",
+          "allocated": "0.00",
+          "total": "0.00"
+        },
+        "confirmation-b": {
+          "direct": "0.00",
+          "allocated": "0.00",
+          "total": "0.00"
+        }
+      },
+      "allocations": {
+        "batch-allocation": {
+          "pool_exact": {
+            "numerator": "100",
+            "denominator": "1"
+          },
+          "pool_rounded": "100.00",
+          "residual": "0.00",
+          "shares": {
+            "infant-a": {
+              "weight": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact_share": {
+                "numerator": "50",
+                "denominator": "1"
+              },
+              "rounded": "50.00"
+            },
+            "infant-b": {
+              "weight": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact_share": {
+                "numerator": "50",
+                "denominator": "1"
+              },
+              "rounded": "50.00"
+            }
+          }
+        }
+      }
+    },
+    "subcent-allocation.json": {
+      "totals": {
+        "exact": {
+          "numerator": "1",
+          "denominator": "20"
+        },
+        "rounded": "0.05",
+        "rounding_adjustment": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "directly_attributed": "0.00",
+        "allocated": "0.05",
+        "unattributed": "0.00"
+      },
+      "lines": {
+        "shared-use": {
+          "exact": {
+            "numerator": "1",
+            "denominator": "20"
+          },
+          "rounded": "0.05",
+          "rounding_adjustment": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        }
+      },
+      "object_totals": {
+        "a": {
+          "direct": "0.00",
+          "allocated": "0.02",
+          "total": "0.02"
+        },
+        "b": {
+          "direct": "0.00",
+          "allocated": "0.02",
+          "total": "0.02"
+        },
+        "c": {
+          "direct": "0.00",
+          "allocated": "0.01",
+          "total": "0.01"
+        }
+      },
+      "allocations": {
+        "subcent-pool": {
+          "pool_exact": {
+            "numerator": "1",
+            "denominator": "20"
+          },
+          "pool_rounded": "0.05",
+          "residual": "0.00",
+          "shares": {
+            "a": {
+              "weight": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact_share": {
+                "numerator": "1",
+                "denominator": "60"
+              },
+              "rounded": "0.02"
+            },
+            "b": {
+              "weight": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact_share": {
+                "numerator": "1",
+                "denominator": "60"
+              },
+              "rounded": "0.02"
+            },
+            "c": {
+              "weight": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "exact_share": {
+                "numerator": "1",
+                "denominator": "60"
+              },
+              "rounded": "0.01"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,820 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json",
+  "title": "Dapane 0.1 shared definitions",
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^(?!\\s)(?!.*[\\u0000-\\u001f\\u007f-\\u009f])\\S(?:.*\\S)?$",
+      "description": "No surrounding whitespace or control characters. maxLength counts Unicode characters; Rust additionally enforces the authoritative 128-byte UTF-8 limit."
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^(?!0000)[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "decimalString": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]+$",
+          "minLength": 1,
+          "maxLength": 96
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]{1,36}$",
+          "minLength": 3,
+          "maxLength": 97
+        }
+      ],
+      "description": "Unsigned exact decimal text: at most 96 total digits and 36 fractional digits; no exponent, sign, whitespace or JSON numeric literal."
+    },
+    "exactNumber": {
+      "oneOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/decimalString"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "numerator": {
+              "type": "string",
+              "pattern": "^[0-9]+$",
+              "minLength": 1,
+              "maxLength": 96
+            },
+            "denominator": {
+              "type": "string",
+              "pattern": "^0*[1-9][0-9]*$",
+              "minLength": 1,
+              "maxLength": 96
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ]
+        }
+      ]
+    },
+    "positiveExactNumber": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/exactNumber"
+        },
+        {
+          "not": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^0+(?:\\.0+)?$"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "numerator": {
+                    "type": "string",
+                    "pattern": "^0+$"
+                  },
+                  "denominator": {
+                    "type": "string",
+                    "pattern": "^0*[1-9][0-9]*$",
+                    "minLength": 1,
+                    "maxLength": 96
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "rational": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "numerator": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]*)$",
+          "maxLength": 1234
+        },
+        "denominator": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 1234
+        }
+      },
+      "required": [
+        "numerator",
+        "denominator"
+      ],
+      "description": "Canonical reduced nonnegative output rational. Reduction and the 4096-bit bound are enforced by Rust, not by this pattern."
+    },
+    "signedRational": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "numerator": {
+          "type": "string",
+          "pattern": "^(?:0|-?[1-9][0-9]*)$",
+          "maxLength": 1235
+        },
+        "denominator": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 1234
+        }
+      },
+      "required": [
+        "numerator",
+        "denominator"
+      ],
+      "description": "Canonical reduced signed output rational for rounding adjustments."
+    },
+    "roundedAmount": {
+      "type": "string",
+      "pattern": "^(?:0|[1-9][0-9]*)(?:\\.[0-9]{1,12})?$",
+      "description": "Nonnegative displayed amount; its exact number of fractional digits is governed by policy.rounding.scale and checked semantically."
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "priceYear": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9999
+    },
+    "kind": {
+      "enum": [
+        "resource_use",
+        "activity_measure"
+      ]
+    },
+    "basis": {
+      "enum": [
+        "economic_cost",
+        "financial_cost",
+        "funding",
+        "charge"
+      ]
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "version": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "currency": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/currency"
+        },
+        "price_year": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/priceYear"
+        },
+        "perspective": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "basis": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/basis"
+        },
+        "rounding": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scale": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "mode": {
+              "const": "half_even"
+            }
+          },
+          "required": [
+            "scale",
+            "mode"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "currency",
+        "price_year",
+        "perspective",
+        "basis",
+        "rounding"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "version": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "evidence": {
+          "enum": [
+            "synthetic",
+            "observed",
+            "derived"
+          ]
+        },
+        "access": {
+          "enum": [
+            "public",
+            "restricted",
+            "private"
+          ]
+        },
+        "validation": {
+          "enum": [
+            "unvalidated",
+            "source_verified",
+            "empirically_validated"
+          ]
+        },
+        "content_digest": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/digest"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "locator": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^(?!\\s)(?!.*[\\u0000-\\u001f\\u007f-\\u009f])\\S(?:.*\\S)?$",
+              "description": "Locator text; need not be a network URI. Rust enforces 2048 UTF-8 bytes."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "evidence",
+        "access",
+        "validation"
+      ],
+      "description": "Caller declarations, not certificates or external evidence verification issued by Dapane."
+    },
+    "quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "kind": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/kind"
+        },
+        "target": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "unit": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "amount": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/exactNumber"
+        },
+        "per_quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+        },
+        "currency": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/currency"
+        },
+        "price_year": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/priceYear"
+        },
+        "basis": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/basis"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "valid_from": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "valid_to": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "known_from": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "source": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/source"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "target",
+        "unit",
+        "amount",
+        "per_quantity",
+        "currency",
+        "price_year",
+        "basis",
+        "components",
+        "valid_from",
+        "valid_to",
+        "known_from",
+        "source"
+      ]
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "use_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "kind": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/kind"
+        },
+        "target": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "unit": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/exactNumber"
+        },
+        "service_date": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "quote_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "source": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/source"
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "process_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "activity_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "object_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "default": []
+        },
+        "attribution_object_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "use_id",
+        "kind",
+        "target",
+        "unit",
+        "quantity",
+        "service_date",
+        "quote_id",
+        "source"
+      ]
+    },
+    "costObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "kind": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ]
+    },
+    "process": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "model_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "model_version": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        }
+      },
+      "required": [
+        "id",
+        "model_id",
+        "model_version"
+      ]
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "occurred_on": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "process_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "activity_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "object_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "default": []
+        }
+      },
+      "required": [
+        "id",
+        "occurred_on"
+      ]
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "from_object_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "to_object_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "relationship": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        }
+      },
+      "required": [
+        "from_object_id",
+        "to_object_id",
+        "relationship"
+      ]
+    },
+    "allocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "source_line_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "weights": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+              },
+              "weight": {
+                "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/exactNumber"
+              }
+            },
+            "required": [
+              "object_id",
+              "weight"
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "id",
+        "source_line_ids",
+        "weights"
+      ]
+    },
+    "valuationLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "use_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "kind": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/kind"
+        },
+        "target": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "unit": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "quantity": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        },
+        "service_date": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/date"
+        },
+        "quote_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "source": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/source"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "exact": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        },
+        "rounded": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        },
+        "rounding_adjustment": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/signedRational"
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "process_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "activity_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "object_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "default": []
+        },
+        "attribution_object_id": {
+          "anyOf": [
+            {
+              "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "use_id",
+        "kind",
+        "target",
+        "unit",
+        "quantity",
+        "service_date",
+        "quote_id",
+        "source",
+        "components",
+        "exact",
+        "rounded",
+        "rounding_adjustment",
+        "event_id",
+        "process_id",
+        "activity_id",
+        "object_ids",
+        "attribution_object_id"
+      ]
+    },
+    "allocationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "source_line_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "pool_exact": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+        },
+        "pool_rounded": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        },
+        "shares": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+              },
+              "weight": {
+                "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+              },
+              "exact_share": {
+                "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/rational"
+              },
+              "rounded": {
+                "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+              }
+            },
+            "required": [
+              "object_id",
+              "weight",
+              "exact_share",
+              "rounded"
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1
+        },
+        "residual": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        }
+      },
+      "required": [
+        "id",
+        "source_line_ids",
+        "pool_exact",
+        "pool_rounded",
+        "shares",
+        "residual"
+      ]
+    },
+    "objectTotal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "object_id": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+        },
+        "direct": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        },
+        "allocated": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        },
+        "total": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/roundedAmount"
+        }
+      },
+      "required": [
+        "object_id",
+        "direct",
+        "allocated",
+        "total"
+      ]
+    }
+  }
+}

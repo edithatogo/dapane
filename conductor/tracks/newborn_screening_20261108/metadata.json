@@ -1,9 +1,9 @@
 {
   "track_id": "newborn_screening_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T04:40:00Z",
   "description": "Demonstrate the next new domain by composing workforce quotations and laboratory recipes into a versioned newborn-screening programme model, with conserved shared costs and explicit denominators.",
   "repositories": [
     "."
@@ -19,16 +19,27 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "ADR-010"
+  ],
   "requirement_ids": [
     "RQ-06",
     "RQ-03",
     "RQ-07"
   ],
-  "capability_status": "planned",
+  "capability_status": "synthetic_two_infant_case_implemented",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "passed_for_bounded_profile",
+    "scope": "Two-infant event/process/object fixture produces150total and60/90views through the shared core. Full recipe branches, denominators and real programme qualification remain open.",
+    "commands": [
+      "target/release/dapane evaluate fixtures/newborn-screening.json",
+      "python scripts/validate_contract.py --cli target/release/dapane",
+      "cargo test --locked"
+    ],
+    "evidence": [
+      "docs/runtime-verification.md",
+      "docs/contract-v0.1.md"
+    ]
   },
   "completion_evidence": [
     "The synthetic two-infant fixture conserves a 150 total: collections 10 each, one batch 100 allocated 50/50 and confirmation 30 for infant B; infant views are 60 and 90.",

@@ -5,7 +5,8 @@ Keep each requirement's `RQ-XX` identifier stable. Track IDs are stable director
 names; rename through an explicit migration rather than breaking cross-repo links.
 
 Each track contains `index.md`, `spec.md`, `plan.md` and `metadata.json`. Keep the
-registry's state, the index's `Status:` line and metadata's `status` consistent.
+registry's state, the index and plan `Status:` lines, and metadata's `status`
+consistent. Each index and plan has exactly one status declaration.
 Use UTF-8 JSON with two-space indentation and a final newline. Dependency fields
 contain local track IDs; provider dependencies belong in `external_dependencies`.
 

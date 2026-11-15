@@ -1,0 +1,131 @@
+{
+  "scope": "synthetic CLI valuation and shared-pool allocation, including process startup and JSON IO",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "machine": "x86_64",
+  "python": "3.15.1",
+  "engine_version": "0.1.0",
+  "measurements": [
+    {
+      "mode": "valuation",
+      "usage_rows": 10,
+      "quotes": 1,
+      "input_bytes": 4413,
+      "output_bytes": 7642,
+      "repeats": 3,
+      "wall_seconds": [
+        0.0018411299970466644,
+        0.0014418819919228554,
+        0.0016671199991833419
+      ],
+      "median_wall_seconds": 0.0016671199991833419,
+      "child_cpu_seconds": [
+        0.001693,
+        0.0013299999999999996,
+        0.0015730000000000006
+      ],
+      "output_digest": "sha256:013f38fd46d1e9638148f1062cf3ccfa71a2320a30191f47a26bca9b90298c6a"
+    },
+    {
+      "mode": "valuation",
+      "usage_rows": 1000,
+      "quotes": 1,
+      "input_bytes": 367745,
+      "output_bytes": 633330,
+      "repeats": 3,
+      "wall_seconds": [
+        0.03032144698954653,
+        0.031184090010356158,
+        0.035684527989360504
+      ],
+      "median_wall_seconds": 0.031184090010356158,
+      "child_cpu_seconds": [
+        0.029398999999999995,
+        0.030309,
+        0.034822000000000006
+      ],
+      "output_digest": "sha256:3c924007310dd5995ba309ec4f23e3bfb0346456bf776a36aa081c69a61a8e22"
+    },
+    {
+      "mode": "valuation",
+      "usage_rows": 5000,
+      "quotes": 1,
+      "input_bytes": 1835745,
+      "output_bytes": 3161333,
+      "repeats": 3,
+      "wall_seconds": [
+        0.2333958170056576,
+        0.22553655299998354,
+        0.20843814399268012
+      ],
+      "median_wall_seconds": 0.22553655299998354,
+      "child_cpu_seconds": [
+        0.229809,
+        0.22280700000000006,
+        0.205626
+      ],
+      "output_digest": "sha256:f0a308d0e084185b2526bea5ca161cc6f68ed2260b50148d7dca3ea255f9802e"
+    },
+    {
+      "mode": "allocation",
+      "usage_rows": 10,
+      "quotes": 1,
+      "input_bytes": 5555,
+      "output_bytes": 10665,
+      "repeats": 3,
+      "wall_seconds": [
+        0.002497645007679239,
+        0.0018125880014849827,
+        0.0016441850020783022
+      ],
+      "median_wall_seconds": 0.0018125880014849827,
+      "child_cpu_seconds": [
+        0.001898999999999984,
+        0.0016439999999999788,
+        0.001550999999999969
+      ],
+      "output_digest": "sha256:b3acfe644e55f55cbf706c2d2ee3c7c6a0447ff7c554f280c8721770a440d3e0"
+    },
+    {
+      "mode": "allocation",
+      "usage_rows": 1000,
+      "quotes": 1,
+      "input_bytes": 473827,
+      "output_bytes": 921477,
+      "repeats": 3,
+      "wall_seconds": [
+        0.040132027002982795,
+        0.044252173000131734,
+        0.04131177598901559
+      ],
+      "median_wall_seconds": 0.04131177598901559,
+      "child_cpu_seconds": [
+        0.03904099999999999,
+        0.04357499999999999,
+        0.040667999999999885
+      ],
+      "output_digest": "sha256:53d08f7db36aab3175b3c029ed3203f9571e9ee4cad2935ee1ffa7ffe745a567"
+    },
+    {
+      "mode": "allocation",
+      "usage_rows": 5000,
+      "quotes": 1,
+      "input_bytes": 2365827,
+      "output_bytes": 4601482,
+      "repeats": 3,
+      "wall_seconds": [
+        0.31131373799871653,
+        0.30478199000936,
+        0.3098800550069427
+      ],
+      "median_wall_seconds": 0.3098800550069427,
+      "child_cpu_seconds": [
+        0.30623799999999995,
+        0.29983099999999985,
+        0.3073300000000001
+      ],
+      "output_digest": "sha256:b2949460c9032de543257ddae905609760ac92464cec055477affca773ae5a7e"
+    }
+  ],
+  "max_child_rss_kib_across_run": 84812,
+  "limits": "Linux ru_maxrss is peak child RSS across this run, not per-workload memory. No concurrency, provider or cross-machine comparison is implied."
+}

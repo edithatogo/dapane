@@ -1,0 +1,146 @@
+{
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "compilation_verified_by_this_script": false,
+  "declared_licence_counts": {
+    "(MIT OR Apache-2.0) AND Unicode-3.0": 1,
+    "Apache-2.0 OR MIT": 3,
+    "Apache-2.0 WITH LLVM-exception": 1,
+    "MIT": 1,
+    "MIT OR Apache-2.0": 29,
+    "Unlicense OR MIT": 1
+  },
+  "host": "x86_64-unknown-linux-gnu",
+  "missing_declared_rust_minimum": [
+    "target-lexicon"
+  ],
+  "native_closure": [
+    {
+      "name": "autocfg",
+      "version": "1.5.1"
+    },
+    {
+      "name": "block-buffer",
+      "version": "0.12.1"
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.5"
+    },
+    {
+      "name": "chrono",
+      "version": "0.4.45"
+    },
+    {
+      "name": "const-oid",
+      "version": "0.10.2"
+    },
+    {
+      "name": "cpufeatures",
+      "version": "0.3.1"
+    },
+    {
+      "name": "crypto-common",
+      "version": "0.2.2"
+    },
+    {
+      "name": "dapane-cli",
+      "version": "0.1.0"
+    },
+    {
+      "name": "dapane-core",
+      "version": "0.1.0"
+    },
+    {
+      "name": "digest",
+      "version": "0.11.3"
+    },
+    {
+      "name": "hybrid-array",
+      "version": "0.4.15"
+    },
+    {
+      "name": "itoa",
+      "version": "1.0.18"
+    },
+    {
+      "name": "libc",
+      "version": "0.2.191"
+    },
+    {
+      "name": "memchr",
+      "version": "2.8.3"
+    },
+    {
+      "name": "num-bigint",
+      "version": "0.4.8"
+    },
+    {
+      "name": "num-integer",
+      "version": "0.1.47"
+    },
+    {
+      "name": "num-rational",
+      "version": "0.4.2"
+    },
+    {
+      "name": "num-traits",
+      "version": "0.2.19"
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.107"
+    },
+    {
+      "name": "quote",
+      "version": "1.0.47"
+    },
+    {
+      "name": "serde",
+      "version": "1.0.229"
+    },
+    {
+      "name": "serde_core",
+      "version": "1.0.229"
+    },
+    {
+      "name": "serde_derive",
+      "version": "1.0.229"
+    },
+    {
+      "name": "serde_json",
+      "version": "1.0.154"
+    },
+    {
+      "name": "sha2",
+      "version": "0.11.1"
+    },
+    {
+      "name": "syn",
+      "version": "3.0.9"
+    },
+    {
+      "name": "typenum",
+      "version": "1.20.1"
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.27"
+    },
+    {
+      "name": "zmij",
+      "version": "1.0.23"
+    }
+  ],
+  "project_licence": "unselected",
+  "registry_packages": 36,
+  "release_qualified": false,
+  "rust_baseline": "1.99.1",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "scope": "fetched_dependency_boundary",
+  "status": "passed",
+  "workspace_packages": [
+    "dapane-cli",
+    "dapane-core",
+    "dapane-python"
+  ]
+}

@@ -1,0 +1,5 @@
+# Tested build and verification tools. Cargo.lock pins the Rust dependency graph.
+maturin==1.16.0
+pytest==9.2.0
+jsonschema==4.26.0
+ruff==0.17.4

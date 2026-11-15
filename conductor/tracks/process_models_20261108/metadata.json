@@ -1,9 +1,9 @@
 {
   "track_id": "process_models_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-08T04:40:00Z",
   "description": "Produce resource-use records from observed or explicitly executed process models while keeping resource execution, discovery and monetary valuation independently owned.",
   "repositories": [
     "."
@@ -20,16 +20,26 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "ADR-010"
+  ],
   "requirement_ids": [
     "RQ-10",
     "RQ-01",
     "RQ-03"
   ],
-  "capability_status": "planned",
+  "capability_status": "context_contract_implemented_adapters_pending",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "passed_for_bounded_profile",
+    "scope": "Date-level event, process-instance and object context is implemented. Importers, interval/timestamp derivation, process execution and actual Kairos adapter remain pending.",
+    "commands": [
+      "cargo test --locked",
+      "python scripts/validate_contract.py --cli target/release/dapane"
+    ],
+    "evidence": [
+      "docs/runtime-verification.md",
+      "docs/contract-v0.1.md"
+    ]
   },
   "completion_evidence": [
     "Infant/specimen/assay/batch object relationships survive observed-event import without forcing one flat independent case per event.",

@@ -3,6 +3,10 @@
 Scope: initialise the Conductor project records in the empty Dapane repository.
 Review date: 8 November 2026, Australia/Brisbane.
 
+This is the historical setup record. Subsequent Rust/CLI/Python work is recorded
+in [runtime verification](../docs/runtime-verification.md); its implementation
+does not retroactively change what the original setup checks proved.
+
 ## Local checks
 
 - `python3 scripts/validate_conductor.py` passed: 13 tracks, 12 requirements,
@@ -59,5 +63,5 @@ and no package release, deployment or archive action was performed.
 The validator checks local file targets, metadata, traceability and the dependency
 graph; it does not fetch external URLs or prove scientific claims. No costing
 runtime, installed language package, clinical model, Power App or process execution
-is implemented or qualified by this setup. All runtime and research tracks remain
-new/planned.
+is implemented or qualified by this setup. Runtime and research tracks were
+new/planned at that setup commit; their current status is in the registry.

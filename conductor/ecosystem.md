@@ -1,8 +1,10 @@
 # Ecosystem ownership and migration
 
-Status: framework design and integration plan, 8 November 2026. Dapane is the
-canonical home of the shared framework's requirements, design, roadmap and tracks.
-This setup does not implement or release a costing engine or any domain adapter.
+Status: updated for the selected installed provider consumers, 15 November 2026.
+Dapane is the canonical home of the shared framework's requirements, design,
+roadmap and tracks. The bounded Rust engine and two provider slices have
+[qualification evidence](../docs/python-provider-verification.md); published
+releases and the wider ecosystem capabilities retain separate gates.
 
 ## Source of truth
 
@@ -13,14 +15,14 @@ shared-framework decisions belong in [Dapane's design](./design.md),
 [decision record](./decisions.md) and [track registry](./tracks.md); sibling
 repositories should link those records rather than maintain competing copies.
 
-Ownership describes the intended boundary. It does not assert that a provider
-has already delivered the interface or passed Dapane's consumer qualification.
+Ownership describes the retained boundary. Delivered capability is limited to
+the explicit qualification records; a row alone does not qualify an interface.
 
 | Owner | Retained responsibility | Dapane boundary and local owner |
 | --- | --- | --- |
 | Dapane | Generic quantities, quotations, valuation policies, allocation, ledgers, reproducibility and thin language surfaces | [Core contracts](./tracks/core_contracts_20261108/index.md), [Rust kernel](./tracks/rust_kernel_20261108/index.md) |
-| [microcosting_healthworkforce](https://github.com/edithatogo/microcosting_healthworkforce) | Employment conditions, classifications, eligibility, dated source rules and labour quotations | Emit typed quantities/quotes; retain rule interpretation and repair the generic import namespace in the provider. [Python and two consumers](./tracks/python_two_consumers_20261108/index.md) |
-| [microcosting_genomics](https://github.com/edithatogo/microcosting_genomics) | Assay recipes, laboratory workflows, batching, repeats and historical workbook interpretation | Emit resource-use recipes and consume dated workforce quotes; separate demonstration analyses from qualified computations. [Python and two consumers](./tracks/python_two_consumers_20261108/index.md) |
+| [microcosting_healthworkforce](https://github.com/edithatogo/microcosting_healthworkforce) | Employment conditions, classifications, eligibility, dated source rules and labour quotations | Selected quotation export and canonical namespace with preserved legacy identity are qualified. [Python and two consumers](./tracks/python_two_consumers_20261108/index.md) |
+| [microcosting_genomics](https://github.com/edithatogo/microcosting_genomics) | Assay recipes, laboratory workflows, batching, repeats and historical workbook interpretation | Manual extraction labour consumes the dated workforce artifact; historical calculator and PSA/VOI demonstrations remain distinct. [Python and two consumers](./tracks/python_two_consumers_20261108/index.md) |
 | [mchs](https://github.com/edithatogo/mchs) | Classifications, weighted activity and edition-specific funding/tariff equations | Preserve activity units and editions; an activity quotation need not imply resource consumption. [MCHS and source adapters](./tracks/mchs_source_adapters_20261108/index.md) |
 | [reimbursement-atlas](https://github.com/edithatogo/reimbursement-atlas) | Schedule discovery, parsers, editions, source licensing and cross-jurisdiction evidence | Consume versioned source packs; avoid a second schedule registry or parser collection. [MCHS and source adapters](./tracks/mchs_source_adapters_20261108/index.md) |
 | [CareOps](https://github.com/edithatogo/careops), `modules/careops-costing` | Assumption capture, operational workflows, review, presentation and reporting | Consume versioned input/result bundles; Power Fx and report expressions do not duplicate valuation maths. [Power Platform](./tracks/power_platform_20261108/index.md) |
@@ -107,7 +109,8 @@ See [design](./design.md), [technology choices](./tech-stack.md) and the
    reinterpret an old ledger under a newer schema or rate pack. Schema migrations
    retain original inputs and distinguish migrated from original run identities.
 
-The first proof is workforce plus one genomic workflow. MCHS's activity/tariff
+The first installed proof covers workforce plus one genomic labour workflow,
+using separate pinned Python environments and exact file exchange. MCHS's activity/tariff
 adapter and newborn screening follow their own acceptance criteria. Simulators,
 R/Julia and Power Platform can advance independently once their required core
 contracts exist. Their completion is not a universal release gate.

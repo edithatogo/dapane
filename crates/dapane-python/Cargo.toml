@@ -1,0 +1,19 @@
+[package]
+name = "dapane-python"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+publish.workspace = true
+description = "Thin Python bindings for the Dapane exact valuation kernel"
+
+[lib]
+name = "_native"
+crate-type = ["cdylib"]
+
+[dependencies]
+dapane-core.workspace = true
+pyo3.workspace = true
+
+[lints]
+workspace = true

@@ -255,22 +255,32 @@ def validate(root: Path) -> tuple[list[str], dict[str, int]]:
             row = next(line for line in registry.splitlines() if f"tracks/{track_id}/index.md" in line)
             if STATE_MARKERS[state] not in row or not re.search(rf"\b{re.escape(state)}\b", row):
                 errors.append(f"{track_id}: registry marker/status differs from metadata")
-        index = track_contents["index.md"]
-        if not re.search(rf"^Status:\s*`?{re.escape(state)}`?\s*$", index, re.MULTILINE):
-            errors.append(f"{track_id}: index Status differs from metadata")
+        for document in ("index", "plan"):
+            contents = track_contents[f"{document}.md"]
+            status_lines = re.findall(r"^Status:(.*)$", contents, re.MULTILINE)
+            expected_status = (
+                rf"[ \t]*(?:{re.escape(state)}|`{re.escape(state)}`)[ \t]*"
+            )
+            if len(status_lines) != 1 or not re.fullmatch(
+                expected_status, status_lines[0]
+            ):
+                errors.append(
+                    f"{track_id}: {document} Status differs from metadata "
+                    "(expected exactly one well-formed Status line)"
+                )
         tasks = TASK.findall(track_contents["plan.md"])
         counts["tasks"] += len(tasks)
         if not tasks:
             errors.append(f"{track_id}: no actionable plan tasks")
         if state == "new" and any(marker != " " for marker, _ in tasks):
             errors.append(f"{track_id}: new track contains started/completed/blocked tasks")
-        if state == "completed" and any(marker not in {"x", "-"} for marker, _ in tasks):
-            errors.append(f"{track_id}: completed track contains unfinished tasks")
+        if state in {"completed", "archived"} and any(marker not in {"x", "-"} for marker, _ in tasks):
+            errors.append(f"{track_id}: {state} track contains unfinished tasks")
         verification = metadata["verification"]
         if not isinstance(verification, dict) or not isinstance(verification.get("commands"), list):
             errors.append(f"{track_id}: verification requires a commands list")
-        elif state == "completed" and verification.get("status") != "passed":
-            errors.append(f"{track_id}: completed track lacks passed verification")
+        elif state in {"completed", "archived"} and verification.get("status") != "passed":
+            errors.append(f"{track_id}: {state} track lacks passed verification")
         for requirement in metadata["requirement_ids"]:
             if requirement not in requirements:
                 errors.append(f"{track_id}: unknown requirement {requirement!r}")

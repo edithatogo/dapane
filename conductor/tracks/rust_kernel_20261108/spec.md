@@ -4,7 +4,10 @@
 
 Implement one authoritative numerical core for exact valuation, component accounting and shared-pool allocation. The native library and CLI must work without a language wrapper, table engine, simulator or cloud account.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This is the retained acceptance specification. Bounded kernel acceptance is complete;
+[the closeout evidence](verification.md) records native, interval, dependency and
+installed-artifact qualification. Broader provider, economic-method and release
+requirements retain their separate owning tracks.
 
 ## Scope and requirements
 
@@ -48,9 +51,14 @@ A passing calculation test is not empirical validation of a costing method. Para
 
 Keep immutable schema and reference fixtures; callers pin the last qualified engine/method release. Use explicit corrected method versions when repairing economic semantics.
 
-## Open implementation decisions
+## Implementation decisions and retained limits
 
-Select existing exact arithmetic, serialization, error and date crates after fixture-based evaluation. GPU/distributed backends, arbitrary expressions and native dynamic plugin loading are outside this first kernel.
+The locked exact-arithmetic, serialization, digest and date crates are qualified
+on Rust 1.99.1; [dependency qualification](../../../docs/kernel-dependencies.md)
+records the development licence boundary. [ADR-013](../../decisions.md) defines the
+additive interval envelope and declared calendar-day exposure. GPU/distributed
+backends, arbitrary expressions and native dynamic plugin loading are outside
+this kernel. Project-licence selection and publication remain release work.
 
 ## Execution and verification
 

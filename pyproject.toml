@@ -1,0 +1,43 @@
+[build-system]
+requires = ["maturin==1.16.0"]
+build-backend = "maturin"
+
+[project]
+name = "dapane"
+dynamic = ["version"]
+description = "Exact microcosting and valuation through a shared Rust kernel"
+readme = "README.md"
+requires-python = ">=3.12,<3.16"
+dependencies = []
+keywords = ["microcosting", "valuation", "resource-use", "rust"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Rust",
+]
+
+[project.urls]
+Repository = "https://github.com/edithatogo/dapane"
+Issues = "https://github.com/edithatogo/dapane/issues"
+
+[tool.maturin]
+manifest-path = "crates/dapane-python/Cargo.toml"
+python-source = "python"
+module-name = "dapane._native"
+bindings = "pyo3"
+strip = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests/python"]
+addopts = ["--strict-markers", "--strict-config"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["dapane"]

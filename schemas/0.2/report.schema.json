@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/report.schema.json",
+  "title": "Dapane 0.2 report",
+  "description": "Adds explicit incomplete instrument-capacity allocation; all full-pool allocation fields retain 0.1 meaning. Structural validation is not economic validation. Rust checks references, exclusivity, aggregate bounds and recorded use <= known capacity. Unallocated value is already in totals.unattributed.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "run_id": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/run_id"
+    },
+    "status": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/status"
+    },
+    "engine_version": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/engine_version"
+    },
+    "method_version": {
+      "const": "dapane-exact-v0.2.0"
+    },
+    "input_digest": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/input_digest"
+    },
+    "output_digest": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/output_digest"
+    },
+    "policy": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/policy"
+    },
+    "lines": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/lines"
+    },
+    "quote_snapshots": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/quote_snapshots"
+    },
+    "context": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/context"
+    },
+    "totals": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/totals"
+    },
+    "allocations": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/allocations"
+    },
+    "object_totals": {
+      "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/report.schema.json#/properties/object_totals"
+    },
+    "capacity_allocations": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.2/common.schema.json#/$defs/capacityAllocationResult"
+      },
+      "minItems": 0,
+      "maxItems": 10000
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "status",
+    "engine_version",
+    "method_version",
+    "input_digest",
+    "output_digest",
+    "policy",
+    "lines",
+    "quote_snapshots",
+    "context",
+    "totals",
+    "allocations",
+    "object_totals"
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/scenarios/genomics-candidate-v0.1.schema.json",
+  "title": "Synthetic candidate genomics fixture manifest 0.1",
+  "description": "Repository-only preparation assumptions. This is not an accepted valuation request or a validated economic method.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "profile_version": {
+      "const": "dapane-synthetic-genomics-v0.1"
+    },
+    "evidence": {
+      "const": "synthetic"
+    },
+    "validation": {
+      "const": "unvalidated"
+    },
+    "currency": {
+      "const": "AUD"
+    },
+    "price_year": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9999
+    },
+    "period_months": {
+      "const": "1"
+    },
+    "device": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "purchase_amount": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+        },
+        "useful_life_months": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+        },
+        "residual_amount": {
+          "const": "0"
+        },
+        "candidate_monthly_charge": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+        },
+        "method": {
+          "const": "straight_line_no_discount_candidate"
+        }
+      },
+      "required": [
+        "purchase_amount",
+        "useful_life_months",
+        "residual_amount",
+        "candidate_monthly_charge",
+        "method"
+      ]
+    },
+    "maintenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_amount": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+        },
+        "contract_duration_months": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+        },
+        "candidate_monthly_charge": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+        },
+        "method": {
+          "const": "equal_monthly_contract_charge_candidate"
+        }
+      },
+      "required": [
+        "contract_amount",
+        "contract_duration_months",
+        "candidate_monthly_charge",
+        "method"
+      ]
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/positiveExactNumber"
+        },
+        "recurrence": {
+          "const": "one_time"
+        },
+        "included_in_recurring_pool": {
+          "const": false
+        }
+      },
+      "required": [
+        "amount",
+        "recurrence",
+        "included_in_recurring_pool"
+      ]
+    },
+    "sample_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cohort-a": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/exactNumber"
+        },
+        "cohort-b": {
+          "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/exactNumber"
+        }
+      },
+      "required": [
+        "cohort-a",
+        "cohort-b"
+      ]
+    },
+    "sample_allocation_assumption": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capacity_assumption": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cost_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requests": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/edithatogo/dapane/main/schemas/0.1/common.schema.json#/$defs/token"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "profile_version",
+    "evidence",
+    "validation",
+    "currency",
+    "price_year",
+    "period_months",
+    "device",
+    "maintenance",
+    "implementation",
+    "sample_counts",
+    "sample_allocation_assumption",
+    "capacity_assumption",
+    "cost_scope",
+    "requests"
+  ]
+}

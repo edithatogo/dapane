@@ -1,8 +1,13 @@
 # Dapane roadmap
 
-This is the coordinating roadmap for Dapane. The repository contains project context
-and executable work plans; it does not yet contain a qualified Rust engine, binding,
-domain plugin or deployed Power App. [Track metadata](tracks.md) records current status.
+This is the coordinating roadmap for Dapane. The repository now has a bounded
+Rust/CLI/Python candidate, exact schemas and synthetic reference consumers. Its
+[implemented contract](../docs/contract-v0.1.md) and
+[runtime evidence](../docs/runtime-verification.md) define the numerical scope.
+The selected workforce and genomic labour adapters now have
+[installed qualification](../docs/python-provider-verification.md).
+Broader provider coverage, richer methods, deployed apps and comparative
+research remain open. [Track metadata](tracks.md) records current status.
 
 The [earlier MCHS design](https://github.com/edithatogo/mchs/blob/d7935044821d072a194d80e9cd4f5b9174fa9652/docs/roadmaps/dapane-framework.md)
 is the source proposal. Dapane now owns delivery of the shared framework. MCHS,
@@ -26,7 +31,7 @@ their implementation tasks and releases are not marked complete by this roadmap.
 | G0 — project context | `conductor_setup_20261108` | Navigable requirements/design, acyclic tracks, validated links/status and recorded publication. |
 | G1 — common contract | `core_contracts_20261108` | Machine-readable schemas and independent exact reference cases for resources, weighted activity, dates, valuation and allocation. |
 | G2 — native kernel | `rust_kernel_20261108` | Standalone Rust/CLI passes the supported fixtures and conservation/error checks without optional runtime dependencies. |
-| G3 — two consumers | `python_two_consumers_20261108` | Installed Python wheels run a workforce calculation and a genomic workflow through one numerical implementation. |
+| G3 — two consumers | `python_two_consumers_20261108` | Qualified: installed workforce quotation export and manual genomic extraction labour run through the same Rust implementation with preserved historical paths. |
 | G4 — first release | `release_consolidation_20261108` | Only qualified core/CLI/Python capabilities are packaged with exact compatibility, source and migration evidence. |
 | G5 — composed domains | `mchs_source_adapters_20261108`, `newborn_screening_20261108`, `reporting_profiles_20261108` | Separately qualified activity/source and newborn/reporting capabilities, preserving economic meaning and provenance. |
 | G6 — optional surfaces | `power_platform_20261108`, `polyglot_bindings_20261108` | Each selected app, R, C ABI or Julia surface has its own installed/host evidence. |
@@ -71,22 +76,43 @@ Independent native integration branches:
 | `decision_integrations_20261108` | Rust kernel | Each Voiage, Innovate or Paignia example requires the exact supported provider method and input contract. |
 | `tobac_regulatory_fiscal_valuation_20261110` | Core contracts, Rust kernel, Decision integrations | Separates health-system direct costs from excise/GST fiscal transfers and preserves subgroup/draw keys for `tobac` and `voiage`. |
 
-## The first implementation slice
+## Implemented numerical slice and next migration
 
-Begin at [core contracts](tracks/core_contracts_20261108/index.md), task C1.1.
-Freeze a bounded workforce example, one genomic workflow and an activity-only funding
-example. Derive their expected values independently and document gaps in their source
-evidence. Do not translate a historical output into an unquestioned oracle.
+The first contract, exact kernel, CLI and thin Python binding are implemented for
+bounded synthetic workforce, genomics, funding, newborn and sub-cent allocation
+cases. These establish the numerical boundary and installed-package behaviour;
+they do not complete migration of the existing provider libraries. The G1
+implementation includes request profiles 0.1/0.2 and the separate
+[run-bundle profile 0.1](../docs/run-bundle-v0.1.md). Its
+[acceptance/review evidence](tracks/core_contracts_20261108/verification.md)
+identifies the checked revision and limits; the registry records disposition.
+G2 now includes the separately qualified [interval method](../docs/interval-contract-v0.1.md)
+and [minimal dependency boundary](../docs/kernel-dependencies.md). Its
+[kernel evidence](tracks/rust_kernel_20261108/verification.md) records completed
+bounded native acceptance. G3 is now qualified for the selected workforce release
+and manual genomic extraction labour stage. The
+[provider evidence](../docs/python-provider-verification.md) records canonical
+namespace compatibility, source/component preservation, historical comparison
+and exact native execution from separate installed Python environments.
 
-Then implement the supported Rust operations and prove two installed Python consumers.
-The genomic workflow should use a dated workforce quotation without charging its loaded
-components twice. This slice establishes the numerical/package boundary before more
-domains, registries or delivery surfaces are advertised.
+Next work broadens provider recipes and sources under their own acceptance
+criteria and completes G4 release assurance. Richer numerical methods retain
+separate scope; the selected source and batch cases do not establish general
+employment, assay or economic-method validity.
 
-Suggested initial cases include a nonterminating fractional staff exposure, a quotation
-effective-date boundary, a sub-cent allocation residual, duplicate-resource rejection,
-an incompatible activity/resource quotation and missing versus zero valuation. The
-contract track chooses and records the exact supported method scope.
+Contract 0.1 already verifies fractional exposure, effective/knowledge dates,
+half-even rounding, largest-remainder allocation, duplicate/component rejection,
+incompatible quotation targets and missing versus zero. Point-profile usage is
+explicitly segmented into dated quantities; interval profile 0.1 can generate
+those segments from a declared uniform calendar-day exposure and pinned rates.
+Bundle 0.1 adds immutable replacement/withdrawal
+history, consistent declared release identities and historical selection with
+native replay. Its capital references use alternative prepared quotations.
+Richer exposure/timestamp models, line-level financial corrections and capital
+formulae require separate kernel/provider methods and fixtures; production
+publication remains release work.
+
+The [bounded genomics capacity increment](../docs/genomics-capacity-verification.md) now covers explicit incomplete instrument-hour observations, unknown availability and time/sample comparisons. Maintenance duration, useful life and one-time/recurrent preparation assumptions remain separate synthetic inputs. Real source qualification, complete utilisation models and economic-method validation remain open.
 
 ## Newborn screening as the next new domain
 
@@ -94,7 +120,7 @@ contract track chooses and records the exact supported method scope.
 workforce and laboratory recipes. It preserves infant, specimen, assay, batch and
 confirmation identities and declares output denominators explicitly.
 
-The initial synthetic example totals 150 invented currency units: two collections
+The implemented synthetic example totals 150 invented currency units: two collections
 at 10 each, one batch at 100 and one confirmation at 30. A 50/50 batch allocation
 gives infant views of 60 and 90 without adding another batch expense. Repeat,
 failed-assay, partial-batch and capacity-step cases follow. Real programme support
@@ -162,7 +188,9 @@ any later archive or removal of duplicated machinery.
 
 ## Current status and next action
 
-The initial setup records the approved direction and pending work. All runtime and
-research capabilities remain planned until their own acceptance evidence exists.
+The numerical candidate and synthetic consumers now have scoped runtime evidence.
+Full provider, programme, deployment and research capabilities retain their own
+unfinished acceptance criteria; no runtime track is closed merely because a
+bounded first profile works.
 Use the [registry](tracks.md) for current machine-aligned status and the
 [workflow](workflow.md) for the next bounded task.
