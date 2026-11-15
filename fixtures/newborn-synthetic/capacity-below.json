@@ -1,0 +1,408 @@
+{
+  "schema_version": "0.2",
+  "run_id": "synthetic-newborn-capacity-below",
+  "knowledge_cutoff": "2026-11-15",
+  "policy": {
+    "id": "newborn-synthetic-provider",
+    "version": "0.1.0",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "economic_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "salary-quote",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "minute",
+      "amount": "1.50",
+      "per_quantity": "1",
+      "components": [
+        "salary"
+      ],
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "invented-newborn-inputs",
+        "version": "0.1.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-synthetic/sources.json",
+        "content_digest": "sha256:c9e38a7685abeb2d508ba2a51412dbf5e95dd4336a4356065cc0f790b4adc68b"
+      }
+    },
+    {
+      "id": "oncost-quote",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "minute",
+      "amount": "0.50",
+      "per_quantity": "1",
+      "components": [
+        "oncost"
+      ],
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "invented-newborn-inputs",
+        "version": "0.1.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-synthetic/sources.json",
+        "content_digest": "sha256:c9e38a7685abeb2d508ba2a51412dbf5e95dd4336a4356065cc0f790b4adc68b"
+      }
+    },
+    {
+      "id": "instrument-block-quote",
+      "kind": "resource_use",
+      "target": "instrument_block",
+      "unit": "block",
+      "amount": "100.00",
+      "per_quantity": "1",
+      "components": [
+        "instrument"
+      ],
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "invented-newborn-inputs",
+        "version": "0.1.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-synthetic/sources.json",
+        "content_digest": "sha256:c9e38a7685abeb2d508ba2a51412dbf5e95dd4336a4356065cc0f790b4adc68b"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "collection-a-1-salary",
+      "use_id": "collection-a-1",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "minute",
+      "quantity": "5",
+      "service_date": "2026-06-15",
+      "quote_id": "salary-quote",
+      "source": {
+        "id": "invented-newborn-inputs",
+        "version": "0.1.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-synthetic/sources.json",
+        "content_digest": "sha256:c9e38a7685abeb2d508ba2a51412dbf5e95dd4336a4356065cc0f790b4adc68b"
+      },
+      "event_id": "event-collection-a-1",
+      "process_id": "screening-process",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-a",
+        "episode-a",
+        "attempt-a-1",
+        "specimen-a-1",
+        "card-a-1"
+      ],
+      "attribution_object_id": "infant-a"
+    },
+    {
+      "id": "collection-a-1-oncost",
+      "use_id": "collection-a-1",
+      "kind": "resource_use",
+      "target": "staff_time",
+      "unit": "minute",
+      "quantity": "5",
+      "service_date": "2026-06-15",
+      "quote_id": "oncost-quote",
+      "source": {
+        "id": "invented-newborn-inputs",
+        "version": "0.1.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-synthetic/sources.json",
+        "content_digest": "sha256:c9e38a7685abeb2d508ba2a51412dbf5e95dd4336a4356065cc0f790b4adc68b"
+      },
+      "event_id": "event-collection-a-1",
+      "process_id": "screening-process",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-a",
+        "episode-a",
+        "attempt-a-1",
+        "specimen-a-1",
+        "card-a-1"
+      ],
+      "attribution_object_id": "infant-a"
+    },
+    {
+      "id": "instrument-blocks",
+      "use_id": "instrument-blocks",
+      "kind": "resource_use",
+      "target": "instrument_block",
+      "unit": "block",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "instrument-block-quote",
+      "source": {
+        "id": "invented-newborn-inputs",
+        "version": "0.1.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-synthetic/sources.json",
+        "content_digest": "sha256:c9e38a7685abeb2d508ba2a51412dbf5e95dd4336a4356065cc0f790b4adc68b"
+      },
+      "event_id": "event-instrument-blocks",
+      "process_id": "screening-process",
+      "activity_id": "instrument_capacity",
+      "object_ids": [
+        "instrument-module-1"
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-b",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-c",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-window-end",
+      "kind": "infant"
+    },
+    {
+      "id": "batch-1",
+      "kind": "assay_batch"
+    },
+    {
+      "id": "episode-a",
+      "kind": "screening_episode"
+    },
+    {
+      "id": "specimen-a-1",
+      "kind": "specimen"
+    },
+    {
+      "id": "attempt-a-1",
+      "kind": "collection_attempt"
+    },
+    {
+      "id": "card-a-1",
+      "kind": "card"
+    },
+    {
+      "id": "assay-a-primary-1",
+      "kind": "assay"
+    },
+    {
+      "id": "result-a-primary-1",
+      "kind": "result"
+    },
+    {
+      "id": "assay-a-primary-2",
+      "kind": "assay"
+    },
+    {
+      "id": "result-a-primary-2",
+      "kind": "result"
+    },
+    {
+      "id": "instrument-module-1",
+      "kind": "instrument"
+    }
+  ],
+  "processes": [
+    {
+      "id": "screening-process",
+      "model_id": "newborn-synthetic-recipe",
+      "model_version": "0.1.0"
+    }
+  ],
+  "events": [
+    {
+      "id": "event-collection-a-1",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-a",
+        "episode-a",
+        "attempt-a-1",
+        "specimen-a-1",
+        "card-a-1"
+      ]
+    },
+    {
+      "id": "event-assay-a-primary-1",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "assay",
+      "object_ids": [
+        "infant-a",
+        "episode-a",
+        "specimen-a-1",
+        "batch-1",
+        "assay-a-primary-1",
+        "result-a-primary-1"
+      ]
+    },
+    {
+      "id": "event-assay-a-primary-2",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "assay",
+      "object_ids": [
+        "infant-a",
+        "episode-a",
+        "specimen-a-1",
+        "batch-1",
+        "assay-a-primary-2",
+        "result-a-primary-2"
+      ]
+    },
+    {
+      "id": "event-reporting-a",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "reporting",
+      "object_ids": [
+        "infant-a",
+        "episode-a",
+        "result-a-primary-1",
+        "result-a-primary-2"
+      ]
+    },
+    {
+      "id": "event-instrument-blocks",
+      "occurred_on": "2026-06-15",
+      "process_id": "screening-process",
+      "activity_id": "instrument_capacity",
+      "object_ids": [
+        "instrument-module-1"
+      ]
+    }
+  ],
+  "object_relations": [
+    {
+      "from_object_id": "episode-a",
+      "to_object_id": "infant-a",
+      "relationship": "screens"
+    },
+    {
+      "from_object_id": "attempt-a-1",
+      "to_object_id": "episode-a",
+      "relationship": "belongs_to"
+    },
+    {
+      "from_object_id": "specimen-a-1",
+      "to_object_id": "attempt-a-1",
+      "relationship": "obtained_by"
+    },
+    {
+      "from_object_id": "specimen-a-1",
+      "to_object_id": "infant-a",
+      "relationship": "collected_from"
+    },
+    {
+      "from_object_id": "card-a-1",
+      "to_object_id": "specimen-a-1",
+      "relationship": "holds"
+    },
+    {
+      "from_object_id": "assay-a-primary-1",
+      "to_object_id": "specimen-a-1",
+      "relationship": "uses_specimen"
+    },
+    {
+      "from_object_id": "assay-a-primary-1",
+      "to_object_id": "batch-1",
+      "relationship": "runs_in"
+    },
+    {
+      "from_object_id": "result-a-primary-1",
+      "to_object_id": "assay-a-primary-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "assay-a-primary-2",
+      "to_object_id": "specimen-a-1",
+      "relationship": "uses_specimen"
+    },
+    {
+      "from_object_id": "assay-a-primary-2",
+      "to_object_id": "batch-1",
+      "relationship": "runs_in"
+    },
+    {
+      "from_object_id": "result-a-primary-2",
+      "to_object_id": "assay-a-primary-2",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "batch-1",
+      "to_object_id": "instrument-module-1",
+      "relationship": "uses_instrument"
+    }
+  ],
+  "allocations": [],
+  "capacity_allocations": [
+    {
+      "id": "instrument-capacity-pool",
+      "source_line_ids": [
+        "instrument-blocks"
+      ],
+      "unit": "instrument_hour",
+      "observation_coverage": "incomplete",
+      "available_capacity": {
+        "status": "known",
+        "quantity": "2"
+      },
+      "use_records": [
+        {
+          "object_id": "infant-a",
+          "quantity": {
+            "status": "known",
+            "quantity": "1"
+          }
+        }
+      ],
+      "source": {
+        "id": "invented-newborn-inputs",
+        "version": "0.1.0",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "fixtures/newborn-synthetic/sources.json",
+        "content_digest": "sha256:c9e38a7685abeb2d508ba2a51412dbf5e95dd4336a4356065cc0f790b4adc68b"
+      }
+    }
+  ]
+}

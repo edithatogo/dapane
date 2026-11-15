@@ -1,0 +1,339 @@
+{
+  "observed_at": "2026-11-15T05:21:11Z",
+  "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "n1_github_sha": "08de58177ba98d66a3da7e05eee430e0ec4cdb19",
+  "implementation_github_sha": "41a6f204ab0215f3f28393b413ebf3c327a5282a",
+  "implementation_local_sha": "e67556658ca0e8f08e031f9778947127f5e25fa8",
+  "implementation_tree_sha": "a1b553b6c2a54ce06a6e022b863c903d902cf3e0",
+  "local_and_github_tree_equal": true,
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "pytest": "9.2.0",
+    "jsonschema": "4.26.0",
+    "ruff": "0.17.4"
+  },
+  "native_artifacts": {
+    "source_qualification_commit": "a703c93d49e782b67fe4b14588bf1fb26292bb23",
+    "source_paths_equal_to_base": [
+      "crates",
+      "python",
+      "Cargo.toml",
+      "Cargo.lock",
+      "rust-toolchain.toml",
+      "pyproject.toml"
+    ],
+    "cli_sha256": "ee16254d1443d202e9a8b9f12be24c93fdd1f87830eebd14521334498de56573",
+    "cli_bytes": 1719120,
+    "wheel_sha256": "e3f123ea0a7c3d8fe2eb12db5747876c44733e967c526c11e579cb6773627286",
+    "wheel_bytes": 580635,
+    "installed_native_and_python_bytes_equal_wheel": true,
+    "rebuilt_in_this_lane": false
+  },
+  "checks": {
+    "focused_tests": 63,
+    "installed_python_tests": 196,
+    "installed_python_seconds": 3.65,
+    "conductor_regressions": 12,
+    "conductor_tracks": 14,
+    "conductor_requirements": 12,
+    "conductor_tasks": 153,
+    "point_schema_parser_negatives": 37,
+    "point_runtime_rejections": 14,
+    "interval_schema_negatives": 9,
+    "interval_runtime_rejections": 11,
+    "interval_tamper_controls": 15,
+    "ruff_lint": "passed",
+    "ruff_format": "passed",
+    "git_diff_check": "passed"
+  },
+  "cli_cases": {
+    "composed-two-infant": {
+      "total": "150.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:93aeaf5ba643e7d61132579bd17c444027cb45da3dc4d30c1fe48482636fd2cf",
+      "output_digest": "sha256:05e4b6861e76a37d682d84d221f8449c0e525090d2cf7dab2373db2a15cc3d55"
+    },
+    "repeat-collection": {
+      "total": "170.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:1ab7ef68fa905515e596f6243f9d194a95b9886f028b05a535a375588651b30e",
+      "output_digest": "sha256:d3083fdc1e5eb6ae4ded8e0ea64ed7e680fe586a67744f55ea8ca28377b0a23f"
+    },
+    "unresolved-failure": {
+      "total": "150.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:f14d833202884644ac9e9722abdf50b3bc7483b406082e1a5380ccc7fea41e96",
+      "output_digest": "sha256:536c5cea180c29c7590152d95e42d8a1d419595d6a7726ea61d2527c742341e2"
+    },
+    "failed-assay-repeat": {
+      "total": "170.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:8c0c8f5e35bde7695c338a3cfebf4b0da82e8ec722b1cd81745eb83902ff18f5",
+      "output_digest": "sha256:e47d95c069408ab58135d855e67f48101ece74084652ddf65875440a6ff6b623"
+    },
+    "reflex-assay": {
+      "total": "170.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:f4df705ac15002b71330f0a39800ebe194c0ee3195300ef12516cd728585b0c1",
+      "output_digest": "sha256:4f6bc6eeafc77b22b3b6c7ac9685ddb07e7324c2816892f6924270049697c759"
+    },
+    "partial-batch": {
+      "total": "110.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:c5b0ebceb2fba885eeb013f215a4ed44aff6442df0ffd76b7f2b84a3cd5d37d9",
+      "output_digest": "sha256:9c0bc127568a1187c2516e120b5d702dad85989fe2982ae2113510888f006388"
+    },
+    "added-panel": {
+      "total": "170.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:98def9433084cf9df1001868237d9b0ab901bfa651521add13894f639da392b5",
+      "output_digest": "sha256:67e66913d49df669e7dc9f4d2afb52bf3e22d2cc15e6e68ccabed1c206d3f160"
+    },
+    "family-perspective": {
+      "total": "180.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:088d97501da2c4cfe9926cee8a9611e9f0478f32063bf5c2b43c23658c6e504c",
+      "output_digest": "sha256:6b766ce0a0ffc66f84de8c2f211b1ecee3a6e9de2e11ef17af42a3e1596641d6"
+    },
+    "capacity-below": {
+      "total": "110.00",
+      "unattributed": "50.00",
+      "input_digest": "sha256:e84e850a1d6ab72114530c8f3e4cf3707f19ba749b920e9c3667a453aa4d9226",
+      "output_digest": "sha256:2b9d6dafbf133ccb0d79eb6c7117fab5251f879e1e8e0a7a543f3dddc2f2a7b3"
+    },
+    "capacity-at": {
+      "total": "120.00",
+      "unattributed": "0.00",
+      "input_digest": "sha256:b585736fe3041699b62eafbc4f9a1d970f9c56dbf8d5c3a7e8c5e997ad2db043",
+      "output_digest": "sha256:d61dc5925a1fbda8bf4b7a755d086a9c1cff19c7fe21d6ff4139380e270f6dd0"
+    },
+    "capacity-above": {
+      "total": "230.00",
+      "unattributed": "50.00",
+      "input_digest": "sha256:416912ace6cf6d8282536d73ad29d1907d1cc544d993e1263e6fc0dfd1199534",
+      "output_digest": "sha256:153628189218975d5332b6bfc89a07ac3fe58f1b4e280a386122c5218b025080"
+    },
+    "capacity-missing-use": {
+      "total": "120.00",
+      "unattributed": "50.00",
+      "input_digest": "sha256:3d461232982e033a80ac62cbbbec018d5e485da8f30de6ee99f351a5d08948c1",
+      "output_digest": "sha256:82d6fa6fbdde9b690006c71438dff3439cffc393f6e4835846f116bed9bd0c8a"
+    },
+    "capacity-unknown": {
+      "total": "120.00",
+      "unattributed": "100.00",
+      "input_digest": "sha256:346f1c998fd1607b447cbc2dd2302eadd5007eff2cae2efc57fda96cd197941c",
+      "output_digest": "sha256:731fcb6c15bfc58a02fa06552296ba2cd75ff671e4fafc902fffb9b2c46e1617"
+    }
+  },
+  "files": {
+    "fixtures/newborn-synthetic/README.md": {
+      "sha256": "9e5ea161a79275338f2035be928340193c80730c148381392372b822cc7bf3b4",
+      "bytes": 7651
+    },
+    "fixtures/newborn-synthetic/added-panel.json": {
+      "sha256": "f294ca7a8693a18c2b0f67c576e3844dad20aa626a743ba2fde5db496c4d69f8",
+      "bytes": 32396
+    },
+    "fixtures/newborn-synthetic/capacity-above.json": {
+      "sha256": "1ff7245921714aae6c795fb9efecec615c058647dbb9fc3fbde92f487c58351d",
+      "bytes": 21035
+    },
+    "fixtures/newborn-synthetic/capacity-at.json": {
+      "sha256": "0ba72ac2e8ee918208d779904cb9b637c819e0cf7bd30aeca6cfbb1197a9d1da",
+      "bytes": 15538
+    },
+    "fixtures/newborn-synthetic/capacity-below.json": {
+      "sha256": "c9885d248205c82e97d29b68e89c698c693225252e287ed42eb3c083bedd5359",
+      "bytes": 10381
+    },
+    "fixtures/newborn-synthetic/capacity-missing-use.json": {
+      "sha256": "75267c5854c9d73cfdc4d959b0b483949b212423a45c5f14a5ea3575bd9684ee",
+      "bytes": 15577
+    },
+    "fixtures/newborn-synthetic/capacity-unknown.json": {
+      "sha256": "8a65738c898f22686dbf00f994f2d57012562db65ed0ecaf506ffb54993f60a9",
+      "bytes": 15577
+    },
+    "fixtures/newborn-synthetic/composed-two-infant.json": {
+      "sha256": "d82b31164cfd1cd310c979f2b7222dab602d0d4532a9246042008322a575f0b8",
+      "bytes": 27443
+    },
+    "fixtures/newborn-synthetic/expected.json": {
+      "sha256": "a1d2ca53c629b8af8336c512ffa7048fa9f22f221aec176d30b306936b7f3637",
+      "bytes": 7673
+    },
+    "fixtures/newborn-synthetic/failed-assay-repeat.json": {
+      "sha256": "34d1b92a4ee25fc952da47b285f078859b4d4d56f613b1ce282e0c9459dec236",
+      "bytes": 30472
+    },
+    "fixtures/newborn-synthetic/family-perspective.json": {
+      "sha256": "86f29dc9768056bee3b76ae34a1ac61fcda39455746be24b7ca2e761d18ff8ee",
+      "bytes": 30391
+    },
+    "fixtures/newborn-synthetic/partial-batch.json": {
+      "sha256": "784970b5f4b7e76a59e255aab3e027548f2d7334cc12f32f74a0cedc0935916d",
+      "bytes": 18899
+    },
+    "fixtures/newborn-synthetic/recipe.json": {
+      "sha256": "a5aecdb2d8ff6d0b9c1f354fdea647f1d7525a0f466c57b9fa9949b003617477",
+      "bytes": 6853
+    },
+    "fixtures/newborn-synthetic/reflex-assay.json": {
+      "sha256": "70450305a1494a1c729b118e060b29ceb65d3673b45ce8de6b557e880178a152",
+      "bytes": 32660
+    },
+    "fixtures/newborn-synthetic/repeat-collection.json": {
+      "sha256": "df89c5884c501fdb2cfe3e92f1607ddfe297ef7b2a7e226c7de3ed67fc438ef5",
+      "bytes": 34542
+    },
+    "fixtures/newborn-synthetic/scenarios.json": {
+      "sha256": "1094b0ea0f2e420cca97ac916835b74f112c8190c71d72b945848e85f0e8287d",
+      "bytes": 28446
+    },
+    "fixtures/newborn-synthetic/sources.json": {
+      "sha256": "c9e38a7685abeb2d508ba2a51412dbf5e95dd4336a4356065cc0f790b4adc68b",
+      "bytes": 5425
+    },
+    "fixtures/newborn-synthetic/unresolved-failure.json": {
+      "sha256": "5585ce663ed118146288f58a3040e59b396559ee3dcfa221c99968a5cdb19ba8",
+      "bytes": 27442
+    },
+    "tests/python/test_newborn_synthetic.py": {
+      "sha256": "cae9c60ed40658097787729d8cc1c5d306a0976c54ef92ffd025e1de203486e8",
+      "bytes": 24750
+    }
+  },
+  "interval_rounding_control": {
+    "command": [
+      "dapane",
+      "evaluate-intervals",
+      "-"
+    ],
+    "stdin_snapshot": {
+      "schema_version": "0.1",
+      "request": {
+        "schema_version": "0.1",
+        "run_id": "synthetic-newborn-segment-tie",
+        "knowledge_cutoff": "2026-11-15",
+        "policy": {
+          "id": "synthetic-newborn-rounding-control",
+          "version": "0.1.0",
+          "currency": "AUD",
+          "price_year": 2026,
+          "perspective": "provider",
+          "basis": "economic_cost",
+          "rounding": {
+            "scale": 2,
+            "mode": "half_even"
+          }
+        },
+        "usage": [],
+        "quotes": [
+          {
+            "id": "first",
+            "kind": "resource_use",
+            "target": "staff_time",
+            "unit": "minute",
+            "amount": "0.001",
+            "per_quantity": "1",
+            "currency": "AUD",
+            "price_year": 2026,
+            "basis": "economic_cost",
+            "components": [
+              "salary"
+            ],
+            "valid_from": "2026-06-15",
+            "valid_to": "2026-06-16",
+            "known_from": "2026-01-01",
+            "source": {
+              "id": "synthetic-newborn-segment-tie",
+              "version": "0.1.0",
+              "evidence": "synthetic",
+              "access": "public",
+              "validation": "unvalidated"
+            }
+          },
+          {
+            "id": "second",
+            "kind": "resource_use",
+            "target": "staff_time",
+            "unit": "minute",
+            "amount": "0.001",
+            "per_quantity": "1",
+            "currency": "AUD",
+            "price_year": 2026,
+            "basis": "economic_cost",
+            "components": [
+              "salary"
+            ],
+            "valid_from": "2026-06-16",
+            "valid_to": "2026-06-17",
+            "known_from": "2026-01-01",
+            "source": {
+              "id": "synthetic-newborn-segment-tie",
+              "version": "0.1.0",
+              "evidence": "synthetic",
+              "access": "public",
+              "validation": "unvalidated"
+            }
+          }
+        ],
+        "objects": [
+          {
+            "id": "infant-a",
+            "kind": "infant"
+          }
+        ]
+      },
+      "intervals": [
+        {
+          "id": "newborn-uniform-labour",
+          "use_id": "newborn-uniform-labour-use",
+          "kind": "resource_use",
+          "target": "staff_time",
+          "unit": "minute",
+          "quantity": "10",
+          "start": "2026-06-15",
+          "end": "2026-06-17",
+          "quote_ids": [
+            "first",
+            "second"
+          ],
+          "exposure": "uniform_calendar_day",
+          "source": {
+            "id": "synthetic-newborn-segment-tie",
+            "version": "0.1.0",
+            "evidence": "synthetic",
+            "access": "public",
+            "validation": "unvalidated"
+          },
+          "object_ids": [
+            "infant-a"
+          ],
+          "attribution_object_id": "infant-a"
+        }
+      ]
+    },
+    "segments": 2,
+    "per_segment_exact": "1/200",
+    "per_segment_rounded": [
+      "0.00",
+      "0.00"
+    ],
+    "exact_total": "1/100",
+    "rounded_total": "0.00",
+    "method_version": "dapane-intervals-v0.1.0",
+    "input_digest": "sha256:1174e34d9606822f70680b935a3dc7d92199dd92717fd0fba06e006b9eb0374b",
+    "output_digest": "sha256:b558f00bbb96b8f3aba99825267296597fd660fbf2b06f0149ad8d2fa50f08d9",
+    "scalar_replay_equal": true
+  },
+  "unexecuted_at_recording": [
+    "Fresh Rust compilation in this lane",
+    "Hosted checks for the final submission commit",
+    "Offline AI security",
+    "Real provider/programme/reporting qualification"
+  ],
+  "recovery_note": "The earlier memory-backed checkout was lost during environment restart. These recovered files were reverified; prior local runs are not substituted for this source identity."
+}
