@@ -42,7 +42,9 @@
     ],
     "evidence": [
       "fixtures/newborn-synthetic/README.md",
-      "conductor/tracks/newborn_screening_20261108/plan.md"
+      "conductor/tracks/newborn_screening_20261108/plan.md",
+      "conductor/tracks/newborn_screening_20261108/handoff.md",
+      "conductor/tracks/newborn_screening_20261108/verification.json"
     ]
   },
   "completion_evidence": [

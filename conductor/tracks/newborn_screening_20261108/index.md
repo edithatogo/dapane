@@ -18,3 +18,6 @@ Capability status: synthetic_recipe_n1_n2_executed_pending_integration. See [run
 
 See the [synthetic recipe](../../../fixtures/newborn-synthetic/README.md) and
 [plan](plan.md) for the bounded composition and evidence.
+
+- [Exact-source handoff](handoff.md)
+- [Machine-readable verification](verification.json)

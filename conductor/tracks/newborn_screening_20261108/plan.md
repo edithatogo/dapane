@@ -63,3 +63,7 @@ The later integrator ownership PR #20 reserves `adapters/newborn_screening/` by
 default. Dylan explicitly authorised this lane's fixture/test paths. Request the
 central map be reconciled to those paths; this lane does not edit that map, the
 registry, shared schemas, crates, manifests, CI or root docs.
+
+The [exact-source handoff](handoff.md) and [verification receipt](verification.json)
+retain the published implementation SHA/tree, artifact identities, CLI digests,
+rounding control and executed-versus-unexecuted qualification.
