@@ -1,0 +1,17 @@
+test_archived_track_rejects_unfinished_tasks (test_conductor_validation.ConductorValidationTests.test_archived_track_rejects_unfinished_tasks) ... ok
+test_archived_track_requires_passed_verification (test_conductor_validation.ConductorValidationTests.test_archived_track_requires_passed_verification) ... ok
+test_cancellation_is_distinct_from_verified_archival (test_conductor_validation.ConductorValidationTests.test_cancellation_is_distinct_from_verified_archival) ... ok
+test_conflicting_status_lines_are_rejected (test_conductor_validation.ConductorValidationTests.test_conflicting_status_lines_are_rejected) ... ok
+test_duplicate_status_lines_are_rejected (test_conductor_validation.ConductorValidationTests.test_duplicate_status_lines_are_rejected) ... ok
+test_plan_requires_status_line (test_conductor_validation.ConductorValidationTests.test_plan_requires_status_line) ... ok
+test_plan_status_must_match_metadata (test_conductor_validation.ConductorValidationTests.test_plan_status_must_match_metadata) ... ok
+test_single_status_accepts_plain_and_paired_backticks (test_conductor_validation.ConductorValidationTests.test_single_status_accepts_plain_and_paired_backticks) ... ok
+test_status_backticks_must_be_paired (test_conductor_validation.ConductorValidationTests.test_status_backticks_must_be_paired) ... ok
+test_status_value_cannot_cross_lines (test_conductor_validation.ConductorValidationTests.test_status_value_cannot_cross_lines) ... ok
+test_valid_archive_remains_a_registered_dependency (test_conductor_validation.ConductorValidationTests.test_valid_archive_remains_a_registered_dependency) ... ok
+test_valid_completed_track_passes (test_conductor_validation.ConductorValidationTests.test_valid_completed_track_passes) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.897s
+
+OK

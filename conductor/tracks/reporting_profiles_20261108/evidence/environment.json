@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "attrs": "26.1.0",
+    "dapane": "0.1.0",
+    "html5rdf": "1.2.1",
+    "jsonschema": "4.26.0",
+    "jsonschema-specifications": "2025.9.1",
+    "owlrl": "7.6.2",
+    "packaging": "26.3",
+    "prettytable": "3.18.0",
+    "pyparsing": "3.3.3",
+    "pyshacl": "0.31.0",
+    "rdflib": "7.6.0",
+    "referencing": "0.37.0",
+    "rpds-py": "2026.9.1",
+    "ruff": "0.17.4",
+    "typing_extensions": "4.16.0",
+    "wcwidth": "0.9.4"
+  },
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+}

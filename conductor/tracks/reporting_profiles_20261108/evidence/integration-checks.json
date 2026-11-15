@@ -1,0 +1,14 @@
+{
+  "implementation_commit": "8f7c5dcbe14287759d62fd41d0804a92b734b75f",
+  "phase": "handoff documentation working tree; adapter files unchanged from tested implementation",
+  "executed_at": "2026-11-15T05:41:50.525401+00:00",
+  "argv": [
+    "/tmp/dapane-reporting-venv-b09fcebc3b9b/bin/python",
+    "scripts/validate_conductor.py"
+  ],
+  "exit_code": 1,
+  "log_file": "conductor-validation.log",
+  "log_sha256": "11a72321af9c6231bf47acc5e49e57896706da8bbf9cf90e67eaae38fb1968ca",
+  "qualification": "not a pass; registry edit belongs to integrator",
+  "expected_error_count": 1
+}

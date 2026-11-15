@@ -15,7 +15,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [x] E2.1 Implement versioned evidence/JSON-LD exports and conditional profile selection outside the scalar numerical core.
 - [x] E2.2 Emit requirement-level evidence locations, applicability rationale and explicit coverage states from contract fixtures.
-- [~] E2.3 Run positive/negative schema and SHACL fixtures, including missing evidence, invalid not-applicable assertions and source-version mismatch.
+- [x] E2.3 Run positive/negative schema and SHACL fixtures, including missing evidence, invalid not-applicable assertions and source-version mismatch.
 
 ## Phase 3 — Consumer use and curation
 
@@ -25,8 +25,9 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
-The restored optional adapter passed 35 synthetic acceptance tests on CPython 3.12.14 with the exact release-owner wheel. Final review, source-bound evidence and integration requests are being completed.
-Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.
+The published implementation `8f7c5dcbe14287759d62fd41d0804a92b734b75f` passed all 41 synthetic reporting acceptance tests on CPython 3.12.14 with the exact release-owner wheel. Native interval validation, Ruff and all 12 Conductor lifecycle tests also passed. See [verification](verification.md), the [review record](review.md) and the [machine-readable execution receipt](evidence/execution.json).
+
+E1 and E2 are verified within the repository-local synthetic boundary. This is not an installed SDK, released semantic pack, full-checklist claim or empirical validation. E3 remains pending. The central registry still describes this track as new; the sole integrator must reconcile it before final Conductor validation. [REP-IR-01 and REP-IR-02](handoff.md) request that registry edit and explicit hosted reporting qualification. No shared file was edited or gate waived.
 
 ## Bounded lane ownership
 
