@@ -2,7 +2,9 @@
 
 Review date: **15 November 2026**.
 
-Status: **review complete, findings fixed, installed acceptance and hosted gates passed; track archived in place**.
+Status: **review complete and implementation qualification passed on `d4d6500e`
+(tested merge `cf9a7ad`); track archived in place**. [PR 13](https://github.com/edithatogo/dapane/pull/13)
+records the subsequent archive-commit checks and merge.
 
 This record reviews the [specification](spec.md), [plan](plan.md), provider-owned
 adapters and coordinating installed-consumer checks. It does not certify source
@@ -137,8 +139,9 @@ Its workflow separates the pinned workforce Python 3.15.2 and genomics Python
 3.15.1 environments, uses isolated installed imports and compares both consumers
 with the same Rust implementation.
 
-**Local installed acceptance and final hosted gates passed.** The qualification
-record retains exact provider/coordinator revisions and check receipts. The
+**Implementation qualification passed on `d4d6500e`, tested as merge `cf9a7ad`.**
+The qualification record retains exact provider/coordinator revisions and check
+receipts. The
 closeout reconciles the receiving branch and preserves the final immutable
 provider pins. The track is completed and archived in place with this review
 and its earlier evidence. No source workbook output is copied into this record.
@@ -196,9 +199,9 @@ are preserved. Completion remains limited to the selected installed provider sco
 
 The aggregate CodeQL checks on `bc96cc1` and `c1333839` reported a high-severity
 `actions/cache-poisoning/poisonable-step` finding in the new qualification
-workflow. Successful analysis execution was not treated as a passed security
-gate. The actual annotation identified both provider checkout refs and the
-manual-dispatch event. A separate review of the CodeQL query confirmed that
+workflow. Successful analysis execution does not establish a passed security
+gate; the earlier summary was corrected above. The actual annotation identified
+both provider checkout refs and the manual-dispatch event. A separate review of the CodeQL query confirmed that
 turning off setup-uv's cache alone would not remove the job's cache capability.
 Removing the unnecessary manual trigger is the bounded fix. Ordinary PR and
 push-to-main qualification remain; all numerical/provider source and pinned
