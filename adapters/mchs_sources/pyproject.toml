@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools==84.2.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dapane-mchs-atlas"
+version = "0.1.0"
+description = "Optional exact MCHS activity and Atlas quotation transport for Dapane"
+readme = "README.md"
+requires-python = ">=3.12,<3.16"
+dependencies = []
+
+[project.optional-dependencies]
+native = ["dapane==0.1.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+dapane_mchs_atlas = ["provider_pins.json", "py.typed"]

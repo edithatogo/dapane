@@ -57,3 +57,20 @@ Select the first classification edition and quotation providers from available q
 Follow the [phased plan](plan.md) and [repository workflow](../../workflow.md).
 Commands described by pending tasks are future acceptance instructions, not executed evidence.
 Record actual commands, source/artifact identities and outcomes in the metadata when work is performed.
+
+## Bounded M1/M2 source candidate, 15 November 2026
+
+The candidate implements an optional exact transport package under
+`adapters/mchs_sources/`; [contracts](contracts.md) pin the current providers
+and separate native 0.1 views from the richer provenance envelope.
+
+The tariff interpretation explicitly uses native `charge`. Payment observations
+and named models are retained without native valuation or aggregation. Atlas
+exact values require a new explicit supplement because its current normalized
+monetary field is float-based. Neither provider was executed or modified.
+
+The [verification record](verification.md) distinguishes an earlier 24-test pass
+from the unexecuted recovered final source and its 34-test suite. Acceptance
+criteria above are preserved; M1.3/M2 final qualification stays open. This scope
+does not include M3 migration, official rate/classification qualification,
+publication, or changes to shared core/CLI/Python/schema/CI files.

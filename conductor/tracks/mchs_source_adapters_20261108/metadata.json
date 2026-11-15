@@ -1,9 +1,9 @@
 {
   "track_id": "mchs_source_adapters_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-15T05:22:28Z",
   "description": "Connect classified hospital activity and versioned quotation sources without conflating tariffs, funding, resource cost and actual payment.",
   "repositories": [
     "."
@@ -18,16 +18,32 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "Dedicated optional package under adapters/mchs_sources; default core/Python imports remain unchanged.",
+    "Funding and tariff use separate native funding/charge requests; payments retain observations/models without aggregation.",
+    "Atlas exact-value supplement is a proposed Dapane boundary; normalized floats are rejected.",
+    "Exact-head verification remains open after the execution environment outage; central registry/CI updates belong to the integrator."
+  ],
   "requirement_ids": [
     "RQ-05",
     "RQ-01",
     "RQ-03"
   ],
-  "capability_status": "planned",
+  "capability_status": "source_candidate_unqualified",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "partial",
+    "commands": [
+      "Earlier source: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=adapters/mchs_atlas/src DAPANE_TEST_CLI=/tmp/dapane-mchs-native-3ba95fceed09/dapane python3 -m unittest discover -s adapters/mchs_atlas/tests -v",
+      "Intermediate source: ruff 0.17.4 check --fix adapters/mchs_atlas/src adapters/mchs_atlas/tests"
+    ],
+    "evidence": "verification.md",
+    "executed_result": "Earlier uncommitted version: 24 tests passed; not final recovered-head qualification.",
+    "pending": [
+      "Final recovered-source 34-test suite",
+      "Final Ruff check/format",
+      "Installed adapter/default native-wheel smoke test",
+      "Integrator registry and explicit CI qualification"
+    ]
   },
   "completion_evidence": [
     "The activity-only funding fixture produces the correct result with zero inferred or manufactured ResourceUse records.",
