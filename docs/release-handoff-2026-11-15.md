@@ -1,5 +1,12 @@
 # Release qualification handoff — 15 November 2026
 
+Follow-up: ordinary hosted qualification has now passed at exact source
+**5f03f28e3aa5a98c45c0853ce7498c86b181d66a**, including the new notice bytes and
+the existing provider verifier consuming the release artifacts. Its
+[artifact receipt](release-qualification-5f03f28.json) retains exact identities
+and outcomes. Central offline security is still queued and publication remains
+disabled. The earlier baseline below is retained with its original source.
+
 ## Receipt and exact source boundary
 
 Received the owner's authorised consolidation handoff, including the provider
@@ -117,6 +124,73 @@ aggregate distribution expression is omitted under the
 [documented PyPA metadata boundary](release-controls.md); no compound licence
 is guessed from the conservative inventory.
 
+## Hosted qualification at 5f03f28
+
+The follow-up inspection at **04:26 UTC** verified source
+[`5f03f28e3aa5a98c45c0853ce7498c86b181d66a`](https://github.com/edithatogo/dapane/commit/5f03f28e3aa5a98c45c0853ce7498c86b181d66a),
+tree `191a295ee823297a3f517e7f584cf6023cbe4d40`. All ordinary hosted checks passed:
+
+| Workflow | Run | Result |
+| --- | --- | --- |
+| Release assurance | [43676274010](https://github.com/edithatogo/dapane/actions/runs/43676274010) | All four candidates, supply-chain, exact-artifact providers and aggregate matrix passed |
+| Runtime | [43676274053](https://github.com/edithatogo/dapane/actions/runs/43676274053) | 62 native tests, eleven tooling tests, four installed suites passed |
+| Standalone providers | [43676274020](https://github.com/edithatogo/dapane/actions/runs/43676274020) | Passed |
+| Conductor | [43676274022](https://github.com/edithatogo/dapane/actions/runs/43676274022) | Passed |
+| Privacy and secrets | [43676274024](https://github.com/edithatogo/dapane/actions/runs/43676274024) | Passed |
+| CodeQL | [43676271782](https://github.com/edithatogo/dapane/actions/runs/43676271782) | Actions, Python and Rust analyses and aggregate check passed |
+
+Each of CPython **3.12.16, 3.13.18, 3.14.10 and 3.15.2** passed 133 installed tests,
+ten independent scalar/capacity references, the installed interval rejection and
+tamper controls, and two byte-identical clean builds. The runner was Linux x86_64,
+glibc 2.39, Rust 1.99.1. The wheels' `manylinux_2_34_x86_64` tags do not extend
+qualification beyond the executed Ubuntu runner. Receipts retain the 29-package
+minimal native closure and zero Python runtime dependencies.
+
+| Interpreter | Wheel SHA256 |
+| --- | --- |
+| 3.12.16 | `a2902e5d23422962523654a1c5d2015837a8e6ba509792bc833dbdf23ecc8201` |
+| 3.13.18 | `aff83cc061a22c112f0b4f45970409a2ccb37e2b4aacfc83454a8f608b8fdaf7` |
+| 3.14.10 | `1fa1ed1671d67331d396c3f8e430a8802f737a18e21928ea5d603d3c77dada4a` |
+| 3.15.2 | `d4a1adbf74710dfcebb1ab1ac887901ae7fa489b7ecd6a4e8c02df0cfc206369` |
+
+All four CLI payloads have SHA256
+`2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2`.
+Five downloaded artifact ZIPs matched their recorded archive digests, and all
+100 recorded member checksums passed. Direct wheel/sdist inspection confirmed
+Metadata 2.4, absence of both optional aggregate licence fields, three declared
+legal files and exact legal bytes matching the CLI companions and archived source.
+The source distribution and all three Cargo package inventories contain the legal
+files. Full filenames, sizes, hashes and raw observations are in the JSON receipt.
+
+The [release provider job](https://github.com/edithatogo/dapane/actions/runs/43676274010/job/132697595562)
+downloaded candidate artifact **14145643783**, archive SHA256
+`f52fcbccb909ee971ffde41c85b3ede54b903d01b430cd5fd332bd7013ea31f7`.
+It verified the receipt before provider checkout, then passed workforce on Python
+3.15.2 and genomics on 3.15.1 using the same CLI/wheel bytes, plus 133 native-boundary
+tests. The aggregate matrix waited for this result. Runtime's merge checkout
+`556fc6867a29ae1bf9acb6767dfd141844f3cc7c` has exactly the tested source tree.
+
+Cargo-deny passed all four policy domains with zero errors/warnings against
+RustSec revision `4ef2df8e806a65e2f1ecc14f56f51249062b23d6`; the Python audit
+reported no known vulnerabilities in 36 resolved packages. Three CycloneDX SBOMs
+were inspected and their hashes retained. This is a dated dependency observation.
+
+The synthetic CLI benchmark ran three repeats at each scale. Median wall times
+include process startup and JSON input/output:
+
+| Usage rows | Valuation, seconds | Allocation, seconds |
+| --- | --- | --- |
+| 10 | 0.001442 | 0.001639 |
+| 1,000 | 0.036719 | 0.049538 |
+| 5,000 | 0.203711 | 0.317516 |
+
+Peak child RSS across the complete run was **86,384 KiB**. This is not per-workload
+memory or a cross-host/provider performance claim. The raw timings, CPU measures,
+input/output sizes and output digests remain in the JSON receipt. Artifact storage
+has 30-day retention; the receipt preserves identities and results, not the binary
+bytes. Retain artifacts beyond that window before publication or any consolidation
+that depends on recovery.
+
 ## Review, remaining execution and owner choices
 
 Local verification of this increment passed **64 release-control tests**, Ruff
@@ -128,12 +202,13 @@ exact-artifact provider dependency. Conductor consistency passed with 14 tracks,
 12 requirements, 155 tasks and 557 local links; two workflows, 23 Bash blocks
 and three embedded Python blocks parsed. The local Rust executable is
 unavailable, so no fresh native artifact result is inferred from these controls.
-The changed notices, packaging and reusable-provider path require new hosted
-results at the published commit. PR #17 retains those exact-head results; the
+At initial publication the changed notices, packaging and reusable-provider path
+required new hosted results. The completed 5f03f28 run above supplies those results.
+PR #17 retains subsequent exact-head status; the
 older [local qualification](release-verification-2026-11-15.md) and
 [initial integration record](release-integration-2026-11-15.md) remain historical.
 
-The centrally managed offline security runs
+At the initial baseline, the centrally managed offline security runs
 [43664411263](https://github.com/edithatogo/dapane/actions/runs/43664411263) and
 [43664409752](https://github.com/edithatogo/dapane/actions/runs/43664409752) are
 **queued and unexecuted** at inspection. Their jobs request
@@ -142,7 +217,12 @@ runner is assigned. No scanner outcome exists. The caller still pins reusable
 workflow `36362fa872e4ce747266a6e795fcefa3dd343f67`; its central documented profile
 requires pre-provisioned infrastructure. No gate was disabled or waiver inferred
 from branch metadata, and no runner was provisioned. Runner execution remains an
-external blocker before treating PR #17 as fully qualified.
+external blocker before treating PR #17 as fully qualified. On 5f03f28 the current
+[PR run 43676274294](https://github.com/edithatogo/dapane/actions/runs/43676274294)
+and [push run 43676270592](https://github.com/edithatogo/dapane/actions/runs/43676270592)
+also remain queued with no execution result. Successful ordinary checks do not
+replace that result. PR attestation was correctly skipped because the event is
+ineligible; trusted-main provenance still follows successful main qualification.
 
 Publication remains disabled: the owner still needs to choose the first channels
 and controlling accounts/organisations. Candidate names do not reserve names or

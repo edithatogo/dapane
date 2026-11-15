@@ -11,8 +11,10 @@ The [dated local qualification](release-verification-2026-11-15.md) records the
 completed installed matrix, dual-build identities, SBOM/advisory outcomes and
 measured limits at its exact source. The later
 [handoff and hosted qualification record](release-handoff-2026-11-15.md) records
-the incorporated owners' work and successful hosted baseline at `d37575ec`.
-Each subsequent source revision still needs its own complete qualification.
+the incorporated owners' work and successful ordinary hosted checks at `5f03f28`,
+with a [source-bound artifact receipt](release-qualification-5f03f28.json).
+Central offline security remains unexecuted. Each subsequent source revision
+still needs its own complete qualification.
 
 ## Scope and first-release prerequisites
 

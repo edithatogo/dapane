@@ -152,3 +152,22 @@ fresh hosted execution at the new source. The central offline security runs are
 queued without an assigned runner and have no scanner outcome. Their gate is
 preserved. Channel/account choices remain with the owner; publication is disabled.
 No external repository archive or legacy machinery removal is implied.
+
+## Hosted qualification of the notice and provider increment
+
+At exact published source **5f03f28e3aa5a98c45c0853ce7498c86b181d66a**, all ordinary
+hosted checks passed. The [source-bound receipt](../../../docs/release-qualification-5f03f28.json)
+retains the four wheel/CLI identities, raw benchmark, full advisory outcome,
+three SBOM hashes and the exact provider artifact download. All five downloaded
+archives and their 100 member checksums were independently inspected. Actual
+wheel and sdist metadata and all three legal payloads matched the intended policy.
+
+Each interpreter passed 133 installed tests and ten independent references, plus
+the installed interval rejection/tamper controls and two byte-identical clean
+builds. The release provider job passed using those exact CPython 3.15 artifacts
+in the existing workforce/genomics environments. Runtime separately passed 62
+native and eleven tooling tests, plus its four installed suites. Release
+aggregation, standalone providers, Conductor, Privacy and CodeQL passed. The
+central offline jobs remain queued; trusted-main attestation was correctly skipped
+on the PR. These results establish the recorded candidate scope while publication
+and final security qualification remain blocked.
