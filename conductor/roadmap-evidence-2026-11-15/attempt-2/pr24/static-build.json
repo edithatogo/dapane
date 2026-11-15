@@ -1,0 +1,50 @@
+{
+  "receipt_type": "local-executed-build-not-attested",
+  "git_source_sha": "237ddb238997b0babe12266cb7775207c597dfd4",
+  "runtime_source_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "runtime_files": {
+    "Cargo.toml": "sha256:9413abdb64b319eb2672b8e493a4ffeb84f6230bc9b83aa06fd90ee88ed91cf6",
+    "Cargo.lock": "sha256:13649b9439eeba96b5be59cdb1653815bc093ea36066bc8bd14a1e547afc9ea7",
+    "rust-toolchain.toml": "sha256:f715f440167e20fd8ea9afa0498c3d1ab80174cfcb8cbc895f106a34d907a1e1",
+    "crates/dapane-cli/Cargo.toml": "sha256:69aa9d05fa2bfa02aa02c130001cc57a7d9e4b3621d0c93e1e3e5fd56cd8a698",
+    "crates/dapane-cli/src/main.rs": "sha256:5e1f4da50e1794f94e95a1782c86f7a37f2b789e89b779ee6b6269a391538f53",
+    "crates/dapane-cli/tests/cli.rs": "sha256:8884f398ade8b8820a8f7cb42566a465764bfbe7478becea60d96999568252bc",
+    "crates/dapane-cli/tests/intervals.rs": "sha256:2a9b88a8d268a9eb7515568837efcf36653439cf75c2a4b6517d3b7857a02913",
+    "crates/dapane-core/Cargo.toml": "sha256:19f26642b42d97dcfc1ac9fc64abb130de5408eb47dc0179fcd78636c09cd716",
+    "crates/dapane-core/src/capacity.rs": "sha256:8f3bcaf18714779a95413942e264cda2331393ba905651c99f46305cb306c590",
+    "crates/dapane-core/src/intervals.rs": "sha256:81e14099f7989afd46b657117144095847c69b4b27792b0305d83b74f20b4992",
+    "crates/dapane-core/src/json.rs": "sha256:8214bf395de01da3071bf5d85079e8a7341d064369d094bfa4081532024bc6e4",
+    "crates/dapane-core/src/lib.rs": "sha256:87a3796d69d64cbdd61bf72fd156e87d1dc8aac83312891506debdd0e23ce818",
+    "crates/dapane-core/src/numeric.rs": "sha256:147d686acd44430f28d89ad17c463c2f9ba29ccfdea050f92bff5bb392629736",
+    "crates/dapane-core/src/types.rs": "sha256:aa1df9e70b13be94768cf7516d87fb83f45794fd3d16c8582cd4e206fe1774ef",
+    "crates/dapane-core/src/validation.rs": "sha256:eac16dc20361dd39dc3ecd57933e5c7d13786a3fe075bebff2c9812bfeb5f2c4",
+    "crates/dapane-core/tests/capacity.rs": "sha256:4d3b8d3d1317469c77b5c6e1ef7be1ba239b8e8c9e316fc825b10e57f97218b0",
+    "crates/dapane-core/tests/evaluation.rs": "sha256:a623b554b26929bb55e7c4ba27e60d90e876163cdd28d1e22e7e6eba849cfa7b",
+    "crates/dapane-core/tests/interval_review.rs": "sha256:478f57f341948f1a7ed691ffbc1fabc4fadbd33a3f8bfb7309a61ee7aa673448",
+    "crates/dapane-core/tests/intervals.rs": "sha256:6a6339fa79c9ef065470218bd6c4d017aee147c8945dfd16a96ae152c56f9e11",
+    "crates/dapane-python/Cargo.toml": "sha256:88b4121a5358ad629e4dcfa0ceee666dabaec8a3e8fbd57565a105314e2184a5",
+    "crates/dapane-python/src/lib.rs": "sha256:370104c548addfc2a46b145e9f90dc0144c20a2c121a724befb28d2f68b54783"
+  },
+  "cargo_lock_sha256": "sha256:13649b9439eeba96b5be59cdb1653815bc093ea36066bc8bd14a1e547afc9ea7",
+  "command": [
+    "cargo",
+    "build",
+    "--offline",
+    "--locked",
+    "--release",
+    "-p",
+    "dapane-cli",
+    "--target-dir",
+    "/home/runner/work/_temp/roadmap-static/work/static-target"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "   Compiling autocfg v1.5.1\n   Compiling proc-macro2 v1.0.107\n   Compiling quote v1.0.47\n   Compiling unicode-ident v1.0.27\n   Compiling typenum v1.20.1\n   Compiling num-traits v0.2.19\n   Compiling serde_core v1.0.229\n   Compiling zmij v1.0.23\n   Compiling hybrid-array v0.4.15\n   Compiling num-integer v0.1.47\n   Compiling block-buffer v0.12.1\n   Compiling crypto-common v0.2.2\n   Compiling syn v3.0.9\n   Compiling serde_json v1.0.154\n   Compiling const-oid v0.10.2\n   Compiling serde v1.0.229\n   Compiling num-bigint v0.4.8\n   Compiling digest v0.11.3\n   Compiling cpufeatures v0.3.1\n   Compiling cfg-if v1.0.5\n   Compiling memchr v2.8.3\n   Compiling itoa v1.0.18\n   Compiling serde_derive v1.0.229\n   Compiling num-rational v0.4.2\n   Compiling sha2 v0.11.1\n   Compiling chrono v0.4.45\n   Compiling dapane-core v0.1.0 (/home/runner/work/dapane/dapane/dapane/crates/dapane-core)\n   Compiling dapane-cli v0.1.0 (/home/runner/work/dapane/dapane/dapane/crates/dapane-cli)\n    Finished `release` profile [optimized] target(s) in 17.50s\n",
+  "rustc_verbose": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n",
+  "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "compiler_environment": {
+    "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-static/work=/dapane/roadmap"
+  },
+  "binary_sha256": "sha256:5eaab52309ff9162360a9c82dd1bded8e163118fd573ff45fb8dd607a334991c",
+  "binary_bytes": 1718592
+}

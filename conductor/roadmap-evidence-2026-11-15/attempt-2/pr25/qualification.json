@@ -1,0 +1,1190 @@
+{
+  "artifacts": {
+    "artifacts/build-python-packages.txt": {
+      "bytes": 58,
+      "sha256": "e03189c1e1c35d87985530920c0b2fa81f079eccd6fc7383d793fb5015312f6c"
+    },
+    "artifacts/consumer-packages.txt": {
+      "bytes": 415,
+      "sha256": "ea9ee91e1470fc191cc88d0d32cf8ec30776e505a846ee5eaf95f22dce0ba0ad"
+    },
+    "artifacts/installed-mchs.json": {
+      "bytes": 783,
+      "sha256": "a560db703dae99eb723c185853891ea5dfccf140b650076a6b24710cfa589af2"
+    },
+    "artifacts/installed-native.json": {
+      "bytes": 834,
+      "sha256": "ee7f7893bbe9d36c8805597d778a0d1c3b2d40df146baba9d93e7008cf78bf44"
+    },
+    "artifacts/mchs/dapane_mchs_atlas-0.1.0-py3-none-any.whl": {
+      "bytes": 17464,
+      "sha256": "54521bcd0218a2a738f40aa2166351a374cf91cf01080bac028e71f19fad3923"
+    },
+    "artifacts/native-cargo-metadata.json": {
+      "bytes": 166590,
+      "sha256": "de5841ac084c520124e09fc75de92284fda63f186a2e171541585d848782063d"
+    },
+    "artifacts/native/dapane": {
+      "bytes": 1718592,
+      "sha256": "5eaab52309ff9162360a9c82dd1bded8e163118fd573ff45fb8dd607a334991c"
+    },
+    "artifacts/native/dapane-0.1.0-cp312-cp312-manylinux_2_34_x86_64.whl": {
+      "bytes": 581138,
+      "sha256": "54807a73ae88619dce6c05e27ecae7977c1de6ec4e0ed5306219eec5b7009c0c"
+    },
+    "logs/build-packages.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/cargo-version.log": {
+      "bytes": 36,
+      "sha256": "c35608815f43d0b8788a9b826fad2bb17384f49fb328dc4fe64da9db5f5ef4d6"
+    },
+    "logs/consumer-dependency-check.log": {
+      "bytes": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    "logs/consumer-environment.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/consumer-packages.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/mchs-install.log": {
+      "bytes": 209,
+      "sha256": "a1982da32c70e8f70cb311e914fe4958b29c6fea65892abdd6f5c4d2c6ec0e4a"
+    },
+    "logs/mchs-installed-identity.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/mchs-installed-smoke.log": {
+      "bytes": 341,
+      "sha256": "76acec2138c85571693fb3e6c17b9e168b1e0f4a43b60dd3da31d9d4de9afb52"
+    },
+    "logs/mchs-source-copy.log": {
+      "bytes": 1581,
+      "sha256": "03a1890d8f80ee1205f025bf1176553599f4cbb026b11cea4706fa5487243063"
+    },
+    "logs/mchs-tests.log": {
+      "bytes": 5387,
+      "sha256": "4e82a800362041c46f165f87eadcda44c058c0ea44811f2d06effb1543fff151"
+    },
+    "logs/mchs-wheel-selection.log": {
+      "bytes": 5,
+      "sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+    },
+    "logs/mchs-wheel.log": {
+      "bytes": 722,
+      "sha256": "4f0f2a9a1bea911ae44006af0f7344619e19e6da8e0c161c093cf13a9aee1d18"
+    },
+    "logs/native-build.log": {
+      "bytes": 1033,
+      "sha256": "2968b82a0df2d704f2eb3cddac874b20dde08e359f4e28c1d3c8da10ebf45419"
+    },
+    "logs/native-cli.log": {
+      "bytes": 166,
+      "sha256": "8e1feeab4774b89ccaf28e3b4a8c72710d714088993dcb51736b0d8d97a18aef"
+    },
+    "logs/native-fetch.log": {
+      "bytes": 1166,
+      "sha256": "6649bcf049d91f7576e9e7da521ab5c1302f9a9deaff50de4dc8d37d54a6b3aa"
+    },
+    "logs/native-install.log": {
+      "bytes": 199,
+      "sha256": "c20eb232da9d51ce6be164585f74af13b7b84d84cc9819c968a67ca286bf9e30"
+    },
+    "logs/native-installed-identity.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/native-metadata.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/native-wheel-selection.log": {
+      "bytes": 5,
+      "sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+    },
+    "logs/native-wheel.log": {
+      "bytes": 1003,
+      "sha256": "444b900b7e3f3374c19196a420f0ab1063dc5123c8294aaa614d87b6d5ea566f"
+    },
+    "logs/python-format.log": {
+      "bytes": 15230,
+      "sha256": "afc7d5ec400a01ab48ea34e239c2c73550f03da5845c76e7d1c63ea10968fa05"
+    },
+    "logs/python-lint.log": {
+      "bytes": 682,
+      "sha256": "289364cee5c3cf7e19f1f4bcbd1ae08ba632384380080ab37e7212943c4a55ba"
+    },
+    "logs/python-tools.log": {
+      "bytes": 1229,
+      "sha256": "5adfa9911e143c3ee77d6e5887f71052abd3685f02a3fc69169a5f4312a96e08"
+    },
+    "logs/rust-install.log": {
+      "bytes": 257,
+      "sha256": "866873c80025ddce28f53dced6f46270cde080abf8c5fb7775bec7b662472c34"
+    },
+    "logs/rust-version.log": {
+      "bytes": 196,
+      "sha256": "f22d5e4e9ced367e774ce5bc140d9e6b1235c1882fec80d011044851f3ae6369"
+    },
+    "logs/source-after.log": {
+      "bytes": 5,
+      "sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+    },
+    "logs/source-before.log": {
+      "bytes": 5,
+      "sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+    }
+  },
+  "commands": [
+    {
+      "arguments": null,
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.0246,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/source-before.log",
+      "name": "source-before",
+      "prerequisites": [],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "rustup",
+        "toolchain",
+        "install",
+        "1.99.1",
+        "--profile",
+        "minimal",
+        "--component",
+        "rustfmt",
+        "--component",
+        "clippy"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 8.888483,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/rust-install.log",
+      "name": "rust-install",
+      "prerequisites": [
+        "source-before"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "rustc",
+        "--version",
+        "--verbose"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.016515,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/rust-version.log",
+      "name": "rust-version",
+      "prerequisites": [
+        "rust-install"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "cargo",
+        "--version"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.016409,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/cargo-version.log",
+      "name": "cargo-version",
+      "prerequisites": [
+        "rust-install"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--only-binary=:all:",
+        "ruff==0.17.4",
+        "maturin==1.16.0",
+        "setuptools==84.2.1"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 2.219671,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/python-tools.log",
+      "name": "python-tools",
+      "prerequisites": [
+        "source-before"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-m",
+        "pip",
+        "freeze",
+        "--all"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.265348,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/build-packages.log",
+      "name": "build-packages",
+      "prerequisites": [],
+      "status": "passed",
+      "stdout": "artifacts/build-python-packages.txt"
+    },
+    {
+      "arguments": [
+        "cargo",
+        "fetch",
+        "--locked"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.465574,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/native-fetch.log",
+      "name": "native-fetch",
+      "prerequisites": [
+        "rust-version"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--release",
+        "--no-default-features",
+        "-p",
+        "dapane-cli",
+        "--target-dir",
+        "/home/runner/work/_temp/roadmap-mchs/work/native-target"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 22.645517,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/native-build.log",
+      "name": "native-build",
+      "prerequisites": [
+        "native-fetch"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": null,
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.007011,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/native-cli.log",
+      "name": "native-cli",
+      "prerequisites": [
+        "native-build"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-m",
+        "maturin",
+        "build",
+        "--locked",
+        "--offline",
+        "--release",
+        "--interpreter",
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "--out",
+        "/home/runner/work/_temp/roadmap-mchs/retained/artifacts/native"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 21.844291,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_TARGET_DIR": "/home/runner/work/_temp/roadmap-mchs/work/native-target",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/native-wheel.log",
+      "name": "native-wheel",
+      "prerequisites": [
+        "native-fetch",
+        "python-tools"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "cargo",
+        "metadata",
+        "--locked",
+        "--offline",
+        "--format-version",
+        "1"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.065103,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/native-metadata.log",
+      "name": "native-metadata",
+      "prerequisites": [
+        "native-fetch"
+      ],
+      "status": "passed",
+      "stdout": "artifacts/native-cargo-metadata.json"
+    },
+    {
+      "arguments": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-m",
+        "venv",
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 2.721393,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/consumer-environment.log",
+      "name": "consumer-environment",
+      "prerequisites": [
+        "source-before"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": null,
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.001064,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/native-wheel-selection.log",
+      "name": "native-wheel-selection",
+      "prerequisites": [
+        "native-wheel"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--no-deps",
+        "/home/runner/work/_temp/roadmap-mchs/retained/artifacts/native/dapane-0.1.0-cp312-cp312-manylinux_2_34_x86_64.whl"
+      ],
+      "cwd": "/home/runner/work/_temp/roadmap-mchs/work/consumer-cwd",
+      "elapsed_seconds": 0.465785,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/native-install.log",
+      "name": "native-install",
+      "prerequisites": [
+        "consumer-environment",
+        "native-wheel-selection"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer/bin/python",
+        "-I",
+        "/home/runner/work/dapane/dapane/dapane/scripts/qualify_roadmap.py",
+        "installed",
+        "--wheel",
+        "/home/runner/work/_temp/roadmap-mchs/retained/artifacts/native/dapane-0.1.0-cp312-cp312-manylinux_2_34_x86_64.whl",
+        "--checkout",
+        "/home/runner/work/dapane/dapane/dapane",
+        "--distribution",
+        "dapane",
+        "--module",
+        "dapane"
+      ],
+      "cwd": "/home/runner/work/_temp/roadmap-mchs/work/consumer-cwd",
+      "elapsed_seconds": 0.115253,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/native-installed-identity.log",
+      "name": "native-installed-identity",
+      "prerequisites": [
+        "native-install"
+      ],
+      "status": "passed",
+      "stdout": "artifacts/installed-native.json"
+    },
+    {
+      "arguments": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "adapters/mchs_sources"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.065284,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "error": "Command exited 1",
+      "exit_code": 1,
+      "log": "logs/python-lint.log",
+      "name": "python-lint",
+      "prerequisites": [
+        "python-tools"
+      ],
+      "status": "failed"
+    },
+    {
+      "arguments": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "adapters/mchs_sources"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.065794,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "error": "Command exited 1",
+      "exit_code": 1,
+      "log": "logs/python-format.log",
+      "name": "python-format",
+      "prerequisites": [
+        "python-tools"
+      ],
+      "status": "failed"
+    },
+    {
+      "arguments": null,
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.00564,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/mchs-source-copy.log",
+      "name": "mchs-source-copy",
+      "prerequisites": [
+        "source-before"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-m",
+        "pip",
+        "wheel",
+        "--no-deps",
+        "--no-build-isolation",
+        "--wheel-dir",
+        "/home/runner/work/_temp/roadmap-mchs/retained/artifacts/mchs",
+        "/home/runner/work/_temp/roadmap-mchs/work/mchs-source"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.96719,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/mchs-wheel.log",
+      "name": "mchs-wheel",
+      "prerequisites": [
+        "mchs-source-copy",
+        "python-tools"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": null,
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.001334,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/mchs-wheel-selection.log",
+      "name": "mchs-wheel-selection",
+      "prerequisites": [
+        "mchs-wheel"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--no-deps",
+        "/home/runner/work/_temp/roadmap-mchs/retained/artifacts/mchs/dapane_mchs_atlas-0.1.0-py3-none-any.whl"
+      ],
+      "cwd": "/home/runner/work/_temp/roadmap-mchs/work/consumer-cwd",
+      "elapsed_seconds": 0.516051,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/mchs-install.log",
+      "name": "mchs-install",
+      "prerequisites": [
+        "native-installed-identity",
+        "mchs-wheel-selection"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer/bin/python",
+        "-I",
+        "/home/runner/work/dapane/dapane/dapane/scripts/qualify_roadmap.py",
+        "installed",
+        "--wheel",
+        "/home/runner/work/_temp/roadmap-mchs/retained/artifacts/mchs/dapane_mchs_atlas-0.1.0-py3-none-any.whl",
+        "--checkout",
+        "/home/runner/work/dapane/dapane/dapane",
+        "--distribution",
+        "dapane-mchs-atlas",
+        "--module",
+        "dapane_mchs_atlas"
+      ],
+      "cwd": "/home/runner/work/_temp/roadmap-mchs/work/consumer-cwd",
+      "elapsed_seconds": 0.11542,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/mchs-installed-identity.log",
+      "name": "mchs-installed-identity",
+      "prerequisites": [
+        "mchs-install"
+      ],
+      "status": "passed",
+      "stdout": "artifacts/installed-mchs.json"
+    },
+    {
+      "arguments": [
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer/bin/python",
+        "-I",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/home/runner/work/dapane/dapane/dapane/adapters/mchs_sources/tests",
+        "-v"
+      ],
+      "cwd": "/home/runner/work/_temp/roadmap-mchs/work/consumer-cwd",
+      "elapsed_seconds": 0.266103,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "DAPANE_TEST_CLI": "/home/runner/work/_temp/roadmap-mchs/retained/artifacts/native/dapane",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/mchs-tests.log",
+      "name": "mchs-tests",
+      "prerequisites": [
+        "mchs-installed-identity",
+        "native-cli"
+      ],
+      "status": "passed",
+      "test_count": 34
+    },
+    {
+      "arguments": [
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer/bin/python",
+        "-I",
+        "/home/runner/work/dapane/dapane/dapane/adapters/mchs_sources/tests/installed_smoke.py",
+        "--fixture",
+        "/home/runner/work/dapane/dapane/dapane/adapters/mchs_sources/fixtures/parallel-views.json"
+      ],
+      "cwd": "/home/runner/work/_temp/roadmap-mchs/work/consumer-cwd",
+      "elapsed_seconds": 0.115544,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/mchs-installed-smoke.log",
+      "name": "mchs-installed-smoke",
+      "prerequisites": [
+        "mchs-installed-identity"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer/bin/python",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.265709,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/consumer-dependency-check.log",
+      "name": "consumer-dependency-check",
+      "prerequisites": [
+        "native-installed-identity"
+      ],
+      "status": "passed"
+    },
+    {
+      "arguments": [
+        "/home/runner/work/_temp/roadmap-mchs/work/consumer/bin/python",
+        "-m",
+        "pip",
+        "freeze",
+        "--all"
+      ],
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.265826,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/consumer-packages.log",
+      "name": "consumer-packages",
+      "prerequisites": [
+        "consumer-environment"
+      ],
+      "status": "passed",
+      "stdout": "artifacts/consumer-packages.txt"
+    },
+    {
+      "arguments": null,
+      "cwd": "/home/runner/work/dapane/dapane/dapane",
+      "elapsed_seconds": 0.024761,
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0",
+        "RUSTFLAGS": "--remap-path-prefix=/home/runner/work/dapane/dapane/dapane=/dapane/source --remap-path-prefix=/home/runner/work/_temp/roadmap-mchs/work=/dapane/roadmap",
+        "RUSTUP_TOOLCHAIN": "1.99.1",
+        "SOURCE_DATE_EPOCH": "1794724837",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "log": "logs/source-after.log",
+      "name": "source-after",
+      "prerequisites": [
+        "source-before"
+      ],
+      "status": "passed"
+    }
+  ],
+  "coverage": {
+    "mchs-installed-smoke": "passed",
+    "mchs-tests": "passed"
+  },
+  "expected_source": "8281042676c1d9cafab69e9c57cdfd064a9a5adf",
+  "finished_at": "2026-11-15T06:48:18.143030+00:00",
+  "format": "dapane-roadmap-qualification/1",
+  "host": {
+    "machine": "x86_64",
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+    "python_executable": "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python"
+  },
+  "lane": "mchs",
+  "original_polyglot_qualify_sh_executed": false,
+  "required_checks": {
+    "build-packages": "passed",
+    "cargo-version": "passed",
+    "consumer-dependency-check": "passed",
+    "consumer-environment": "passed",
+    "consumer-packages": "passed",
+    "mchs-install": "passed",
+    "mchs-installed-identity": "passed",
+    "mchs-installed-smoke": "passed",
+    "mchs-source-copy": "passed",
+    "mchs-tests": "passed",
+    "mchs-wheel": "passed",
+    "mchs-wheel-selection": "passed",
+    "native-build": "passed",
+    "native-cli": "passed",
+    "native-fetch": "passed",
+    "native-install": "passed",
+    "native-installed-identity": "passed",
+    "native-metadata": "passed",
+    "native-wheel": "passed",
+    "native-wheel-selection": "passed",
+    "python-format": "failed",
+    "python-lint": "failed",
+    "python-tools": "passed",
+    "rust-install": "passed",
+    "rust-version": "passed",
+    "source-after": "passed",
+    "source-before": "passed"
+  },
+  "scope": "Synthetic standalone candidate checks; no publication or capability promotion",
+  "source": {
+    "clean": true,
+    "epoch": 1794724837,
+    "files": {
+      ".github/pull_request_template.md": "524f0662a35d4c29cc5f32c056f4097db09a214bef13cb3ca5f168d2c019b0bb",
+      ".github/workflows/conductor.yml": "107eecf221294b09328faf14ea7dbacf700e300f9df8ca4a74df76cf6f64e69e",
+      ".github/workflows/offline-ai-security.yml": "ec14e7236b2ba4dc5a675b23426bfd4da7b39d0e5a5aae926eca5c31257c610f",
+      ".github/workflows/privacy-secrets.yml": "95e67f8da223ff61fc29c204eb669c139c8c9c0fe59b451b4f40f2b1f5b46c6f",
+      ".github/workflows/provider-consumers.yml": "f101b5d643272143e2209b58edeacd2b5c4cebcf1158f58add164c8a9027a7c3",
+      ".github/workflows/roadmap-lanes.yml": "3980296f399905179c64a273d04ff04929a511d85e17e0d6b366d774e68253da",
+      ".github/workflows/runtime.yml": "27817cd039862595383771c4120ee0343714139be1300ecae02f9d1c2009d9d5",
+      ".gitignore": "d8324891e84ae6d1bbe75e69d1c98e6a62271f615a37dc2776c077437e34c906",
+      "AGENTS.md": "67c60029eb1a1293889bf947fff6524533e0d64bf21e77e9e3d5a8e65ad25071",
+      "CITATION.cff": "9d94be9b74a9595b148628c163142206eb1cb1e3217a48513df87e7c2338bbf0",
+      "CONTRIBUTING.md": "8a8e6a042aa6c0b8e471f82fdbd6f4c45b5a8d5a0facd4b9bda9b5308baf6eb2",
+      "Cargo.lock": "13649b9439eeba96b5be59cdb1653815bc093ea36066bc8bd14a1e547afc9ea7",
+      "Cargo.toml": "9413abdb64b319eb2672b8e493a4ffeb84f6230bc9b83aa06fd90ee88ed91cf6",
+      "README.md": "ea7d83e556a52aa7aea1e7d5c6888d43bef3362766cf7d99e1f67309b944c83c",
+      "adapters/mchs_sources/.gitignore": "f7b25451197ebb6397c8ec7ca1bd69369152419579a831a67009dea277edc9a9",
+      "adapters/mchs_sources/README.md": "dab30f5efad17dc1e0f290f2d6e4de2dac07884238573280f32c7d8c8629c404",
+      "adapters/mchs_sources/fixtures/expected.json": "5b445edde679512920f5163013b4ab6636f98369341921c55777b4b54e348924",
+      "adapters/mchs_sources/fixtures/parallel-views.json": "75d62632cf4c8eed5e3dff918778522bad43d9c312c10fc3ceba0af28b8f5710",
+      "adapters/mchs_sources/fixtures/source-synthetic.json": "d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb",
+      "adapters/mchs_sources/pyproject.toml": "83ee9889f1c0bb91bd1d58617c5c88e2cef1c9abd263ba9dc7f75ed83e52f750",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/__init__.py": "cf08ccf28687aab177361929fcf3e92523804ad4eccac62e59b8cc6463b74059",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/_validation.py": "510cae4fd5a4354a9cb3631260993351cef9757dc867a9b82df0dbf7324bdfa2",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/adapter.py": "35b30c7ee2e9fc69ce1df121c5321cb5973c8bbc51746321734e8a3a1a29f753",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/provider_pins.json": "0ca45ca7b47702baa23d4c5948b43f80fd8ad8e019112d613296db4bd645d4d0",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adapters/mchs_sources/tests/installed_smoke.py": "ccdb862a2e43ea36ab3b032b4ce4b3940f846f6ec3c6f6d49c29ce598d5293a5",
+      "adapters/mchs_sources/tests/test_adapters.py": "fc3267e1185033663a797d5a062205df2b3a32fe0e7c2688a9671a740c495565",
+      "conductor/archive/README.md": "e591f1fbbcfab59c4e7d6fa43accce60fcbac059c1a6a8dc28888aba1ab9ace3",
+      "conductor/code_styleguides/documentation.md": "87b5bf8554371da07e1948105b039451655a510525c64d0c93f21120369ab97b",
+      "conductor/code_styleguides/index.md": "bcee9de0fd1f4951c0b8389d29f0ec1bcbc4d9a0bbda693a6bbc827f6fdc36fd",
+      "conductor/code_styleguides/python-ffi.md": "5a72b31fdf25cdd97a8e5054291b0e1361b83ef14b9b8dac8da44ff2b8678749",
+      "conductor/code_styleguides/rust.md": "4b289607e17ce9fe765edd751b075708777eebe6268fc24b0ff4ca66df1bbaa7",
+      "conductor/decisions.md": "265ba3ab5f3ee4dfde1630a899a2e1171798d5655dc8cc4b44eb6534eeddf429",
+      "conductor/dependency-rationalisation-20261113.md": "33d8135dc8fc23f432917024245d0c21caaf50f26e42e3f81d469b77bb61694c",
+      "conductor/design.md": "a1a737758b1bf078659667b86c6a7676641668c01ad47a8cbd0bddd66e832a1d",
+      "conductor/ecosystem.md": "ce784b7309a85758f741a90c812b32852758c7eb75f97dffed75e3e2134e8f40",
+      "conductor/index.md": "2ec430e10124485a2793b661b36e12e6dbdd73722085854200e193be717e42be",
+      "conductor/product-guidelines.md": "b7caa9653c0e3979bba7179198b5aa318d93bb38d376b79a4a2e43d112ff7233",
+      "conductor/product.md": "7026f8b3d1aa42e380941b7b115552f9965c331682769449bf1e7bd67ea0af38",
+      "conductor/repository-map.md": "2f0a900f7a36b9bde1fca0e0eb8db328e1e37f637f589d231c588658aa8c28e2",
+      "conductor/requirements.md": "61ca4291f514b0056c9c76b2b79952335376c005fefa264507e270d847c67dcf",
+      "conductor/research-validation.md": "6f4de94f0ed1e776030251156cfc190c830fad587f119d2fb68495a9d47af1ad",
+      "conductor/roadmap.md": "dbffbeeeba6843f6d85645c9ffa57b4ad6d70e51c2e3aaf57a1484736b0487ad",
+      "conductor/tech-stack.md": "758558a919586712e7b26ae92da21414a318cdb0dee1d6c96455ae4180dac80a",
+      "conductor/tracks.md": "d980cd789c07f3c24c8f7aa91ed3068cfcdf90842c1d18e3fb8328a00f2b5488",
+      "conductor/tracks/conductor_setup_20261108/index.md": "7c5188ba5e324b1b3afa601c6082ff1be4e9401d72e37f5cb26a566d1c0eff26",
+      "conductor/tracks/conductor_setup_20261108/metadata.json": "7ce452f04874871cc9ac101aea15c52d9c59781bb9067bf2753878a7ad011ec2",
+      "conductor/tracks/conductor_setup_20261108/plan.md": "40d86dd232452548e7e83fb2e9fd5a9be49e9457c32e312f5e8280c0ae2c4d29",
+      "conductor/tracks/conductor_setup_20261108/review.md": "4bee28326b40f12e2c8352ee8005c5b1d907fcaa2d1f6e24bddb7f065b920176",
+      "conductor/tracks/conductor_setup_20261108/spec.md": "3bec2ebdb18ce525aba2f73b63442586aabf541cf0345a025706aaa8aabb7295",
+      "conductor/tracks/core_contracts_20261108/independent-review.md": "2a568461d9b57ab02e3bd70cc87f775bf73cf0cae642722ea12282a47740d151",
+      "conductor/tracks/core_contracts_20261108/index.md": "94f4fdd7356b7d999e337acb5fb341a02358dda9a55c3e5baba0a5044fb6965e",
+      "conductor/tracks/core_contracts_20261108/metadata.json": "9dd44502617ec12c44ddcea03b349821f134d6ff16fc87061c021524be07386d",
+      "conductor/tracks/core_contracts_20261108/plan.md": "248e4e091ef9e0574884e98303c59602527485b4ee74da6c958886315e1a1b39",
+      "conductor/tracks/core_contracts_20261108/review.md": "f0785abee2c4337d8cdbc04d865e0a76803c2edc20d0a1ea39468a91c66b2438",
+      "conductor/tracks/core_contracts_20261108/spec.md": "dfa6c2abc5ae877ab171edf3835c22949cf4112550329276f3ee119500bee638",
+      "conductor/tracks/core_contracts_20261108/verification.md": "e5c4d4bfe562f71060a38aefea336796d8be684b4456b97d5a8f4a0e5b63758a",
+      "conductor/tracks/decision_integrations_20261108/index.md": "5906cfbd38259468ab2fefdf288f6e21dba743564a55d55fe567fe3f85b8a611",
+      "conductor/tracks/decision_integrations_20261108/metadata.json": "c4b96f7c08641350ecb5d13b540abddbcfdbbdc0b4730b794ca29463ab37b6ad",
+      "conductor/tracks/decision_integrations_20261108/plan.md": "61b1f86c3e99529cda7868e2997ff2070ab854f6e963234816439b7a370a66cc",
+      "conductor/tracks/decision_integrations_20261108/spec.md": "442698f2d4ff25e5e1527f457cd8499465bcb203be25785838669cf926539a64",
+      "conductor/tracks/frontier_benchmarks_20261108/index.md": "efe0458401d371eb16909fd3950d3b0cbdd12ffd6066af2d19d64cf0f56353c0",
+      "conductor/tracks/frontier_benchmarks_20261108/metadata.json": "715d4cb43bc7da62ea8f9efd24733d0064753e822c798fa091bc9d8c43e9c40d",
+      "conductor/tracks/frontier_benchmarks_20261108/plan.md": "ffbcf646fcd1b48431ef42a675e26e235c0ba6553026986eb27c92703b673a10",
+      "conductor/tracks/frontier_benchmarks_20261108/spec.md": "813e0dad0b31d44d53c19c04f5f53f03bc368eea0e384f4bf16df487a8492518",
+      "conductor/tracks/mchs_source_adapters_20261108/contracts.md": "ad9c610b6f664a8db21e4f780b22bebec113d3260c3920948c9906e6141058c5",
+      "conductor/tracks/mchs_source_adapters_20261108/handoff.md": "38743625332a9c2d533b6954f46f98bbed9ad59bc5d6edbfaa6a8a99b35719b6",
+      "conductor/tracks/mchs_source_adapters_20261108/index.md": "be9b77754caefc21ee0cf5daaab5878fc6e4c62262ea6033e91194a476cfabda",
+      "conductor/tracks/mchs_source_adapters_20261108/metadata.json": "cb2efb81e1444a87a64ff3e0ba5dd07b004514aff53e37631556dae11bd34e18",
+      "conductor/tracks/mchs_source_adapters_20261108/plan.md": "db02927d345cf82b9b4cfd99509269d4394339b2a00c962a4b27a1e1e5251643",
+      "conductor/tracks/mchs_source_adapters_20261108/receipt.json": "8cc21af1fa8611d41c5469b1ac13a665b2d083f9118d7991893ab63f6baeaa02",
+      "conductor/tracks/mchs_source_adapters_20261108/review.md": "c3d9bdc9f744cb7c943dd59a6194c58611b5b7cec5e7a7f86ee479c689d77272",
+      "conductor/tracks/mchs_source_adapters_20261108/shared-change-requests.md": "c0e5821e1fef66ebc638aa2a01f28fc5bbb97f836054376243f30c0010b74351",
+      "conductor/tracks/mchs_source_adapters_20261108/spec.md": "b9799eaf1125bbfc26e194634ee6fade33118d877e2af5359716bcfae3c50419",
+      "conductor/tracks/mchs_source_adapters_20261108/verification.md": "f029dc6cbda8e22497196881bf381b015727841c95183ef5cb272dfe6bec0c3d",
+      "conductor/tracks/newborn_screening_20261108/index.md": "2acaaa3e2042029a261c65135bf0d0fdff49c8d45b8cd31dd77b29fab788ab57",
+      "conductor/tracks/newborn_screening_20261108/metadata.json": "281d275b31d522f89c4a1a430f655e735406479e33e476e630f89f0f8f2944e7",
+      "conductor/tracks/newborn_screening_20261108/plan.md": "d18bbe511e6570f6abfd27e8f45bedf293ff1ab4967a7cf95dfb238a3e54d175",
+      "conductor/tracks/newborn_screening_20261108/spec.md": "1a9935d026317ee69dd910993cb35c1cbeb34dd83758a9b5320adaa2d5fac9e8",
+      "conductor/tracks/polyglot_bindings_20261108/index.md": "f60d718d5d2a50244fa48d2e4b63f4496c1687d9f84d771f6fcc82d75efd8221",
+      "conductor/tracks/polyglot_bindings_20261108/metadata.json": "8af0c79c93218184ffca61f310076d298669bb67042040ca44105cda5689b6d4",
+      "conductor/tracks/polyglot_bindings_20261108/plan.md": "dc20e6b4bc92b9c4ae0fba2ec70550716678e25511557daaba174c982982524d",
+      "conductor/tracks/polyglot_bindings_20261108/spec.md": "d6a2c3eab63eadbab2c9498fd8dba9d2d996c2c9fda956a23d518b88e241f55a",
+      "conductor/tracks/power_platform_20261108/index.md": "4a2b75a5434c6339775aaaa91ee54a30b843d143b35d49a81af37a9aa6d415fa",
+      "conductor/tracks/power_platform_20261108/metadata.json": "fd8c403d893e19383bacc83d95c1bccd4d4be53b212274777530b2cfeec12d4c",
+      "conductor/tracks/power_platform_20261108/plan.md": "a1879fa4c97f99d413a4eb39885c5cfcc681e436c3d9b03368975c029f7151c9",
+      "conductor/tracks/power_platform_20261108/spec.md": "b9c69a7083f316bbc6e60507ecc63800cc2a7bf9d4faf9413dbf2303280da960",
+      "conductor/tracks/process_models_20261108/index.md": "5313f3f6655b1396ca0ffa0e00d7a1140970c3fd6c506f51748977ecd4561428",
+      "conductor/tracks/process_models_20261108/metadata.json": "fd70082e6c48d0ec573495bdaf56437f26a1c5ebedf523c8a4cc37c4ddaa7303",
+      "conductor/tracks/process_models_20261108/plan.md": "fecc5b17912a88e3a131c66619a11c32421eaed0814284f5fd7be8cbf9994cd8",
+      "conductor/tracks/process_models_20261108/spec.md": "72cf31c7b30cad0fbcf32721d6180f3ce9a31756c6c96683063374938fe31ea5",
+      "conductor/tracks/python_two_consumers_20261108/index.md": "bc1f28f5b7021b9070efd7879c744f2bf4c14554d9a9a3f7f4e70048d3ad647f",
+      "conductor/tracks/python_two_consumers_20261108/metadata.json": "749129ee2c58b8f96b0fd3feb09749d9e66f3af7faf5eb963bef9ab305d9c225",
+      "conductor/tracks/python_two_consumers_20261108/plan.md": "73fe9d0d3eb1efc4083447a6a873e9a9e18f56c9201b9dd936b20c34f4b70bd3",
+      "conductor/tracks/python_two_consumers_20261108/review.md": "abe0e1491c05c7815b0e6265877ebc95d5bcca0249ed3cd4db0c5b17331d39bc",
+      "conductor/tracks/python_two_consumers_20261108/spec.md": "2f45d51532b8e4651112c294c0a05ec35e4706154029636bbda66b072ca148f3",
+      "conductor/tracks/release_consolidation_20261108/index.md": "9db112f2c8bdb4b37a1acf535aedf313b15a86d7766565d83bf4792104fa2180",
+      "conductor/tracks/release_consolidation_20261108/metadata.json": "4c7208ec31e0ad90c2e5b56efd575351e4798735775e3c44ea12d8938a13081c",
+      "conductor/tracks/release_consolidation_20261108/plan.md": "d0dad25bb71148293fd4e1d2a417d75ade37a32e301ce2c260eae73e238d077e",
+      "conductor/tracks/release_consolidation_20261108/spec.md": "8876af056268fb9aae1c6675021919efece00b1532deb7bc03af6a1939052b3e",
+      "conductor/tracks/reporting_profiles_20261108/index.md": "7e0bcf8cf11d926feb8b06234aabbdaaed03c73040d08192744d23d3931c51ab",
+      "conductor/tracks/reporting_profiles_20261108/metadata.json": "6b158e98c396212c3843514a4f3c9eb36ba456f3ff42cd075fc2d617a7f1e558",
+      "conductor/tracks/reporting_profiles_20261108/plan.md": "2f05fa525c2cfa3fbc6946f43c180254e628ea7811e7fa5c741f6260e57697d6",
+      "conductor/tracks/reporting_profiles_20261108/spec.md": "7cfb11d085aef1e656e592fed62ae1092826bb41def11b4e899a790f381368a4",
+      "conductor/tracks/rust_kernel_20261108/evidence/archive-validation.log": "058fa26c15170152fc3b6fc8917d095670e7bdb74dcb92c97edd3f2ee5fbc8af",
+      "conductor/tracks/rust_kernel_20261108/evidence/benchmark.json": "aa04acf0d2e1fa4738f0f624fc4de08d3a169b842be536cd14be78f56fa31797",
+      "conductor/tracks/rust_kernel_20261108/evidence/dependencies.json": "2d9742806cf7051ebb56cb7f178e5820364b56bea89771f146a77b783224fc53",
+      "conductor/tracks/rust_kernel_20261108/evidence/dependency-tests.log": "dd204df5f913204fd8ab4402c2488568036af69881863bf9b55085ace5b4d0b8",
+      "conductor/tracks/rust_kernel_20261108/evidence/gitleaks-integrated.json": "f6ecdc64789f6f54955352e8681c5c99dc329073cebd0a199ec05322f4bd1d86",
+      "conductor/tracks/rust_kernel_20261108/evidence/installed-cli.log": "122616a3dde67d95f51c04e38c6c57380eee8f6a2b6dfe148f7f2234fab1e10b",
+      "conductor/tracks/rust_kernel_20261108/evidence/manifest.json": "58deeaad0406e1007b8c30ff088fba7eaa7c23e5b12610bfd463a3c2b5701ac0",
+      "conductor/tracks/rust_kernel_20261108/evidence/native.log": "62e1b81b7ebeb0d26063ea925bb829d9596bfb0f95ef0ba72ea1eafd609c4b69",
+      "conductor/tracks/rust_kernel_20261108/evidence/presidio-integrated.json": "709f646dbf6c3c3c462dbb4e116106d0550742f5f2323982c6ea4d97010b1adb",
+      "conductor/tracks/rust_kernel_20261108/evidence/python-3.12.log": "7a04df12ec1fe2f0e22a11241441a32373b7f0a0dfac97248b25ded1f22279f8",
+      "conductor/tracks/rust_kernel_20261108/evidence/python-3.13.log": "9a6dde5afedd85d5c3ce2a07bbdbc6a66198a93beef982bac789b37882b35d61",
+      "conductor/tracks/rust_kernel_20261108/evidence/python-3.14.log": "95c4fe1098b4ab301aaa9bbe8f366cef927cad2de461a70dcb098f8be22e014c",
+      "conductor/tracks/rust_kernel_20261108/evidence/python-3.15.log": "b426b938fbf056b097f98422b78a222298a34c9c441931821ec3ac10bfeb92dd",
+      "conductor/tracks/rust_kernel_20261108/evidence/red.log": "80f793296de37ab83f67b24484012a1a8b63cab6312a9c4b017d767eed586180",
+      "conductor/tracks/rust_kernel_20261108/index.md": "462055b81e93937547d6cbc56227124807c96af3848efdb93c91a2a7a2b295a6",
+      "conductor/tracks/rust_kernel_20261108/metadata.json": "b1ad3de5449f4e3b4a7279d50a2a733809fd5a8725cfee5f272cabca87037603",
+      "conductor/tracks/rust_kernel_20261108/plan.md": "d6d44db7b8e5a540329dcad1dfb685fdc25e943ef6dbc39e84da6b264c5bfbf9",
+      "conductor/tracks/rust_kernel_20261108/review.md": "4b1659e2a66b4b8ef0d47ea618d9d526e5192753aab63adccc72043d707e5bc5",
+      "conductor/tracks/rust_kernel_20261108/spec.md": "6e6faf782621b4fc3aa93802d5090c831fd1f0cfe7fb18119f5703cdd6d1622d",
+      "conductor/tracks/rust_kernel_20261108/verification.md": "a5cca977e2c35d5c6898f6f16f374dfae4659b207936d5415061a309496910a9",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/index.md": "9d27680082dc009bc8b50cd89f2cf6f6b38138042abdf65ba38b005e8b8533f3",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/metadata.json": "f9cf0ad09d958d3347ea87a163714b7b36d3b028665ca1712daae51cf2d4d96c",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/plan.md": "dc95f5b2fa3798d448993bb617255667dc71b68f605243594282f15900a7575d",
+      "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/spec.md": "b1e9b59d490e80fc96a0ab830efbae3d46ada12c4b748532dfe6802f156d032f",
+      "conductor/verification.md": "47c0bcb71731c6156bad76ca98d77674993d15532ecc0764f31a8e0bb27b0fe1",
+      "conductor/workflow.md": "fa065876017055354c58882a75781097ba9b77677e69c72a2573f17006ce6f65",
+      "crates/dapane-cli/Cargo.toml": "69aa9d05fa2bfa02aa02c130001cc57a7d9e4b3621d0c93e1e3e5fd56cd8a698",
+      "crates/dapane-cli/src/main.rs": "5e1f4da50e1794f94e95a1782c86f7a37f2b789e89b779ee6b6269a391538f53",
+      "crates/dapane-cli/tests/cli.rs": "8884f398ade8b8820a8f7cb42566a465764bfbe7478becea60d96999568252bc",
+      "crates/dapane-cli/tests/intervals.rs": "2a9b88a8d268a9eb7515568837efcf36653439cf75c2a4b6517d3b7857a02913",
+      "crates/dapane-core/Cargo.toml": "19f26642b42d97dcfc1ac9fc64abb130de5408eb47dc0179fcd78636c09cd716",
+      "crates/dapane-core/src/capacity.rs": "8f3bcaf18714779a95413942e264cda2331393ba905651c99f46305cb306c590",
+      "crates/dapane-core/src/intervals.rs": "81e14099f7989afd46b657117144095847c69b4b27792b0305d83b74f20b4992",
+      "crates/dapane-core/src/json.rs": "8214bf395de01da3071bf5d85079e8a7341d064369d094bfa4081532024bc6e4",
+      "crates/dapane-core/src/lib.rs": "87a3796d69d64cbdd61bf72fd156e87d1dc8aac83312891506debdd0e23ce818",
+      "crates/dapane-core/src/numeric.rs": "147d686acd44430f28d89ad17c463c2f9ba29ccfdea050f92bff5bb392629736",
+      "crates/dapane-core/src/types.rs": "aa1df9e70b13be94768cf7516d87fb83f45794fd3d16c8582cd4e206fe1774ef",
+      "crates/dapane-core/src/validation.rs": "eac16dc20361dd39dc3ecd57933e5c7d13786a3fe075bebff2c9812bfeb5f2c4",
+      "crates/dapane-core/tests/capacity.rs": "4d3b8d3d1317469c77b5c6e1ef7be1ba239b8e8c9e316fc825b10e57f97218b0",
+      "crates/dapane-core/tests/evaluation.rs": "a623b554b26929bb55e7c4ba27e60d90e876163cdd28d1e22e7e6eba849cfa7b",
+      "crates/dapane-core/tests/interval_review.rs": "478f57f341948f1a7ed691ffbc1fabc4fadbd33a3f8bfb7309a61ee7aa673448",
+      "crates/dapane-core/tests/intervals.rs": "6a6339fa79c9ef065470218bd6c4d017aee147c8945dfd16a96ae152c56f9e11",
+      "crates/dapane-python/Cargo.toml": "88b4121a5358ad629e4dcfa0ceee666dabaec8a3e8fbd57565a105314e2184a5",
+      "crates/dapane-python/src/lib.rs": "370104c548addfc2a46b145e9f90dc0144c20a2c121a724befb28d2f68b54783",
+      "docs/benchmarks/2026-11-08-linux-x86_64.json": "7b13461b27e659589ac8237f38856f9309863007bbaac81c2466cc9986ff33c4",
+      "docs/cli-verification.json": "6256f380e0446bf8b3af80cfbccf0c20915dc2c6a8004f9bd5578f5dd1477118",
+      "docs/compatibility.md": "3da73127c233904b78dd19bb3873bef86b57f9f15c44c1509507ce62bc9a9cf5",
+      "docs/contract-v0.1.md": "c30f92bf71dc120a829aef891fec7803dcf88d7be60a6bec24dc0fc262dd34ab",
+      "docs/contract-v0.2.md": "0f49f9153d307933b1db09c268de8258b5456c5cc23290b2cd181a23daf3b1b9",
+      "docs/dependencies.json": "04cddbda9c6c9521d8c51a8bd625d002cb1de36a48f95d5a379ad3692ac35c8d",
+      "docs/event-process-object-model.md": "e5b0a0446d1802c01294ba106e2c00c20d0bc6dadee447f9df3619b93a836857",
+      "docs/genomics-capacity-verification.md": "4c75e7c3fbb3999d814e34f1e452534f182cd6997fef2289e159e93590d689b4",
+      "docs/interval-contract-v0.1.md": "6f75ffb1d4661aca42ed0a0d650b1fb44d308cef0dbbf298c68f0e0d6b7489c2",
+      "docs/kernel-dependencies.md": "82c03f8587d3bd48f6798af908e64eee1ea136e70132a1e5793bedaadc509d8e",
+      "docs/provider-boundaries.md": "91aaa63979cbbaa0ff2ca647d17080d7c5506832886880d35f63d9938973e58c",
+      "docs/provider-consumers.lock.json": "1090bd6b572ff09829f4f082e41daa638064f15a36d77059cb953ea49b15bc9f",
+      "docs/python-provider-verification.md": "cebbc906db6288d74d6d23ebcc098281e52db8172c599211d469ef17916718ad",
+      "docs/quickstart.md": "357e38f05061dfb193dae891ddc0030137e96ee62c2adfa9a611a348e100e459",
+      "docs/run-bundle-v0.1.md": "d1b9d9f6187152e256089d4f5ef190aab78d8d4175f4ab998eeb4e4802b2f739",
+      "docs/runtime-verification.md": "1545fca020736102bb2779e3e344c78799acf1a9c9a957436d4eac36a68bee58",
+      "docs/wheel-verification.json": "cc349d3f819b1e9d75efdd4cf45262d7e9623e509c67c9b13022dc46cd0cedc5",
+      "fixtures/README.md": "039f1a2c1c35ecc18e3e0319152c6ae781c69620941f58f6bf64107cf332759d",
+      "fixtures/activity-funding.json": "d27d31eb6ce26b61e567af8996a9ceb73b6293bb2716617343b5bd844e2bca49",
+      "fixtures/core-contracts/README.md": "543fb3142d6e9bad883b9428fa53b2140da2863be9ff9c78944a5580dbd83e27",
+      "fixtures/core-contracts/references.json": "cada62d59d0b7f7f7567db692d0b3ef9b4662653fdc7fc3a7710a478e7f7fe2b",
+      "fixtures/expected.json": "fe12dc23a201a7b3ab8d96470c8566cf398fdc637263245ea0831110061d36bb",
+      "fixtures/genomics-capacity/README.md": "eb62c04ce167c395176e7d8e75ed8811ec980643d6d66bd767dd9354f871f513",
+      "fixtures/genomics-capacity/expected.json": "503113f1a2ae018abe74f4cd7028b5d3888a8e672b5729a72c9b327c73b0df5d",
+      "fixtures/genomics-capacity/sample-full-first.json": "3d1d3da13875557b4db75a497a09876dc789e9087f1240da3ee399cacf59ca9a",
+      "fixtures/genomics-capacity/sample-full-recurring.json": "d5bb8d873c4341df35dc474f3c6253b4b0e3bfcef5afe4c90084df930336967c",
+      "fixtures/genomics-capacity/scenario.json": "aba32105ca22630d805d5c67c882b65029bc23b8089199d9ed39c07a94d31f9c",
+      "fixtures/genomics-capacity/time-known.json": "a45418b94e524535dcff2f27feb8a63a3f85a510bdf1d0b5a09d782e54fa4a11",
+      "fixtures/genomics-capacity/time-missing-use.json": "ed5f5cd033d0262eb0600b309f9823ba82fc5586be6ed3e928fe2206b7b2f0f7",
+      "fixtures/genomics-capacity/time-unknown-capacity.json": "a286b1598eb9e7052a03a4dea383e329b4469ad28feb64120d17a37973514b82",
+      "fixtures/genomics-capacity/v0.1-digests.json": "4753ce96f8100d179f071d4770e5f8fcc3d6a9c9475679e7a70661132184f07e",
+      "fixtures/genomics.json": "381440686865a35583b4df41af20d1d8bd3d28a48ab4f77785720f654484521d",
+      "fixtures/intervals/README.md": "f7c01dc05c22bb9ab8e64761a6a2d73c122dafddc8bc8c517cbe1d6e7f975a95",
+      "fixtures/intervals/expected.json": "8f8418ed0a52ab445423d8a11d0e5c3bfc6f99a3861c32c5b2d35f5abbec8274",
+      "fixtures/intervals/rate-boundary.json": "935d58f9f32860a4bdd424edcb6bef707525364b3401bd3539d45199dcfe83f4",
+      "fixtures/newborn-screening.json": "48eb8649483a8ccb8a5fd2b44641c5f171ab892c152d475ac768553069e9601f",
+      "fixtures/subcent-allocation.json": "13825aa0ede58e3c772cd4d29465c7c42089aa268c51906054dd3b86672c122b",
+      "fixtures/workforce.json": "c6b656d88ee254034821fad23ee4bdccc16c484d45beeb94957964de5c98ca2b",
+      "pyproject.toml": "72d9866f8c790c4a021d7778b1c328c3658e77ea42e4626417e06791414e9292",
+      "python/dapane/__init__.py": "b9355d1660c38a50c5b6c92505a095735d617971bf1f2abed26e9f39f86d4bfd",
+      "python/dapane/_native.pyi": "011cbcf972115fe21e6c8d3325983156fd4414fce5a1b6cdcbaaf47455384ef2",
+      "python/dapane/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "renovate.json": "6925848b716498967c9b567dab6249270ec8c084edac7223836ae37b691df01d",
+      "requirements-dev.txt": "8109354c8324b86dc61c4a5b1856b4acf3fbe1bba963ef2639a60f4bf3edc210",
+      "rust-toolchain.toml": "f715f440167e20fd8ea9afa0498c3d1ab80174cfcb8cbc895f106a34d907a1e1",
+      "schemas/0.1/common.schema.json": "f0990c9290ab4606daf725211d0031d38e61e9357d328bc4dabb1bd244da2dee",
+      "schemas/0.1/error.schema.json": "5b32ee31bc91608857a03bd517d0037b6f2eb4c3575193a595876864fe0aaa1c",
+      "schemas/0.1/report.schema.json": "f2f6cdad157da625af01a4a53ee4aa4fe44bd374ccda06060dce166cc9b0749f",
+      "schemas/0.1/request.schema.json": "6d1b1b2e04d83b031ce07e510a5811f8040e1bb247b56a6619200be9dfc92a35",
+      "schemas/0.2/common.schema.json": "12c84f65fe29cb91d90f49795b47cbdb10cc0287b680a2c01f7e504a2a3e75b1",
+      "schemas/0.2/report.schema.json": "b6d5d63805634d8d790bd5b613eafe3836b977b12a2fcea49f5ba84079e8f8e1",
+      "schemas/0.2/request.schema.json": "164a9c824718bf80b2ef547174dfb3b75cec40fdd08571692b7e15813b3bfeaf",
+      "schemas/README.md": "46741846634f206db54e3c3165be02ab77932617035aed0b61e9d43cdbb60701",
+      "schemas/bundles/0.1.schema.json": "85153d7c5b98cc4013acb753675121a368facb2423b8bea63c286b1050e86874",
+      "schemas/intervals/report.schema.json": "e9d5ec6f8870277e0801511770e309f9d490965a3404a72c4e383e2dd9d07040",
+      "schemas/intervals/request.schema.json": "3e6e3fa31e8b9ced3f5ac43640942842db1b94b8e3319af08dd081f224b495e8",
+      "schemas/scenarios/genomics-candidate-v0.1.schema.json": "b4a514271267b0c4dda9334062a594fb2246d765ee5f9ecb5d5d8862799d09fc",
+      "scripts/benchmark_cli.py": "a5ec0d74686340629b21caf03b782825f4c1e357a828ffecc3d49f199d2dfef4",
+      "scripts/qualify_kernel.py": "bcffb94b6028c0894df962febefe61f81674f22db51452dbb31a5b1eca1cbb23",
+      "scripts/qualify_roadmap.py": "d7e58dabeef1672b2905f69d707cd1655951a449af410c678c980be35480131f",
+      "scripts/validate_conductor.py": "aa16ada37c471b209b19d4f60cd6a4c73d9a64ede5e150494e6a0c2a77dc222c",
+      "scripts/validate_contract.py": "721b7c4db171fbd20a1ff113c08c33a96f25fdfd9f83105c416bbfa9357ffe80",
+      "scripts/validate_intervals.py": "48fc08c78262cdc823aa1b30eda53d11f30ef99c630e1411805d5524e95bc770",
+      "scripts/verify_provider_consumers.py": "e95224d221ee8de321a8cc8caaa8a0adc0dbfcb16819c43f139e9254a06eec71",
+      "scripts/verify_run_bundle.py": "e29485ec3fe4e58180337823cad05bea48486c4cd08062972ae7b0679b0e728e",
+      "tests/python/conftest.py": "a11126cc97b2677f5d8a28336db9d8abd77813386ee0191301fcfb9401c0b482",
+      "tests/python/test_bundle_review.py": "46bf1fea0ec9c7afa0a9831c470bd9edc30ec90830ec74c7dc98866f6c0ecb2f",
+      "tests/python/test_conductor_archive.py": "232925174f129e7545ce7e9017e626cf6d1ac08a3137ba68659841695510e150",
+      "tests/python/test_consumers.py": "56a73c34c8184f622906ecbd7711552ea20cf6232229c0d4669a83c340f0d8c4",
+      "tests/python/test_core_contract_completion.py": "52fac82952dd115f455ce1b9d3bcad05d50cafc64e079adef7ec407070bf7e53",
+      "tests/python/test_errors.py": "aa9d706654a07da27c42e4bef268cf3af315f0566be3ab1bee90ba77f1d3b01d",
+      "tests/python/test_genomics_capacity.py": "436e126c14f362adc74433809941ae05bc0314db1e36af67ab9e803d95677a5f",
+      "tests/test_conductor_validation.py": "dee2ddbba84047bca7e1c286dabb927806fa84889c5e5a60d4655fd001f0aa52",
+      "tests/tooling/test_qualify_kernel.py": "293be287923217b8168c832f3cc074d2081b20f9e32fc399f2a03fecd2140081",
+      "tests/tooling/test_roadmap_qualification.py": "6cd10bacb63c8b6fed1d47dab4c84b658643b16db7e68dcaa6f03e79f4a125dd"
+    },
+    "sha": "8281042676c1d9cafab69e9c57cdfd064a9a5adf",
+    "tree": "8a324bed7aec3051a24f81138137477c3cd574ab"
+  },
+  "started_at": "2026-11-15T06:47:15.671684+00:00",
+  "status": "failed"
+}

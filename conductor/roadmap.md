@@ -9,6 +9,11 @@ The selected workforce and genomic labour adapters now have
 Broader provider coverage, richer methods, deployed apps and comparative
 research remain open. [Track metadata](tracks.md) records current status.
 
+The [15 November parallel ownership map](parallel-ownership.md) assigns seven
+bounded lanes under one integrator, records the pinned main/release heads and
+reviews their interface boundaries. Publication stays disabled and Power Platform
+is deferred; optional lane work does not widen the first-release gates.
+
 The [earlier MCHS design](https://github.com/edithatogo/mchs/blob/d7935044821d072a194d80e9cd4f5b9174fa9652/docs/roadmaps/dapane-framework.md)
 is the source proposal. Dapane now owns delivery of the shared framework. MCHS,
 workforce, genomics and the other providers retain their specialist responsibilities;

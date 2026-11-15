@@ -1,0 +1,2913 @@
+{
+  "format": "dapane-roadmap-intake/0.1",
+  "recorded_at": "2026-11-15T06:12:55.182312+00:00",
+  "main_head": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "main_tree": "c07a6b2589b9d665f619f5d977d66e513180bab4",
+  "received_coordination_head": "e615454c9f3f41f96e9e310f446d2440d98cf5eb",
+  "release_head": "a4ddde7ae7a799e37a5d594cde9c195ff057bc5e",
+  "publication_enabled": false,
+  "power_platform": "deferred",
+  "accepted_rounding": "half_even_per_generated_segment",
+  "lanes": [
+    {
+      "pr": 21,
+      "lane": "observed",
+      "received_head": "4dc969a602404a72382a26336919c6ca42aeee3a",
+      "received_tree": "7edda74db4c864a060aec7a46c5aad5f4fd65378",
+      "tracks": [
+        "process_models_20261108"
+      ],
+      "owned_paths": [
+        "adapters/observed_events",
+        "conductor/tracks/process_models_20261108"
+      ],
+      "received_path_objects": {
+        "adapters/observed_events": "53f7f7368af27826b924e574d4773896e9c46d56",
+        "conductor/tracks/process_models_20261108": "0858e016fd081439f27f44773d6e46caa09f2fb6"
+      },
+      "registry_statuses": {
+        "process_models_20261108": "in_progress"
+      },
+      "integration": {
+        "head": "63e3f8368510641513b5fd84ae3074bb80e79c6f",
+        "tree": "bebb7fddadc2090c362106d8283c5282600feec0",
+        "parent": "90b96b12382baf6fbc7615567c4680e7ce43fe5e",
+        "owned_source_objects_unchanged": true,
+        "changes": [
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ],
+        "cumulative_changes_from_received": [
+          ".github/workflows/roadmap-lanes.yml",
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ]
+      },
+      "hosted_lane_qualification": "passed_bounded_synthetic_ci",
+      "feature_fixes_owner": "existing_lane",
+      "offline_security": "queued_not_passed",
+      "local_ruff": {
+        "version": "0.17.4",
+        "commands": [
+          {
+            "command": "ruff check adapters/observed_events/tests/test_fixtures.py",
+            "exit_code": 0
+          },
+          {
+            "command": "ruff format --check adapters/observed_events/tests/test_fixtures.py",
+            "exit_code": 1
+          }
+        ]
+      },
+      "integration_attempts": [
+        {
+          "head": "90b96b12382baf6fbc7615567c4680e7ce43fe5e",
+          "tree": "5b3684680a287d04bf15d996362c41aca05eda89",
+          "parent": "4dc969a602404a72382a26336919c6ca42aeee3a",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "standalone_run": 43685680128,
+          "qualification_status": "failed",
+          "test_counts": {
+            "observed-tests": 37,
+            "fixture-tests": 12
+          },
+          "failed_commands": [
+            "observed-format",
+            "python-format"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-1/pr21",
+          "artifact": {
+            "id": 14150227270,
+            "name": "roadmap-lane-observed",
+            "size_in_bytes": 21766,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150227270",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150227270/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:31:52Z",
+            "expires_at": "2026-12-15T06:31:51Z",
+            "updated_at": "2026-11-15T06:31:52Z",
+            "digest": "sha256:228b835374e5bf75ac0fdf450b926cdc857750de5298c3427333306b4c34d8aa",
+            "workflow_run": {
+              "id": 43685680128,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/observed-import-contracts-x1-20261115",
+              "head_sha": "90b96b12382baf6fbc7615567c4680e7ce43fe5e"
+            }
+          },
+          "receipt_sha256": "a845dbf069d57c93a816c034dcc353e68a5ad9e9cd071d36da73bb2a3c1a287b",
+          "aggregate_limitation": "single downloaded artifact extracted flat; strict verifier initially expected a child directory; correction and new-head rerun required",
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132725562282,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685680128/job/132725562282"
+            },
+            {
+              "name": "controls",
+              "id": 132725562543,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685680128/job/132725562543"
+            },
+            {
+              "name": "qualify (observed)",
+              "id": 132725734851,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685680128/job/132725734851"
+            },
+            {
+              "name": "aggregate",
+              "id": 132726082236,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685680128/job/132726082236"
+            }
+          ],
+          "aggregate_failure_reason": "required_lane_job_failed; feature_findings_retained",
+          "shared_control_tests": 16
+        },
+        {
+          "head": "63e3f8368510641513b5fd84ae3074bb80e79c6f",
+          "tree": "bebb7fddadc2090c362106d8283c5282600feec0",
+          "parent": "90b96b12382baf6fbc7615567c4680e7ce43fe5e",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "cumulative_changes_from_received": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "standalone_run": 43686522588,
+          "conductor_run": 43686522635,
+          "runtime_run": 43686522618,
+          "offline_runs": [
+            43686522885,
+            43686519537
+          ],
+          "qualification_status": "failed",
+          "shared_control_tests": 20,
+          "test_counts": {
+            "observed-tests": 37,
+            "fixture-tests": 12
+          },
+          "failed_commands": [
+            "observed-format",
+            "python-format"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-2/pr21",
+          "artifact": {
+            "id": 14150458917,
+            "name": "roadmap-lane-observed",
+            "size_in_bytes": 21765,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150458917",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150458917/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:46:42Z",
+            "expires_at": "2026-12-15T06:46:41Z",
+            "updated_at": "2026-11-15T06:46:42Z",
+            "digest": "sha256:2353b5a0ea5f2447927fb87f94c83c5f23f49622c51231eda1a3e53284d422bd",
+            "workflow_run": {
+              "id": 43686522588,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/observed-import-contracts-x1-20261115",
+              "head_sha": "63e3f8368510641513b5fd84ae3074bb80e79c6f"
+            }
+          },
+          "receipt_sha256": "aecc896de138d202e7bd6c2203e0e4c1844195781b4548eebf086800647c811b",
+          "source_and_retained_inventory_verified": true,
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132728036602,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686522588/job/132728036602"
+            },
+            {
+              "name": "controls",
+              "id": 132728036815,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686522588/job/132728036815"
+            },
+            {
+              "name": "qualify (observed)",
+              "id": 132728258029,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686522588/job/132728258029"
+            },
+            {
+              "name": "aggregate",
+              "id": 132729393867,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686522588/job/132729393867"
+            }
+          ],
+          "aggregate_status": "failure"
+        }
+      ],
+      "coverage_applied": true,
+      "feature_findings": [],
+      "current_head_checks": [
+        {
+          "name": "aggregate",
+          "id": 132734798924,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739281/job/132734798924"
+        },
+        {
+          "name": "CodeQL",
+          "id": 132734753559,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/runs/132734753559"
+        },
+        {
+          "name": "qualify (observed)",
+          "id": 132734691016,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739281/job/132734691016"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132734655466,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739671/job/132734655466"
+        },
+        {
+          "name": "python (3.15)",
+          "id": 132734654937,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739379/job/132734654937"
+        },
+        {
+          "name": "python (3.13)",
+          "id": 132734654898,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739379/job/132734654898"
+        },
+        {
+          "name": "native",
+          "id": 132734654873,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739379/job/132734654873"
+        },
+        {
+          "name": "python (3.12)",
+          "id": 132734654872,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739379/job/132734654872"
+        },
+        {
+          "name": "discovery",
+          "id": 132734654850,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739281/job/132734654850"
+        },
+        {
+          "name": "validate",
+          "id": 132734654824,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739365/job/132734654824"
+        },
+        {
+          "name": "python (3.14)",
+          "id": 132734654708,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739379/job/132734654708"
+        },
+        {
+          "name": "installed-providers",
+          "id": 132734654619,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739311/job/132734654619"
+        },
+        {
+          "name": "privacy-and-secrets",
+          "id": 132734654577,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739307/job/132734654577"
+        },
+        {
+          "name": "controls",
+          "id": 132734654556,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739281/job/132734654556"
+        },
+        {
+          "name": "Analyze (python)",
+          "id": 132734647851,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688736204/job/132734647851"
+        },
+        {
+          "name": "Analyze (rust)",
+          "id": 132734647802,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688736204/job/132734647802"
+        },
+        {
+          "name": "Analyze (actions)",
+          "id": 132734647626,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688736204/job/132734647626"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132734645380,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688736268/job/132734645380"
+        }
+      ],
+      "ordinary_hosted_checks": "passed",
+      "offline_security_checks": [
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132734655466,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688739671/job/132734655466"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132734645380,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43688736268/job/132734645380"
+        }
+      ],
+      "owner_followups": [
+        {
+          "head": "96d0984f495c9b2ffd886539a654868155c9fd09",
+          "tree": "d20a7802b66a578fc64e5b28624f6b28c14be316",
+          "previous_integrator_head": "63e3f8368510641513b5fd84ae3074bb80e79c6f",
+          "commits": [
+            "0621fecedd41bc99957d0042e32338e780f42dd2",
+            "96d0984f495c9b2ffd886539a654868155c9fd09"
+          ],
+          "scope": "owner formatting and owned track/documentation receipt only; shared paths unchanged",
+          "standalone_run": 43688739281,
+          "qualification_status": "passed",
+          "aggregate_status": "success",
+          "test_counts": {
+            "observed-tests": 37,
+            "fixture-tests": 12
+          },
+          "failed_commands": [],
+          "blocked_commands": [],
+          "receipt_sha256": "e961bab622503aedfcd7b1b61155681131cb3cd73d789b89f90b41947891f012",
+          "artifact": {
+            "id": 14151726213,
+            "name": "roadmap-lane-observed",
+            "size_in_bytes": 19072,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14151726213",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14151726213/zip",
+            "expired": false,
+            "created_at": "2026-11-15T07:10:58Z",
+            "expires_at": "2026-12-15T07:10:57Z",
+            "updated_at": "2026-11-15T07:10:58Z",
+            "digest": "sha256:04ae7578201ed7fa4d7528b07d9894cc144faaa5c326c627a776295787511de3",
+            "workflow_run": {
+              "id": 43688739281,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/observed-import-contracts-x1-20261115",
+              "head_sha": "96d0984f495c9b2ffd886539a654868155c9fd09"
+            }
+          },
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/owner-followup/pr21",
+          "hosted_jobs": [
+            {
+              "name": "controls",
+              "id": 132734654556,
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "discovery",
+              "id": 132734654850,
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "qualify (observed)",
+              "id": 132734691016,
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "aggregate",
+              "id": 132734798924,
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "current_head": "96d0984f495c9b2ffd886539a654868155c9fd09",
+      "current_head_tree": "d20a7802b66a578fc64e5b28624f6b28c14be316",
+      "resolved_feature_findings": {
+        "source": "96d0984f495c9b2ffd886539a654868155c9fd09",
+        "previous_findings": [
+          "Rust formatting in adapters/observed_events/src/lib.rs and tests/contracts.rs",
+          "Python formatting in adapters/observed_events/tests/test_fixtures.py"
+        ],
+        "result": "Rust/Python formatting now passed in hosted qualification"
+      }
+    },
+    {
+      "pr": 22,
+      "lane": "newborn",
+      "received_head": "795e12cd998ed9eaab40a783d0352dfbcf653bf4",
+      "received_tree": "806e4e240129016b0ee236ff754ca500b0964673",
+      "tracks": [
+        "newborn_screening_20261108"
+      ],
+      "owned_paths": [
+        "fixtures/newborn-synthetic",
+        "tests/python/test_newborn_synthetic.py",
+        "conductor/tracks/newborn_screening_20261108"
+      ],
+      "received_path_objects": {
+        "fixtures/newborn-synthetic": "3a5cc824381d680886787fc78e13440455e61e23",
+        "tests/python/test_newborn_synthetic.py": "d4b97d99c51c87b3f83fd931a08b4ba9a2c39495",
+        "conductor/tracks/newborn_screening_20261108": "6f240f2c3af26d26c4e0e67cec78684e441ae16f"
+      },
+      "registry_statuses": {
+        "newborn_screening_20261108": "in_progress"
+      },
+      "integration": {
+        "head": "720807a66b206ba16cc863480807986e22f125f3",
+        "tree": "beb51180e7bd5665d5d9469e0653a7fb383b11bb",
+        "parent": "2e7f6b33c04ad49fcf3e073fa88aa38146de3cf3",
+        "owned_source_objects_unchanged": true,
+        "changes": [
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ],
+        "cumulative_changes_from_received": [
+          ".github/workflows/roadmap-lanes.yml",
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ]
+      },
+      "hosted_lane_qualification": "passed_bounded_synthetic_ci",
+      "feature_fixes_owner": "existing_lane",
+      "offline_security": "queued_not_passed",
+      "received_hosted_evidence": {
+        "source": "795e12cd998ed9eaab40a783d0352dfbcf653bf4",
+        "job": "https://github.com/edithatogo/dapane/actions/runs/43680883966/job/132711026281",
+        "installed_tests_passed": 196,
+        "newborn_cases": 63,
+        "scope": "existing installed Python discovery includes the dedicated newborn file; not evidence for other standalone roots"
+      },
+      "integration_attempts": [
+        {
+          "head": "2e7f6b33c04ad49fcf3e073fa88aa38146de3cf3",
+          "tree": "765229b1a6c04bcd779684294b8896eda4b33c78",
+          "parent": "795e12cd998ed9eaab40a783d0352dfbcf653bf4",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "standalone_run": 43685682364,
+          "qualification_status": "passed",
+          "test_counts": {
+            "newborn-tests": 63
+          },
+          "failed_commands": [],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-1/pr22",
+          "artifact": {
+            "id": 14150331345,
+            "name": "roadmap-lane-newborn",
+            "size_in_bytes": 1288734,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150331345",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150331345/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:33:30Z",
+            "expires_at": "2026-12-15T06:33:28Z",
+            "updated_at": "2026-11-15T06:33:30Z",
+            "digest": "sha256:79ddd4cc16139440bda7878494a4d4780ebe25e96cfa69c017b5178d10c5ccc1",
+            "workflow_run": {
+              "id": 43685682364,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/newborn-synthetic-n1-n2-20261115",
+              "head_sha": "2e7f6b33c04ad49fcf3e073fa88aa38146de3cf3"
+            }
+          },
+          "receipt_sha256": "6d48a17930c0d8c1ef9f51746691204fb1e0b6a06d8e219e84fba9ac7f032469",
+          "aggregate_limitation": "single downloaded artifact extracted flat; strict verifier initially expected a child directory; correction and new-head rerun required",
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132725568710,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685682364/job/132725568710"
+            },
+            {
+              "name": "controls",
+              "id": 132725568949,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685682364/job/132725568949"
+            },
+            {
+              "name": "qualify (newborn)",
+              "id": 132725617768,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685682364/job/132725617768"
+            },
+            {
+              "name": "aggregate",
+              "id": 132726457243,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685682364/job/132726457243"
+            }
+          ],
+          "aggregate_failure_reason": "missing_receipt_due_to_shared_flat_layout_defect",
+          "shared_control_tests": 16
+        },
+        {
+          "head": "720807a66b206ba16cc863480807986e22f125f3",
+          "tree": "beb51180e7bd5665d5d9469e0653a7fb383b11bb",
+          "parent": "2e7f6b33c04ad49fcf3e073fa88aa38146de3cf3",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "cumulative_changes_from_received": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "standalone_run": 43686526117,
+          "conductor_run": 43686526152,
+          "runtime_run": 43686526150,
+          "offline_runs": [
+            43686526390,
+            43686522130
+          ],
+          "qualification_status": "passed",
+          "shared_control_tests": 20,
+          "test_counts": {
+            "newborn-tests": 63
+          },
+          "failed_commands": [],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-2/pr22",
+          "artifact": {
+            "id": 14150927892,
+            "name": "roadmap-lane-newborn",
+            "size_in_bytes": 1288723,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150927892",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150927892/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:47:01Z",
+            "expires_at": "2026-12-15T06:47:00Z",
+            "updated_at": "2026-11-15T06:47:01Z",
+            "digest": "sha256:b7139e6e19b1666ba1c00f69aded532591371d73d38d03aff68b9fd602927ee8",
+            "workflow_run": {
+              "id": 43686526117,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/newborn-synthetic-n1-n2-20261115",
+              "head_sha": "720807a66b206ba16cc863480807986e22f125f3"
+            }
+          },
+          "receipt_sha256": "ea5fbf8fa0c5909cc2578b00735bd1c62e2929bdd397df643c98c2087d23de57",
+          "source_and_retained_inventory_verified": true,
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132728046350,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686526117/job/132728046350"
+            },
+            {
+              "name": "controls",
+              "id": 132728046585,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686526117/job/132728046585"
+            },
+            {
+              "name": "qualify (newborn)",
+              "id": 132728551100,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686526117/job/132728551100"
+            },
+            {
+              "name": "aggregate",
+              "id": 132729465589,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686526117/job/132729465589"
+            }
+          ],
+          "aggregate_status": "success"
+        }
+      ],
+      "coverage_applied": true,
+      "feature_findings": [],
+      "current_head_checks": [
+        {
+          "name": "aggregate",
+          "id": 132729465589,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526117/job/132729465589"
+        },
+        {
+          "name": "CodeQL",
+          "id": 132728677738,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/runs/132728677738"
+        },
+        {
+          "name": "qualify (newborn)",
+          "id": 132728551100,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526117/job/132728551100"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728047110,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526390/job/132728047110"
+        },
+        {
+          "name": "python (3.14)",
+          "id": 132728046791,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526150/job/132728046791"
+        },
+        {
+          "name": "python (3.13)",
+          "id": 132728046742,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526150/job/132728046742"
+        },
+        {
+          "name": "python (3.12)",
+          "id": 132728046711,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526150/job/132728046711"
+        },
+        {
+          "name": "python (3.15)",
+          "id": 132728046657,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526150/job/132728046657"
+        },
+        {
+          "name": "controls",
+          "id": 132728046585,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526117/job/132728046585"
+        },
+        {
+          "name": "native",
+          "id": 132728046537,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526150/job/132728046537"
+        },
+        {
+          "name": "privacy-and-secrets",
+          "id": 132728046507,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526165/job/132728046507"
+        },
+        {
+          "name": "validate",
+          "id": 132728046464,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526152/job/132728046464"
+        },
+        {
+          "name": "discovery",
+          "id": 132728046350,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526117/job/132728046350"
+        },
+        {
+          "name": "installed-providers",
+          "id": 132728046337,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526168/job/132728046337"
+        },
+        {
+          "name": "Analyze (rust)",
+          "id": 132728038210,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686522277/job/132728038210"
+        },
+        {
+          "name": "Analyze (python)",
+          "id": 132728038150,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686522277/job/132728038150"
+        },
+        {
+          "name": "Analyze (actions)",
+          "id": 132728037990,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686522277/job/132728037990"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728035075,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686522130/job/132728035075"
+        }
+      ],
+      "ordinary_hosted_checks": "passed",
+      "offline_security_checks": [
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728047110,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686526390/job/132728047110"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728035075,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686522130/job/132728035075"
+        }
+      ],
+      "current_head": "720807a66b206ba16cc863480807986e22f125f3",
+      "current_head_tree": "beb51180e7bd5665d5d9469e0653a7fb383b11bb"
+    },
+    {
+      "pr": 23,
+      "lane": "decisions",
+      "received_head": "d59101fafbf4e35324f4668b8bb59a939b95b8de",
+      "received_tree": "b3f2957248e999c5cd088c34a52375270d4dbad8",
+      "tracks": [
+        "decision_integrations_20261108",
+        "tobac_regulatory_fiscal_valuation_20261110"
+      ],
+      "owned_paths": [
+        "adapters/decision_draws",
+        "conductor/tracks/decision_integrations_20261108",
+        "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110"
+      ],
+      "received_path_objects": {
+        "adapters/decision_draws": "0e853e85e064d8fd0dea879ad9a77571ce9334e7",
+        "conductor/tracks/decision_integrations_20261108": "b716bec8d1c587bcfb196e95d96d20d61d0efa72",
+        "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110": "fc6d87ee6a7d2111b8c108d4de019bf7ce24183a"
+      },
+      "registry_statuses": {
+        "decision_integrations_20261108": "in_progress",
+        "tobac_regulatory_fiscal_valuation_20261110": "in_progress"
+      },
+      "integration": {
+        "head": "f9f85e5f54a38447eab91ae459aad2f372bcbb7e",
+        "tree": "50629880a134e233e74410eea842594e26e0ae32",
+        "parent": "d7ca218869ac5374f74a96bf1885fde43e927d27",
+        "owned_source_objects_unchanged": true,
+        "changes": [
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ],
+        "cumulative_changes_from_received": [
+          ".github/workflows/roadmap-lanes.yml",
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py",
+          "conductor/tracks.md"
+        ]
+      },
+      "hosted_lane_qualification": "failed_owner_quality_checks",
+      "feature_fixes_owner": "existing_lane",
+      "offline_security": "queued_not_passed",
+      "integration_attempts": [
+        {
+          "head": "d7ca218869ac5374f74a96bf1885fde43e927d27",
+          "tree": "ce2aa40b242c1e50025b22451f8ca73355170304",
+          "parent": "d59101fafbf4e35324f4668b8bb59a939b95b8de",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43685685346,
+          "qualification_status": "failed",
+          "test_counts": {
+            "decisions-tests": 37
+          },
+          "failed_commands": [
+            "decisions-format"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-1/pr23",
+          "artifact": {
+            "id": 14150651678,
+            "name": "roadmap-lane-decisions",
+            "size_in_bytes": 36704,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150651678",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150651678/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:34:10Z",
+            "expires_at": "2026-12-15T06:34:08Z",
+            "updated_at": "2026-11-15T06:34:10Z",
+            "digest": "sha256:7c5c6aa938dd5a64f0ebf5c7300194d89c7c11e529586066940aa1d58d2c2db6",
+            "workflow_run": {
+              "id": 43685685346,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/paired-decisions-fiscal-d1-t1",
+              "head_sha": "d7ca218869ac5374f74a96bf1885fde43e927d27"
+            }
+          },
+          "receipt_sha256": "9a579c198f894b38d8134053cc2e6739aef36f42ff99b7841c7b23a35370bfba",
+          "aggregate_limitation": "single downloaded artifact extracted flat; strict verifier initially expected a child directory; correction and new-head rerun required",
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132725577641,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685685346/job/132725577641"
+            },
+            {
+              "name": "controls",
+              "id": 132725577879,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685685346/job/132725577879"
+            },
+            {
+              "name": "qualify (decisions)",
+              "id": 132725876109,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685685346/job/132725876109"
+            },
+            {
+              "name": "aggregate",
+              "id": 132726609000,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685685346/job/132726609000"
+            }
+          ],
+          "aggregate_failure_reason": "required_lane_job_failed; feature_findings_retained",
+          "shared_control_tests": 16
+        },
+        {
+          "head": "f9f85e5f54a38447eab91ae459aad2f372bcbb7e",
+          "tree": "50629880a134e233e74410eea842594e26e0ae32",
+          "parent": "d7ca218869ac5374f74a96bf1885fde43e927d27",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "cumulative_changes_from_received": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43686528906,
+          "conductor_run": 43686528978,
+          "runtime_run": 43686528975,
+          "offline_runs": [
+            43686529211,
+            43686525084
+          ],
+          "qualification_status": "failed",
+          "shared_control_tests": 20,
+          "test_counts": {
+            "decisions-tests": 37
+          },
+          "failed_commands": [
+            "decisions-format"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-2/pr23",
+          "artifact": {
+            "id": 14150324174,
+            "name": "roadmap-lane-decisions",
+            "size_in_bytes": 36696,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150324174",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150324174/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:47:52Z",
+            "expires_at": "2026-12-15T06:47:51Z",
+            "updated_at": "2026-11-15T06:47:52Z",
+            "digest": "sha256:c1a9d6d8930fbe340a5fdc8c39e52232111f03853dd55cb5d02e5bc3b6321397",
+            "workflow_run": {
+              "id": 43686528906,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/paired-decisions-fiscal-d1-t1",
+              "head_sha": "f9f85e5f54a38447eab91ae459aad2f372bcbb7e"
+            }
+          },
+          "receipt_sha256": "f3ab5f66bdbd0b34c1818badc03260227ca33cb2e50580af2a13f65a116585f3",
+          "source_and_retained_inventory_verified": true,
+          "hosted_jobs": [
+            {
+              "name": "controls",
+              "id": 132728054068,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686528906/job/132728054068"
+            },
+            {
+              "name": "discovery",
+              "id": 132728054244,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686528906/job/132728054244"
+            },
+            {
+              "name": "qualify (decisions)",
+              "id": 132728834233,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686528906/job/132728834233"
+            },
+            {
+              "name": "aggregate",
+              "id": 132729648458,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686528906/job/132729648458"
+            }
+          ],
+          "aggregate_status": "failure"
+        }
+      ],
+      "coverage_applied": true,
+      "feature_findings": [
+        "Rust formatting in adapters/decision_draws/src/common.rs, src/fiscal.rs, src/paired.rs, tests/fiscal.rs and tests/paired.rs"
+      ],
+      "current_head_checks": [
+        {
+          "name": "aggregate",
+          "id": 132729648458,
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528906/job/132729648458"
+        },
+        {
+          "name": "qualify (decisions)",
+          "id": 132728834233,
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528906/job/132728834233"
+        },
+        {
+          "name": "CodeQL",
+          "id": 132728655803,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/runs/132728655803"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728054741,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686529211/job/132728054741"
+        },
+        {
+          "name": "python (3.12)",
+          "id": 132728054289,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528975/job/132728054289"
+        },
+        {
+          "name": "validate",
+          "id": 132728054280,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528978/job/132728054280"
+        },
+        {
+          "name": "discovery",
+          "id": 132728054244,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528906/job/132728054244"
+        },
+        {
+          "name": "python (3.14)",
+          "id": 132728054239,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528975/job/132728054239"
+        },
+        {
+          "name": "python (3.15)",
+          "id": 132728054205,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528975/job/132728054205"
+        },
+        {
+          "name": "privacy-and-secrets",
+          "id": 132728054187,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528952/job/132728054187"
+        },
+        {
+          "name": "python (3.13)",
+          "id": 132728054177,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528975/job/132728054177"
+        },
+        {
+          "name": "controls",
+          "id": 132728054068,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528906/job/132728054068"
+        },
+        {
+          "name": "native",
+          "id": 132728053966,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528975/job/132728053966"
+        },
+        {
+          "name": "installed-providers",
+          "id": 132728053945,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528893/job/132728053945"
+        },
+        {
+          "name": "Analyze (rust)",
+          "id": 132728048172,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686525722/job/132728048172"
+        },
+        {
+          "name": "Analyze (python)",
+          "id": 132728048122,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686525722/job/132728048122"
+        },
+        {
+          "name": "Analyze (actions)",
+          "id": 132728048052,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686525722/job/132728048052"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728043139,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686525084/job/132728043139"
+        }
+      ],
+      "ordinary_hosted_checks": "passed",
+      "offline_security_checks": [
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728054741,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686529211/job/132728054741"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728043139,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686525084/job/132728043139"
+        }
+      ],
+      "current_head": "f9f85e5f54a38447eab91ae459aad2f372bcbb7e",
+      "current_head_tree": "50629880a134e233e74410eea842594e26e0ae32"
+    },
+    {
+      "pr": 24,
+      "lane": "static",
+      "received_head": "6ab5f883535d6ea99469636af146b997ed00f4d5",
+      "received_tree": "904ab310bedcdb855b8390cc5d8a8917b4e39e21",
+      "tracks": [
+        "frontier_benchmarks_20261108"
+      ],
+      "owned_paths": [
+        "benchmarks/static",
+        "conductor/tracks/frontier_benchmarks_20261108"
+      ],
+      "received_path_objects": {
+        "benchmarks/static": "e26911f600c19997cd5bb6001a1e90e726cf3088",
+        "conductor/tracks/frontier_benchmarks_20261108": "3560989a5966eadf2c5126aa787686b46ccf07e0"
+      },
+      "registry_statuses": {
+        "frontier_benchmarks_20261108": "in_progress"
+      },
+      "integration": {
+        "head": "237ddb238997b0babe12266cb7775207c597dfd4",
+        "tree": "a022527f471e273fa5e946ae437dd241c75867bf",
+        "parent": "03378bff41b812d016fb0ac93bb8bb4ed07591f6",
+        "owned_source_objects_unchanged": true,
+        "changes": [
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ],
+        "cumulative_changes_from_received": [
+          ".github/workflows/roadmap-lanes.yml",
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py",
+          "conductor/tracks.md"
+        ]
+      },
+      "hosted_lane_qualification": "failed_owner_quality_checks",
+      "feature_fixes_owner": "existing_lane",
+      "offline_security": "queued_not_passed",
+      "local_ruff": {
+        "version": "0.17.4",
+        "commands": [
+          {
+            "command": "ruff check benchmarks/static",
+            "exit_code": 0
+          },
+          {
+            "command": "ruff format --check benchmarks/static",
+            "exit_code": 1
+          }
+        ]
+      },
+      "integration_attempts": [
+        {
+          "head": "03378bff41b812d016fb0ac93bb8bb4ed07591f6",
+          "tree": "98199755514c66d592b0035d8d22cd555d3f0cf3",
+          "parent": "6ab5f883535d6ea99469636af146b997ed00f4d5",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43685687728,
+          "qualification_status": "failed",
+          "test_counts": {
+            "static-tests": 23
+          },
+          "failed_commands": [
+            "python-format"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-1/pr24",
+          "artifact": {
+            "id": 14149977283,
+            "name": "roadmap-lane-static",
+            "size_in_bytes": 777178,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14149977283",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14149977283/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:34:20Z",
+            "expires_at": "2026-12-15T06:34:19Z",
+            "updated_at": "2026-11-15T06:34:20Z",
+            "digest": "sha256:04a6024836284438871dbee26e1e1bed2cf7eb0fa52bc26ffb95f1e235a4100f",
+            "workflow_run": {
+              "id": 43685687728,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/static-benchmarks-f1-f2",
+              "head_sha": "03378bff41b812d016fb0ac93bb8bb4ed07591f6"
+            }
+          },
+          "receipt_sha256": "409506328cf4350ae22294db3b30bf018eaf2f4f467834efdc984dbf011b0eec",
+          "aggregate_limitation": "single downloaded artifact extracted flat; strict verifier initially expected a child directory; correction and new-head rerun required",
+          "hosted_jobs": [
+            {
+              "name": "controls",
+              "id": 132725583913,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685687728/job/132725583913"
+            },
+            {
+              "name": "discovery",
+              "id": 132725584221,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685687728/job/132725584221"
+            },
+            {
+              "name": "qualify (static)",
+              "id": 132726219539,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685687728/job/132726219539"
+            },
+            {
+              "name": "aggregate",
+              "id": 132726640175,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685687728/job/132726640175"
+            }
+          ],
+          "aggregate_failure_reason": "required_lane_job_failed; feature_findings_retained",
+          "shared_control_tests": 16
+        },
+        {
+          "head": "237ddb238997b0babe12266cb7775207c597dfd4",
+          "tree": "a022527f471e273fa5e946ae437dd241c75867bf",
+          "parent": "03378bff41b812d016fb0ac93bb8bb4ed07591f6",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "cumulative_changes_from_received": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43686531920,
+          "conductor_run": 43686531931,
+          "runtime_run": 43686531881,
+          "offline_runs": [
+            43686532328,
+            43686528542
+          ],
+          "qualification_status": "failed",
+          "shared_control_tests": 20,
+          "test_counts": {
+            "static-tests": 23
+          },
+          "failed_commands": [
+            "python-format"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-2/pr24",
+          "artifact": {
+            "id": 14150858190,
+            "name": "roadmap-lane-static",
+            "size_in_bytes": 777239,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150858190",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150858190/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:48:02Z",
+            "expires_at": "2026-12-15T06:48:02Z",
+            "updated_at": "2026-11-15T06:48:02Z",
+            "digest": "sha256:20b0a1af34ee7312561c0a760780ce37bae808a2ef7798b5c92e0b3e0680e431",
+            "workflow_run": {
+              "id": 43686531920,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/static-benchmarks-f1-f2",
+              "head_sha": "237ddb238997b0babe12266cb7775207c597dfd4"
+            }
+          },
+          "receipt_sha256": "3e446d37a14a49a63111dbfd0fcae816c40be32f5a8d9393cba7d872c9b79d6b",
+          "source_and_retained_inventory_verified": true,
+          "hosted_jobs": [
+            {
+              "name": "controls",
+              "id": 132728062860,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686531920/job/132728062860"
+            },
+            {
+              "name": "discovery",
+              "id": 132728063155,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686531920/job/132728063155"
+            },
+            {
+              "name": "qualify (static)",
+              "id": 132729086330,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686531920/job/132729086330"
+            },
+            {
+              "name": "aggregate",
+              "id": 132729680540,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686531920/job/132729680540"
+            }
+          ],
+          "aggregate_status": "failure"
+        }
+      ],
+      "coverage_applied": true,
+      "feature_findings": [
+        "Python formatting in benchmarks/static/build.py, oracle.py, run.py, verify.py and tests/test_bundle_gate.py"
+      ],
+      "current_head_checks": [
+        {
+          "name": "aggregate",
+          "id": 132729680540,
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531920/job/132729680540"
+        },
+        {
+          "name": "qualify (static)",
+          "id": 132729086330,
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531920/job/132729086330"
+        },
+        {
+          "name": "CodeQL",
+          "id": 132728932503,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/runs/132728932503"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728064156,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686532328/job/132728064156"
+        },
+        {
+          "name": "native",
+          "id": 132728063497,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531881/job/132728063497"
+        },
+        {
+          "name": "privacy-and-secrets",
+          "id": 132728063249,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531919/job/132728063249"
+        },
+        {
+          "name": "installed-providers",
+          "id": 132728063240,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531930/job/132728063240"
+        },
+        {
+          "name": "python (3.15)",
+          "id": 132728063204,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531881/job/132728063204"
+        },
+        {
+          "name": "python (3.13)",
+          "id": 132728063161,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531881/job/132728063161"
+        },
+        {
+          "name": "discovery",
+          "id": 132728063155,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531920/job/132728063155"
+        },
+        {
+          "name": "python (3.14)",
+          "id": 132728063112,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531881/job/132728063112"
+        },
+        {
+          "name": "validate",
+          "id": 132728063086,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531931/job/132728063086"
+        },
+        {
+          "name": "controls",
+          "id": 132728062860,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531920/job/132728062860"
+        },
+        {
+          "name": "python (3.12)",
+          "id": 132728062797,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531881/job/132728062797"
+        },
+        {
+          "name": "Analyze (python)",
+          "id": 132728055049,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528417/job/132728055049"
+        },
+        {
+          "name": "Analyze (actions)",
+          "id": 132728055048,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528417/job/132728055048"
+        },
+        {
+          "name": "Analyze (rust)",
+          "id": 132728054967,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528417/job/132728054967"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728052742,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528542/job/132728052742"
+        }
+      ],
+      "ordinary_hosted_checks": "passed",
+      "offline_security_checks": [
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728064156,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686532328/job/132728064156"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728052742,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686528542/job/132728052742"
+        }
+      ],
+      "current_head": "237ddb238997b0babe12266cb7775207c597dfd4",
+      "current_head_tree": "a022527f471e273fa5e946ae437dd241c75867bf"
+    },
+    {
+      "pr": 25,
+      "lane": "mchs",
+      "received_head": "78fa801a854fd1f88427924d19554dfebc4cc4f1",
+      "received_tree": "1f681e2e5c1a0c885ac18ba421f2ad9829c26798",
+      "tracks": [
+        "mchs_source_adapters_20261108"
+      ],
+      "owned_paths": [
+        "adapters/mchs_sources",
+        "conductor/tracks/mchs_source_adapters_20261108"
+      ],
+      "received_path_objects": {
+        "adapters/mchs_sources": "1a71585ceed6453987fdf512d940f7076c214f30",
+        "conductor/tracks/mchs_source_adapters_20261108": "00db646944c785f438f4dc97eee8adb3b4fb39a6"
+      },
+      "registry_statuses": {
+        "mchs_source_adapters_20261108": "in_progress"
+      },
+      "integration": {
+        "head": "8281042676c1d9cafab69e9c57cdfd064a9a5adf",
+        "tree": "8a324bed7aec3051a24f81138137477c3cd574ab",
+        "parent": "a76e9a1e96b3ef997b41c9ebd33344f317351d6e",
+        "owned_source_objects_unchanged": true,
+        "changes": [
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ],
+        "cumulative_changes_from_received": [
+          ".github/workflows/roadmap-lanes.yml",
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py",
+          "conductor/tracks.md"
+        ]
+      },
+      "hosted_lane_qualification": "failed_owner_quality_checks",
+      "feature_fixes_owner": "existing_lane",
+      "offline_security": "queued_not_passed",
+      "local_ruff": {
+        "version": "0.17.4",
+        "commands": [
+          {
+            "command": "ruff check adapters/mchs_sources",
+            "exit_code": 1
+          },
+          {
+            "command": "ruff format --check adapters/mchs_sources",
+            "exit_code": 1
+          }
+        ]
+      },
+      "integration_attempts": [
+        {
+          "head": "a76e9a1e96b3ef997b41c9ebd33344f317351d6e",
+          "tree": "67f322e12839f6a55f2329f61d4d5b54662db5b4",
+          "parent": "78fa801a854fd1f88427924d19554dfebc4cc4f1",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43685690879,
+          "qualification_status": "failed",
+          "test_counts": {
+            "mchs-tests": 34
+          },
+          "failed_commands": [
+            "python-lint",
+            "python-format"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-1/pr25",
+          "artifact": {
+            "id": 14149977127,
+            "name": "roadmap-lane-mchs",
+            "size_in_bytes": 1311462,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14149977127",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14149977127/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:32:45Z",
+            "expires_at": "2026-12-15T06:32:43Z",
+            "updated_at": "2026-11-15T06:32:45Z",
+            "digest": "sha256:4f38a4598e11f233506382e082d8d5bf078fa05e833adfbeb0f627868b2df079",
+            "workflow_run": {
+              "id": 43685690879,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/mchs-atlas-m1-m2-20261115",
+              "head_sha": "a76e9a1e96b3ef997b41c9ebd33344f317351d6e"
+            }
+          },
+          "receipt_sha256": "97c8f48fff0c9cf8d2ee03b3ccb8e0cfaade9267497e44ea5c806c44a00c87a0",
+          "aggregate_limitation": "single downloaded artifact extracted flat; strict verifier initially expected a child directory; correction and new-head rerun required",
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132725593297,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685690879/job/132725593297"
+            },
+            {
+              "name": "controls",
+              "id": 132725593639,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685690879/job/132725593639"
+            },
+            {
+              "name": "qualify (mchs)",
+              "id": 132725961532,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685690879/job/132725961532"
+            },
+            {
+              "name": "aggregate",
+              "id": 132726284023,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685690879/job/132726284023"
+            }
+          ],
+          "aggregate_failure_reason": "required_lane_job_failed; feature_findings_retained",
+          "shared_control_tests": 16
+        },
+        {
+          "head": "8281042676c1d9cafab69e9c57cdfd064a9a5adf",
+          "tree": "8a324bed7aec3051a24f81138137477c3cd574ab",
+          "parent": "a76e9a1e96b3ef997b41c9ebd33344f317351d6e",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "cumulative_changes_from_received": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43686535494,
+          "conductor_run": 43686535503,
+          "runtime_run": 43686535497,
+          "offline_runs": [
+            43686535735,
+            43686531706
+          ],
+          "qualification_status": "failed",
+          "shared_control_tests": 20,
+          "test_counts": {
+            "mchs-tests": 34
+          },
+          "failed_commands": [
+            "python-lint",
+            "python-format"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-2/pr25",
+          "artifact": {
+            "id": 14150527466,
+            "name": "roadmap-lane-mchs",
+            "size_in_bytes": 1311455,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150527466",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150527466/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:48:19Z",
+            "expires_at": "2026-12-15T06:48:18Z",
+            "updated_at": "2026-11-15T06:48:19Z",
+            "digest": "sha256:46b3ac75a4a94552946e9db1adeaf025b927de51a8c4c9ea2eca650cb4df1877",
+            "workflow_run": {
+              "id": 43686535494,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/mchs-atlas-m1-m2-20261115",
+              "head_sha": "8281042676c1d9cafab69e9c57cdfd064a9a5adf"
+            }
+          },
+          "receipt_sha256": "e36f24023daef5e22680bb6e53d80b990d4447b0cf132a08287f0335a6d2f1b8",
+          "source_and_retained_inventory_verified": true,
+          "hosted_jobs": [
+            {
+              "name": "controls",
+              "id": 132728072669,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686535494/job/132728072669"
+            },
+            {
+              "name": "discovery",
+              "id": 132728072932,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686535494/job/132728072932"
+            },
+            {
+              "name": "qualify (mchs)",
+              "id": 132729057206,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686535494/job/132729057206"
+            },
+            {
+              "name": "aggregate",
+              "id": 132729740895,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686535494/job/132729740895"
+            }
+          ],
+          "aggregate_status": "failure"
+        }
+      ],
+      "coverage_applied": true,
+      "feature_findings": [
+        "Ruff I001 in adapters/mchs_sources/tests/installed_smoke.py",
+        "Formatting in adapters/mchs_sources/README.md, src/dapane_mchs_atlas/adapter.py, tests/installed_smoke.py and tests/test_adapters.py"
+      ],
+      "current_head_checks": [
+        {
+          "name": "aggregate",
+          "id": 132729740895,
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535494/job/132729740895"
+        },
+        {
+          "name": "qualify (mchs)",
+          "id": 132729057206,
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535494/job/132729057206"
+        },
+        {
+          "name": "CodeQL",
+          "id": 132728998997,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/runs/132728998997"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728073064,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535735/job/132728073064"
+        },
+        {
+          "name": "discovery",
+          "id": 132728072932,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535494/job/132728072932"
+        },
+        {
+          "name": "installed-providers",
+          "id": 132728072899,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535527/job/132728072899"
+        },
+        {
+          "name": "python (3.15)",
+          "id": 132728072884,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535497/job/132728072884"
+        },
+        {
+          "name": "python (3.14)",
+          "id": 132728072858,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535497/job/132728072858"
+        },
+        {
+          "name": "python (3.12)",
+          "id": 132728072825,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535497/job/132728072825"
+        },
+        {
+          "name": "python (3.13)",
+          "id": 132728072794,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535497/job/132728072794"
+        },
+        {
+          "name": "validate",
+          "id": 132728072760,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535503/job/132728072760"
+        },
+        {
+          "name": "controls",
+          "id": 132728072669,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535494/job/132728072669"
+        },
+        {
+          "name": "native",
+          "id": 132728072610,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535497/job/132728072610"
+        },
+        {
+          "name": "privacy-and-secrets",
+          "id": 132728072482,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535493/job/132728072482"
+        },
+        {
+          "name": "Analyze (rust)",
+          "id": 132728067398,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686532392/job/132728067398"
+        },
+        {
+          "name": "Analyze (actions)",
+          "id": 132728067391,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686532392/job/132728067391"
+        },
+        {
+          "name": "Analyze (python)",
+          "id": 132728067025,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686532392/job/132728067025"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728062384,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531706/job/132728062384"
+        }
+      ],
+      "ordinary_hosted_checks": "passed",
+      "offline_security_checks": [
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728073064,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535735/job/132728073064"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728062384,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686531706/job/132728062384"
+        }
+      ],
+      "current_head": "8281042676c1d9cafab69e9c57cdfd064a9a5adf",
+      "current_head_tree": "8a324bed7aec3051a24f81138137477c3cd574ab"
+    },
+    {
+      "pr": 26,
+      "lane": "bindings",
+      "received_head": "31c22d2f8122777bf3ba972dfe44d4c282165bd6",
+      "received_tree": "2dc71be788329044c95092411f0a0f68f088f314",
+      "tracks": [
+        "polyglot_bindings_20261108"
+      ],
+      "owned_paths": [
+        "bindings/polyglot",
+        "conductor/tracks/polyglot_bindings_20261108"
+      ],
+      "received_path_objects": {
+        "bindings/polyglot": "aee791ff954b0522929d3dde983452592f624dfc",
+        "conductor/tracks/polyglot_bindings_20261108": "9f7722344d8347d18d02ae29a1df258b635d5cc9"
+      },
+      "registry_statuses": {
+        "polyglot_bindings_20261108": "blocked"
+      },
+      "integration": {
+        "head": "8716c423f15c6449940df902fbabfab870d38f4d",
+        "tree": "3be393089c5d72840966816ee17dff517726f760",
+        "parent": "8e1687960efca8e7b6cced13b2a0e875c23ea40a",
+        "owned_source_objects_unchanged": true,
+        "changes": [
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ],
+        "cumulative_changes_from_received": [
+          ".github/workflows/roadmap-lanes.yml",
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py",
+          "conductor/tracks.md"
+        ]
+      },
+      "hosted_lane_qualification": "failed_owner_quality_checks",
+      "feature_fixes_owner": "existing_lane",
+      "offline_security": "queued_not_passed",
+      "local_ruff": {
+        "version": "0.17.4",
+        "commands": [
+          {
+            "command": "ruff check bindings/polyglot",
+            "exit_code": 0
+          },
+          {
+            "command": "ruff format --check bindings/polyglot",
+            "exit_code": 1
+          }
+        ]
+      },
+      "integration_attempts": [
+        {
+          "head": "8e1687960efca8e7b6cced13b2a0e875c23ea40a",
+          "tree": "5072555d6b86d8ec62b5f7f3da5fac923ed02084",
+          "parent": "31c22d2f8122777bf3ba972dfe44d4c282165bd6",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43685695268,
+          "qualification_status": "failed",
+          "test_counts": {
+            "r-tests": 1,
+            "abi-tests": 5,
+            "packaging-tests": 4,
+            "polyglot-cases": 24,
+            "r-installed": 24
+          },
+          "failed_commands": [
+            "python-format",
+            "abi-clippy"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-1/pr26",
+          "artifact": {
+            "id": 14150352265,
+            "name": "roadmap-lane-bindings",
+            "size_in_bytes": 7018153,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150352265",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150352265/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:34:22Z",
+            "expires_at": "2026-12-15T06:34:21Z",
+            "updated_at": "2026-11-15T06:34:22Z",
+            "digest": "sha256:cd9289f96278052213ee52c723a4a0ede49838af3fea533bf3bde43814169471",
+            "workflow_run": {
+              "id": 43685695268,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/polyglot-r-abi-20261115",
+              "head_sha": "8e1687960efca8e7b6cced13b2a0e875c23ea40a"
+            }
+          },
+          "receipt_sha256": "6e8c6e4fc9c1719216fa20d13fb5ff8dd6ff8f7299d0589a664f53937718a646",
+          "aggregate_limitation": "single downloaded artifact extracted flat; strict verifier initially expected a child directory; correction and new-head rerun required",
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132725607605,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685695268/job/132725607605"
+            },
+            {
+              "name": "controls",
+              "id": 132725607941,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685695268/job/132725607941"
+            },
+            {
+              "name": "qualify (bindings)",
+              "id": 132725918761,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685695268/job/132725918761"
+            },
+            {
+              "name": "aggregate",
+              "id": 132726645889,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685695268/job/132726645889"
+            }
+          ],
+          "aggregate_failure_reason": "required_lane_job_failed; feature_findings_retained",
+          "shared_control_tests": 16
+        },
+        {
+          "head": "8716c423f15c6449940df902fbabfab870d38f4d",
+          "tree": "3be393089c5d72840966816ee17dff517726f760",
+          "parent": "8e1687960efca8e7b6cced13b2a0e875c23ea40a",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "cumulative_changes_from_received": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43686539418,
+          "conductor_run": 43686539445,
+          "runtime_run": 43686539398,
+          "offline_runs": [
+            43686539668,
+            43686536059
+          ],
+          "qualification_status": "failed",
+          "shared_control_tests": 20,
+          "test_counts": {
+            "r-tests": 1,
+            "abi-tests": 5,
+            "packaging-tests": 4,
+            "polyglot-cases": 24,
+            "r-installed": 24
+          },
+          "failed_commands": [
+            "python-format",
+            "abi-clippy"
+          ],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-2/pr26",
+          "artifact": {
+            "id": 14150432776,
+            "name": "roadmap-lane-bindings",
+            "size_in_bytes": 7017199,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150432776",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150432776/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:49:17Z",
+            "expires_at": "2026-12-15T06:49:16Z",
+            "updated_at": "2026-11-15T06:49:17Z",
+            "digest": "sha256:501d5a2d5928173f43c02bc6c0f32d7b64e1378f4008d74ae0a1618196a7442e",
+            "workflow_run": {
+              "id": 43686539418,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/polyglot-r-abi-20261115",
+              "head_sha": "8716c423f15c6449940df902fbabfab870d38f4d"
+            }
+          },
+          "receipt_sha256": "0a8f7d5654e3f522f7cfbd6e76a1bc535f4ca5643e685bd8bc3be656d6a73af4",
+          "source_and_retained_inventory_verified": true,
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132728084291,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686539418/job/132728084291"
+            },
+            {
+              "name": "controls",
+              "id": 132728084356,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686539418/job/132728084356"
+            },
+            {
+              "name": "qualify (bindings)",
+              "id": 132729448152,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686539418/job/132729448152"
+            },
+            {
+              "name": "aggregate",
+              "id": 132729954019,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686539418/job/132729954019"
+            }
+          ],
+          "aggregate_status": "failure"
+        }
+      ],
+      "coverage_applied": true,
+      "original_polyglot_qualify_sh_executed": false,
+      "feature_findings": [
+        "ABI Cargo.toml lint-group priority: lower the all group priority while preserving undocumented_unsafe_blocks deny and -D warnings",
+        "Python formatting in bindings/polyglot/stage_r.py and tests/prepare_cases.py"
+      ],
+      "current_head_checks": [
+        {
+          "name": "aggregate",
+          "id": 132729954019,
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539418/job/132729954019"
+        },
+        {
+          "name": "qualify (bindings)",
+          "id": 132729448152,
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539418/job/132729448152"
+        },
+        {
+          "name": "CodeQL",
+          "id": 132729154813,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/runs/132729154813"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728084544,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539668/job/132728084544"
+        },
+        {
+          "name": "controls",
+          "id": 132728084356,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539418/job/132728084356"
+        },
+        {
+          "name": "discovery",
+          "id": 132728084291,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539418/job/132728084291"
+        },
+        {
+          "name": "validate",
+          "id": 132728084265,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539445/job/132728084265"
+        },
+        {
+          "name": "privacy-and-secrets",
+          "id": 132728084221,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539465/job/132728084221"
+        },
+        {
+          "name": "python (3.14)",
+          "id": 132728084140,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539398/job/132728084140"
+        },
+        {
+          "name": "installed-providers",
+          "id": 132728084116,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539392/job/132728084116"
+        },
+        {
+          "name": "native",
+          "id": 132728084110,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539398/job/132728084110"
+        },
+        {
+          "name": "python (3.15)",
+          "id": 132728084105,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539398/job/132728084105"
+        },
+        {
+          "name": "python (3.13)",
+          "id": 132728084078,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539398/job/132728084078"
+        },
+        {
+          "name": "python (3.12)",
+          "id": 132728083875,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539398/job/132728083875"
+        },
+        {
+          "name": "Analyze (rust)",
+          "id": 132728075886,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535692/job/132728075886"
+        },
+        {
+          "name": "Analyze (actions)",
+          "id": 132728075798,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535692/job/132728075798"
+        },
+        {
+          "name": "Analyze (python)",
+          "id": 132728075639,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686535692/job/132728075639"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728074093,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686536059/job/132728074093"
+        }
+      ],
+      "ordinary_hosted_checks": "passed",
+      "offline_security_checks": [
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728084544,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686539668/job/132728084544"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728074093,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686536059/job/132728074093"
+        }
+      ],
+      "current_head": "8716c423f15c6449940df902fbabfab870d38f4d",
+      "current_head_tree": "3be393089c5d72840966816ee17dff517726f760"
+    },
+    {
+      "pr": 27,
+      "lane": "reporting",
+      "received_head": "b5fc85059d9f8cd1ff7c8a6084a0e4dc386b33a0",
+      "received_tree": "39b70edf38dde7bcf4c1653be3486dad98e543cb",
+      "tracks": [
+        "reporting_profiles_20261108"
+      ],
+      "owned_paths": [
+        "adapters/reporting_profiles",
+        "conductor/tracks/reporting_profiles_20261108"
+      ],
+      "received_path_objects": {
+        "adapters/reporting_profiles": "8b4cf1012198e38c733ab1cf689d9162fca98f6c",
+        "conductor/tracks/reporting_profiles_20261108": "372c821dd08aca6b81ac2804962c05df5785eb9a"
+      },
+      "registry_statuses": {
+        "reporting_profiles_20261108": "in_progress"
+      },
+      "integration": {
+        "head": "0fbed5e8b8d6d0ae24cf2fbf6720c003226f9b10",
+        "tree": "c2e68bbd75139d3eebb27f3724c03f14025bd1c2",
+        "parent": "71ecabf21402f9f8cff62071a2ba6b8a04ba19c8",
+        "owned_source_objects_unchanged": true,
+        "changes": [
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py"
+        ],
+        "cumulative_changes_from_received": [
+          ".github/workflows/roadmap-lanes.yml",
+          "scripts/qualify_roadmap.py",
+          "tests/tooling/test_roadmap_qualification.py",
+          "conductor/tracks.md"
+        ]
+      },
+      "hosted_lane_qualification": "passed_bounded_synthetic_ci",
+      "feature_fixes_owner": "existing_lane",
+      "offline_security": "queued_not_passed",
+      "local_ruff": {
+        "version": "0.17.4",
+        "commands": [
+          {
+            "command": "ruff check adapters/reporting_profiles",
+            "exit_code": 0
+          },
+          {
+            "command": "ruff format --check adapters/reporting_profiles",
+            "exit_code": 0
+          }
+        ]
+      },
+      "integration_attempts": [
+        {
+          "head": "71ecabf21402f9f8cff62071a2ba6b8a04ba19c8",
+          "tree": "26bfd472ae990e3b55b1894a251188bdae2e658c",
+          "parent": "b5fc85059d9f8cd1ff7c8a6084a0e4dc386b33a0",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43685697281,
+          "qualification_status": "passed",
+          "test_counts": {
+            "reporting-tests": 41
+          },
+          "failed_commands": [],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-1/pr27",
+          "artifact": {
+            "id": 14150242664,
+            "name": "roadmap-lane-reporting",
+            "size_in_bytes": 1290773,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150242664",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14150242664/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:35:01Z",
+            "expires_at": "2026-12-15T06:35:00Z",
+            "updated_at": "2026-11-15T06:35:01Z",
+            "digest": "sha256:c40dc496b1ddaf6334f3a07e8ec44079c998e5b34b4941382d02c83697504210",
+            "workflow_run": {
+              "id": 43685697281,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/reporting-jsonld-shacl-e1-e2",
+              "head_sha": "71ecabf21402f9f8cff62071a2ba6b8a04ba19c8"
+            }
+          },
+          "receipt_sha256": "097595302aa937359dd939376600e5cf6ae35a3a42fecfe44263c43d7c877783",
+          "aggregate_limitation": "single downloaded artifact extracted flat; strict verifier initially expected a child directory; correction and new-head rerun required",
+          "hosted_jobs": [
+            {
+              "name": "discovery",
+              "id": 132725611349,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685697281/job/132725611349"
+            },
+            {
+              "name": "controls",
+              "id": 132725611634,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685697281/job/132725611634"
+            },
+            {
+              "name": "qualify (reporting)",
+              "id": 132726026627,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685697281/job/132726026627"
+            },
+            {
+              "name": "aggregate",
+              "id": 132726799138,
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43685697281/job/132726799138"
+            }
+          ],
+          "aggregate_failure_reason": "missing_receipt_due_to_shared_flat_layout_defect",
+          "shared_control_tests": 16
+        },
+        {
+          "head": "0fbed5e8b8d6d0ae24cf2fbf6720c003226f9b10",
+          "tree": "c2e68bbd75139d3eebb27f3724c03f14025bd1c2",
+          "parent": "71ecabf21402f9f8cff62071a2ba6b8a04ba19c8",
+          "owned_source_objects_unchanged": true,
+          "changes": [
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py"
+          ],
+          "cumulative_changes_from_received": [
+            ".github/workflows/roadmap-lanes.yml",
+            "scripts/qualify_roadmap.py",
+            "tests/tooling/test_roadmap_qualification.py",
+            "conductor/tracks.md"
+          ],
+          "standalone_run": 43686541874,
+          "conductor_run": 43686541861,
+          "runtime_run": 43686541883,
+          "offline_runs": [
+            43686542178,
+            43686537920
+          ],
+          "qualification_status": "passed",
+          "shared_control_tests": 20,
+          "test_counts": {
+            "reporting-tests": 41
+          },
+          "failed_commands": [],
+          "blocked_commands": [],
+          "evidence_directory": "conductor/roadmap-evidence-2026-11-15/attempt-2/pr27",
+          "artifact": {
+            "id": 14151101512,
+            "name": "roadmap-lane-reporting",
+            "size_in_bytes": 1290766,
+            "url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14151101512",
+            "archive_download_url": "https://api.github.com/repos/edithatogo/dapane/actions/artifacts/14151101512/zip",
+            "expired": false,
+            "created_at": "2026-11-15T06:49:11Z",
+            "expires_at": "2026-12-15T06:49:10Z",
+            "updated_at": "2026-11-15T06:49:11Z",
+            "digest": "sha256:fd59c7a5866047425632a1533af5f60073c249bd91bedde0f7a179dfa8134f36",
+            "workflow_run": {
+              "id": 43686541874,
+              "repository_id": 1449950543,
+              "head_repository_id": 1449950543,
+              "head_branch": "feat/reporting-jsonld-shacl-e1-e2",
+              "head_sha": "0fbed5e8b8d6d0ae24cf2fbf6720c003226f9b10"
+            }
+          },
+          "receipt_sha256": "189d177dbe666e580a1f49d739b5b179b3d521a1e64ce13dc1119b1b544ed7b0",
+          "source_and_retained_inventory_verified": true,
+          "hosted_jobs": [
+            {
+              "name": "controls",
+              "id": 132728091582,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686541874/job/132728091582"
+            },
+            {
+              "name": "discovery",
+              "id": 132728091823,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686541874/job/132728091823"
+            },
+            {
+              "name": "qualify (reporting)",
+              "id": 132729283083,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686541874/job/132729283083"
+            },
+            {
+              "name": "aggregate",
+              "id": 132729931265,
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/edithatogo/dapane/actions/runs/43686541874/job/132729931265"
+            }
+          ],
+          "aggregate_status": "success"
+        }
+      ],
+      "coverage_applied": true,
+      "feature_findings": [],
+      "current_head_checks": [
+        {
+          "name": "aggregate",
+          "id": 132729931265,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541874/job/132729931265"
+        },
+        {
+          "name": "qualify (reporting)",
+          "id": 132729283083,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541874/job/132729283083"
+        },
+        {
+          "name": "CodeQL",
+          "id": 132729224846,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/runs/132729224846"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728092314,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686542178/job/132728092314"
+        },
+        {
+          "name": "python (3.14)",
+          "id": 132728091957,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541883/job/132728091957"
+        },
+        {
+          "name": "python (3.15)",
+          "id": 132728091930,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541883/job/132728091930"
+        },
+        {
+          "name": "python (3.13)",
+          "id": 132728091909,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541883/job/132728091909"
+        },
+        {
+          "name": "python (3.12)",
+          "id": 132728091877,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541883/job/132728091877"
+        },
+        {
+          "name": "discovery",
+          "id": 132728091823,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541874/job/132728091823"
+        },
+        {
+          "name": "native",
+          "id": 132728091757,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541883/job/132728091757"
+        },
+        {
+          "name": "validate",
+          "id": 132728091660,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541861/job/132728091660"
+        },
+        {
+          "name": "controls",
+          "id": 132728091582,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541874/job/132728091582"
+        },
+        {
+          "name": "privacy-and-secrets",
+          "id": 132728091495,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541863/job/132728091495"
+        },
+        {
+          "name": "installed-providers",
+          "id": 132728091341,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686541851/job/132728091341"
+        },
+        {
+          "name": "Analyze (python)",
+          "id": 132728085069,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686538786/job/132728085069"
+        },
+        {
+          "name": "Analyze (rust)",
+          "id": 132728084979,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686538786/job/132728084979"
+        },
+        {
+          "name": "Analyze (actions)",
+          "id": 132728084806,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686538786/job/132728084806"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728079924,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686537920/job/132728079924"
+        }
+      ],
+      "ordinary_hosted_checks": "passed",
+      "offline_security_checks": [
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728092314,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686542178/job/132728092314"
+        },
+        {
+          "name": "offline-ai-security / offline-security",
+          "id": 132728079924,
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/edithatogo/dapane/actions/runs/43686537920/job/132728079924"
+        }
+      ],
+      "current_head": "0fbed5e8b8d6d0ae24cf2fbf6720c003226f9b10",
+      "current_head_tree": "c2e68bbd75139d3eebb27f3724c03f14025bd1c2"
+    }
+  ],
+  "local_execution": {
+    "python": "3.12.14",
+    "observed_fixture_tests": 12,
+    "static_tests": 23,
+    "mchs_tests": 34,
+    "binding_packaging_tests": 4,
+    "runtime_artifact_source": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+    "cli_sha256": "2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2",
+    "native_archive_sha256": "1f802980dac7893ae85592ece24ecc56bfdf8449d4197a1da9cc1730eaa4e78c",
+    "scope": "received source replay with independently verified compatible retained native artifact; no new native build or timed protocol result"
+  },
+  "upstream": {
+    "mailweft_issue_4": {
+      "state": "open",
+      "main": "14b3de557a7654708f6066f70f4d8bc1e3d1e564",
+      "remediation_candidate": "16948cb586f40cf608914f5bfb90f173f4cbf248",
+      "rust4pm_qualified": false,
+      "blockers": [
+        "immutable native/full advisory graph",
+        "SQLite round-trip and lock acceptance",
+        "reproduced validator defects",
+        "original-model fidelity and platforms"
+      ],
+      "rechecked_state": "open"
+    },
+    "uogto_pr_128": {
+      "state": "open_unmerged",
+      "head": "7e9075b8fd77543fc8853fab20319415cb86597d",
+      "hosted_checks": "passed",
+      "unresolved_review_findings": [
+        "CQ21 unallocated pools",
+        "CQ23 cross-scenario attribution"
+      ],
+      "queries_in_selected_dapane_input_set": false,
+      "scope": "selected immutable synthetic reporting inputs only; no upstream product promotion",
+      "rechecked_state": "open_unmerged_same_pin"
+    }
+  },
+  "preserved_prerequisites": {
+    "reference": "e34f87c9df39a2132fecee142431cdeefb732471",
+    "same_objects_on_release_coordination_and_all_lane_heads": {
+      "conductor/archive": "87cd52d1279c1bff69801c2e747919d48293c5be",
+      "conductor/tracks/conductor_setup_20261108": "427ea3d72c781c87dce9673de781206b1ee3bac3",
+      "conductor/tracks/core_contracts_20261108": "53b0341309c269680f4e011e27a6cffcdfd4dc1e",
+      "conductor/tracks/rust_kernel_20261108": "f6e9c3b55465c41c38caeb8674736ae6fefb4d87",
+      "conductor/tracks/python_two_consumers_20261108": "8a08d77846825e0a0ee4d46fce4a6903e8f4b227",
+      "docs/python-provider-verification.md": "3baa806dceadde90f3c651a363a8b144f28825d2",
+      "docs/provider-consumers.lock.json": "9f7969e0d8ed6933ba025124d7d1fba95114df5d"
+    },
+    "accepted_implementation_paths_identical_to_main_on_all_lanes": [
+      "crates",
+      "python",
+      "schemas",
+      "Cargo.toml",
+      "Cargo.lock",
+      "rust-toolchain.toml"
+    ],
+    "accepted_merge_ancestors_of_pinned_main": {
+      "setup_pr14": "c229a16d07b75bc67989368b502c898ea7a946c4",
+      "core_contract_pr9": "224cf91dbcf513feaa022b2cf5aa310a965472ce",
+      "core_archive_pr18": "c70edf65a119d9ffda410cd4e5325e1f37e9332a",
+      "rust_kernel_pr16": "172d0ef39291a936a35c6e221eb467701ccefbba",
+      "python_consumers_pr13": "1a9012fff2904cb8719cb275d3020d0162f90455"
+    }
+  },
+  "shared_controller": {
+    "initial_control_tests_passed": 16,
+    "initial_review": "receipt/prerequisite/count findings fixed before publication",
+    "hosted_finding": "single artifact download layout caused missing-receipt aggregate rejection; no passing aggregate inferred",
+    "fix_status": "hosted_verified_on_final_newborn_and_reporting_aggregates; all seven controllers passed20; owner failures retained",
+    "final_control_tests_passed": 20,
+    "real_artifact_replay": {
+      "newborn_source": "2e7f6b33c04ad49fcf3e073fa88aa38146de3cf3",
+      "reporting_source": "71ecabf21402f9f8cff62071a2ba6b8a04ba19c8",
+      "result": "corrected verifier accepted original flat artifacts locally; original failed hosted aggregates remain failures"
+    },
+    "reviewed_blobs": {
+      ".github/workflows/roadmap-lanes.yml": {
+        "git_blob": "6f6a476e08d25150ef6988e4981675bf9f78c6f6",
+        "sha256": "3980296f399905179c64a273d04ff04929a511d85e17e0d6b366d774e68253da"
+      },
+      "scripts/qualify_roadmap.py": {
+        "git_blob": "91a20258c4275eb2054630825b8fb667b3d03407",
+        "sha256": "d7e58dabeef1672b2905f69d707cd1655951a449af410c678c980be35480131f"
+      },
+      "tests/tooling/test_roadmap_qualification.py": {
+        "git_blob": "53f10d603f70216083cc72d06a433c125e0c4673",
+        "sha256": "6cd10bacb63c8b6fed1d47dab4c84b658643b16db7e68dcaa6f03e79f4a125dd"
+      }
+    },
+    "no_remaining_shared_failure_observed": true
+  },
+  "shared_change_requests": [
+    {
+      "pr": 21,
+      "source": "https://github.com/edithatogo/dapane/blob/4dc969a602404a72382a26336919c6ca42aeee3a/conductor/tracks/process_models_20261108/integration-requests.md",
+      "applied": [
+        "X1-IR-00 exact-source replay",
+        "X1-IR-01 standalone Rust/fixture CI",
+        "X1-IR-06 intake and already-consistent registry"
+      ],
+      "external_blockers": [
+        "X1-IR-02 Mailweft native/full advisory/licence/platform qualification"
+      ],
+      "deferred": [
+        "X1-IR-03 Dapane raw-parser, schema and round-trip acceptance with bounded decoding/decompression, duplicate rejection and disabled external resolution",
+        "X1-IR-04 separately versioned import/assertion manifest, timestamp-to-service-date policy, mapping revision and paired-event lineage",
+        "X1-IR-05 native source references, quote selection and allocation; missing/censored/transfer cases need explicit qualified policy"
+      ]
+    },
+    {
+      "pr": 22,
+      "source": "https://github.com/edithatogo/dapane/blob/795e12cd998ed9eaab40a783d0352dfbcf653bf4/conductor/tracks/newborn_screening_20261108/handoff.md",
+      "applied": [
+        "explicit installed synthetic suite; original discovery evidence preserved separately"
+      ],
+      "accepted_boundaries": [
+        "fixtures/newborn-synthetic/ and single tests/python/test_newborn_synthetic.py file"
+      ],
+      "deferred": [
+        "optional common CLI catalogue promotion; no expected-output rewrite or N3/whole-track completion"
+      ]
+    },
+    {
+      "pr": 23,
+      "source": "https://github.com/edithatogo/dapane/blob/d59101fafbf4e35324f4668b8bb59a939b95b8de/conductor/tracks/decision_integrations_20261108/HANDOFF.md",
+      "applied": [
+        "requests 1-3: recovered-source replay, both registry rows and isolated locked adapter CI"
+      ],
+      "accepted_boundaries": [
+        "both D1/T1 modules remain under adapters/decision_draws/"
+      ],
+      "deferred": [
+        "request4 production fiscal method/profile: sign, resource/transfer basis, timing, discount precision, rounding and exact-versus-rounded consumption; D2/D3 and T2/T3"
+      ]
+    },
+    {
+      "pr": 24,
+      "source": "https://github.com/edithatogo/dapane/blob/6ab5f883535d6ea99469636af146b997ed00f4d5/conductor/tracks/frontier_benchmarks_20261108/HANDOFF.md",
+      "applied": [
+        "registry reconciliation",
+        "explicit acceptance/lint and same-source build",
+        "fixed protocol, bundle verification and retained outcomes"
+      ],
+      "deferred": [
+        "owner-reviewed receiving-tree provenance/baseline update for combination with PR17 packaging/legal changes"
+      ],
+      "accepted_boundaries": [
+        "retain identity guard and historical failed/null/equal/slower results; no frontier or incremental-engine promotion"
+      ]
+    },
+    {
+      "pr": 25,
+      "source": "https://github.com/edithatogo/dapane/blob/78fa801a854fd1f88427924d19554dfebc4cc4f1/conductor/tracks/mchs_source_adapters_20261108/shared-change-requests.md",
+      "applied": [
+        "S1 registry reconciliation",
+        "S2 installed optional/native wheels, suite and smoke"
+      ],
+      "accepted_boundaries": [
+        "S3 tariff-to-charge only in explicitly synthetic outer profile; separate funding/resource costs and exact unaggregated payment observation/model records"
+      ],
+      "deferred": [
+        "S3/M3 provider-owned exact exports: MCHS Decimal before float conversion, Atlas original exact source values; classification/pricing/source/rights context; no inferred NEP or duplicated parser"
+      ]
+    },
+    {
+      "pr": 26,
+      "source": "https://github.com/edithatogo/dapane/blob/31c22d2f8122777bf3ba972dfe44d4c282165bd6/conductor/tracks/polyglot_bindings_20261108/handoff.md",
+      "applied": [
+        "request2 blocked registry status",
+        "requests3-4 actual installed R, standalone ABI and native C-consumer CI"
+      ],
+      "accepted_boundaries": [
+        "request1 bindings/polyglot/ only",
+        "optional manifests stay separate; original qualify.sh not invoked; C-side sanitizer does not instrument Rust"
+      ],
+      "deferred": [
+        "request3 Julia after ABI acceptance using the exact C-qualified library bytes",
+        "request4 optional advisory/SBOM/notices and staged legal payloads, unsafe-boundary review, other hosts/platforms/Julia-JLL"
+      ]
+    },
+    {
+      "pr": 27,
+      "source": "https://github.com/edithatogo/dapane/blob/b5fc85059d9f8cd1ff7c8a6084a0e4dc386b33a0/conductor/tracks/reporting_profiles_20261108/handoff.md",
+      "applied": [
+        "REP-IR-01 registry reconciliation",
+        "REP-IR-02 optional hash-locked RDF, installed native source, immutable upstream inputs and SHACL/reference CI"
+      ],
+      "accepted_boundaries": [
+        "narrow synthetic selected-input qualification may use immutable unmerged UOGTO snapshot; no whole-product/source-truth claim"
+      ],
+      "deferred": [
+        "REP-IR-03 installed verifier API/SDK packaging, shared reporting schemas and versioned interval-bundle/replay interface",
+        "E3/item extraction/independent mapping review and unresolved upstream findings"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-15T07:28:23.451567+00:00",
+  "coordination_privacy": {
+    "observed_source": "b26ef961ab696057d088d6f5be34da441be09daf",
+    "run": 43687768627,
+    "job": 132731740695,
+    "scanner_pin": "985503bc8eae58e7d6ef36a6e5427d0077e0193c",
+    "status": "blocked_pending_reviewed_central_digest_false_positive_resolution",
+    "gitleaks": {
+      "version": "8.30.1",
+      "rule": "generic-api-key",
+      "findings": 16,
+      "matched_values": "all independently verified SHA-256 digests of immutable tracked files; no credential values",
+      "consumer_suppression_available": false,
+      "full_submitted_history_scan": true
+    },
+    "presidio": {
+      "blocking_findings": 0,
+      "advisory_findings": 7,
+      "advisory_context": "six elapsed durations and one execution timestamp",
+      "initial_files_selected": 46,
+      "initial_files_scanned": 44,
+      "initial_binary_gaps": 2,
+      "binary_coverage_gap_caused_nonzero_exit": false
+    },
+    "evidence_format_correction": "byte-identical original UTF-8 static JSON replaces current gzip files; earlier packaging and all14receipts preserved in history",
+    "central_change_or_pin_update_made": false,
+    "history_rewritten": false,
+    "review": "conductor/roadmap-evidence-2026-11-15/privacy-review.md",
+    "followup_hosted_scan": {
+      "source": "7c8c8485bebc90d1f7feec62456e1e1b36642b15",
+      "run": 43689131043,
+      "job": 132735814376,
+      "gitleaks_blocking_verified_digests": 16,
+      "presidio_coverage_complete": true,
+      "files_selected": 47,
+      "files_scanned": 47,
+      "blocking_presidio_findings": 0,
+      "advisory_findings": 9,
+      "advisory_context": "six elapsed durations, one timestamp and two derived benchmark ratios",
+      "skipped_files": 0
+    },
+    "existing_central_mechanism": {
+      "observed_main": "bef6721531ae014e583ca420b2e27e66475fe5d5",
+      "registry": "privacy/reviewed-findings.json",
+      "approved_entries": 10,
+      "dapane_entries": 0,
+      "merged_reference_pr": 132,
+      "resolution": "exact reviewed historical finding admissions for all actual findings in the complete submitted range, required tests/review/canary, then separately reviewed consumer pin",
+      "pin_only_update_resolves_findings": false
+    },
+    "later_owner_receipt": "additional verified workflow-digest coordinate retained in owner-followup/pr21/qualification.json; new coordination source requires its own hosted scan; no admission inferred"
+  },
+  "current_standalone_status": {
+    "passed": [
+      21,
+      22,
+      27
+    ],
+    "failed_owner_quality": [
+      23,
+      24,
+      25,
+      26
+    ],
+    "no_merges": true
+  },
+  "current_head_audit": {
+    "observed_at": "2026-11-15T07:28:23.451567+00:00",
+    "main": "e34f87c9df39a2132fecee142431cdeefb732471",
+    "release_pr17": "a4ddde7ae7a799e37a5d594cde9c195ff057bc5e",
+    "lane_heads_verified_against_live_prs": true,
+    "ordinary_checks_passed_on_each_current_lane_head": true,
+    "lane_offline_jobs_queued": 14,
+    "qualified_standalone_prs": [
+      21,
+      22,
+      27
+    ],
+    "owner_quality_failures": [
+      23,
+      24,
+      25,
+      26
+    ],
+    "no_merge_or_publication": true
+  }
+}

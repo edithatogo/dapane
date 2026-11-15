@@ -11,6 +11,13 @@ For capacity work, also read [contract 0.2](docs/contract-v0.2.md) and
 [its scoped verification](docs/genomics-capacity-verification.md).
 Do not describe planned provider, language or deployment capabilities as delivered.
 
+For the authorised parallel roadmap work, read the
+[ownership and integration map](conductor/parallel-ownership.md) before editing.
+Each existing lane owns its track and reserved new files. The sole integrator owns
+shared code, schemas, manifests/locks, CI, registry and root documentation; submit
+shared-change requests through the existing lane PR rather than editing those files.
+Check live ownership and exact heads, and preserve release/security gates.
+
 ## Working practices
 
 - Inspect git status and preserve unrelated work before editing.

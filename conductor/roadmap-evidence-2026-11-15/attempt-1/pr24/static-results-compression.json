@@ -1,0 +1,11 @@
+{
+  "format": "dapane-static-evidence-compression/1",
+  "source": "03378bff41b812d016fb0ac93bb8bb4ed07591f6",
+  "member": "static-results.json",
+  "original_bytes": 1360595,
+  "original_sha256": "cdc168d2fbbf4b015ab361dba75a6fc154de67185fcd56af77627740019e25b8",
+  "compressed_file": "static-results.json.gz",
+  "compressed_bytes": 55299,
+  "compressed_sha256": "05a2d532dfbf433b0d6ee3d6a4a924affafab12f9098c9035701356c451567c6",
+  "content_changed": false
+}

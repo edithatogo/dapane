@@ -29,6 +29,12 @@ A completed planning task does not change a runtime capability from planned to q
 
 ## Next executable work
 
+The [parallel ownership map](parallel-ownership.md) records Dylan's seven bounded
+roadmap lanes and the sole integration/release owner. Lane assignments do not
+change the lifecycle states above. Workers update their own tracks and request
+matching registry/shared-file changes through the integrator. Publication remains
+disabled and Power Platform is deferred.
+
 The setup track is complete and archived in place. The core-contract/reference track is completed and
 archived in place after PR #9 integration; its
 [acceptance evidence](tracks/core_contracts_20261108/verification.md) and
