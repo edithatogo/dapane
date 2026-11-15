@@ -1217,6 +1217,44 @@ def execute(root: Path, lane: str, output: Path, expected: str, sources: Path | 
     return run.finish()
 
 
+def receipt_locations(directory: Path, lanes: list[str]) -> list[Path]:
+    """Accept the two download-artifact v8 layouts without guessing recursively.
+
+    At the pinned action revision, one matching artifact is extracted directly
+    into the requested path even when merge-multiple is false. Multiple matches
+    each receive a named subdirectory. A mixed layout must never hide a receipt.
+    """
+    if not directory.exists():
+        return []
+    require(directory.is_dir() and not directory.is_symlink(), "Invalid artifact download root")
+    entries = list(directory.iterdir())
+    flat = directory / "qualification.json"
+    if flat.exists():
+        require(flat.is_file() and not flat.is_symlink(), "Invalid flat qualification receipt")
+        require(len(lanes) == 1, "Flat artifact layout requires exactly one expected lane")
+        require(
+            not any(path.is_dir() and (path / "qualification.json").exists() for path in entries),
+            "Ambiguous mixed flat and nested artifact layout",
+        )
+        require(
+            {path.name for path in entries} <= {"qualification.json", "artifacts", "logs"},
+            "Unexpected roots in flat artifact layout",
+        )
+        return [flat]
+    receipts = []
+    for path in entries:
+        receipt = path / "qualification.json"
+        require(
+            path.is_dir()
+            and not path.is_symlink()
+            and receipt.is_file()
+            and not receipt.is_symlink(),
+            "Unexpected artifact root or missing qualification receipt",
+        )
+        receipts.append(receipt)
+    return receipts
+
+
 def verify_receipts(
     root: Path, directory: Path, lanes: list[str], expected: str, jobs: dict | None = None
 ) -> dict:
@@ -1235,7 +1273,7 @@ def verify_receipts(
             jobs.get("qualify", {}).get("result") == ("success" if lanes else "skipped"),
             "Lane matrix failed, was cancelled or was unexpectedly skipped",
         )
-    receipts = list(directory.glob("*/qualification.json")) if directory.exists() else []
+    receipts = receipt_locations(directory, lanes)
     found = {}
     for path in receipts:
         record = json.loads(path.read_text())
