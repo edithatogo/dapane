@@ -1,0 +1,79 @@
+{
+  "profile_id": "newborn-synthetic-recipe",
+  "profile_version": "0.1.0",
+  "cases": {
+    "composed-two-infant": {
+      "request": "composed-two-infant.json",
+      "branch": "primary",
+      "perspective": "provider",
+      "scope": "collection_and_composed_batch_with_selected_confirmation",
+      "population_id": "invented-birth-cohort-v1",
+      "window_id": "screening-window-2026-06-v1",
+      "episodes": [
+        {
+          "infant_id": "infant-a",
+          "episode_id": "episode-a",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-a-primary-1",
+            "result-a-primary-2"
+          ]
+        },
+        {
+          "infant_id": "infant-b",
+          "episode_id": "episode-b",
+          "participation_date": "2026-06-15",
+          "valid_screen_date": "2026-06-15",
+          "completion_date": "2026-06-15",
+          "confirmed_diagnosis_date": "2026-06-15",
+          "required_final_result_ids": [
+            "result-b-primary-1",
+            "result-b-primary-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-a-primary-1",
+          "result_id": "result-a-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-a-primary-2",
+          "result_id": "result-a-primary-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-1",
+          "result_id": "result-b-primary-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-b-primary-2",
+          "result_id": "result-b-primary-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-a-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-b-1",
+          "status": "adequate"
+        }
+      ],
+      "exclusions": [
+        "reporting",
+        "recall",
+        "follow_up",
+        "family_time"
+      ],
+      "basis": "explicit_synthetic_preparation_not_clinical_programme_evidence"
+    }
+  }
+}

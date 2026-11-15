@@ -61,3 +61,13 @@ Choose one programme/jurisdiction and a bounded initial assay scope. Inclusion o
 Follow the [phased plan](plan.md) and [repository workflow](../../workflow.md).
 Commands described by pending tasks are future acceptance instructions, not executed evidence.
 Record actual commands, source/artifact identities and outcomes in the metadata when work is performed.
+
+## Authorised bounded N1–N2 scope, 2026-11-15
+
+N1 composition means explicitly synthetic workforce/laboratory inputs against the
+existing 0.1/0.2 contracts. N2 uses prepared deterministic branches and independent
+denominator/capacity references. These files do not add a native recipe parser,
+clinical assumptions, actual provider execution or a denominator/reporting API.
+The original full acceptance criteria remain intact, with N3 programme/reporting
+qualification open. Preserve 150/60/90, fail-closed contracts and half-even rounding
+per generated interval segment. Shared edits remain with the sole integrator.
