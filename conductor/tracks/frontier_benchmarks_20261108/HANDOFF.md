@@ -9,7 +9,11 @@ Status: implementation published as a draft; exact-head acceptance blocked.
 - Base tree: `c07a6b2589b9d665f619f5d977d66e513180bab4`.
 - Original local protocol: `b9485ef60799ed0a809d9c416c8b984065c7590e`.
 - Earlier locally tested counterpart: `5cc42f41d1713afab9348d781a38717d515b6b75`.
-- Published implementation: recorded by exact SHA in the final handoff update.
+- Published implementation: [`a6ccbacf458cd9785397b0771052d5e8ca29de7d`](https://github.com/edithatogo/dapane/commit/a6ccbacf458cd9785397b0771052d5e8ca29de7d).
+- Implementation tree: `62e2bde1367a6784839cfbd69c5aa53a39f1b7a4`.
+- This follow-up handoff commit changes documentation/metadata only; its exact
+  final head is pinned in the PR description. Implementation-source identity above
+  is retained independently of the later documentation commit.
 - Owned paths: this track and `benchmarks/static/`.
 - Sole integrator/release owner remains the existing release-assurance lane
   (chat `6af8e445-ffd4-83ec-8e51-ff6b596f11b1`).
@@ -88,3 +92,16 @@ Address any reconstruction/formatting defect in the lane namespace, rerun the
 affected acceptance, then update F2.1/F2.2 only with executed evidence.
 The original broader acceptance criteria remain intact. F2.3–5 and F3 are open.
 No merge, release publication, gate waiver or Power Platform work is performed.
+
+## Publication verification
+
+The GitHub tree was read back and all **50 implementation/track blobs** were
+checked against the authored UTF-8 content by Git blob SHA1 (with standard empty
+and `abc` digest controls). Changed blob paths exactly matched the two owned
+namespaces. All production/shared blobs equal the pinned main tree. Thirty JSON
+documents parsed, all 24 listed fixtures exist, and the deliberate duplicate-key
+negative fixture retains both keys. These are source-transfer/scope checks, not
+Python/Rust execution or a substitute for the blocked acceptance run.
+
+See [publication receipt](publication-receipt.json). No native report, timing,
+memory or passing final-head test evidence has been manufactured.

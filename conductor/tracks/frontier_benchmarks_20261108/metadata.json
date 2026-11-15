@@ -82,7 +82,10 @@
       "Restore execution and rebuild/test/lint the exact published head.",
       "Execute fixed paired protocol and retain complete checksummed bundle; report null/equal/slower results.",
       "Integrator synchronises registry and adds hosted benchmark invocation; no gates waived."
-    ]
+    ],
+    "publication_source_sha": "a6ccbacf458cd9785397b0771052d5e8ca29de7d",
+    "publication_tree": "62e2bde1367a6784839cfbd69c5aa53a39f1b7a4",
+    "source_transfer": "50/50 uploaded blobs match authored content; only owned paths differ from base"
   },
   "completion_evidence": [
     "Comparators are selected from a dated review and use equivalent inputs, methods and declared capabilities.",
