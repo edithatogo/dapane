@@ -116,8 +116,15 @@ for audit/replay. The [kernel evidence](../conductor/tracks/rust_kernel_20261108
 records the exact qualified source and artifacts. Python continues to expose
 the existing scalar entry points.
 
-Separate capabilities remain on the roadmap: installed provider adapters, real
-source packs, richer interval exposure, financial corrections, richer economic
+The [selected provider composition](python-provider-verification.md) qualifies
+a source-selected QLD base-pay quotation and one manual DNA extraction labour
+stage. The [installed-consumer workflow](../.github/workflows/provider-consumers.yml)
+builds the pinned provider revisions and exercises them in their separate
+Python 3.15.2 and 3.15.1 environments. The provider-owned migration guides
+describe their APIs and preserved historical paths.
+
+Separate capabilities remain on the roadmap: broader source packs and domain
+recipes, richer interval exposure, financial corrections, richer economic
 methods, reporting/ontology exports, R/Julia, Power Apps, process import/execution
 and uncertainty/decision integrations. Unknown fields are rejected; adding a
 policy name does not silently activate an unimplemented method.

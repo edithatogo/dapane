@@ -100,10 +100,13 @@ process import, Kairos and operational service adapters remain optional.
 
 ## Migration and recovery
 
-There is no earlier released Dapane runtime to preserve, and no existing provider
-entry point is replaced by this change. Consumers can continue using their
-provider while an adapter is qualified. Keep historical workbooks, official
-reference inputs and independently calculated expected results in their owning
+There is no earlier released Dapane runtime to preserve. The
+[selected provider integration](python-provider-verification.md) keeps the
+workforce `src` namespace as an identity-preserving compatibility path to
+`microcosting_healthworkforce`, including bundled resources and old pickle
+loading. Its original pricing function and the genomic historical calculator
+remain explicit rollback paths. Keep historical workbooks, official reference
+inputs and independently calculated expected results in their owning
 repositories with their access restrictions intact.
 
 For a candidate evaluation, preserve the exact input JSON, report, engine source
@@ -118,3 +121,9 @@ integration, compatibility/rollback evidence and review of unique assets remain
 release/consolidation work. Dapane project material is Apache-2.0 under ADR-014;
 registry ownership and release qualification remain prerequisites. The workspace
 packages retain `publish = false`.
+
+Completing the selected provider track does not authorize repository retirement.
+Review of unique assets and functioning successors remains separate
+release/consolidation work. A project licence and registry identity are also
+unresolved release prerequisites; the workspace packages set `publish = false`.
+

@@ -22,7 +22,10 @@ the reviewed revision and executed checks. The separately versioned
 [interval profile 0.1](../docs/interval-contract-v0.1.md) implements bounded automatic
 rate-boundary segmentation under declared uniform calendar-day exposure; the
 [kernel evidence](tracks/rust_kernel_20261108/verification.md) records its qualification.
-Richer exposure models, economic formulae, actual provider/source qualification and release assurance
+The selected RQ-04 workforce quotation and manual genomic extraction labour
+workflow now have [installed provider qualification](../docs/python-provider-verification.md),
+including source selection, compatibility and historical replay. Richer exposure
+models, economic formulae, broader provider/source coverage and release assurance
 retain their existing owners and the broader acceptance criteria below.
 
 ## RQ-01 — Domain-neutral types and contracts
@@ -111,6 +114,11 @@ Acceptance:
   isolated and consumer installation does not rely on a source checkout.
 - Demonstration PSA/VOI outputs are separated from scientific reference cases;
   needed workforce namespace repairs are coordinated with its repository owner.
+
+Qualified scope: the dated QLD HP3.1 base-pay release and manual extraction
+labour recipe, separate pinned Python environments, canonical/legacy workforce
+identity and resources, native parity and explicit historical rollback. See the
+[qualification and review evidence](../docs/python-provider-verification.md).
 
 ## RQ-05 — MCHS and quotation/source adapters
 

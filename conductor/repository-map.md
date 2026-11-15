@@ -17,8 +17,9 @@ Current repository areas:
 | `conductor/*.md` | Product, requirements, architecture, decisions, workflow and roadmap |
 | `conductor/code_styleguides/` | Rust, Python/FFI and document conventions |
 | `conductor/tracks/` | Coherent implementation/research specs, task plans and metadata |
-| `conductor/archive/` | Archive policy; no archived tracks at setup |
+| `conductor/archive/` | Archive policy and catalogue; archived records retain stable track paths |
 | `scripts/validate_conductor.py` | Dependency-free structural and consistency check |
+| `tests/test_conductor_validation.py` | Standard-library regression checks for lifecycle and archival integrity |
 | `.github/workflows/conductor.yml` | Read-only documentation CI |
 | `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml` | Native workspace and pinned toolchain/dependency graph |
 | `crates/dapane-core/` | Exact contract, validation, valuation, allocation and deterministic digests |
@@ -40,12 +41,16 @@ Current repository areas:
 | `conductor/tracks/rust_kernel_20261108/verification.md` | Kernel acceptance, independent review and installed-artifact evidence |
 | `docs/` | Implemented contract, provider review, quickstart, compatibility and runtime evidence |
 | `.github/workflows/runtime.yml` | Native and four-interpreter installed-wheel CI |
+| `scripts/verify_provider_consumers.py`, `.github/workflows/provider-consumers.yml` | Two separately installed providers, exact quotation exchange, native parity and selected historical qualification |
+| `docs/provider-consumers.lock.json`, `docs/python-provider-verification.md` | Immutable provider/source identities, actual commands/results and bounded compatibility evidence |
 
 The first runtime candidate is implemented and locally built; its precise scope
 is recorded in [the contract](../docs/contract-v0.1.md) and
 [verification](../docs/runtime-verification.md). Build outputs remain outside
-version control. There is no registry release or deployment, and provider
-adapters, R/Julia, reporting and process execution remain planned.
+version control. The selected workforce and manual extraction adapters are
+implemented in their owning providers and qualified through installed wheels.
+Registry releases, deployments, broader domain adapters, R/Julia, reporting and
+process execution retain separate gates.
 
 ## Source-of-truth boundaries
 

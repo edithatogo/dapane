@@ -62,6 +62,13 @@ Runtime CI uses the pinned checkout action above and setup-python v6 at
 on 8 November 2026. It runs native, schema and four-interpreter installed-wheel
 checks with read-only repository permissions.
 
+The [two-provider workflow](../.github/workflows/provider-consumers.yml) keeps
+workforce on CPython 3.15.2 and genomics on 3.15.1 with their existing lockfiles.
+It builds noneditable provider wheels, passes a digest-pinned JSON release
+between separate environments and uses the same Dapane CPython 3.15 wheel.
+Provider source revisions and actual results are recorded in the
+[qualification record](../docs/python-provider-verification.md).
+
 ## Broader implementation direction
 
 | Layer | Direction | Boundary |

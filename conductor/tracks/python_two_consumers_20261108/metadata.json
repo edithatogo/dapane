@@ -1,19 +1,21 @@
 {
   "track_id": "python_two_consumers_20261108",
   "type": "feature",
-  "status": "in_progress",
+  "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-14T12:55:00Z",
+  "updated_at": "2026-11-15T00:57:39Z",
   "description": "Prove that the common core is a useful independent package by running a workforce calculation and a genomics workflow through installed Python bindings and the same Rust implementation.",
   "repositories": [
-    "."
+    ".",
+    "edithatogo/microcosting_healthworkforce",
+    "edithatogo/microcosting_genomics"
   ],
   "dependencies": [
     "rust_kernel_20261108"
   ],
   "external_dependencies": [
-    "edithatogo/microcosting_healthworkforce: rule/source ownership and import namespace migration remain provider-owned.",
-    "edithatogo/microcosting_genomics: resource recipes and workbook/assay evidence remain provider-owned."
+    "edithatogo/microcosting_healthworkforce: qualified selected quotation exporter and canonical/legacy namespace; source/rule ownership retained by provider.",
+    "edithatogo/microcosting_genomics: qualified manual extraction labour recipe and explicit historical rollback; workbook/assay ownership retained by provider."
   ],
   "owners": [
     "edithatogo"
@@ -27,18 +29,27 @@
     "RQ-02",
     "RQ-03"
   ],
-  "capability_status": "native_binding_and_synthetic_capacity_consumers",
+  "capability_status": "installed_workforce_and_manual_extraction_consumers",
   "verification": {
-    "status": "passed_for_bounded_profile",
-    "scope": "Thin native binding and five synthetic consumers verified through independently installed CPython3.12.14,3.13.15,3.14.9,3.15.1 wheels on Linuxx86_64:54 tests per interpreter. Real provider migration, namespace repair and workbook/source parity remain open. The 14 November increment adds bounded 0.2 incomplete instrument-capacity semantics and five synthetic genomics candidates; original 0.1 digests remain unchanged. See the separate increment evidence; broader provider and economic qualification remains open.",
+    "status": "passed",
+    "scope": "Selected workforce and manual DNA-extraction labour consumers qualified from noneditable wheels through the same Rust numerical implementation on Linux x86_64. Provider Python pins remain 3.15.2 and 3.15.1. Both consumer stages and 133 installed Python tests passed against integrated Rust source 172d0ef39291a936a35c6e221eb467701ccefbba. Required provider gates and the Dapane hosted qualification passed. The reviewed workflow-trigger fix closes the hosted CodeQL finding. Exact source, artifact and run identities are retained in the linked evidence. This does not qualify a whole assay or scientific/economic method.",
     "commands": [
-      "maturin build --locked --release --interpreter <qualified-python>",
-      "python -m pytest --import-mode=importlib /absolute/dapane/tests/python -q"
+      "cargo build --locked --release -p dapane-cli",
+      "maturin build --locked --release --interpreter <CPython-3.15.1>",
+      "uv sync --locked --no-install-project --python <provider-exact-version>",
+      "uv build --wheel --python <locked-provider-interpreter>",
+      "uv pip install --no-deps <provider-wheel> <same-dapane-wheel>",
+      "python -I /absolute/dapane/scripts/verify_provider_consumers.py workforce --provider-root <workforce> --dapane-root <dapane> --cli <native-cli> --output <temporary-evidence>",
+      "python -I /absolute/dapane/scripts/verify_provider_consumers.py genomics --provider-root <genomics> --dapane-root <dapane> --cli <native-cli> --output <temporary-evidence>",
+      "python -I -m pytest --import-mode=importlib /absolute/dapane/tests/python -q",
+      "python3 scripts/validate_conductor.py",
+      "python3 -m unittest discover -s tests -p 'test_conductor_validation.py' -v"
     ],
     "evidence": [
+      "docs/python-provider-verification.md",
+      "docs/provider-consumers.lock.json",
+      "conductor/tracks/python_two_consumers_20261108/review.md",
       "docs/runtime-verification.md",
-      "docs/contract-v0.1.md",
-      "docs/contract-v0.2.md",
       "docs/genomics-capacity-verification.md"
     ]
   },
@@ -49,5 +60,7 @@
     "Historical workbook comparisons identify expected differences and repairs separately from mechanical extraction.",
     "Errors, missing values, ownership/lifetimes and exact-number transport are exercised through the installed wheel.",
     "Declared Python support matches tested dependencies; no provider pin is loosened merely to make packaging resolve."
-  ]
+  ],
+  "archived_at": "2026-11-15T00:57:39Z",
+  "archive_reason": "Implementation, independent review, remediation and installed-provider qualification complete; retained in place for stable links and evidence."
 }

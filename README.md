@@ -32,9 +32,13 @@ exact segment quantities and a replayable scalar request. The
 [kernel qualification](conductor/tracks/rust_kernel_20261108/verification.md)
 records independent review, installed artifacts and the supported bounds.
 
-Installed provider adapters, richer exposure and economic
-methods, R/Julia, reporting exports, Power Apps and process execution remain
-separate work. See the [implemented contract](docs/contract-v0.1.md),
+The selected [installed provider composition](docs/python-provider-verification.md)
+connects a dated workforce base-pay quotation to manual DNA-extraction labour,
+with canonical/legacy compatibility and an explicit historical calculator path.
+The two provider environments keep their exact Python 3.15.2 and 3.15.1 pins.
+
+Broader provider coverage, richer exposure and economic methods, R/Julia,
+reporting exports, Power Apps and process execution remain separate work. See the [implemented contract](docs/contract-v0.1.md),
 [compatibility policy](docs/compatibility.md) and
 [runtime verification](docs/runtime-verification.md) for exact limits and evidence.
 

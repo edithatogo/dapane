@@ -25,10 +25,11 @@ their repository owners.
 
 - [Implemented contract 0.1](../docs/contract-v0.1.md), [quickstart](../docs/quickstart.md) and [runtime verification](../docs/runtime-verification.md): the working bounded Rust/CLI/Python candidate.
 - [Event/process/object model](../docs/event-process-object-model.md) and [provider boundaries](../docs/provider-boundaries.md): independent core and optional Kairos/provider integration.
+- [Installed workforce and genomics consumers](../docs/python-provider-verification.md): dated quotation composition, canonical/legacy imports and selected historical-workbook qualification.
 
 - [Roadmap](roadmap.md): capability milestones and optional delivery paths.
 - [Track registry](tracks.md): status and entry points for all tracks.
-- [Setup record](tracks/conductor_setup_20261108/index.md): what this initialisation delivers.
+- [Archived setup record](tracks/conductor_setup_20261108/index.md): the completed initialisation, review and retained evidence.
 - [Core contracts](tracks/core_contracts_20261108/index.md): request profiles 0.1/0.2, [run-bundle profile 0.1](../docs/run-bundle-v0.1.md), independent reference cases and retained review records. [Verification](tracks/core_contracts_20261108/verification.md) records the checked revision and qualification limits.
 - [Rust kernel](tracks/rust_kernel_20261108/index.md): exact valuation/allocation, bounded [interval profile 0.1](../docs/interval-contract-v0.1.md), dependency qualification and [installed-artifact evidence](tracks/rust_kernel_20261108/verification.md).
 - [Setup verification record](verification.md): historical Conductor setup checks and their limits.

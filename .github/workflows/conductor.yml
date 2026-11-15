@@ -24,3 +24,5 @@ jobs:
           persist-credentials: false
       - name: Validate Conductor context
         run: python3 scripts/validate_conductor.py
+      - name: Test Conductor lifecycle validation
+        run: python3 -m unittest discover -s tests -p 'test_conductor_validation.py' -v
