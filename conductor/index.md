@@ -16,6 +16,7 @@ their repository owners.
 | [Decisions](decisions.md) | Architectural choices and unresolved implementation decisions |
 | [Technology stack](tech-stack.md) | Selected directions, dependency qualification and actual tooling |
 | [Workflow](workflow.md) | Agent-executable tasks, evidence, review and synchronisation |
+| [Parallel ownership](parallel-ownership.md) | Seven bounded lane owners, pinned baseline, shared interfaces and integrator-only changes |
 | [Style guides](code_styleguides/index.md) | Rust, Python, FFI and documentation conventions |
 | [Repository map](repository-map.md) | Actual files, provenance and planned implementation areas |
 | [Ecosystem](ecosystem.md) | Source owners, provider readiness, migration and rollback |

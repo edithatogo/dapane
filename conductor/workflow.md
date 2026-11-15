@@ -85,6 +85,15 @@ first, and reconcile their outputs before publication. One coordinating Dapane
 track should point to provider-owned work instead of maintaining another copy of
 the provider's implementation plan.
 
+The active [parallel ownership map](parallel-ownership.md) assigns the seven
+existing roadmap lanes and reserves shared files to the sole integrator. Read it
+and refresh live PR/path ownership before editing. A lane's status change must
+include a requested central registry update; the integrator applies that shared
+change before final Conductor validation. Keep the consistency gate intact while
+the request is pending. New lane tests need explicit execution evidence and an
+integrator-owned CI/packaging decision before capability promotion. Do not create
+duplicate workers or implement another lane's scope.
+
 ## Release and research claims
 
 Qualify capabilities independently. The initial core/Python release must not wait
