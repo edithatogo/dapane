@@ -28,10 +28,15 @@ or Julia distribution must retain and identify its accepted artifact bytes.
 
 ## Complete static result records
 
-The static result payloads are stored with lossless gzip compression. The
-compression records preserve original byte counts and SHA-256 values; the
-JSON content has not been edited. Failed, null, slower and unmeasured outcomes
-remain in those records.
+The static result payloads are the original uncompressed UTF-8 JSON bytes,
+matching the verified hosted artifacts. Failed, null, slower and unmeasured
+outcomes remain unchanged. The historical compression records describe the
+earlier gzip packaging preserved at `b26ef961ab696057d088d6f5be34da441be09daf`;
+the current readable files address its separate privacy coverage gap.
 
-- First attempt: [results](attempt-1/pr24/static-results.json.gz), [compression identity](attempt-1/pr24/static-results-compression.json), [build receipt](attempt-1/pr24/static-build.json).
-- Corrected head: [results](attempt-2/pr24/static-results.json.gz), [compression identity](attempt-2/pr24/static-results-compression.json), [build receipt](attempt-2/pr24/static-build.json).
+- First attempt: [results](attempt-1/pr24/static-results.json), [historical compression identity](attempt-1/pr24/static-results-compression.json), [build receipt](attempt-1/pr24/static-build.json).
+- Corrected head: [results](attempt-2/pr24/static-results.json), [historical compression identity](attempt-2/pr24/static-results-compression.json), [build receipt](attempt-2/pr24/static-build.json).
+
+The [coordination privacy review](privacy-review.md) records the verified digest
+false positives and the central review still required. Its blocking result is
+separate from each lane's recorded privacy pass.

@@ -197,8 +197,9 @@ measured pairs. Its verifier checked 70 distinct request/report pairs and 24
 mutations. It rejected 12/12 contract defects and 0/5 source-truth defects,
 preserving that expected limitation. Slower cases remain in the raw results;
 no general speedup, within-request incremental engine or frontier claim follows.
-Both complete raw result JSON files are retained losslessly as gzip payloads
-with original and compressed SHA-256 identities in the evidence directory.
+Both complete raw result JSON files are retained as readable, byte-identical
+UTF-8 text. The original compressed packaging and its SHA-256 identities remain
+preserved in history and the historical compression records.
 
 ### Owner fixes still required
 
@@ -274,6 +275,21 @@ reference is not promoted to a core method: production sign, perspective, timing
 precision and rounding remain a separate reviewed contract decision.
 
 ## Continuing release boundary
+
+### Coordination evidence privacy gate
+
+The subsequent coordination commit `b26ef961ab696057d088d6f5be34da441be09daf`
+passed Runtime, Conductor, provider and standalone-controller checks, but its
+privacy job reported 16 `generic-api-key` findings in retained file-digest maps.
+Every matched value was independently verified against the corresponding
+tracked file's SHA-256. The check remains blocking; these local false-positive
+findings are not a scanner exception. The current plaintext static result files
+also correct the separately reported binary coverage gap without altering their
+original bytes. The [value-free review and bounded central request](roadmap-evidence-2026-11-15/privacy-review.md)
+preserve the failed scan and required next step. No privacy workflow, central
+pin, rule, scope, suppression mechanism or history is changed.
+
+### Existing release gates
 
 All offline security jobs observed at intake are queued, not passed. Required
 offline runner execution is a blocker; no status, workflow or policy waiver is

@@ -2737,5 +2737,43 @@
       ]
     }
   ],
-  "updated_at": "2026-11-15T06:52:59.018975+00:00"
+  "updated_at": "2026-11-15T07:10:01.531170+00:00",
+  "coordination_privacy": {
+    "observed_source": "b26ef961ab696057d088d6f5be34da441be09daf",
+    "run": 43687768627,
+    "job": 132731740695,
+    "scanner_pin": "985503bc8eae58e7d6ef36a6e5427d0077e0193c",
+    "status": "blocked_pending_reviewed_central_digest_false_positive_resolution",
+    "gitleaks": {
+      "version": "8.30.1",
+      "rule": "generic-api-key",
+      "findings": 16,
+      "matched_values": "all independently verified SHA-256 digests of immutable tracked files; no credential values",
+      "consumer_suppression_available": false,
+      "full_submitted_history_scan": true
+    },
+    "presidio": {
+      "blocking_findings": 0,
+      "advisory_findings": 7,
+      "advisory_context": "six elapsed durations and one execution timestamp",
+      "initial_files_selected": 46,
+      "initial_files_scanned": 44,
+      "initial_binary_gaps": 2,
+      "binary_coverage_gap_caused_nonzero_exit": false
+    },
+    "evidence_format_correction": "byte-identical original UTF-8 static JSON replaces current gzip files; earlier packaging and all14receipts preserved in history",
+    "central_change_or_pin_update_made": false,
+    "history_rewritten": false,
+    "review": "conductor/roadmap-evidence-2026-11-15/privacy-review.md",
+    "followup_hosted_scan": "pending",
+    "existing_central_mechanism": {
+      "observed_main": "bef6721531ae014e583ca420b2e27e66475fe5d5",
+      "registry": "privacy/reviewed-findings.json",
+      "approved_entries": 10,
+      "dapane_entries": 0,
+      "merged_reference_pr": 132,
+      "resolution": "sixteen exact reviewed historical finding admissions through existing central mechanism, required tests/review/canary, then separately reviewed consumer pin",
+      "pin_only_update_resolves_findings": false
+    }
+  }
 }
