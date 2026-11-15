@@ -36,7 +36,7 @@ assertion that every historical asset has been cleared for redistribution.
 
 The CareOps public source explicitly excludes private operational/source assets.
 Its presence does not establish preservation of those assets, deployment or
-costing parity. Domain code licences also do not select Dapane's licence or
+costing parity. Dapane's Apache-2.0 decision and domain code licences do not
 clear every source dataset, rate, workbook or instrument for redistribution.
 
 ## Conditional steps not executed

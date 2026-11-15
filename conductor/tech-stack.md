@@ -46,7 +46,15 @@ support follows from the range alone.
 The [dependency inventory](../docs/dependencies.json) records the 36 locked
 registry packages and their declared licences/checksums. This is a source
 inventory, not a completed project-licence or source-data rights decision.
-Packages use `publish = false` while the project licence is unresolved.
+Project material is Apache-2.0 under ADR-014. Packages retain `publish = false`
+pending registry ownership and release qualification.
+
+The [kernel qualification guard](../docs/kernel-dependencies.md) checks the exact
+compiler, fetched manifest declarations and the resolved native graph. Its observed
+36 registry packages and 29-package native closure retain Python/table/network/
+simulation/accelerator isolation. The [kernel evidence](tracks/rust_kernel_20261108/verification.md)
+records native builds and installed-wheel regression checks separately from that
+inventory observation; no new dependency or older-MSRV claim is introduced.
 
 Runtime CI uses the pinned checkout action above and setup-python v6 at
 `ece7cb06caefa5fff74198d8649806c4678c61a1`, inspected through its
@@ -109,8 +117,8 @@ source identity, licences, dependency inventory and release provenance using
 existing portfolio practices. Do not introduce empty success badges or jobs for
 unimplemented packages.
 
-The first release must have a documented project licence. The setup does not
-choose one by inference from neighbouring repositories. Dependency and data
+The owner explicitly selected Apache-2.0 for project material on 15 November 2026.
+The root and package licence/notice files record that decision. Dependency and data
 licences need separate treatment; PM4Py is an optional AGPL/commercial comparison
 adapter, not an assumed permissive runtime dependency.
 

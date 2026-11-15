@@ -1,5 +1,10 @@
 # First runtime verification
 
+Later increment: the [kernel completion record](../conductor/tracks/rust_kernel_20261108/verification.md)
+adds interval profile 0.1, dependency-boundary qualification and the latest
+installed-artifact observations. The dated observations below remain the historical
+evidence for the original runtime; they do not themselves qualify the later code.
+
 Review date: **8 November 2026**. Scope: the unpublished Dapane `0.1.0` candidate,
 JSON contract `0.1`, method `dapane-exact-v0.1.0`. All economic values and domain
 examples are synthetic. This record qualifies the bounded implementation and
@@ -145,6 +150,10 @@ detect repeated charges; a loaded aggregate quote is not automatically decompose
 Source evidence/access/validation are preserved caller declarations. An output
 digest proves identity of encoded input/result, not correctness of a source claim.
 Real programme and provider evidence, reporting/ontology adapters, deployment,
-licence selection, registry publication and archive decisions remain open in
+registry publication and external repository archive decisions remain open in
 [Conductor](../conductor/tracks.md). No full runtime track is marked complete solely
 on these synthetic and installed-artifact checks.
+
+Project licensing was subsequently resolved as Apache-2.0 in ADR-014; the
+[release integration record](release-integration-2026-11-15.md) preserves that
+decision separately from the historical runtime results above.

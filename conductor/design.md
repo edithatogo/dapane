@@ -15,6 +15,31 @@ ledger, and does not infer availability from sample throughput. Synthetic
 preparation assumptions live in a separate versioned fixture manifest; the
 runtime does not implement an economic annualisation or recurrence policy.
 
+The independently versioned [run-bundle profile 0.1](../docs/run-bundle-v0.1.md)
+wraps unchanged request/report profiles 0.1 and 0.2. It adds full immutable
+snapshots, replacement/withdrawal history, observation windows, release metadata,
+exclusions and alternative prepared capital annotations. A separately retained
+head checkpoint detects missing history suffixes. Repository tooling replays
+every full valuation snapshot through the installed Rust wheel and compares the
+complete report; native valuation remains independent of Python.
+
+Across a verified history, a repeated source ID/version/quote ID retains its
+complete quote snapshot. A release retains one publication date and consistent
+non-null declared content digests, including across intermediate omissions.
+Quote subsets, quote-list order and retrieval dates may change; quote correction
+requires a new source version. External source truth, rights and eligibility
+remain provider qualification. See [ADR-012](decisions.md) and the
+[core-contract evidence](tracks/core_contracts_20261108/verification.md).
+
+The separate [interval profile 0.1](../docs/interval-contract-v0.1.md) adds bounded
+automatic splitting at the caller's selected rate boundaries. It requires explicit
+`uniform_calendar_day` exposure over a half-open Gregorian date interval. Original
+parent identities are validated before generated child identities; quote coverage
+must be exact and non-overlapping. The result retains parent snapshots, exact
+segment quantities and the expanded request for replay through the unchanged scalar
+engine. Per-segment half-even rounding is part of its own method identity. See
+[ADR-013](decisions.md) and [kernel evidence](tracks/rust_kernel_20261108/verification.md).
+
 ## 1. Boundary and dependency direction
 
 Dapane owns quantities, quotation application, valuation policies, allocation,

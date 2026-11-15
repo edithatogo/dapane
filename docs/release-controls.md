@@ -3,7 +3,7 @@
 Status: implemented candidate workflow; execution results belong to the exact
 checked commit and its retained artifacts. Configuring these checks does not
 qualify a public package release, a real provider migration or a repository
-archive. The project licence and registry identities remain unresolved.
+archive. Dapane project material is Apache-2.0; registry identities remain unresolved.
 
 The [capability manifest](../release/capabilities.json) selects the first bounded
 candidate. The [release track](../conductor/tracks/release_consolidation_20261108/index.md)
@@ -60,12 +60,13 @@ policy rejects known advisories, yanked crates, duplicate crate versions,
 unqualified registry/Git sources and licences outside the explicit allowlist.
 It has no advisory ignore entries.
 
-The only licence exclusion is cargo-deny's `licenses.private.ignore` for
-workspace packages explicitly marked unpublished. All their third-party
-dependencies remain checked. This exclusion records Dapane's existing
-`publish = false` state; it does not select a licence for Dapane, clear source
-redistribution rights or authorize package publication. A licence must not be
-inferred from an adjacent repository.
+Dapane project material is Apache-2.0 by the owner's explicit decision. Workspace
+packages and their third-party dependencies all undergo licence checking; there is
+no private-workspace exemption. All Rust and Python manifests must agree, each
+nested crate carries ordinary copies of LICENSE and NOTICE, and wheel payloads
+must match those root files. The 3.15 candidate also checks Cargo package file lists
+and the Python source distribution. Keeping `publish = false` does not exempt a
+package from licence checking or claim verified registry ownership.
 
 The Python distribution declares no runtime dependencies. Separately, pip-audit
 **2.10.1** audits the resolved build and assurance requirements with strict
@@ -118,7 +119,7 @@ permission. Storage records and registry pushes are disabled. PRs and manual
 branch runs do not receive these attestation permissions.
 
 A signed build statement binds bytes to a build. It is not a statement that the
-project has been licensed, a provider migrated, an economic method validated or
+provider has migrated, an economic method has been validated or
 a package published. Verify a downloaded subject with the GitHub CLI using the
 expected repository, workflow and source revision, and compare it to its receipt.
 Set `DAPANE_EXPECTED_SOURCE_SHA` to the reviewed main-branch commit first:

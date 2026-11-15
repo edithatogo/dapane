@@ -17,7 +17,11 @@ The initial candidate includes the Rust core, JSON CLI, thin native Python
 interface, five original synthetic examples and five explicit genomics capacity
 examples. Contract 0.1 retains full-pool allocation; contract 0.2 preserves
 unknown use/capacity and unallocated value. The package remains version 0.1.0.
-Methods are paired explicitly with their wire versions.
+Methods are paired explicitly with their wire versions. The integrated candidate
+also preserves run-bundle profile 0.1 and the Rust/CLI interval envelope 0.1,
+`dapane-intervals-v0.1.0`. The interval method rounds each generated segment;
+there is no Python interval API. Installed bundle tests and independent installed
+CLI interval checks cover those accepted additions.
 
 A first public release still requires the contracts, kernel and Python/two-consumer
 tracks, including the real workforce and genomics qualification. These are
@@ -25,10 +29,13 @@ mandatory prerequisites. Optional MCHS/source adapters, reporting, newborn
 programme qualification, Power Platform, R/Julia, process execution, decision
 integrations and frontier research do not block this bounded first release.
 
-The project licence, package-registry identity and source redistribution
-conditions remain unresolved. No licence is inherited from a neighbouring
-repository. Workspace Cargo publication stays disabled; this workflow has no
-registry publisher, release-tag action or repository archive operation.
+The owner selected Apache-2.0 for Dapane project material on 15 November 2026.
+The canonical LICENSE and NOTICE are checked in source and installed wheels;
+package metadata must agree. Third-party dependencies and external provider assets
+retain their own terms, and external provider assets remain excluded. Registry
+ownership and release qualification are still unresolved. Workspace Cargo
+publication stays disabled; this workflow has no registry publisher, release-tag
+action or repository archive operation.
 The publication check intentionally returns exit code 2 with those blockers:
 
 ~~~sh
@@ -141,5 +148,5 @@ new performance claim.
 Use the [migration and recovery procedure](release-migration.md) before changing
 a consumer. The [consolidation inventory](release-consolidation.md) selects no
 repository for archival or code removal. The original release track remains
-open until its mandatory licence/registry and real-consumer evidence is complete;
+open until its mandatory registry and real-consumer evidence is complete;
 a successful documentation validator does not justify premature archival.

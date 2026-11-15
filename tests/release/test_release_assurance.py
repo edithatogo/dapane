@@ -59,6 +59,32 @@ class ManifestTests(unittest.TestCase):
         self.manifest["optional_tracks"].append("future_optional_experiment")
         release.validate_manifest(self.manifest)
 
+    def test_licence_selection_is_not_reported_as_an_unresolved_blocker(self):
+        blockers = release.publication_blockers(self.manifest)
+        self.assertFalse(any(item.startswith("project_license:") for item in blockers))
+        self.assertFalse(any(item.startswith("source_redistribution:") for item in blockers))
+        self.assertTrue(any(item.startswith("registry_identity:") for item in blockers))
+        self.manifest["publication"]["project_license"] = "MIT"
+        with self.assertRaisesRegex(release.AssuranceError, "licence differs"):
+            release.validate_manifest(self.manifest)
+
+    def test_native_interval_support_cannot_imply_a_python_interval_api(self):
+        self.manifest["additional_profiles"]["intervals"]["interfaces"].append("Python")
+        with self.assertRaisesRegex(release.AssuranceError, "interface claims"):
+            release.validate_manifest(self.manifest)
+
+    def test_null_registry_or_provider_state_remains_a_publication_blocker(self):
+        for name in ("registry_identity", "workforce_provider", "genomics_provider"):
+            with self.subTest(name=name):
+                manifest = copy.deepcopy(self.manifest)
+                manifest["publication"][name] = None
+                self.assertTrue(
+                    any(
+                        item.startswith(f"{name}:")
+                        for item in release.publication_blockers(manifest)
+                    )
+                )
+
     def test_missing_and_duplicate_executed_targets_fail(self):
         targets = [release.target_key(t) for t in self.manifest["targets"]]
         release.verify_matrix_targets(targets, self.manifest)
@@ -149,7 +175,12 @@ class WheelTests(unittest.TestCase):
         self.members = {
             "dapane/__init__.py": b"test-only transport module\n",
             "dapane/_native.so": b"test-only binary identity; never imported\n",
-            "dapane-0.1.0.dist-info/METADATA": b"Name: dapane\nVersion: 0.1.0\n",
+            "dapane-0.1.0.dist-info/METADATA": (
+                b"Metadata-Version: 2.4\nName: dapane\nVersion: 0.1.0\n"
+                b"License-Expression: Apache-2.0\nLicense-File: LICENSE\nLicense-File: NOTICE\n"
+            ),
+            "dapane-0.1.0.dist-info/licenses/LICENSE": (ROOT / "LICENSE").read_bytes(),
+            "dapane-0.1.0.dist-info/licenses/NOTICE": (ROOT / "NOTICE").read_bytes(),
             "dapane-0.1.0.dist-info/WHEEL": (
                 b"Wheel-Version: 1.0\nRoot-Is-Purelib: false\nTag: cp312-cp312-linux_x86_64\n"
             ),
@@ -203,6 +234,25 @@ class WheelTests(unittest.TestCase):
             archive.writestr("dapane/unrecorded.py", "pass\n")
         with self.assertRaisesRegex(release.AssuranceError, "incomplete wheel RECORD"):
             release.verify_wheel_members(self.wheel, self.installed, "0.1.0")
+
+    def test_wheel_cannot_relabel_the_project_licence(self):
+        name = "dapane-0.1.0.dist-info/METADATA"
+        self.members[name] = self.members[name].replace(b"Apache-2.0", b"MIT")
+        self.write_wheel()
+        with self.assertRaisesRegex(release.AssuranceError, "wheel licence differs"):
+            release.verify_wheel_members(self.wheel, self.installed, "0.1.0")
+
+    def test_valid_record_does_not_hide_a_missing_or_changed_notice(self):
+        name = "dapane-0.1.0.dist-info/licenses/NOTICE"
+        for replacement in (None, b"Substituted attribution"):
+            with self.subTest(replacement=replacement):
+                if replacement is None:
+                    self.members.pop(name)
+                else:
+                    self.members[name] = replacement
+                self.write_wheel()
+                with self.assertRaisesRegex(release.AssuranceError, "wheel licence payload"):
+                    release.verify_wheel_members(self.wheel, self.installed, "0.1.0")
 
 
 class SourceTests(unittest.TestCase):

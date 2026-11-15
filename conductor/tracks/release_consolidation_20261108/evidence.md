@@ -19,7 +19,7 @@ workflows and other tracks.
 ## Initial findings and remediation
 
 An independent Conductor acceptance review identified the mandatory licensing,
-registry and real-consumer gaps. The candidate work keeps them open. The current
+registry and real-consumer gaps. The later owner instruction resolves project licensing as Apache-2.0; registry and real-consumer gaps remain open. The current
 documentation validator's acceptance of an archived state would not prove those
 criteria; no premature archive is recorded.
 
@@ -107,11 +107,21 @@ The results above identify the executed checks. Hosted Release assurance executi
 and trusted-main attestations still need their own outcomes. Failed-run artifacts
 record failures and do not qualify a candidate.
 
+## Subsequent integration and licensing
+
+The owner selected Apache-2.0. The [integration record](../../../docs/release-integration-2026-11-15.md)
+records consistent package metadata/licence payloads, the archived-track incorporation
+audit, integration with main c70edf65, and the concrete hosted rustup bootstrap fix.
+The current integration changes native scope and package contents; historical 354df1
+receipts remain retained without being relabelled as fresh results. The 36 current
+release-control tests and source/static checks passed. Full hosted qualification of
+the integrated source remains required.
+
 ## Closure boundary
 
-Public package publication remains disabled. No registry identity, Dapane project
-licence, real workforce/genomics migration or external repository archival is
-asserted. The consolidation review selected no external archive and copied no
+Public package publication remains disabled. Apache-2.0 is selected for Dapane
+project material. Registry ownership, real workforce/genomics migration and external
+repository archival are not established. The consolidation review selected no external archive and copied no
 restricted provider assets.
 
 The user requested review, fixes and archival. Review/fixes can be performed on

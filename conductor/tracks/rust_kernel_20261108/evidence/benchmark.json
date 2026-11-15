@@ -1,0 +1,51 @@
+{
+  "scope": "synthetic CLI valuation and shared-pool allocation, including process startup and JSON IO",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "machine": "x86_64",
+  "python": "3.12.14",
+  "engine_version": "0.1.0",
+  "measurements": [
+    {
+      "mode": "valuation",
+      "usage_rows": 5000,
+      "quotes": 1,
+      "input_bytes": 1835745,
+      "output_bytes": 3161333,
+      "repeats": 3,
+      "wall_seconds": [
+        0.21773438699892722,
+        0.26261141200666316,
+        0.25459172800765373
+      ],
+      "median_wall_seconds": 0.25459172800765373,
+      "child_cpu_seconds": [
+        0.21198099999999998,
+        0.26050299999999993,
+        0.25300799999999996
+      ],
+      "output_digest": "sha256:f0a308d0e084185b2526bea5ca161cc6f68ed2260b50148d7dca3ea255f9802e"
+    },
+    {
+      "mode": "allocation",
+      "usage_rows": 5000,
+      "quotes": 1,
+      "input_bytes": 2365827,
+      "output_bytes": 4601482,
+      "repeats": 3,
+      "wall_seconds": [
+        0.404055065009743,
+        0.30888031198992394,
+        0.2663708750042133
+      ],
+      "median_wall_seconds": 0.30888031198992394,
+      "child_cpu_seconds": [
+        0.37790599999999996,
+        0.3004229999999999,
+        0.263586
+      ],
+      "output_digest": "sha256:b2949460c9032de543257ddae905609760ac92464cec055477affca773ae5a7e"
+    }
+  ],
+  "max_child_rss_kib_across_run": 85052,
+  "limits": "Linux ru_maxrss is peak child RSS across this run, not per-workload memory. No concurrency, provider or cross-machine comparison is implied."
+}

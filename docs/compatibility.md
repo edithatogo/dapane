@@ -26,6 +26,44 @@ unchanged. Typed Rust `Request` literals need the new empty
 `capacity_allocations` vector; pre-1.0 source compatibility is not asserted for
 struct construction. JSON/CLI/Python full-pool inputs remain compatible.
 
+## Immutable candidate bundles
+
+The separate [run-bundle contract 0.1](run-bundle-v0.1.md) wraps request/report
+profiles 0.1 and 0.2 without changing their schemas or numerical methods.
+Its `bundle_version` and digest namespace identify envelope/lifecycle semantics
+independently. Retain the matching schema, verifier and numerical implementation
+for historical replay when introducing a later profile.
+
+A replacement retains the original full snapshot; withdrawal creates a
+tombstone with no financial report. A separately retained head checkpoint
+detects missing history suffixes. It is not a signature, and a declared source
+revision does not attest the installed binary.
+
+Repeated source ID/version/quote ID identities retain their complete quote
+snapshot throughout the history. Each source release has one publication date,
+and any non-null declared content digests must agree across revisions.
+Quote subsets, quote-list order and retrieval dates may change. Quote correction
+requires a new source version, including after an intermediate omission.
+External source rights, eligibility and correction qualification remain
+provider responsibilities.
+
+The verifier is repository tooling that replays full valuation snapshots through
+an installed Rust wheel. Its qualification is synthetic candidate evidence;
+financial reversals, capital formulae and
+production publication remain separately qualified capabilities. The
+[core-contract record](../conductor/tracks/core_contracts_20261108/verification.md)
+identifies the reviewed implementation and executed checks.
+
+## Declared interval exposure
+
+The [interval contract 0.1](interval-contract-v0.1.md) is a separate native/CLI
+envelope with method `dapane-intervals-v0.1.0`. Existing `evaluate` inputs and
+point/capacity methods are unchanged; callers select `evaluate-intervals` explicitly.
+The original parent request and intervals remain in the result alongside exact
+segments and the expanded scalar request. Preserve the envelope and its method
+identity for replay: per-segment rounding can differ from rounding a parent total.
+The existing Python wrapper has no new interval entry point in this increment.
+
 ## Namespaces and extensions
 
 Use stable provider-owned identifiers when exchanging data, for example
@@ -77,5 +115,6 @@ affected consumers have qualified the new result.
 
 No repository should be archived based on these synthetic tests. Real provider
 integration, compatibility/rollback evidence and review of unique assets remain
-release/consolidation work. A project licence and registry identity are also
-unresolved release prerequisites; the workspace packages set `publish = false`.
+release/consolidation work. Dapane project material is Apache-2.0 under ADR-014;
+registry ownership and release qualification remain prerequisites. The workspace
+packages retain `publish = false`.

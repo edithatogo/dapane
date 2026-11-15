@@ -1,5 +1,9 @@
 # Local release qualification — 15 November 2026
 
+The subsequent [integration and licensing record](release-integration-2026-11-15.md)
+records Apache-2.0 adoption and accepted kernel/contracts integration. The results
+below remain observations of the original, earlier source.
+
 ## Checked source and scope
 
 The complete local artifact qualification used source

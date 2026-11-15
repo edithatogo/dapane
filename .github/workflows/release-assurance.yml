@@ -58,7 +58,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install the pinned build tools
         run: |
-          rustup toolchain install 1.99.1 --profile minimal
+          rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
           python -m pip install -r requirements-dev.txt
       - name: Build twice from clean target directories
         shell: bash
@@ -100,6 +100,8 @@ jobs:
           "$consumer" -m pytest --import-mode=importlib "$GITHUB_WORKSPACE/tests/python" \
             --junitxml="$artifact/installed-tests.xml" -q
           "$consumer" "$GITHUB_WORKSPACE/scripts/validate_contract.py" --cli "$artifact/dapane"
+          "$consumer" "$GITHUB_WORKSPACE/scripts/validate_intervals.py" --cli "$artifact/dapane" \
+            | tee "$artifact/installed-intervals.log"
       - name: Record bounded throughput and memory on CPython 3.15
         if: matrix.python == '3.15'
         run: |
@@ -107,6 +109,37 @@ jobs:
             --cli "$RUNNER_TEMP/dapane-candidate/dapane" \
             --counts 10 1000 5000 --repeats 3 \
             --output "$RUNNER_TEMP/dapane-candidate/benchmark.json"
+      - name: Verify source package licence and notice inclusion
+        if: matrix.python == '3.15'
+        shell: bash
+        run: |
+          set -euo pipefail
+          artifact="$RUNNER_TEMP/dapane-candidate"
+          for crate in dapane-core dapane-cli dapane-python; do
+            cargo package --locked --list --package "$crate" > "$artifact/$crate-package-files.txt"
+          done
+          maturin sdist --out "$artifact"
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          import tarfile
+
+          artifact = Path(os.environ["RUNNER_TEMP"]) / "dapane-candidate"
+          for crate in ("dapane-core", "dapane-cli", "dapane-python"):
+              names = set((artifact / f"{crate}-package-files.txt").read_text().splitlines())
+              if not {"LICENSE", "NOTICE"} <= names:
+                  raise SystemExit(f"{crate} source package omits licence/notice")
+          packages = list(artifact.glob("dapane-*.tar.gz"))
+          if len(packages) != 1:
+              raise SystemExit("Expected one Python source distribution")
+          with tarfile.open(packages[0], "r:gz") as archive:
+              prefix = packages[0].name.removesuffix(".tar.gz")
+              for name in ("LICENSE", "NOTICE"):
+                  member = archive.extractfile(f"{prefix}/{name}")
+                  if member is None or member.read() != Path(name).read_bytes():
+                      raise SystemExit(f"Source distribution licence payload differs: {name}")
+          print("Rust package file lists and Python source distribution include LICENSE and NOTICE")
+          PY
       - name: Retain source and build identities
         shell: bash
         run: |
@@ -145,7 +178,7 @@ jobs:
           python-version: '3.15'
       - name: Install pinned assurance tools
         run: |
-          rustup toolchain install 1.99.1 --profile minimal
+          rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
           cargo install --locked --version 0.20.2 cargo-deny
           cargo install --locked --version 0.5.10 cargo-cyclonedx
           python -m pip install -r requirements-release.txt
@@ -184,7 +217,7 @@ jobs:
               "cargo_deny_version": "0.20.2",
               "exit_code": int(os.environ["DAPANE_DENY_EXIT"]),
               "databases": revisions,
-              "project_license": "unresolved; unpublished workspace crates are excluded only from licence clearance",
+              "project_license": "Apache-2.0; workspace crates are included in licence checks",
           }
           (root / "advisory-revisions.json").write_text(json.dumps(record, indent=2) + "\n")
           if not revisions:

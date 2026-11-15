@@ -15,7 +15,9 @@
     "python-native",
     "synthetic-workforce",
     "synthetic-genomics",
-    "partial-capacity"
+    "partial-capacity",
+    "declared-calendar-day-intervals",
+    "versioned-run-bundles"
   ],
   "targets": [
     {
@@ -69,9 +71,9 @@
   ],
   "publication": {
     "enabled": false,
-    "project_license": "unresolved",
+    "project_license": "Apache-2.0",
     "registry_identity": "unverified",
-    "source_redistribution": "pending-project-license",
+    "source_redistribution": "project-source-Apache-2.0-external-assets-excluded",
     "workforce_provider": "unqualified",
     "genomics_provider": "unqualified"
   },
@@ -83,5 +85,25 @@
   "consolidation": {
     "selected_archives": [],
     "remove_duplicated_machinery": false
+  },
+  "additional_profiles": {
+    "intervals": {
+      "schema_version": "0.1",
+      "method_version": "dapane-intervals-v0.1.0",
+      "interfaces": [
+        "Rust",
+        "CLI"
+      ]
+    },
+    "run_bundle": {
+      "schema_version": "0.1",
+      "interfaces": [
+        "repository-verifier"
+      ],
+      "valuation_profiles": [
+        "0.1",
+        "0.2"
+      ]
+    }
   }
 }

@@ -31,6 +31,22 @@ from pathlib import Path, PurePosixPath
 ROOT = Path(__file__).resolve().parents[1]
 FORMAT = "dapane-release-evidence/1"
 PROFILES = {"0.1": "dapane-exact-v0.1.0", "0.2": "dapane-exact-v0.2.0"}
+ADDITIONAL_PROFILES = {
+    "intervals": {
+        "schema_version": "0.1",
+        "method_version": "dapane-intervals-v0.1.0",
+        "interfaces": ["Rust", "CLI"],
+    },
+    "run_bundle": {
+        "schema_version": "0.1",
+        "interfaces": ["repository-verifier"],
+        "valuation_profiles": ["0.1", "0.2"],
+    },
+}
+PROJECT_LICENSE = "Apache-2.0"
+LICENSE_FILES = {"LICENSE", "NOTICE"}
+APACHE_LICENSE_SHA256 = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+SOURCE_REDISTRIBUTION = "project-source-Apache-2.0-external-assets-excluded"
 TRACKS = {
     "core_contracts_20261108",
     "rust_kernel_20261108",
@@ -43,6 +59,8 @@ CAPABILITIES = {
     "synthetic-workforce",
     "synthetic-genomics",
     "partial-capacity",
+    "declared-calendar-day-intervals",
+    "versioned-run-bundles",
 }
 PYTHONS = {"3.12", "3.13", "3.14", "3.15"}
 
@@ -118,6 +136,8 @@ def input_hashes(root=ROOT):
         ".github/workflows/release-assurance.yml",
         "release/capabilities.json",
         "scripts/release_assurance.py",
+        "LICENSE",
+        "NOTICE",
     }
     names.update(str(p.relative_to(root)) for p in (root / "fixtures").rglob("*.json"))
     names.update(str(p.relative_to(root)) for p in (root / "schemas").rglob("*.json"))
@@ -134,6 +154,10 @@ def validate_manifest(manifest, root=ROOT):
     require(manifest["format_version"] == "1", "unknown capability manifest format")
     require(manifest["channel"] == "unpublished-candidate", "unsupported release channel")
     require(manifest["profiles"] == PROFILES, "contract/method pairing changed")
+    require(
+        manifest["additional_profiles"] == ADDITIONAL_PROFILES,
+        "additional profile or interface claims changed",
+    )
     capabilities = manifest["candidate_capabilities"]
     require(
         len(capabilities) == len(CAPABILITIES) and set(capabilities) == CAPABILITIES,
@@ -173,13 +197,44 @@ def validate_manifest(manifest, root=ROOT):
     )
     require(workspace["package"]["publish"] is False, "Cargo publication guard changed")
     require(python.get("dependencies", []) == [], "Python runtime dependencies changed")
+    require(
+        workspace["package"].get("license")
+        == python.get("license")
+        == manifest["publication"].get("project_license")
+        == PROJECT_LICENSE,
+        "project licence differs across package and capability manifests",
+    )
+    require(
+        set(python.get("license-files", [])) == LICENSE_FILES,
+        "Python licence files must include LICENSE and NOTICE",
+    )
+    require(
+        (root / "LICENSE").is_file() and sha256(root / "LICENSE") == APACHE_LICENSE_SHA256,
+        "LICENSE must contain the complete Apache-2.0 licence text",
+    )
+    require((root / "NOTICE").is_file() and (root / "NOTICE").stat().st_size, "NOTICE is missing")
+    for member in workspace["members"]:
+        package = tomllib.loads((root / member / "Cargo.toml").read_text())["package"]
+        require(package.get("license") == {"workspace": True}, f"{member} must inherit the licence")
+        for name in LICENSE_FILES:
+            path = root / member / name
+            require(
+                path.is_file()
+                and not path.is_symlink()
+                and path.read_bytes() == (root / name).read_bytes(),
+                f"{member}/{name} must match the project licence/notice",
+            )
     return manifest
 
 
 def publication_blockers(manifest, root=ROOT):
     blockers = ["Package publication is not enabled by this candidate-assurance workflow."]
+    resolved = {
+        "project_license": PROJECT_LICENSE,
+        "source_redistribution": SOURCE_REDISTRIBUTION,
+    }
     for name, state in manifest["publication"].items():
-        if name != "enabled":
+        if name != "enabled" and (name not in resolved or resolved[name] != state):
             blockers.append(f"{name}: {state}")
     for track in sorted(TRACKS):
         metadata = read_json(root / "conductor/tracks" / track / "metadata.json")
@@ -252,6 +307,17 @@ def verify_wheel_members(wheel, installed, version):
         require(metadata["Version"] == version, "wheel package version differs")
         require(not metadata.get_all("Requires-Dist"), "wheel has runtime dependencies")
         dist_info = metadata_name.rsplit("/", 1)[0]
+        require(metadata["License-Expression"] == PROJECT_LICENSE, "wheel licence differs")
+        require(
+            set(metadata.get_all("License-File", [])) == LICENSE_FILES,
+            "wheel licence declarations must include LICENSE and NOTICE",
+        )
+        for name in LICENSE_FILES:
+            member = f"{dist_info}/licenses/{name}"
+            require(
+                member in names and archive.read(member) == (ROOT / name).read_bytes(),
+                f"wheel licence payload differs: {name}",
+            )
         record_name = f"{dist_info}/RECORD"
         rows = list(csv.reader(io.StringIO(archive.read(record_name).decode())))
         require(
