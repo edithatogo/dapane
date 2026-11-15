@@ -3,7 +3,7 @@
   "type": "chore",
   "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-14T23:46:46Z",
+  "updated_at": "2026-11-15T00:10:40Z",
   "description": "Give the repository maintainer and coding agents a navigable, internally consistent project definition and an executable delivery plan. Dapane becomes the coordinating home for the shared framework; the earlier MCHS plan remains a provenance record and domain-consumer reference.",
   "repositories": [
     "."
@@ -78,11 +78,11 @@
   ],
   "integration_review": {
     "main_commit": "224cf91dbcf513feaa022b2cf5aa310a965472ce",
-    "scope": "Preserve merged core-contract work and align its synthetic archive fixture with explicit plan status.",
+    "scope": "Preserve merged core-contract and kernel work, align the archive fixture, and reconcile all three in-place archive records.",
     "local_cli_test_methods_passed": 12,
     "upstream_fixture_helper_cases_passed": 7,
     "local_pytest": "passed_using_existing_qualified_kernel_environment",
-    "hosted_verification": "Required on the latest PR head; prior exact-head receipts remain historical.",
+    "hosted_verification": "Latest Conductor context result required before integration, together with any repository-required checks; successful runtime and CodeQL receipts retain their exact qualified code commit.",
     "evidence": "review.md",
     "kernel_main_commit": "172d0ef39291a936a35c6e221eb467701ccefbba",
     "python_version": "3.12.14",
@@ -92,7 +92,17 @@
       "tracks": 14,
       "requirements": 12,
       "tasks": 153,
+      "local_links": 512
+    },
+    "kernel_context": {
+      "tracks": 14,
+      "requirements": 12,
+      "tasks": 153,
       "local_links": 501
-    }
+    },
+    "core_archive_main_commit": "c70edf65a119d9ffda410cd4e5325e1f37e9332a",
+    "qualified_code_commit": "770ed2a0ef60bc0dad8b01bcab7ded2ba52cf0a8",
+    "qualified_code_checks_passed": 11,
+    "final_reconciliation_scope": "Documentation and metadata only; validator, regression tests, runtime implementation and workflows unchanged from the qualified code commit."
   }
 }

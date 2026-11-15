@@ -145,6 +145,30 @@ Earlier hosted results remain attached to their stated commits and do not
 claim execution of this later integration. The latest published head retains
 its own hosted verification requirement.
 
+## Final documentation reconciliation
+
+All 11 hosted checks passed on the kernel-integrated setup head
+`770ed2a0ef60bc0dad8b01bcab7ded2ba52cf0a8`: Conductor, native runtime,
+the Python 3.12–3.15 matrix, privacy and CodeQL. Its
+[Conductor run](https://github.com/edithatogo/dapane/actions/runs/43655203416)
+tested merge `076dff4aef050af9886e6b03e2c83cf425ad121b`, whose tree
+`b3f595835ea03873475bbb40ad8086f80bc65126` equals the reviewed head tree.
+
+Main subsequently incorporated the independently qualified core-contract
+archive through PR #18 at `c70edf65a119d9ffda410cd4e5325e1f37e9332a`.
+The final reconciliation preserves its six core-track records unchanged,
+retains the setup, core-contract and kernel catalogue entries, and combines
+their registry states and scope qualifications. Its archive fixture correction
+is identical to the already qualified setup branch's correction.
+
+The validator, regression tests, runtime implementation and workflows are
+unchanged from the fully qualified setup head above. This reconciliation changes
+only documentation and metadata. Local context validation passes for 14 tracks,
+12 requirements, 153 tasks and 512 local links. The latest published context
+must receive its own hosted Conductor result before integration; the successful
+runtime and CodeQL receipts remain attached to the unchanged code revision.
+Any repository-required checks also remain binding.
+
 ## Limits
 
 These checks concern project records and archival integrity. They do not verify

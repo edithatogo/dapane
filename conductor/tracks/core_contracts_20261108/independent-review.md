@@ -51,3 +51,23 @@ automatic interval integration, capital formulae, real provider/source
 qualification, event-level corrections, signed binary provenance and production
 publication remain with their existing kernel, provider, process and release
 tracks. Synthetic arithmetic does not establish economic or empirical validity.
+
+## Independent re-review and archive compatibility — 15 November 2026
+
+Read-only re-review of `bc92e9b1d34198d8164349734cf79090fdc2bc4c` confirmed
+both release-identity and chronology findings resolved, with no new blocking
+implementation defect. Final head `ea2cbffae505475108bfa5fb67e290f44349fee0`
+passed all 11 configured checks before integration at
+`224cf91dbcf513feaa022b2cf5aa310a965472ce`. All four installed CPython logs
+were inspected: 133 tests passed in each. The earlier pending disposition above
+is retained as a historical observation; [final evidence](verification.md)
+records the subsequent results.
+
+A follow-up integration review reproduced one synthetic-fixture defect against
+setup PR #14's stricter validator at
+`09e81c6e0ab1a80580258f82b5c1506fafd3d45f`: the positive archive fixture omitted
+its plan's status declaration. Adding only `Status: archived` makes that fixture
+valid under both validators. The six intentionally invalid task/verification
+cases still fail for their intended reasons. The corrected file passed all seven
+local archive regressions plus Ruff lint/format; it changes no financial runtime.
+The archive PR must pass its own exact-head hosted checks before integration.
