@@ -14,6 +14,7 @@ conflating tariffs, funding, resource cost and actual payment.
 - [Candidate package](../../../adapters/mchs_sources/README.md)
 - [Verification and limitations](verification.md)
 - [Implementation review](review.md)
+- [Owner quality repair and current evidence boundary](owner-quality-20261115.md)
 - [Exact-source handoff](handoff.md)
 - [Shared-change requests](shared-change-requests.md)
 - [Track registry](../../tracks.md)
@@ -21,9 +22,10 @@ conflating tariffs, funding, resource cost and actual payment.
 
 Requirements: RQ-05, RQ-01, RQ-03.
 
-Capability status: source candidate with synthetic transport tests. An earlier
-24-test working version passed; the recovered final source, added review fixes
-and 34-test suite remain unexecuted after the execution environment became
-unavailable. M1.3/M2 acceptance and installed-package qualification remain open.
-M3 live-provider migration is outside this bounded lane. The integrator owns the
-matching central registry update.
+Capability status: synthetic source candidate pending integrator acceptance.
+The received head `8281042676c1d9cafab69e9c57cdfd064a9a5adf` passed 34 installed
+tests and default-native smoke; lint/format failures remained. The
+[bounded quality repair](owner-quality-20261115.md) preserves those historical
+outcomes and identifies the corrected source. Its later exact-head qualification
+is recorded on PR #25. M1.3/M2 acceptance and M3 provider qualification remain
+separate. The integrator has supplied the central registry and standalone CI.

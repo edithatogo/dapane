@@ -15,7 +15,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [~] M2.1 Implement the bounded MCHS activity adapter and atlas quotation-pack adapter behind optional dependencies.
 - [~] M2.2 Produce explicitly labelled cost/funding/tariff/payment views only when the required evidence exists; payments require observations or a labelled model.
-- [!] M2.3 Verify exact results, provenance, missing-rate handling and separation of valuation views.
+- [~] M2.3 Verify exact results, provenance, missing-rate handling and separation of valuation views.
 
 ## Phase 3 — Consumer migration
 
@@ -23,7 +23,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [ ] M3.2 Document provider pins, supported editions, source restrictions and rollback to prior qualified adapters.
 - [ ] M3.3 Run installed consumer fixtures and reject any conversion of weighted activity into fictitious resources; record exact qualification evidence.
 
-## Evidence record
+## Historical evidence record — initial handoff
 
 M1.1/M1.2 are supported by [exact upstream inspection and mapping](contracts.md).
 The M1/M2 source candidate, synthetic fixtures and 34 authored tests are in
@@ -31,13 +31,21 @@ The M1/M2 source candidate, synthetic fixtures and 34 authored tests are in
 working version passed 24 tests using the existing native CLI; those results do
 not qualify the recovered final source after the execution environment outage.
 
-**M1.3 and M2 remain open.** The exact-head suite, formatting and installed package
-checks have not executed. M2.3 is blocked on an available existing execution
-runtime and the integrator-owned qualification invocation. See
-[verification](verification.md), [handoff](handoff.md), and
-[shared-change requests](shared-change-requests.md). M3 remains outside this lane.
+## Owner quality repair and current acceptance
 
-Owner: Dapane — MCHS and atlas adapters. Baseline:
-`e34f87c9df39a2132fecee142431cdeefb732471`. Upstream repositories are read-only.
-The sole integrator owns the root registry; its matching in_progress row is
-requested, not edited or waived. Publication remains disabled.
+**M1.3 and M2 acceptance remain with the existing integrator.** The received
+shared-integration head `8281042676c1d9cafab69e9c57cdfd064a9a5adf` executed
+34 installed tests, default-native smoke and both wheel identity checks
+successfully, but failed lint/format. The
+[owner quality repair](owner-quality-20261115.md) fixes only those quality
+findings and records local mechanical verification. Subsequent exact-head
+execution is retained on PR #25; do not transfer earlier results to another SHA.
+
+M2.3 is active rather than blocked on the earlier execution-environment outage.
+The integrator has supplied registry reconciliation and explicit installed/native
+CI. Required independent acceptance, current security checks and M3 provider
+exports retain their separate gates. This bounded repair does not complete M3.
+
+Owner: Dapane — MCHS and atlas adapters. Original baseline:
+`e34f87c9df39a2132fecee142431cdeefb732471`. Upstream repositories remain read-only.
+The sole integrator owns shared integration; publication remains disabled.
