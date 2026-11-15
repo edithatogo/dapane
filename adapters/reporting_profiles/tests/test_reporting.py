@@ -44,72 +44,10 @@ def seal(bundle):
 
 
 def fixture():
-    import dapane
-
-    request = json.loads((ROOT / "fixtures/newborn-screening.json").read_text())
-    bundle = seal(
-        {
-            "bundle_version": "0.1",
-            "bundle_id": "synthetic-reporting-bundle",
-            "series_id": "synthetic-reporting-series",
-            "recorded_on": "2026-11-15",
-            "change": "create",
-            "previous_digest": None,
-            "reason": None,
-            "source_revision": "e34f87c9df39a2132fecee142431cdeefb732471",
-            "qualification": "synthetic_candidate",
-            "observation_window": {"from": "2026-01-01", "to": "2027-01-01"},
-            "rate_releases": [
-                {
-                    "source_id": quote["source"]["id"],
-                    "version": quote["source"]["version"],
-                    "quote_ids": [quote["id"]],
-                    "published_on": "2026-01-01",
-                    "retrieved_on": "2026-11-15",
-                }
-                for quote in request["quotes"]
-            ],
-            "capital_treatments": [],
-            "excluded_inputs": [],
-            "request": request,
-            "report": dapane.evaluate(request),
-        }
-    )
-    declaration = {
-        "format": "dapane-reporting-declarations/0.1",
-        "bundle_digest": bundle["bundle_digest"],
-        "source_commits": {
-            "uogto": "7e9075b8fd77543fc8853fab20319415cb86597d",
-            "standards_check": "d1f1137edfa5375e0225ca2216903ce5583a44f0",
-        },
-        "study": {
-            "label": "Synthetic newborn reporting demonstration",
-            "method": "bottom-up-microcosting",
-            "valuation_basis": "economic-opportunity",
-            "basis_rationale": "Fictional opportunity-cost view explicitly chosen for this fixture.",
-        },
-        "profiles": [
-            {
-                "id": "newborn-screening",
-                "applicability": "applicable",
-                "rationale": "Synthetic diagnostic costing demonstration, not programme evidence.",
-            }
-        ],
-        "assertions": [
-            {
-                "instrument_id": "cheers_2022",
-                "instrument_version": "2022",
-                "item_id": "14",
-                "applicability": "applicable",
-                "reporting_status": "partial",
-                "rationale": None,
-                "review_status": "not-reviewed",
-                "evidence": [
-                    {"pointer": "/report/quote_snapshots", "note": "Synthetic quotes only."}
-                ],
-            }
-        ],
-    }
+    """Read immutable synthetic native output, then require the verifier to replay it."""
+    root = ROOT / "adapters/reporting_profiles/fixtures"
+    bundle = json.loads((root / "synthetic-history.json").read_text())[0]
+    declaration = json.loads((root / "synthetic-declarations.json").read_text())
     return bundle, declaration
 
 
@@ -175,19 +113,27 @@ class ReportingAcceptance(unittest.TestCase):
         self.assertTrue(validate_jsonld(output, self.catalogue)[0])
 
     def test_missing_evidence_fails_closed(self):
-        self.declaration["assertions"][0]["evidence"] = []
+        self.declaration = json.loads(
+            (
+                ROOT / "adapters/reporting_profiles/fixtures/reported-without-evidence.json"
+            ).read_text()
+        )
         with self.assertRaisesRegex(ReportingError, "missing_evidence"):
             self.export()
 
     def test_not_applicable_requires_rationale(self):
-        self.declaration["assertions"][0].update(
-            applicability="not-applicable", reporting_status="not-assessed", evidence=[]
+        self.declaration = json.loads(
+            (
+                ROOT / "adapters/reporting_profiles/fixtures/not-applicable-without-rationale.json"
+            ).read_text()
         )
         with self.assertRaisesRegex(ReportingError, "missing_rationale"):
             self.export()
 
     def test_source_version_mismatch_fails_closed(self):
-        self.declaration["source_commits"]["uogto"] = "0" * 40
+        self.declaration = json.loads(
+            (ROOT / "adapters/reporting_profiles/fixtures/wrong-source-version.json").read_text()
+        )
         with self.assertRaisesRegex(ReportingError, "source_version_mismatch"):
             self.export()
 
@@ -588,6 +534,53 @@ class ReportingAcceptance(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.strip(), "150.00")
+
+    def test_unknown_node_class_is_rejected(self):
+        output = self.export()
+        output["@graph"][1]["@type"] = "cost:Typo"
+        with self.assertRaisesRegex(ReportingError, "unknown_term"):
+            validate_jsonld(output, self.catalogue)
+
+    def test_nested_unknown_predicate_is_rejected(self):
+        output = self.export()
+        output["@graph"][0]["cost:evidenceReference"] = {
+            "@id": output["@graph"][0]["@id"] + ":nested",
+            "misspelled": "lost data",
+        }
+        with self.assertRaisesRegex(ReportingError, "unknown_term"):
+            validate_jsonld(output, self.catalogue)
+
+    def test_ontology_class_cannot_be_used_as_an_export_predicate(self):
+        output = self.export()
+        output["@graph"][0]["cost:ResourceUse"] = "not a property"
+        with self.assertRaisesRegex(ReportingError, "unknown_term"):
+            validate_jsonld(output, self.catalogue)
+
+    def test_duplicate_node_identity_is_rejected(self):
+        output = self.export()
+        output["@graph"].append(copy.deepcopy(output["@graph"][1]))
+        with self.assertRaisesRegex(ReportingError, "duplicate_node"):
+            validate_jsonld(output, self.catalogue)
+
+    def test_unresolved_profile_does_not_imply_item_applicability(self):
+        self.declaration["profiles"][0]["applicability"] = "unresolved"
+        with self.assertRaisesRegex(ReportingError, "unresolved_profile"):
+            self.export()
+        self.declaration["assertions"][0]["applicability"] = "unresolved"
+        states = payload(self.export())["coverage"]["states"]
+        self.assertEqual(states["unresolved"]["partial"], 1)
+        self.assertEqual(sum(states["applicable"].values()), 0)
+
+    def test_rational_inputs_and_exact_rounded_difference_survive(self):
+        for usage in self.bundle["request"]["usage"]:
+            usage["quantity"] = {"numerator": "1", "denominator": "3"}
+        self.reseal()
+        self.assertEqual(
+            self.bundle["report"]["totals"]["exact"], {"numerator": "106", "denominator": "3"}
+        )
+        self.assertEqual(self.bundle["report"]["totals"]["rounded"], "35.34")
+        node = next(n for n in self.export()["@graph"] if n["@id"].endswith(":bundle"))
+        self.assertEqual(node["rdf:value"]["@value"], self.bundle)
 
 
 if __name__ == "__main__":

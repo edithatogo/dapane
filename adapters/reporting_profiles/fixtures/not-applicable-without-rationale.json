@@ -1,0 +1,33 @@
+{
+  "format": "dapane-reporting-declarations/0.1",
+  "bundle_digest": "sha256:7b62013bb19a70da8654fba7a4e8dccfe239b75660a4cc363c8eec8fafb9e58f",
+  "source_commits": {
+    "uogto": "7e9075b8fd77543fc8853fab20319415cb86597d",
+    "standards_check": "d1f1137edfa5375e0225ca2216903ce5583a44f0"
+  },
+  "study": {
+    "label": "Synthetic newborn reporting demonstration",
+    "method": "bottom-up-microcosting",
+    "valuation_basis": "economic-opportunity",
+    "basis_rationale": "Fictional opportunity-cost view explicitly chosen for this fixture."
+  },
+  "profiles": [
+    {
+      "id": "newborn-screening",
+      "applicability": "applicable",
+      "rationale": "Synthetic diagnostic costing demonstration, not programme evidence."
+    }
+  ],
+  "assertions": [
+    {
+      "instrument_id": "cheers_2022",
+      "instrument_version": "2022",
+      "item_id": "14",
+      "applicability": "not-applicable",
+      "reporting_status": "not-assessed",
+      "rationale": null,
+      "review_status": "not-reviewed",
+      "evidence": []
+    }
+  ]
+}

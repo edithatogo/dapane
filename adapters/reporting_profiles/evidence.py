@@ -6,7 +6,7 @@ import copy
 import hashlib
 from urllib.parse import quote
 
-from rdflib import RDF, Graph, URIRef
+from rdflib import OWL, RDF, Graph, URIRef
 
 from .catalogue import COST, Catalogue
 from .transport import (
@@ -445,6 +445,25 @@ def validate_jsonld(document: dict, catalogue: Catalogue) -> tuple[bool, str]:
     if not matches:
         fail("source_version_mismatch", "/@graph", "export does not use pinned source snapshot")
 
+    instance_types = {
+        "cost:EvidenceArtifact",
+        "cost:CostingStudy",
+        "cost:ValuationPolicy",
+        "cost:Perspective",
+        "cost:ReportingAssertion",
+    }
+
+    def property_known(predicate: str) -> bool:
+        if predicate in {"rdf:value", "rdfs:label", "dcterms:format", "dcterms:source"}:
+            return True
+        if not predicate.startswith("cost:"):
+            return False
+        term = COST[predicate.removeprefix("cost:")]
+        return any(
+            (term, RDF.type, kind) in catalogue.ontology
+            for kind in (OWL.ObjectProperty, OWL.DatatypeProperty)
+        )
+
     def local(value: object) -> None:
         if isinstance(value, dict):
             if value.get("@type") == "@json":
@@ -452,6 +471,18 @@ def validate_jsonld(document: dict, catalogue: Catalogue) -> tuple[bool, str]:
                 return
             if "@context" in value:
                 fail("remote_context", "/@graph", "nested contexts are unsupported")
+            if "@value" in value:
+                fields(value, {"@type", "@value"}, "/typed-literal")
+                if value["@type"] != "xsd:gYear":
+                    fail("unknown_term", "/@graph", "unsupported typed literal")
+                return
+            if "@type" in value and (
+                not isinstance(value["@type"], str) or value["@type"] not in instance_types
+            ):
+                fail("unknown_term", "/@graph", "unknown or unsupported export node class")
+            for predicate in value:
+                if predicate not in {"@id", "@type"} and not property_known(predicate):
+                    fail("unknown_term", "/@graph", "unknown export predicate would lose meaning")
             for child in value.values():
                 local(child)
         elif isinstance(value, list):
@@ -459,6 +490,7 @@ def validate_jsonld(document: dict, catalogue: Catalogue) -> tuple[bool, str]:
                 local(child)
 
     local(nodes)
+    identities = set()
     for node in nodes:
         if (
             not isinstance(node, dict)
@@ -466,20 +498,9 @@ def validate_jsonld(document: dict, catalogue: Catalogue) -> tuple[bool, str]:
             or not node["@id"].startswith("urn:dapane:reporting:0.1:")
         ):
             fail("upstream_redefinition", "/@graph", "export nodes need local instance identities")
-        for predicate in node:
-            if predicate in {
-                "@id",
-                "@type",
-                "rdf:value",
-                "rdfs:label",
-                "dcterms:format",
-                "dcterms:source",
-            }:
-                continue
-            if not predicate.startswith("cost:") or not any(
-                catalogue.ontology.triples((COST[predicate.removeprefix("cost:")], None, None))
-            ):
-                fail("unknown_term", "/@graph", "unknown export predicate would lose meaning")
+        if node["@id"] in identities:
+            fail("duplicate_node", "/@graph", "duplicate node identity would merge assertions")
+        identities.add(node["@id"])
     raw = canonical(document)
     if len(raw) > 32 * 1024 * 1024:
         fail("limit_exceeded", "/@graph", "export exceeds byte limit")
