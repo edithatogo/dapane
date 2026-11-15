@@ -41,6 +41,18 @@ See [handoff](HANDOFF.md) and [review](review.md).
 
 ## Evidence record
 
+### Owner quality follow-up — 2026-11-15
+
+- [~] Reproduce and fix the five Python formatting failures at received head
+  `237ddb238997b0babe12266cb7775207c597dfd4`, verify source equivalence, and run
+  exact-head qualification before issuing a new scoped integrator handoff.
+
+The integrator's received-head run passed 23 tests, the same-source native build,
+the fixed protocol and bundle verification. Formatting remained a failed gate.
+Historical failures remain retained; offline security is queued, and PR #20's
+independent privacy findings remain unresolved. This follow-up changes only the
+owned benchmark namespace and this track.
+
 [Local observations](../../../benchmarks/static/evidence/local-observations.json)
 retain executed versus unexecuted evidence, the two corrected diagnostic assumptions
 and the loss of the original raw artifact. They do not qualify the reconstructed

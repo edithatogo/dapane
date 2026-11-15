@@ -211,9 +211,18 @@ def _check_point(request: dict, report: dict) -> dict[str, bool]:
     require(report["totals"] == expected["totals"], "Total oracle/conservation")
     return dict.fromkeys(
         (
-            "identity", "input_digest", "output_digest", "policy", "quotes_and_sources",
-            "context", "line_inventory", "line_sources", "line_arithmetic",
-            "allocations", "object_totals", "totals",
+            "identity",
+            "input_digest",
+            "output_digest",
+            "policy",
+            "quotes_and_sources",
+            "context",
+            "line_inventory",
+            "line_sources",
+            "line_arithmetic",
+            "allocations",
+            "object_totals",
+            "totals",
         ),
         True,
     )
@@ -251,9 +260,7 @@ def _check_interval(request: dict, report: dict) -> dict[str, bool]:
     segments = sorted(
         report["segments"], key=lambda row: (row["start"], row["end"], row["quote_id"])
     )
-    observed = [
-        (row["start"], row["end"], row["quote_id"], row["quantity"]) for row in segments
-    ]
+    observed = [(row["start"], row["end"], row["quote_id"], row["quantity"]) for row in segments]
     require(observed == expected_segments, "Independent segmentation/quantity oracle")
     expanded = report["expanded_request"]
     require(len(expanded["usage"]) == len(segments), "Expanded line count")
@@ -279,7 +286,9 @@ def _check_interval(request: dict, report: dict) -> dict[str, bool]:
         expected_original.setdefault(field, None)
     require(report["interval_snapshots"] == [expected_original], "Original interval snapshot")
     normalized_envelope = {
-        "schema_version": "0.1", "request": normalized, "intervals": [expected_original],
+        "schema_version": "0.1",
+        "request": normalized,
+        "intervals": [expected_original],
     }
     require(
         report["input_digest"]
@@ -291,10 +300,18 @@ def _check_interval(request: dict, report: dict) -> dict[str, bool]:
     for key in ("quotes", "policy", "run_id", "knowledge_cutoff"):
         require(expanded[key] == normalized[key], f"Expanded {key} identity")
     coverage = _check_point(expanded, report["report"])
-    coverage.update(dict.fromkeys(
-        ("interval_source", "interval_snapshots", "interval_segments",
-         "interval_input_digest", "interval_output_digest"), True,
-    ))
+    coverage.update(
+        dict.fromkeys(
+            (
+                "interval_source",
+                "interval_snapshots",
+                "interval_segments",
+                "interval_input_digest",
+                "interval_output_digest",
+            ),
+            True,
+        )
+    )
     return coverage
 
 

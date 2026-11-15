@@ -18,7 +18,9 @@ def git(*arguments: str) -> str:
 
 def runtime_files() -> list[str]:
     return [
-        "Cargo.toml", "Cargo.lock", "rust-toolchain.toml",
+        "Cargo.toml",
+        "Cargo.lock",
+        "rust-toolchain.toml",
         *git("ls-files", "crates").splitlines(),
     ]
 
@@ -44,8 +46,15 @@ def main() -> int:
     compiler = subprocess.check_output(["rustc", "--version", "--verbose"], text=True)
     require(compiler.startswith("rustc 1.99.1 "), "Protocol requires Rust 1.99.1")
     command = [
-        "cargo", "build", "--offline", "--locked", "--release", "-p", "dapane-cli",
-        "--target-dir", str(target),
+        "cargo",
+        "build",
+        "--offline",
+        "--locked",
+        "--release",
+        "-p",
+        "dapane-cli",
+        "--target-dir",
+        str(target),
     ]
     process = subprocess.run(command, cwd=REPO, capture_output=True, text=True, check=False)
     require(process.returncode == 0, f"Locked offline build failed:\n{process.stderr}")
@@ -64,11 +73,17 @@ def main() -> int:
         "rustc_verbose": compiler,
         "cargo_version": subprocess.check_output(["cargo", "--version"], text=True).strip(),
         "compiler_environment": {
-            key: value for key, value in os.environ.items()
-            if key in {
-                "RUSTFLAGS", "CARGO_ENCODED_RUSTFLAGS", "RUSTC_WRAPPER",
-                "RUSTC_WORKSPACE_WRAPPER", "CARGO_BUILD_TARGET",
-            } or key.startswith("CARGO_PROFILE_RELEASE_")
+            key: value
+            for key, value in os.environ.items()
+            if key
+            in {
+                "RUSTFLAGS",
+                "CARGO_ENCODED_RUSTFLAGS",
+                "RUSTC_WRAPPER",
+                "RUSTC_WORKSPACE_WRAPPER",
+                "CARGO_BUILD_TARGET",
+            }
+            or key.startswith("CARGO_PROFILE_RELEASE_")
         },
         "binary_sha256": file_digest(executable),
         "binary_bytes": executable.stat().st_size,

@@ -20,7 +20,9 @@ class EchoRunner:
 class BundleGateTests(unittest.TestCase):
     def test_failed_independent_check_cannot_produce_timing_summary(self):
         result = comparison(
-            EchoRunner(), 2, "cold",
+            EchoRunner(),
+            2,
+            "cold",
             {"warmup_pairs": 0, "measured_pairs": 1},
             Archive(),
         )

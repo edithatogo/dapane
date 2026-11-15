@@ -46,17 +46,16 @@ class Archive:
         for key, raw in result.reports.items():
             ref = digest(raw)
             value = raw.decode("utf-8")
-            require(ref not in self.reports or self.reports[ref] == value, "Report archive collision")
+            require(
+                ref not in self.reports or self.reports[ref] == value, "Report archive collision"
+            )
             self.reports[ref] = value
             refs[key] = ref
         return refs
 
 
 def _encoded(objects: dict) -> dict[str, WorkItem]:
-    return {
-        key: WorkItem(command, canonical(value))
-        for key, (command, value) in objects.items()
-    }
+    return {key: WorkItem(command, canonical(value)) for key, (command, value) in objects.items()}
 
 
 def _measure(operation, objects: dict) -> tuple[Result, int]:
@@ -66,9 +65,9 @@ def _measure(operation, objects: dict) -> tuple[Result, int]:
 
 
 def _metrics(result: Result, elapsed_ns: int) -> dict:
-    return {
-        key: value for key, value in asdict(result).items() if key != "reports"
-    } | {"wall_ns": elapsed_ns}
+    return {key: value for key, value in asdict(result).items() if key != "reports"} | {
+        "wall_ns": elapsed_ns
+    }
 
 
 def comparison(runner: NativeCli, count: int, name: str, protocol: dict, archive: Archive) -> dict:
@@ -101,8 +100,7 @@ def comparison(runner: NativeCli, count: int, name: str, protocol: dict, archive
             evaluated = {}
             for method in order:
                 operation = (
-                    cache.evaluate if method == "incremental"
-                    else lambda items: full(runner, items)
+                    cache.evaluate if method == "incremental" else lambda items: full(runner, items)
                 )
                 result, elapsed = _measure(operation, target_objects)
                 evaluated[method] = result
@@ -205,7 +203,8 @@ def main() -> int:
         "Commit source before qualification; clean checkout required",
     )
     source_files = [
-        name for name in git("ls-files", "benchmarks/static").splitlines()
+        name
+        for name in git("ls-files", "benchmarks/static").splitlines()
         if "/evidence/" not in name
     ]
     result = {
@@ -257,10 +256,16 @@ def main() -> int:
     write_json(args.output / "reports.json", archive.reports)
     checksums = {path.name: file_digest(path) for path in sorted(args.output.iterdir())}
     write_json(args.output / "checksums.json", checksums)
-    print(json.dumps({
-        "status": result["status"], "source_sha": source_sha,
-        "comparisons": len(result["comparisons"]), "output": str(args.output),
-    }))
+    print(
+        json.dumps(
+            {
+                "status": result["status"],
+                "source_sha": source_sha,
+                "comparisons": len(result["comparisons"]),
+                "output": str(args.output),
+            }
+        )
+    )
     return 0 if result["status"] == "passed" else 1
 
 

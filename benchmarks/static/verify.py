@@ -59,7 +59,9 @@ def verify(directory: Path) -> dict:
             require(pair["passed"] and pair["complete_report_bytes_equal"], "Pair gate")
             require(pair["warmup"] == (pair["index"] < 0), "Warmup marker")
             require(pair["full"]["native_calls"] == len(target), "Full native count")
-            require(pair["incremental"]["native_calls"] == expected_calls, "Incremental native count")
+            require(
+                pair["incremental"]["native_calls"] == expected_calls, "Incremental native count"
+            )
             require(pair["incremental"]["hits"] == len(target) - expected_calls, "Cache hit count")
             left, right = pair["full"]["report_refs"], pair["incremental"]["report_refs"]
             require(set(left) == set(right) == set(target), "Portfolio inventory")
@@ -75,8 +77,10 @@ def verify(directory: Path) -> dict:
                     )
                     checked.add(identity)
             for method in ("full", "incremental"):
-                require(type(pair[method]["wall_ns"]) is int and pair[method]["wall_ns"] > 0,
-                        "Invalid elapsed time")
+                require(
+                    type(pair[method]["wall_ns"]) is int and pair[method]["wall_ns"] > 0,
+                    "Invalid elapsed time",
+                )
             pairs += 1
         measured = [pair for pair in comparison["pairs"] if not pair["warmup"]]
         full_median = statistics.median(pair["full"]["wall_ns"] for pair in measured)
@@ -85,8 +89,10 @@ def verify(directory: Path) -> dict:
         require(summary["measured_pairs"] == len(measured), "Summary pair count")
         require(summary["median_full_wall_ns"] == full_median, "Full median")
         require(summary["median_incremental_wall_ns"] == inc_median, "Incremental median")
-        require(summary["median_full_over_incremental_ratio"] == full_median / inc_median,
-                "Descriptive ratio")
+        require(
+            summary["median_full_over_incremental_ratio"] == full_median / inc_median,
+            "Descriptive ratio",
+        )
     require(result["mutations"]["passed"], "Mutation gate")
     require(len(result["mutations"]["cases"]) == 24, "Mutation inventory")
     for case in result["mutations"]["cases"]:
@@ -101,8 +107,10 @@ def verify(directory: Path) -> dict:
             check(case["command"], decode(raw), report)
             financial = report if case["command"] == "evaluate" else report["report"]
             require(financial["totals"]["rounded"] == case["expected"]["rounded"], "Literal total")
-            require(financial["totals"]["exact"] == wire(number(case["expected"]["exact"])),
-                    "Literal exact total")
+            require(
+                financial["totals"]["exact"] == wire(number(case["expected"]["exact"])),
+                "Literal exact total",
+            )
             if "object_totals" in case["expected"]:
                 require(
                     {obj["object_id"]: obj["total"] for obj in financial["object_totals"]}
