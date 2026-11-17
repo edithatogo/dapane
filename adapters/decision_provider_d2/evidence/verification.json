@@ -1,0 +1,46 @@
+{
+  "schema_version": "dapane-d2-local-preparation-receipt/0.1",
+  "date": "2026-11-18",
+  "baseline": {
+    "pr": 23,
+    "head": "d994e638685c4c48d22d5f474d03fe9261efa546",
+    "base_tree": "70661f7f12c7fd0a0f7689ac7c9b159d2f70ff81"
+  },
+  "scope": "local_pure_contract_only",
+  "execution": {
+    "python": "CPython 3.13.5",
+    "command": "python -m unittest discover -s tests -v",
+    "tests_passed": 34,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "compile_command": "python -m compileall -q bridge.py tests",
+    "compile_result": "passed",
+    "red_initial": "ModuleNotFoundError: No module named 'bridge'",
+    "green": "34 passed after implementing bridge and correcting invalid-provider diagnostic"
+  },
+  "sources": {
+    "bridge_git_blob": "6223c4a25efca90b4130e6e27e229f32714baba6",
+    "tests_git_blob": "b7b13b0951944f46294adbbb53a00b785aefd652",
+    "readme_git_blob": "efbf17cf353864272e771f19e55a404d774578a8"
+  },
+  "method_boundaries": {
+    "voiage": "ValueArray construction only, no installed numerical method",
+    "innovate": "external adoption observations and exact capacity envelope only, no native trajectory execution or valuation",
+    "paignia": "native graph-construction blueprint only, no native validation/solver",
+    "D1": "invented structural report fixture; no installed native replay"
+  },
+  "ready_for_merge": false,
+  "reason": "sole integrator namespace approval, D1 native acceptance, actual Voiage/Innovate/Paignia installed-provider checks and receiving-head CI pending",
+  "privacy_repair": {
+    "prior_head": "c4e62324188c11f8a94606b2b92cab92c3e863d2",
+    "observed_workflow": "https://github.com/edithatogo/dapane/actions/runs/44170322270/job/134347367171",
+    "finding": {
+      "rule": "generic-api-key",
+      "file": "adapters/decision_provider_d2/bridge.py",
+      "old_line": 244,
+      "review": "source is a pairing-error string, no credentials"
+    },
+    "resolution": "Replace ambiguous diagnostic wording, preserve pairing_mismatch code and /net_benefits/{i}/key path; no security suppression or change to scanner. 34 tests and compileall re-executed locally after source change.",
+    "new_head_ci": "unobserved"
+  }
+}
