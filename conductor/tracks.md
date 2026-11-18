@@ -70,3 +70,5 @@ Keep task markers, each track index, metadata and this table consistent. Put onl
 track IDs in `dependencies`; record source/provider readiness in `external_dependencies`.
 Re-check provider versions before implementing a consumer. Retain the original design
 source in MCHS as provenance; this registry is the current framework delivery owner.
+
+| [ ] | [Serde and canonicalization equivalence qualification](./tracks/serde_canonicalization_qualification_20261118/index.md) | new | RQ-01, RQ-02, RQ-03 |
