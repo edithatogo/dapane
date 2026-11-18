@@ -14,5 +14,14 @@
     "edithatogo"
   ],
   "capability_status": "planned",
-  "external_dependencies": []
+  "external_dependencies": [],
+  "repositories": [
+    "."
+  ],
+  "decisions": [],
+  "requirement_ids": [
+    "RQ-01",
+    "RQ-02",
+    "RQ-03"
+  ]
 }
