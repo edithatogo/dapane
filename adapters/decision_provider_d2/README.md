@@ -75,3 +75,51 @@ Innovate/Paignia test. There were no skipped tests. Keep existing shared gates.
 D2.1–D2.4 are **implemented as a bounded preparation adapter**, not completed
 at the provider-consumer acceptance level. The pending statuses should not be
 changed to `[x]` until the real-provider gates above pass.
+
+
+## D3 — Research-evidence and native-consumer continuation (18 November 2026)
+
+See the [complete D3 evidence protocol](D3-EVIDENCE.md) for the detailed design,
+synthetic staff-time example, permitted interpretation and receiving qualifications.
+
+- `study.py` implements strict D2-to-D3 six-key evidence intake, exact
+  signed net-benefit preservation, verified source-selected digests, explicit
+  2026 AUD health-system economic-cost perspective, synthetic data labelling,
+  equal draw weights and the independent finite **EVPI = AUD 10 per assay**
+  reference. **No VOI estimator** is duplicated in Dapane. EVPI is a maximum
+  information value, **not** EVSI or the expected net benefit of measurement.
+- `native_voiage.py` is an executable native-provider consumer for a **separately
+  installed, exact-digest selected Voiage wheel**. It rejects unsafe/duplicate
+  ZIP members, mismatched wheel/installed-package bytes, absent native extension,
+  unsupported source revisions and missing Rust EVPI methods. The only selected
+  provider method is `voiage._runtime.compute_evpi` → native Rust. It will
+  never silently calculate VOI in NumPy or Python.
+- `study.run_static_without_providers` selects a hash-pinned native Dapane CLI
+  independently of optional decision providers and runs its existing `evaluate
+  -` command. A **fake binary** is used in the local unit test to qualify
+  *subprocess/fail-closed behavior only*; actual compiled Dapane native fallback
+  still requires an installed executable and independently checked output.
+
+```sh
+cd adapters/decision_provider_d2
+python -m unittest discover -s tests -v
+python -m compileall -q bridge.py study.py native_voiage.py tests
+```
+
+**Tests-first D3 evidence:** 44 local `unittest` cases passed without skips on
+CPython 3.13.5; `pytest -q tests` also passed 44 and `compileall` passed.
+The first test run failed with missing `study`; additional red tests exposed
+a self-consistent substitute wheel and unsafe/duplicate archive entries, which
+were fixed and independently rerun. These are *D3 local* tests only; the prior
+D2 **34** cases remain separately evidenced. The validated Git blob IDs and
+outstanding provider checks are retained in
+[evidence/verification.json](evidence/verification.json).
+
+**Not yet complete:** actual D1 native result acceptance, installed Voiage
+execution of the four-cell staff-time example, reviewed native Innovate
+trajectory, native Paignia profile/app, real compiled Dapane static fallback,
+and receiving-head D2+D3 CI/security/release acceptance. D3.1 numerical
+execution and D3.3 installed-provider acceptance remain open. This continuation
+does not alter the root dependency graph, shared CI, D1/T1 source or Conductor
+registry; the sole integrator must adopt those changes and approve this
+previously unreserved namespace.

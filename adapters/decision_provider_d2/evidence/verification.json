@@ -41,6 +41,71 @@
       "review": "source is a pairing-error string, no credentials"
     },
     "resolution": "Replace ambiguous diagnostic wording, preserve pairing_mismatch code and /net_benefits/{i}/key path; no security suppression or change to scanner. 34 tests and compileall re-executed locally after source change.",
-    "new_head_ci": "unobserved"
+    "new_head_ci": "12 passed/2 queued at corrected prior D2 head, not acceptance for D3 descendant"
+  },
+  "d3": {
+    "date": "2026-11-18",
+    "scope": "local_synthetic_contract_and_native_runner_negative_tests",
+    "source_revision_baseline": "b796be5633ee828601787f1937e77d743ac6062e",
+    "red_tests": [
+      "ModuleNotFoundError: No module named 'study'",
+      "wheel artifact substitution self-claim accepted before pin-link check",
+      "unsafe and duplicate native wheel ZIP members not rejected"
+    ],
+    "green_checks": [
+      {
+        "command": "python -m unittest discover -s tests -q",
+        "passed": 44,
+        "failed": 0,
+        "skipped": 0,
+        "interpreter": "CPython 3.13.5"
+      },
+      {
+        "command": "python -m pytest -q tests",
+        "passed": 44,
+        "failed": 0,
+        "skipped": 0,
+        "interpreter": "CPython 3.13.5"
+      },
+      {
+        "command": "python -m compileall -q study.py native_voiage.py tests",
+        "result": "passed"
+      }
+    ],
+    "sources": {
+      "adapters/decision_provider_d2/study.py": "e13e163bc7878949a7fcee193a6331caf7f39b30",
+      "adapters/decision_provider_d2/native_voiage.py": "8d4cf0c92929678e515c1d3764e72550eeab80a9",
+      "adapters/decision_provider_d2/tests/test_study.py": "88616b4c64d42578864e8142fcdd2c8bea41c9ab",
+      "adapters/decision_provider_d2/tests/test_native_runner.py": "6c345673674b7bc5bf3b0ea38dc5282dae03384f"
+    },
+    "analytic_reference": {
+      "source": "independent_synthetic_finite_2_by_2",
+      "mean_current": -80,
+      "mean_change": -90,
+      "mean_perfect_information": -70,
+      "evpi_aud_per_assay": 10,
+      "evsi_evaluated": false
+    },
+    "installed_provider_tests": "not_run_no_qualified_artifact_in_local_container",
+    "actual_native_dapane_cli_test": "not_run_no_native_binary_in_local_container",
+    "static_fallback_local_check": "synthetic_fake_cli_only",
+    "blocking_gates": [
+      "D1/native installed output acceptance",
+      "Voiage installed wheel native EVPI",
+      "Innovate native adoption scenario",
+      "Paignia native static profile and application",
+      "Dapane static compiled CLI without decision providers",
+      "sole integrator path ownership and D2+D3 hosted qualification",
+      "required security and release acceptance"
+    ]
+  },
+  "prior_d2_hosted_snapshot": {
+    "source": "b796be5633ee828601787f1937e77d743ac6062e",
+    "conclusions": {
+      "success": 12,
+      "queued": 2,
+      "failures": 0
+    },
+    "scope": "existing Dapane root and D1/T1 checks, not the new D2 Python or D3 tests; two offline-security jobs queued"
   }
 }
