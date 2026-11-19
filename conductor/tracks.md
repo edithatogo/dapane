@@ -53,15 +53,24 @@ The Python/two-consumer track is completed and archived in place after
 [installed workforce and manual-extraction qualification](../docs/python-provider-verification.md)
 and [review with fixes](tracks/python_two_consumers_20261108/review.md).
 Its selected provider scope retains exact source identities, independent reference
-cases and historical entry points. Newborn and process-context tracks remain in
-progress. On `main`, the process-model track now incorporates X1 independent contracts
+cases and historical entry points. Across the 15 registered tracks (4 archived, 7
+`in_progress`, 2 `blocked`, 2 `new`), all seven standalone roadmap lanes
+(`bindings`, `decisions`, `mchs`, `newborn`, `observed`, `reporting`, `static`) are
+now integrated on `main` alongside X2 PNML/BPMN adapters (`adapters/process_models/`),
+bounded D2/D3 preparation contracts (`adapters/decision_provider_d2/`), and the new
+`serde_canonicalization_qualification_20261118` specification track. On `main`,
+the process-model track incorporates X1 independent contracts
 ([`adapters/observed_events/`](../adapters/observed_events/README.md)) and bounded
 X2 PNML/BPMN adapters ([`adapters/process_models/`](../adapters/process_models/README.md)),
 while X1.2 raw XES/OCEL decoding (`edithatogo/mailweft#4`) and X3 Kairos integration
-remain open. Next work addresses their acceptance criteria, broader provider and
-quantity/correction semantics, and release prerequisites. The first release follows contracts → Rust kernel →
-installed Python and two real provider consumers → release assurance.
-Power Platform, R/Julia, process models and decision integrations are independently qualified optional branches.
+remain open. Likewise, `polyglot_bindings_20261108` (`[!]` `blocked`) awaits C ABI/Julia
+B3 and installed R/C host qualification, `release_consolidation_20261108` (`[!]` `blocked`)
+retains upstream advisory (`RUSTSEC-2026-0543`) and offline-security gates, and D2/D3
+installed provider execution (`D2.1`–`D3.3`) remains open. Next work addresses their
+acceptance criteria, broader provider and quantity/correction semantics, and release
+prerequisites. The first release follows contracts → Rust kernel → installed Python
+and two real provider consumers → release assurance. Power Platform, R/Julia, process
+models and decision integrations are independently qualified optional branches.
 
 The [release handoff](../docs/release-handoff-2026-11-15.md) consumes all four
 incorporated archives and the existing provider qualification, and

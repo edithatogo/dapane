@@ -24,6 +24,7 @@ gates remain separate; the whole track is not complete.
 - [Exact-SHA integration handoff](HANDOFF.md)
 
 - [Owner quality repair and executed evidence](owner-quality-20261115.md)
+- [D2/D3 optional provider preparation adapter](../../../adapters/decision_provider_d2/README.md)
+- [D3 local preparation evidence and open gates](../../../adapters/decision_provider_d2/D3-EVIDENCE.md)
 
-The integrator has reconciled the central registry and added standalone CI. Later
-phases remain open; this lane does not claim production/provider qualification.
+The integrator has reconciled the central registry and added standalone CI for `adapters/decision_draws/` and `adapters/decision_provider_d2/`. Later provider phases (`D2.1`–`D3.3`), installed Voiage/Innovate/Paignia execution, and production/release qualification remain open.

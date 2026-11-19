@@ -1,0 +1,41 @@
+name: Decision provider D2/D3 preparation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: decision-provider-d2-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  decision-provider-d2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Run D2/D3 stdlib unit tests
+        working-directory: adapters/decision_provider_d2
+        run: python -m unittest discover -s tests -v
+      - name: Check Python bytecode compilation and evidence JSON hygiene
+        run: |
+          python -m compileall -q adapters/decision_provider_d2
+          python scripts/check_json_hygiene.py adapters/decision_provider_d2/evidence/verification.json
+      - name: Check Ruff lint and formatting
+        run: |
+          python -m pip install ruff==0.17.4
+          ruff check adapters/decision_provider_d2
+          ruff format --check adapters/decision_provider_d2

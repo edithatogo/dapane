@@ -209,3 +209,12 @@ completing a whole track. Root docs and capability promotion follow actual evide
 The [registry](tracks.md) retains each track's actual lifecycle state. This map
 records responsibility and review boundaries; it does not silently advance those
 states or make optional lanes prerequisites for the bounded first release.
+
+## Main integration reconciliation — 19 November 2026
+
+Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:
+
+- PR #21 (`observed_events` X1 lane) plus X2 bounded PNML/BPMN adapters (`adapters/process_models/`) and workflow integration.
+- PR #23 (`adapters/decision_draws/` for D1.1–D1.3 and T1.1–T1.3), PR #24 (`benchmarks/static/` for F1/F2.1–F2.2), PR #25 (`adapters/mchs_sources/` for M1–M2), PR #27 (`adapters/reporting_profiles/` for E1–E2), and PR #26 (`bindings/polyglot/` for B1–B2, with raw CI receipt removed from Git to preserve Gitleaks history cleanliness and the polyglot track retained as `blocked` pending ABI/Julia B3 and installed-host gates).
+- PR #29 (retargeted to `main` after mechanical Ruff lint/formatting alignment), admitting `adapters/decision_provider_d2/` as the bounded optional D2/D3 preparation namespace under [decision_integrations_20261108](tracks/decision_integrations_20261108/index.md) with standalone CI in `.github/workflows/decision-provider-d2.yml`, while leaving `D2.1`–`D3.3` and installed provider acceptance open.
+- PR #30 registering [serde_canonicalization_qualification_20261118](tracks/serde_canonicalization_qualification_20261118/index.md) (`new`), PR #28 (StepSecurity `harden-runner`), and PR #31 (pinned `actions/setup-python@v7.1.0`).
