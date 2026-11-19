@@ -161,12 +161,14 @@ the hosted release workflow neither provisions that infrastructure nor bypasses 
 
 A signed build statement binds bytes to a build. It is not a statement that the
 provider has migrated, an economic method has been validated or
-a package published. Verify a downloaded subject with the GitHub CLI using the
-expected repository, workflow and source revision, and compare it to its receipt.
+a package published. Verify a downloaded subject offline with the GitHub CLI using the
+`candidate-provenance` bundle (`attestation.json`), expected repository,
+workflow and source revision, and compare it to its receipt.
 Set `DAPANE_EXPECTED_SOURCE_SHA` to the reviewed main-branch commit first:
 
 ```sh
 gh attestation verify /absolute/path/to/artifact \
+  --bundle /absolute/path/to/attestation.json \
   --repo edithatogo/dapane \
   --signer-workflow edithatogo/dapane/.github/workflows/release-assurance.yml \
   --source-ref refs/heads/main \

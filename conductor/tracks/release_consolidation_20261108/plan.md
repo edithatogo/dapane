@@ -12,18 +12,18 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [!] L1.2 Resolve repository/package licensing, registry identities, supported matrix and source redistribution terms before public package publication.
   - Apache-2.0 project licensing is resolved. Complete locked dependency and Rust standard-library notices are generated with authenticated provenance and package-byte checks. The optional Python aggregate licence expression is omitted under the documented metadata boundary. Channel/account choices remain open; publication stays disabled and external provider assets are excluded.
 - [x] L1.3 Configure reproducible artifacts, dependency/advisory/licence checks, scoped CI permissions and provenance/SBOM generation using maintained tooling.
-  - Source 5f03f28 passed all four hosted dual builds, advisory/licence checks, three SBOMs and the aggregate matrix. All five downloaded artifact archives and 100 member checksums were inspected. The main-only attestation route is configured; central offline security remains a separate unexecuted gate.
+  - Historical PR #17 source `5f03f28` and post-merge `main` source `0658d94` both passed all four hosted dual builds, advisory/licence checks, three SBOMs and the aggregate matrix. On `main` (`0658d94`, run `43769725207`), trusted-main signed provenance (`attest` job `132994080532`, artifact `14184669447`) passed and all 20 subject files (14 distinct digests) verified offline with `gh attestation verify --bundle`. Central offline security remains a separate unexecuted gate.
 - [x] L1.4 Verify a clean build and installed-consumer reference runs for every advertised target; retain exact commands and artifact identities.
-  - Source 5f03f28 passed 133 installed tests on each of CPython 3.12.16, 3.13.18, 3.14.10 and 3.15.2, ten independent references and installed interval controls per target. The release provider job consumed the verified candidate artifact 14145643783 and passed in the existing separate environments. Aggregate success includes this exact-artifact result; names/digests are retained in the hosted receipt.
+  - Post-merge `main` source `0658d94` passed 196 installed tests on each of CPython 3.12.16, 3.13.18, 3.14.10 and 3.15.2 (following PR #22's 63 newborn tests; historical PR #17 source `5f03f28` passed 133), plus ten independent references and installed interval controls per target. The `0658d94` release provider job consumed verified candidate artifact `14184700967` and passed in the existing separate environments (`14145643783` on `5f03f28`). Aggregate success and local clean-head `verify-matrix` include these exact-artifact results; names/digests are retained in the receipts.
 
 ## Phase 2 — Operational quality
 
 - [x] L2.1 Measure representative throughput/memory and document numerical, scale and platform limits; add acceleration only through its own parity/performance evidence.
-  - Source 5f03f28 completed the 10/1,000/5,000-row CLI benchmark. Median 5,000-row times were 0.203711 seconds for valuation and 0.317516 for allocation; peak child RSS across the run was 86,384 KiB. Raw measurements, identities and single-runner synthetic limits are retained; no acceleration, empirical or cross-host claim is added.
+  - Post-merge `main` source `0658d94` completed the 10/1,000/5,000-row CLI benchmark with median 5,000-row times of 0.152769 seconds for valuation and 0.247505 for allocation and peak child RSS of 86,428 KiB (historical `5f03f28`: 0.203711 / 0.317516 s, 86,384 KiB). Raw measurements, identities and single-runner synthetic limits are retained; no acceleration, empirical or cross-host claim is added.
 - [x] L2.2 Document API/schema deprecation, source corrections, capability negotiation and rollback to previous qualified releases.
   - [Migration and recovery](../../../docs/release-migration.md) preserves schema/method/source/artifact identities and the qualified providers' canonical/legacy entry points and bounded historical replay. Broader cutover/removal remains outside this increment; no earlier public Dapane runtime is assumed.
 - [x] L2.3 Verify minimal-feature installation and optional-dependency absence; record release evidence without upgrading planned features to supported.
-  - All four 5f03f28 wheels passed installed byte/RECORD, exact legal payload and zero-runtime-dependency checks. Receipts retain the 29-package minimal native closure and exact supported runner/interpreters. Actual wheel/sdist metadata omits the optional aggregate licence fields and declares all three legal files. Planned capabilities remain unqualified.
+  - All four `0658d94` wheels (and historical `5f03f28` wheels) passed installed byte/RECORD, exact legal payload and zero-runtime-dependency checks. Receipts retain the 29-package minimal native closure and exact supported runner/interpreters. Actual wheel/sdist metadata omits the optional aggregate licence fields and declares all three legal files. Planned capabilities remain unqualified.
 
 ## Phase 3 — Conditional consolidation
 
@@ -41,12 +41,15 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [x] L4.1 Review the implementation against the original acceptance criteria, apply concrete fixes and retain exact-source verification.
   - The earlier five findings and integration null-state fix remain covered. All 64 release-control tests and Ruff pass. Independent notice, integration and documentation reviews found no material defect. The original acceptance section is unchanged; completed source-specific native/artifact checks are recorded under L1.3/L1.4.
 - [!] L4.2 Archive this track after all mandatory acceptance criteria have evidence.
-  - Archival is already authorised. Channel/account choices and the queued central security execution remain outstanding; trusted-main provenance follows eligible main-branch qualification. Ordinary exact-source hosted results and bounded provider acceptance are complete. Do not weaken the remaining criteria to obtain an archive marker.
+  - Archival is already authorised. Trusted-main signed provenance (`attest` job `132994080532`, artifact `14184669447`) and ordinary exact-source `main` checks are now verified on `0658d94`. Channel/account choices (`L1.2`) and central `Offline AI security` execution (run `43769725442` auto-cancelled after 24h queue timeout with `runner_id: 0` and 0 steps executed) remain outstanding. Do not weaken the remaining criteria to obtain an archive marker.
 
 ## Evidence record
 
-See [execution and review evidence](evidence.md) and the
-[current handoff receipt](../../../docs/release-handoff-2026-11-15.md). Candidate reports bind actual
+See [execution and review evidence](evidence.md), the
+[post-merge `main` qualification record](../../../docs/release-qualification-2026-11-19.md),
+its [machine-readable receipt](../../../docs/release-qualification-0658d94.json)
+and the historical
+[15 November handoff receipt](../../../docs/release-handoff-2026-11-15.md). Candidate reports bind actual
 source, artifacts, platform, methods and synthetic data versions; they do not
 establish scientific validity or registry entitlement. Provider and source scope
 remain separately bounded by their owners' records. Update [metadata](metadata.json), [track index](index.md) and

@@ -37,8 +37,10 @@ connects a dated workforce base-pay quotation to manual DNA-extraction labour,
 with canonical/legacy compatibility and an explicit historical calculator path.
 The two provider environments keep their exact Python 3.15.2 and 3.15.1 pins.
 The [release handoff record](docs/release-handoff-2026-11-15.md) confirms that the
-setup, contracts, kernel and Python/provider archives are incorporated. Release
-qualification consumes their existing records and checks the exact candidate
+setup, contracts, kernel and Python/provider archives are incorporated, and
+[post-merge `main` qualification](docs/release-qualification-2026-11-19.md)
+records verified `0658d94` candidate artifacts and signed trusted-main provenance.
+Release qualification consumes their existing records and checks the exact candidate
 artifacts; publication remains disabled.
 
 Broader provider coverage, richer exposure and economic methods, R/Julia,
@@ -167,4 +169,6 @@ Separately obtained provider assets retain their own terms and are excluded.
 No registry release, package-name reservation or app deployment is asserted.
 Workspace publication remains disabled pending registry ownership and release
 qualification. The [release handoff record](docs/release-handoff-2026-11-15.md)
-identifies the incorporated archives and remaining publication decisions.
+and [post-merge `main` qualification](docs/release-qualification-2026-11-19.md)
+identify the incorporated archives, attested `0658d94` artifacts and remaining
+publication/security gates.

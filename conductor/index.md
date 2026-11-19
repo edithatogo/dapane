@@ -29,6 +29,7 @@ their repository owners.
 - [Event/process/object model](../docs/event-process-object-model.md) and [provider boundaries](../docs/provider-boundaries.md): independent core and optional Kairos/provider integration.
 - [Installed workforce and genomics consumers](../docs/python-provider-verification.md): dated quotation composition, canonical/legacy imports and selected historical-workbook qualification.
 - [Release handoff and qualification](../docs/release-handoff-2026-11-15.md): incorporated archives, exact hosted baseline, distribution notices and remaining publication/security blockers.
+- [Post-merge `main` release qualification and attestation](../docs/release-qualification-2026-11-19.md): `0658d94` verified matrix, exact-artifact providers, signed provenance and cancelled central offline security status.
 
 - [Roadmap](roadmap.md): capability milestones and optional delivery paths.
 - [Track registry](tracks.md): status and entry points for all tracks.

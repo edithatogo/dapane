@@ -3,7 +3,7 @@
   "type": "chore",
   "status": "blocked",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-15T04:28:29.795631+00:00",
+  "updated_at": "2026-11-19T06:38:37Z",
   "description": "Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.",
   "repositories": [
     "."
@@ -26,15 +26,15 @@
     "RQ-12",
     "RQ-04"
   ],
-  "capability_status": "candidate_ordinary_checks_passed_central_security_pending",
+  "capability_status": "main_candidate_attested_central_security_and_publication_blocked",
   "verification": {
-    "status": "ordinary_hosted_checks_passed_security_and_publication_blocked",
-    "tested_source": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
-    "tree": "191a295ee823297a3f517e7f584cf6023cbe4d40",
+    "status": "ordinary_hosted_checks_and_attestation_passed_security_and_publication_blocked",
+    "tested_source": "0658d94ad772023a0185a000b5254f9c2f4a63a9",
+    "tree": "48c3ae972ed48e5e1e6e47862e99381323191fa7",
     "evidence": [
       "evidence.md",
-      "../../../docs/release-handoff-2026-11-15.md",
-      "../../../docs/release-qualification-5f03f28.json"
+      "../../../docs/release-qualification-2026-11-19.md",
+      "../../../docs/release-qualification-0658d94.json"
     ],
     "commands": [
       "python scripts/release_assurance.py validate",
@@ -51,11 +51,12 @@
       "python scripts/verify_provider_consumers.py <provider> --cli <release-cli>",
       "cargo deny --locked --format json check advisories bans licenses sources",
       "python -m pip_audit --strict",
-      "cargo cyclonedx --format json --spec-version 1.6"
+      "cargo cyclonedx --format json --spec-version 1.6",
+      "gh attestation verify <subject> --bundle <bundle> --repo edithatogo/dapane --signer-workflow edithatogo/dapane/.github/workflows/release-assurance.yml --source-ref refs/heads/main --source-digest 0658d94ad772023a0185a000b5254f9c2f4a63a9 --deny-self-hosted-runners"
     ],
     "results": {
       "control_tests": 64,
-      "installed_tests_per_target": 133,
+      "installed_tests_per_target": 196,
       "independent_references_per_target": 10,
       "interval_schema_rejections_per_target": 9,
       "interval_runtime_rejections_per_target": 11,
@@ -71,21 +72,22 @@
       ],
       "native_behavioral_tests": 62,
       "kernel_tooling_tests": 11,
-      "artifact_archives_directly_inspected": 5,
+      "artifact_archives_directly_inspected": 6,
       "artifact_member_checksums_verified": 100,
+      "local_verify_matrix_clean_head": "passed (4 targets)",
       "dual_builds": "byte-identical for each interpreter",
       "wheel_sdist_metadata": "Metadata 2.4; optional aggregate fields absent; all three legal files declared and byte-verified",
-      "exact_artifact_provider_job": "passed",
+      "exact_artifact_provider_job": "passed (candidate artifact 14184700967; 196 native-boundary tests)",
       "cargo_deny": "passed; zero errors/warnings in all four domains",
       "python_audit": "36 resolved packages; no known vulnerabilities",
       "sboms": 3,
-      "bounded_benchmark": "passed; raw measurements and limits retained",
+      "bounded_benchmark": "passed; raw measurements and limits retained (86,428 KiB peak RSS)",
       "publication_gate": "expected exit 2; publication disabled and registry identity unverified",
-      "central_offline_security": "queued; no execution result",
-      "trusted_main_attestation": "not run; ineligible pull-request event"
+      "central_offline_security": "cancelled after 24h queue timeout on run 43769725442 / job 132982710619 (runner_id 0, 0 steps executed)",
+      "trusted_main_attestation": "passed on run 43769725207 / job 132994080532; artifact 14184669447 (14 distinct subjects, 20 files verified offline with gh attestation verify --bundle)"
     },
-    "scope": "Hosted candidate artifacts on the declared Linux x86_64 interpreter matrix and selected providers. Central offline security remains unexecuted; no publication, empirical validation or other-platform claim.",
-    "command_context": "Abbreviated command families; exact arguments, environment paths and complete logs are retained by source-pinned Release assurance and Runtime workflow runs linked in the receipt."
+    "scope": "Main merge commit 0658d94 candidate artifacts on the declared Linux x86_64 interpreter matrix, selected providers and signed trusted-main provenance. Central offline security timed out unexecuted; no publication, empirical validation or other-platform claim.",
+    "command_context": "Abbreviated command families; exact arguments, environment paths and complete logs are retained by source-pinned Release assurance and Runtime workflow runs plus the local verification receipt linked in docs/release-qualification-2026-11-19.md."
   },
   "completion_evidence": [
     "A core/Python release can qualify after contracts, kernel and the two consumers; optional integration tracks remain independently planned or experimental.",
@@ -98,9 +100,8 @@
   "archive_requested": true,
   "archive_performed": false,
   "blockers": [
-    "Centrally managed offline AI security remains queued and unexecuted; its existing gate is retained before treating PR17 as fully qualified.",
-    "First publication channels and controlling registry accounts remain unspecified; publication stays disabled.",
-    "Trusted-main attestation follows successful eligible main-branch qualification."
+    "Centrally managed offline AI security run 43769725442 (job 132982710619) timed out after 24h in queue and was cancelled with no runner assigned and 0 steps executed; its existing gate is retained before treating release_consolidation_20261108 as fully qualified.",
+    "First publication channels and controlling registry accounts/organisations remain unspecified; publication stays disabled."
   ],
   "review": {
     "status": "completed_with_fixes",
@@ -267,6 +268,66 @@
         "workflow_syntax": "passed: 2 YAML workflows, 23 Bash blocks, 3 Python blocks"
       },
       "scope": "Local release controls and source notice provenance; current native/provider artifact qualification must run in hosted CI. Prior hosted results remain bound to d37575ec."
+    },
+    {
+      "status": "ordinary_hosted_checks_passed_security_and_publication_blocked",
+      "tested_source": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+      "tree": "191a295ee823297a3f517e7f584cf6023cbe4d40",
+      "evidence": [
+        "evidence.md",
+        "../../../docs/release-handoff-2026-11-15.md",
+        "../../../docs/release-qualification-5f03f28.json"
+      ],
+      "commands": [
+        "python scripts/release_assurance.py validate",
+        "python -m unittest discover -s tests/release -v",
+        "python scripts/distribution_notices.py --check",
+        "cargo build --locked --release --no-default-features -p dapane-cli",
+        "maturin build --locked --release",
+        "python scripts/release_assurance.py compare",
+        "python scripts/release_assurance.py collect",
+        "python scripts/release_assurance.py verify",
+        "python scripts/release_assurance.py verify-matrix",
+        "python -m pytest --import-mode=importlib tests/python -q",
+        "python scripts/validate_intervals.py --cli <installed-cli>",
+        "python scripts/verify_provider_consumers.py <provider> --cli <release-cli>",
+        "cargo deny --locked --format json check advisories bans licenses sources",
+        "python -m pip_audit --strict",
+        "cargo cyclonedx --format json --spec-version 1.6"
+      ],
+      "results": {
+        "control_tests": 64,
+        "installed_tests_per_target": 133,
+        "independent_references_per_target": 10,
+        "interval_schema_rejections_per_target": 9,
+        "interval_runtime_rejections_per_target": 11,
+        "interval_tamper_controls_per_target": 15,
+        "matrix_targets": 4,
+        "native_dependency_packages": 29,
+        "python_runtime_dependencies": 0,
+        "interpreters": [
+          "3.12.16",
+          "3.13.18",
+          "3.14.10",
+          "3.15.2"
+        ],
+        "native_behavioral_tests": 62,
+        "kernel_tooling_tests": 11,
+        "artifact_archives_directly_inspected": 5,
+        "artifact_member_checksums_verified": 100,
+        "dual_builds": "byte-identical for each interpreter",
+        "wheel_sdist_metadata": "Metadata 2.4; optional aggregate fields absent; all three legal files declared and byte-verified",
+        "exact_artifact_provider_job": "passed",
+        "cargo_deny": "passed; zero errors/warnings in all four domains",
+        "python_audit": "36 resolved packages; no known vulnerabilities",
+        "sboms": 3,
+        "bounded_benchmark": "passed; raw measurements and limits retained",
+        "publication_gate": "expected exit 2; publication disabled and registry identity unverified",
+        "central_offline_security": "queued; no execution result",
+        "trusted_main_attestation": "not run; ineligible pull-request event"
+      },
+      "scope": "Hosted candidate artifacts on the declared Linux x86_64 interpreter matrix and selected providers. Central offline security remains unexecuted; no publication, empirical validation or other-platform claim.",
+      "command_context": "Abbreviated command families; exact arguments, environment paths and complete logs are retained by source-pinned Release assurance and Runtime workflow runs linked in the receipt."
     }
   ],
   "handoff": {

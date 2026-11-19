@@ -1,5 +1,7 @@
 # Release qualification handoff — 15 November 2026
 
+> Subsequent merge update: PR #17 (`f9e8fd7`) and PR #22 (`0658d94`) merged to `main`; see [release-qualification-2026-11-19.md](release-qualification-2026-11-19.md) and [release-qualification-0658d94.json](release-qualification-0658d94.json) for the post-merge `main` qualification and signed attestation receipt.
+
 Follow-up: ordinary hosted qualification has now passed at exact source
 **5f03f28e3aa5a98c45c0853ce7498c86b181d66a**, including the new notice bytes and
 the existing provider verifier consuming the release artifacts. Its
