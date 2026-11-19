@@ -1,15 +1,15 @@
 # Paired decisions and fiscal reference adapters
 
-This optional Rust crate implements the bounded D1 paired-draw envelope and T1
-synthetic fiscal reference contract. It lives in the `adapters/decision_draws/`
+This optional Rust crate implements the D1 paired-draw envelope, T1 synthetic
+fiscal contract and T2 synthetic schedule and equity calculations. It lives in the `adapters/decision_draws/`
 namespace reserved for this lane in
 [ownership PR #20](https://github.com/edithatogo/dapane/pull/20).
 It has its own manifest and lockfile. Shared registry and standalone CI wiring
 were subsequently added by the sole integrator; shared core/CLI/Python and
 schemas are unchanged by this adapter lane.
 
-**The bounded native quality checks now pass at `9c177166899e588dc3dacadb13e4a0a3750bbce2`.** The received source
-had already passed 37 hosted tests and Clippy; this owner pass resolves its five
+The 15 November quality check covered `9c177166899e588dc3dacadb13e4a0a3750bbce2`. The received source
+had already passed 37 hosted tests and Clippy. That owner pass resolved five
 Rust formatting failures and reruns format, lint, tests and locked dependency
 resolution on the exact corrected commit. The [owner quality record](../../conductor/tracks/decision_integrations_20261108/owner-quality-20261115.md)
 and [handoff](../../conductor/tracks/decision_integrations_20261108/HANDOFF.md)
@@ -18,18 +18,17 @@ production-method, provider and security/release gates.
 
 ## Interfaces
 
-The library exports three JSON functions returning `Result<String, DapaneError>`:
+The library exports four JSON functions returning `Result<String, DapaneError>`.
 
 | Interface | Scope |
 | --- | --- |
 | `paired::draw_set_digest_json` | Validate and fingerprint an explicit joint draw set for the independent outcome model. |
 | `paired::evaluate_paired_json` | Prepare the actual supported native cost model for each cell/draw, evaluate it, and join separately supplied outcomes on all six keys. |
-| `fiscal::evaluate_fiscal_json` | Evaluate one signed incremental synthetic fiscal packet using explicit perspective, expenditure/economic basis, discount timing and domestic transfer rules. |
+| `fiscal::evaluate_fiscal_json` | Evaluate one signed incremental synthetic fiscal packet. Profile 0.2 also discounts supplied cohort and cessation schedules. |
+| `fiscal::evaluate_equity_json` | Return exact weighted and unweighted cost, QALY and NMB sums across compatible fiscal packets while retaining each subgroup row. |
 
-The versioned input/output, identity, error and precision rules are in
-[CONTRACT.md](CONTRACT.md). The fiscal function is an isolated reference candidate,
-not a qualified Tobac or Voiage method. It does not extend the core's nonnegative
-resource-valuation API.
+The fiscal functions run in the standalone reference crate.
+[Contract](CONTRACT.md)
 
 ## D1 example
 
@@ -83,14 +82,9 @@ cargo clippy --manifest-path adapters/decision_draws/Cargo.toml --locked --offli
 cargo test --manifest-path adapters/decision_draws/Cargo.toml --locked --offline --all-targets
 ```
 
-The exact-checkpoint run executed 18 D1 and 19 T1 tests with no failures or
-ignored cases; it also passed formatting, warnings-denied Clippy and locked/offline
-metadata resolution. An absent offline cache is a blocked run, not a pass.
-The existing manifests and lockfiles were not changed by the formatting repair.
-
-The integrator's standalone workflow explicitly executes this nested workspace.
-The central registry now matches both owned tracks. Each new head still needs
-its own hosted results; no ordinary quality pass waives a security/release gate.
+The standalone workflow explicitly executes this nested workspace. The
+Conductor record gives the local results and verified source.
+[Fiscal verification](../../conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/VERIFICATION.md)
 
 ## Boundaries
 

@@ -1,4 +1,4 @@
-//! T1: exact synthetic incremental accounting with explicit transfer boundaries.
+//! Exact synthetic fiscal accounting, cohort schedules and subgroup sums.
 //!
 //! This implements a small synthetic reference contract, not a Tobac consumer,
 //! excise/GST calculator, cohort model or decision-provider method.
@@ -18,6 +18,10 @@ use crate::common::{self, Identity, PairKey, error};
 pub const SCHEMA_VERSION: &str = "dapane-fiscal/0.1";
 /// Exact effective-rate-per-step discounting and explicit accounting.
 pub const METHOD_VERSION: &str = "dapane-fiscal-exact-steps-v0.1.0";
+/// Fiscal envelope with separately valued cohort and cessation schedules.
+pub const SCHEDULE_SCHEMA_VERSION: &str = "dapane-fiscal/0.2";
+/// Exact per-step discounting with separate schedule outputs.
+pub const SCHEDULE_METHOD_VERSION: &str = "dapane-fiscal-exact-steps-v0.2.0";
 /// Bound on monetary lines and separately supplied health flows.
 pub const MAX_FLOWS: usize = 256;
 /// Maximum explicit integer discount step; precision bounds apply separately.
@@ -37,6 +41,17 @@ impl Perspective {
             Self::HealthSystem => "health_system",
             Self::PublicFinance => "public_finance",
             Self::Societal => "societal",
+        }
+    }
+
+    fn accepts_resource_basis(self, basis: AccountingBasis) -> bool {
+        match self {
+            Self::HealthSystem => matches!(
+                basis,
+                AccountingBasis::EconomicCost | AccountingBasis::PublicExpenditure
+            ),
+            Self::PublicFinance => basis == AccountingBasis::PublicExpenditure,
+            Self::Societal => basis == AccountingBasis::EconomicCost,
         }
     }
 }
@@ -357,22 +372,15 @@ struct Input {
     lines: Vec<Line>,
     health: Option<Health>,
     /// Optional occupancy schedule. Omitted input means an empty schedule.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     cohort_states: Vec<CohortStateEntry>,
     /// Optional cessation-resource schedule. Omitted input means an empty schedule.
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     cessation_resources: Vec<CessationResourceEntry>,
 }
 
 impl Input {
     fn validate(&mut self) -> Result<Rates, DapaneError> {
-        if self.schema_version != SCHEMA_VERSION {
-            return Err(error(
-                "unsupported_schema",
-                "Unsupported fiscal contract",
-                "/schema_version",
-            ));
-        }
         common::identifier(&self.run_id, "/run_id")?;
         self.key.validate("/key")?;
         common::identifier(&self.comparator_strategy_id, "/comparator_strategy_id")?;
@@ -403,15 +411,7 @@ impl Input {
                 "/aggregation_rule",
             ));
         }
-        let basis_ok = match self.perspective {
-            Perspective::HealthSystem => matches!(
-                self.resource_basis,
-                AccountingBasis::EconomicCost | AccountingBasis::PublicExpenditure
-            ),
-            Perspective::PublicFinance => self.resource_basis == AccountingBasis::PublicExpenditure,
-            Perspective::Societal => self.resource_basis == AccountingBasis::EconomicCost,
-        };
-        if !basis_ok {
+        if !self.perspective.accepts_resource_basis(self.resource_basis) {
             return Err(error(
                 "resource_basis",
                 "Public finance requires public expenditure; societal valuation requires economic costs; transfers are never a resource basis",
@@ -530,7 +530,6 @@ impl Input {
         }
         let mut cohort_ids = BTreeSet::new();
         for state in &self.cohort_states {
-            let path = format!("/cohort_states/{}", state.id);
             common::identifier(&state.id, "/cohort_states/id")?;
             common::identifier(&state.from_state, "/cohort_states/from_state")?;
             common::identifier(&state.to_state, "/cohort_states/to_state")?;
@@ -541,14 +540,6 @@ impl Input {
                     "/cohort_states",
                 ));
             }
-            nonnegative(&state.population_count, &format!("{path}/population_count"))?;
-            state.source.validate(&format!("{path}/source"))?;
-            state.undiscounted_amount.validate(
-                self.currency,
-                self.price_year,
-                MoneyUnit::Currency,
-                &format!("{path}/undiscounted_amount"),
-            )?;
         }
         self.cohort_states.sort_by(|a, b| a.id.cmp(&b.id));
         if self.cessation_resources.len() > MAX_FLOWS {
@@ -560,7 +551,6 @@ impl Input {
         }
         let mut cessation_ids = BTreeSet::new();
         for resource in &self.cessation_resources {
-            let path = format!("/cessation_resources/{}", resource.id);
             common::identifier(&resource.id, "/cessation_resources/id")?;
             common::identifier(
                 &resource.resource_type,
@@ -573,18 +563,53 @@ impl Input {
                     "/cessation_resources",
                 ));
             }
-            nonnegative(&resource.quantity, &format!("{path}/quantity"))?;
-            resource.source.validate(&format!("{path}/source"))?;
-            resource.undiscounted_amount.validate(
-                self.currency,
-                self.price_year,
-                MoneyUnit::Currency,
-                &format!("{path}/undiscounted_amount"),
-            )?;
         }
         self.cessation_resources.sort_by(|a, b| a.id.cmp(&b.id));
         self.discount.validate()
     }
+}
+
+fn parse_fiscal(raw: Value) -> Result<Input, DapaneError> {
+    let schedule_field = ["cohort_states", "cessation_resources"]
+        .into_iter()
+        .find(|field| raw.get(*field).is_some());
+    let input: Input =
+        serde_json::from_value(raw).map_err(|e| error("invalid_request", &e.to_string(), "/"))?;
+    match input.schema_version.as_str() {
+        SCHEMA_VERSION => {
+            if let Some(field) = schedule_field {
+                return Err(error(
+                    "invalid_request",
+                    "Schedule fields require the fiscal 0.2 contract",
+                    &format!("/{field}"),
+                ));
+            }
+        }
+        SCHEDULE_SCHEMA_VERSION => {}
+        _ => {
+            return Err(error(
+                "unsupported_schema",
+                "Unsupported fiscal contract",
+                "/schema_version",
+            ));
+        }
+    }
+    Ok(input)
+}
+
+fn validate_schedule_basis(
+    perspective: Perspective,
+    basis: AccountingBasis,
+    path: &str,
+) -> Result<(), DapaneError> {
+    if !perspective.accepts_resource_basis(basis) {
+        return Err(error(
+            "resource_basis",
+            "Schedule amount must use a resource basis compatible with its source perspective",
+            path,
+        ));
+    }
+    Ok(())
 }
 
 fn nonnegative(value: &Rational, path: &str) -> Result<BigRational, DapaneError> {
@@ -606,9 +631,34 @@ fn nonnegative(value: &Rational, path: &str) -> Result<BigRational, DapaneError>
 /// both legs within the domestic boundary. The pure fiscal view returns public
 /// net outlay, never health NMB. Every value remains exact without rounding.
 pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
-    let mut input: Input = common::parse(input)?;
+    let input = parse_fiscal(common::parse(input)?)?;
+    common::canonical(&evaluate_fiscal(input)?.report)
+}
+
+struct FiscalEvaluation {
+    report: Value,
+    selected_resource_cost: BigRational,
+    discounted_qalys: Option<BigRational>,
+    net_monetary_benefit: Option<BigRational>,
+}
+
+fn evaluate_fiscal(mut input: Input) -> Result<FiscalEvaluation, DapaneError> {
     let rates = input.validate()?;
-    let input_digest = common::digest("dapane:fiscal-input:0.1\n", &input)?;
+    let with_schedules = input.schema_version == SCHEDULE_SCHEMA_VERSION;
+    let (method_version, input_domain, output_domain) = if with_schedules {
+        (
+            SCHEDULE_METHOD_VERSION,
+            "dapane:fiscal-input:0.2\n",
+            "dapane:fiscal-output:0.2\n",
+        )
+    } else {
+        (
+            METHOD_VERSION,
+            "dapane:fiscal-input:0.1\n",
+            "dapane:fiscal-output:0.1\n",
+        )
+    };
+    let input_digest = common::digest(input_domain, &input)?;
     let mut medical = BigRational::zero();
     let mut enforcement = BigRational::zero();
     let mut receipts = BigRational::zero();
@@ -704,20 +754,23 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
         }
         let threshold = common::exact(&health.threshold.amount, "/health/threshold")?;
         let monetized_health = common::bounded(&qaly * threshold, "/net_monetary_benefit")?;
-        nmb = Some(common::wire(&common::bounded(
+        nmb = Some(common::bounded(
             monetized_health - selected_resource - &net_transfer,
             "/net_monetary_benefit",
-        )?));
-        discounted_qalys = Some(common::wire(&qaly));
+        )?);
+        discounted_qalys = Some(qaly);
     }
     let mut valued_cohort_states = Vec::new();
     for (i, state) in input.cohort_states.iter().enumerate() {
         let path = format!("/cohort_states/{i}");
+        validate_schedule_basis(state.perspective, state.basis, &format!("{path}/basis"))?;
+        state.source.validate(&format!("{path}/source"))?;
+        let population = nonnegative(&state.population_count, &format!("{path}/population_count"))?;
         let amount = state.undiscounted_amount.validate(
             input.currency,
             input.price_year,
             MoneyUnit::Currency,
-            &path,
+            &format!("{path}/undiscounted_amount"),
         )?;
         let discount_factor = factor(&rates.resource, state.time_step, &path)?;
         let discounted = common::bounded(amount * &discount_factor, &path)?;
@@ -729,7 +782,7 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
             "time_step": state.time_step,
             "from_state": state.from_state,
             "to_state": state.to_state,
-            "population_count": common::wire(&nonnegative(&state.population_count, &path)?),
+            "population_count": common::wire(&population),
             "perspective": state.perspective,
             "basis": state.basis,
             "time_step_years": time_years(state.time_step, &rates.step_years)?,
@@ -741,11 +794,18 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
     let mut valued_cessation_resources = Vec::new();
     for (i, resource) in input.cessation_resources.iter().enumerate() {
         let path = format!("/cessation_resources/{i}");
+        validate_schedule_basis(
+            resource.perspective,
+            resource.basis,
+            &format!("{path}/basis"),
+        )?;
+        resource.source.validate(&format!("{path}/source"))?;
+        let quantity = nonnegative(&resource.quantity, &format!("{path}/quantity"))?;
         let amount = resource.undiscounted_amount.validate(
             input.currency,
             input.price_year,
             MoneyUnit::Currency,
-            &path,
+            &format!("{path}/undiscounted_amount"),
         )?;
         let discount_factor = factor(&rates.resource, resource.time_step, &path)?;
         let discounted = common::bounded(amount * &discount_factor, &path)?;
@@ -756,7 +816,7 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
             "subgroup_id": input.key.subgroup_id,
             "time_step": resource.time_step,
             "resource_type": resource.resource_type,
-            "quantity": common::wire(&nonnegative(&resource.quantity, &path)?),
+            "quantity": common::wire(&quantity),
             "perspective": resource.perspective,
             "basis": resource.basis,
             "time_step_years": time_years(resource.time_step, &rates.step_years)?,
@@ -774,8 +834,8 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
         None
     };
     let mut report = serde_json::json!({
-        "schema_version": SCHEMA_VERSION,
-        "method_version": METHOD_VERSION,
+        "schema_version": input.schema_version,
+        "method_version": method_version,
         "status": "complete",
         "accounting_basis": "signed_incremental_exact_discounted",
         "run_id": input.run_id,
@@ -801,18 +861,25 @@ pub fn evaluate_fiscal_json(input: &str) -> Result<String, DapaneError> {
         },
         "selected_resource_cost": common::wire(selected_resource),
         "excluded_line_ids": excluded,
-        "net_monetary_benefit": nmb,
-        "discounted_qalys": discounted_qalys,
+        "net_monetary_benefit": nmb.as_ref().map(common::wire),
+        "discounted_qalys": discounted_qalys.as_ref().map(common::wire),
         "net_public_outlay": net_outlay,
         "valued_lines": valued_lines,
         "valued_health": valued_health,
-        "valued_cohort_states": valued_cohort_states,
-        "valued_cessation_resources": valued_cessation_resources,
         "input_snapshot": input,
     });
-    report["output_digest"] = Value::String(common::digest("dapane:fiscal-output:0.1\n", &report)?);
+    if with_schedules {
+        report["valued_cohort_states"] = Value::Array(valued_cohort_states);
+        report["valued_cessation_resources"] = Value::Array(valued_cessation_resources);
+    }
+    report["output_digest"] = Value::String(common::digest(output_domain, &report)?);
     common::encoded_size(&report, common::OUTPUT_BYTES)?;
-    common::canonical(&report)
+    Ok(FiscalEvaluation {
+        report,
+        selected_resource_cost: selected_resource.clone(),
+        discounted_qalys,
+        net_monetary_benefit: nmb,
+    })
 }
 
 /// Equity-weighted sum across subgroup packets. Schema `dapane-fiscal-equity/0.1`.
@@ -839,51 +906,16 @@ struct EquityInput {
     packets: Vec<EquityPacket>,
 }
 
-fn read_rational(value: &Value, path: &str) -> Result<BigRational, DapaneError> {
-    let wire: Rational = serde_json::from_value(value.clone())
-        .map_err(|_| error("invalid_number", "Expected an exact rational object", path))?;
-    common::exact(&wire, path)
-}
-
-fn optional_rational(value: &Value, path: &str) -> Result<Option<BigRational>, DapaneError> {
-    if value.is_null() {
-        Ok(None)
-    } else {
-        read_rational(value, path).map(Some)
-    }
-}
-
 fn add_optional(
-    seen: &mut bool,
     total: &mut Option<BigRational>,
     next: Option<BigRational>,
     path: &str,
 ) -> Result<(), DapaneError> {
-    let next = next.map(|value| common::bounded(value, path)).transpose()?;
-    if !*seen {
-        *seen = true;
-        *total = next;
-        return Ok(());
+    if let Some(next) = next {
+        let total = total.get_or_insert_with(BigRational::zero);
+        *total = common::bounded(&*total + common::bounded(next, path)?, path)?;
     }
-    match (&mut *total, next) {
-        (None, None) => Ok(()),
-        (Some(total), Some(next)) => {
-            *total = common::bounded(&*total + next, path)?;
-            Ok(())
-        }
-        _ => Err(error(
-            "health_contract",
-            "Every subgroup packet must use the same health contract",
-            path,
-        )),
-    }
-}
-
-fn wire_optional(value: &Option<BigRational>) -> Result<Value, DapaneError> {
-    match value {
-        Some(value) => common::value(&common::wire(value)),
-        None => Ok(Value::Null),
-    }
+    Ok(())
 }
 
 /// Sum exact fiscal results across explicitly weighted subgroup packets.
@@ -910,13 +942,9 @@ pub fn evaluate_equity_json(input: &str) -> Result<String, DapaneError> {
     let mut weighted_qaly = None;
     let mut unweighted_nmb = None;
     let mut weighted_nmb = None;
-    let mut saw_qaly = false;
-    let mut saw_weighted_qaly = false;
-    let mut saw_nmb = false;
-    let mut saw_weighted_nmb = false;
     let mut axis: Option<Value> = None;
     let mut subgroups = BTreeSet::new();
-    for (i, packet) in input.packets.iter().enumerate() {
+    for (i, packet) in input.packets.into_iter().enumerate() {
         let path = format!("/packets/{i}");
         let weight = common::exact(&packet.weight, &format!("{path}/weight"))?;
         if weight <= BigRational::zero() {
@@ -926,85 +954,69 @@ pub fn evaluate_equity_json(input: &str) -> Result<String, DapaneError> {
                 &format!("{path}/weight"),
             ));
         }
-        let fiscal = common::canonical(&packet.fiscal)?;
-        let report: Value =
-            serde_json::from_str(&evaluate_fiscal_json(&fiscal)?).map_err(|_| {
-                error(
-                    "serialization_error",
-                    "Fiscal report could not be read back",
-                    &path,
-                )
-            })?;
+        let fiscal = parse_fiscal(packet.fiscal)?;
+        let subgroup = fiscal.key.subgroup_id.clone();
+        let FiscalEvaluation {
+            report,
+            selected_resource_cost: cost,
+            discounted_qalys: qaly,
+            net_monetary_benefit: nmb,
+        } = evaluate_fiscal(fiscal)?;
         let key = &report["key"];
-        let subgroup = key["subgroup_id"].as_str().ok_or_else(|| {
-            error(
-                "invalid_identifier",
-                "Subgroup identity missing",
-                &format!("{path}/fiscal/key/subgroup_id"),
-            )
-        })?;
-        if !subgroups.insert(subgroup.to_owned()) {
+        if !subgroups.insert(subgroup.clone()) {
             return Err(error(
                 "duplicate_identity",
                 "Each subgroup is aggregated once; identities are not pooled",
                 &format!("{path}/fiscal/key/subgroup_id"),
             ));
         }
+        let snapshot = &report["input_snapshot"];
+        let health = &snapshot["health"];
         let this_axis = serde_json::json!({
+            "fiscal_schema_version": report["schema_version"],
             "scenario_id": key["scenario_id"],
             "strategy_id": key["strategy_id"],
+            "comparator_strategy_id": report["comparator_strategy_id"],
             "draw_id": key["draw_id"],
+            "draw_set_digest": report["draw_set_digest"],
             "replication_id": key["replication_id"],
             "perspective": key["perspective"],
             "currency": report["currency"],
             "price_year": report["price_year"],
             "jurisdiction": report["jurisdiction"],
             "aggregation_rule": report["aggregation_rule"],
+            "resource_basis": report["resource_basis"],
+            "discount": snapshot["discount"],
+            "health_model": health["model"],
+            "threshold": health["threshold"],
+            "threshold_source": health["threshold_source"],
         });
         if let Some(expected) = &axis {
             if expected != &this_axis {
                 return Err(error(
                     "subgroup_axis",
-                    "Equity aggregation keeps one scenario, strategy, draw, replication and perspective",
-                    &format!("{path}/fiscal/key"),
+                    "Subgroup packets must share a comparison, joint draw and valuation context",
+                    &format!("{path}/fiscal"),
                 ));
             }
         } else {
             axis = Some(this_axis);
         }
-        let cost = read_rational(
-            &report["selected_resource_cost"],
-            &format!("{path}/selected_resource_cost"),
-        )?;
-        let qaly = optional_rational(
-            &report["discounted_qalys"],
-            &format!("{path}/discounted_qalys"),
-        )?;
-        let nmb = optional_rational(
-            &report["net_monetary_benefit"],
-            &format!("{path}/net_monetary_benefit"),
-        )?;
         unweighted_cost = common::bounded(&unweighted_cost + &cost, &path)?;
-        weighted_cost = common::bounded(&weighted_cost + &weight * &cost, &path)?;
+        let weighted = common::bounded(&weight * &cost, &path)?;
+        weighted_cost = common::bounded(&weighted_cost + weighted, &path)?;
         let qaly_path = format!("{path}/discounted_qalys");
         let nmb_path = format!("{path}/net_monetary_benefit");
+        add_optional(&mut unweighted_qaly, qaly.clone(), &qaly_path)?;
         add_optional(
-            &mut saw_qaly,
-            &mut unweighted_qaly,
-            qaly.clone(),
-            &qaly_path,
-        )?;
-        add_optional(
-            &mut saw_weighted_qaly,
             &mut weighted_qaly,
-            qaly.clone().map(|value| &weight * value),
+            qaly.as_ref().map(|value| &weight * value),
             &qaly_path,
         )?;
-        add_optional(&mut saw_nmb, &mut unweighted_nmb, nmb.clone(), &nmb_path)?;
+        add_optional(&mut unweighted_nmb, nmb.clone(), &nmb_path)?;
         add_optional(
-            &mut saw_weighted_nmb,
             &mut weighted_nmb,
-            nmb.clone().map(|value| &weight * value),
+            nmb.as_ref().map(|value| &weight * value),
             &nmb_path,
         )?;
         rows.push(serde_json::json!({
@@ -1012,10 +1024,11 @@ pub fn evaluate_equity_json(input: &str) -> Result<String, DapaneError> {
             "draw_id": key["draw_id"],
             "strategy_id": key["strategy_id"],
             "perspective": key["perspective"],
+            "fiscal_output_digest": report["output_digest"],
             "weight": common::wire(&weight),
             "selected_resource_cost": common::wire(&cost),
-            "discounted_qalys": wire_optional(&qaly)?,
-            "net_monetary_benefit": wire_optional(&nmb)?,
+            "discounted_qalys": qaly.as_ref().map(common::wire),
+            "net_monetary_benefit": nmb.as_ref().map(common::wire),
         }));
     }
     let mut report = serde_json::json!({
@@ -1026,13 +1039,13 @@ pub fn evaluate_equity_json(input: &str) -> Result<String, DapaneError> {
         "subgroups": rows,
         "unweighted_sum": {
             "selected_resource_cost": common::wire(&unweighted_cost),
-            "discounted_qalys": wire_optional(&unweighted_qaly)?,
-            "net_monetary_benefit": wire_optional(&unweighted_nmb)?,
+            "discounted_qalys": unweighted_qaly.as_ref().map(common::wire),
+            "net_monetary_benefit": unweighted_nmb.as_ref().map(common::wire),
         },
         "weighted_sum": {
             "selected_resource_cost": common::wire(&weighted_cost),
-            "discounted_qalys": wire_optional(&weighted_qaly)?,
-            "net_monetary_benefit": wire_optional(&weighted_nmb)?,
+            "discounted_qalys": weighted_qaly.as_ref().map(common::wire),
+            "net_monetary_benefit": weighted_nmb.as_ref().map(common::wire),
         },
     });
     report["output_digest"] = Value::String(common::digest(

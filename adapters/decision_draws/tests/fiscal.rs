@@ -1,6 +1,8 @@
-//! T1 independent exact accounting references; every amount and rate is invented.
+//! Independent exact fiscal accounting references; every amount and rate is invented.
 
-use dapane_decision_fiscal::fiscal::{evaluate_equity_json, evaluate_fiscal_json};
+use dapane_decision_fiscal::fiscal::{
+    SCHEDULE_SCHEMA_VERSION, evaluate_equity_json, evaluate_fiscal_json,
+};
 use serde_json::{Value, json};
 
 fn r(n: &str, d: &str) -> Value {
@@ -115,12 +117,12 @@ fn annual_and_half_year_steps_agree_at_the_same_explicit_effective_rate() {
     annual["discount"]["resource_rate"] = r("9", "16");
     annual["discount"]["transfer_rate"] = r("9", "16");
     let a = result(&annual);
-    let mut h = result(&half_year);
+    let h = result(&half_year);
     assert_eq!(h["resources"], a["resources"]);
     assert_eq!(h["tax_transfers"], a["tax_transfers"]);
     assert_eq!(h["resources"]["health_system_direct_cost"], r("64", "1"));
     assert_eq!(h["net_monetary_benefit"], r("36", "1"));
-    for line in h["valued_lines"].as_array_mut().unwrap() {
+    for line in h["valued_lines"].as_array().unwrap() {
         assert_eq!(line["valuation_time_years"], r("1", "1"));
         assert_eq!(line["discount_factor"], r("16", "25"));
     }
@@ -164,6 +166,43 @@ fn transfer_changes_do_not_change_societal_or_health_nmb() {
 }
 
 #[test]
+fn reduced_tax_receipts_raise_public_outlay_with_the_correct_sign() {
+    let mut input = fixture();
+    set_view(&mut input, "public_finance", "public_finance_net_outlay");
+    input["lines"][2]["undiscounted_amount"]["amount"] = r("-40", "1");
+    input["lines"][3]["undiscounted_amount"]["amount"] = r("-10", "1");
+    let report = result(&input);
+    assert_eq!(
+        report["tax_transfers"]["government_receipts"],
+        r("-40", "1")
+    );
+    assert_eq!(report["tax_transfers"]["payer_outflows"], r("40", "1"));
+    assert_eq!(report["net_public_outlay"], r("136", "1"));
+}
+
+#[test]
+fn invalid_perspective_rule_combinations_fail_closed() {
+    for (view, wrong_rule) in [
+        ("health_system", "public_finance_net_outlay"),
+        ("public_finance", "societal_net_domestic_transfers"),
+        ("societal", "health_system_direct_only"),
+    ] {
+        let mut input = fixture();
+        set_view(&mut input, view, wrong_rule);
+        assert_eq!(
+            evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+            "perspective_rule"
+        );
+    }
+    let mut input = fixture();
+    input["key"]["perspective"] = json!("societal");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "perspective_key"
+    );
+}
+
+#[test]
 fn accounting_kind_cannot_silently_relabel_a_transfer_as_a_cost() {
     for mode in [
         "kind",
@@ -190,7 +229,10 @@ fn currency_price_year_units_and_jurisdiction_are_mandatory_and_consistent() {
             .as_object_mut()
             .unwrap()
             .remove(field);
-        assert!(evaluate_fiscal_json(&input.to_string()).is_err(), "{field}");
+        assert!(
+            evaluate_fiscal_json(&input.to_string()).is_err(),
+            "missing {field}"
+        );
     }
     for (path, wrong) in [
         ("/lines/0/undiscounted_amount/currency", json!("AUD")),
@@ -287,7 +329,7 @@ fn order_and_unicode_subgroup_identity_are_preserved_without_pooling() {
 
 #[test]
 fn unsupported_discounting_and_precision_fail_closed() {
-    for (path, wrong) in [
+    for (path, bad) in [
         ("/discount/method", json!("continuous_provider_method")),
         ("/discount/resource_rate", r("-1", "10")),
         ("/discount/health_rate", r("2", "1")),
@@ -300,7 +342,7 @@ fn unsupported_discounting_and_precision_fail_closed() {
         ),
     ] {
         let mut input = fixture();
-        *input.pointer_mut(path).unwrap() = wrong;
+        *input.pointer_mut(path).unwrap() = bad;
         assert!(evaluate_fiscal_json(&input.to_string()).is_err(), "{path}");
     }
     let mut input = fixture();
@@ -369,8 +411,82 @@ fn output_digest_and_input_snapshot_support_independent_replay() {
 }
 
 #[test]
-fn cohort_state_occupancy_entries_are_evaluated_with_draw_identity_preserved() {
+fn resource_values_do_not_silently_become_budgetary_outlays() {
     let mut input = fixture();
+    set_view(&mut input, "public_finance", "public_finance_net_outlay");
+    input["resource_basis"] = json!("economic_cost");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "resource_basis"
+    );
+    let mut input = fixture();
+    set_view(&mut input, "societal", "societal_net_domestic_transfers");
+    input["resource_basis"] = json!("public_expenditure");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "resource_basis"
+    );
+    let mut input = fixture();
+    input["lines"][0]["basis"] = json!("economic_cost");
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "accounting_kind"
+    );
+    input["lines"][0]["basis"] = json!("funding");
+    assert!(evaluate_fiscal_json(&input.to_string()).is_err());
+}
+
+#[test]
+fn absent_accounting_categories_do_not_become_zero() {
+    for removed in ["medical", "enforcement", "excise", "gst"] {
+        let mut input = fixture();
+        input["lines"]
+            .as_array_mut()
+            .unwrap()
+            .retain(|line| line["id"] != removed);
+        assert_eq!(
+            evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+            "incomplete_ledger",
+            "{removed}",
+        );
+    }
+    let mut input = fixture();
+    for line in input["lines"].as_array_mut().unwrap() {
+        line["undiscounted_amount"]["amount"] = r("0", "1");
+    }
+    assert_eq!(result(&input)["net_monetary_benefit"], r("100", "1"));
+}
+
+#[test]
+fn fiscal_v01_fixture_retains_its_wire_identity() {
+    // Digests produced by the fiscal 0.1 evaluator at 5c035f6.
+    let mut input = fixture();
+    let report = result(&input);
+    assert_eq!(
+        report["input_digest"],
+        "sha256:528f554e98f2cde96331f4710b7179eb37e00d5024a972693eb2830d8dd88751"
+    );
+    assert_eq!(
+        report["output_digest"],
+        "sha256:de7f7fffcbc683655249d3a488af6e24fef6d1a36a995ce161259c72bc709628"
+    );
+    assert!(report.get("valued_cohort_states").is_none());
+    assert!(report.get("valued_cessation_resources").is_none());
+    input["cohort_states"] = json!([]);
+    let error = evaluate_fiscal_json(&input.to_string()).unwrap_err();
+    assert_eq!(error.code, "invalid_request");
+    assert_eq!(error.path, "/cohort_states");
+}
+
+fn schedule_fixture() -> Value {
+    let mut input = fixture();
+    input["schema_version"] = json!(SCHEDULE_SCHEMA_VERSION);
+    input
+}
+
+#[test]
+fn cohort_state_occupancy_entries_are_evaluated_with_draw_identity_preserved() {
+    let mut input = schedule_fixture();
     input["cohort_states"] = json!([
         {
             "id": "smoker_to_quit",
@@ -421,11 +537,13 @@ fn cohort_state_occupancy_entries_are_evaluated_with_draw_identity_preserved() {
     );
     // Draw identity preserved
     assert_eq!(report["key"]["draw_id"], "draw-a");
+    assert_eq!(report["key"], input["key"]);
+    assert_eq!(result(&report["input_snapshot"]), report);
 }
 
 #[test]
 fn cessation_resource_entries_are_evaluated_with_draw_identity_preserved() {
-    let mut input = fixture();
+    let mut input = schedule_fixture();
     input["cohort_states"] = json!([]);
     input["cessation_resources"] = json!([
         {
@@ -473,7 +591,7 @@ fn cessation_resource_entries_are_evaluated_with_draw_identity_preserved() {
 
 #[test]
 fn cohort_state_entries_must_have_unique_ids() {
-    let mut input = fixture();
+    let mut input = schedule_fixture();
     input["cohort_states"] = json!([
         {
             "id": "smoker_to_quit",
@@ -528,7 +646,7 @@ fn cohort_state_entries_must_have_unique_ids() {
 #[test]
 fn cohort_state_entries_validate_entry_and_exit_states() {
     // from_state must be a valid state, to_state must be a valid state
-    let mut input = fixture();
+    let mut input = schedule_fixture();
     input["cohort_states"] = json!([
         {
             "id": "smoker_to_quit",
@@ -561,7 +679,7 @@ fn cohort_state_entries_validate_entry_and_exit_states() {
 
 #[test]
 fn cessation_resource_entries_validate_resource_type() {
-    let mut input = fixture();
+    let mut input = schedule_fixture();
     input["cohort_states"] = json!([]);
     input["cessation_resources"] = json!([
         {
@@ -589,9 +707,14 @@ fn cessation_resource_entries_validate_resource_type() {
         evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
         "invalid_identity"
     );
+    input["cessation_resources"][0]["resource_type"] = json!("counseling");
+    input["cessation_resources"][0]["basis"] = json!("fiscal_transfer");
+    let error = evaluate_fiscal_json(&input.to_string()).unwrap_err();
+    assert_eq!(error.code, "resource_basis");
+    assert_eq!(error.path, "/cessation_resources/0/basis");
 }
 
-fn equity_report(weights: &[(&str, Value)]) -> Value {
+fn equity_input(weights: &[(&str, Value)]) -> Value {
     let packets: Vec<_> = weights
         .iter()
         .map(|(weight, fiscal)| {
@@ -601,10 +724,14 @@ fn equity_report(weights: &[(&str, Value)]) -> Value {
             })
         })
         .collect();
-    let input = json!({
+    json!({
         "schema_version": "dapane-fiscal-equity/0.1",
         "packets": packets,
-    });
+    })
+}
+
+fn equity_report(weights: &[(&str, Value)]) -> Value {
+    let input = equity_input(weights);
     serde_json::from_str(&evaluate_equity_json(&input.to_string()).unwrap()).unwrap()
 }
 
@@ -638,21 +765,33 @@ fn unity_equity_weights_conserve_the_unweighted_subgroup_sum() {
 
 #[test]
 fn non_unit_equity_weights_scale_each_subgroup_before_summing() {
-    let maori = fixture();
-    let mut other = fixture();
+    let maori = schedule_fixture();
+    let mut other = schedule_fixture();
     other["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+    other["lines"][0]["undiscounted_amount"]["amount"] = r("50", "1");
+    other["health"]["flows"][0]["value"] = r("2", "1");
+    let other_digest = result(&other)["output_digest"].clone();
     let report = equity_report(&[("1", maori), ("3", other)]);
-    // Unweighted sum stays 80+80, 1+1 and 20+20. Weighted sum is 80+240, 1+3 and 20+60.
+    // Subgroup values are (80, 1, 20) and (40, 2, 160) for cost, QALYs and NMB.
     assert_eq!(
         report["unweighted_sum"]["selected_resource_cost"],
-        r("160", "1")
+        r("120", "1")
+    );
+    assert_eq!(report["unweighted_sum"]["discounted_qalys"], r("3", "1"));
+    assert_eq!(
+        report["unweighted_sum"]["net_monetary_benefit"],
+        r("180", "1")
     );
     assert_eq!(
         report["weighted_sum"]["selected_resource_cost"],
-        r("320", "1")
+        r("200", "1")
     );
-    assert_eq!(report["weighted_sum"]["discounted_qalys"], r("4", "1"));
-    assert_eq!(report["weighted_sum"]["net_monetary_benefit"], r("80", "1"));
+    assert_eq!(report["weighted_sum"]["discounted_qalys"], r("7", "1"));
+    assert_eq!(
+        report["weighted_sum"]["net_monetary_benefit"],
+        r("500", "1")
+    );
+    assert_eq!(report["subgroups"][1]["fiscal_output_digest"], other_digest);
 }
 
 #[test]
@@ -698,4 +837,61 @@ fn equity_weights_must_be_strictly_positive() {
         evaluate_equity_json(&input.to_string()).unwrap_err().code,
         "invalid_weight"
     );
+}
+
+#[test]
+fn equity_aggregation_rejects_incompatible_valuation_contexts() {
+    let baseline = fixture();
+    let mut economic = baseline.clone();
+    economic["resource_basis"] = json!("economic_cost");
+    for line in &mut economic["lines"].as_array_mut().unwrap()[..2] {
+        line["basis"] = json!("economic_cost");
+    }
+    let mut cases = vec![("resource basis", economic)];
+    for (pointer, value) in [
+        ("/comparator_strategy_id", json!("different-comparator")),
+        (
+            "/draw_set_digest",
+            json!(format!("sha256:{}", "7".repeat(64))),
+        ),
+        ("/discount/resource_rate", r("0", "1")),
+        ("/health/threshold/amount", r("101", "1")),
+        ("/schema_version", json!(SCHEDULE_SCHEMA_VERSION)),
+    ] {
+        let mut changed = baseline.clone();
+        *changed.pointer_mut(pointer).unwrap() = value;
+        cases.push((pointer, changed));
+    }
+    for (field, mut changed) in cases {
+        changed["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+        result(&changed); // Each alternative must be valid when evaluated on its own.
+        let input = equity_input(&[("1", baseline.clone()), ("1", changed)]);
+        assert_eq!(
+            evaluate_equity_json(&input.to_string()).unwrap_err().code,
+            "subgroup_axis",
+            "{field}"
+        );
+    }
+}
+
+#[test]
+fn equity_sums_retain_the_fiscal_precision_bound() {
+    let mut packet = fixture();
+    set_view(&mut packet, "public_finance", "public_finance_net_outlay");
+    packet["discount"]["resource_rate"] = r("1", "1");
+    packet["lines"][0]["time_step"] = json!(400);
+    packet["lines"][0]["undiscounted_amount"]["amount"] = r("1", "1");
+    packet["lines"][1]["undiscounted_amount"]["amount"] = r("0", "1");
+    let mut other = packet.clone();
+    other["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+    let report = equity_report(&[("1", packet), ("1", other)]);
+    // Two costs of 2^-400 sum exactly to 2^-399, beyond the input digit limit.
+    let denominator = num_bigint::BigInt::from(2u8).pow(399).to_string();
+    assert_eq!(
+        report["unweighted_sum"]["selected_resource_cost"],
+        r("1", &denominator)
+    );
+    assert_eq!(report["weighted_sum"], report["unweighted_sum"]);
+    assert_eq!(report["weighted_sum"]["discounted_qalys"], Value::Null);
+    assert_eq!(report["weighted_sum"]["net_monetary_benefit"], Value::Null);
 }

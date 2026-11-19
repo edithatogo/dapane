@@ -1,10 +1,8 @@
-# D1 and T1 contract candidate, version 0.1
+# Paired-draw and fiscal contract candidates
 
 This document describes the isolated synthetic implementation in this directory.
-Bounded synthetic native checks are recorded in the
-[owner quality evidence](../../conductor/tracks/decision_integrations_20261108/owner-quality-20261115.md).
-They do not register a production numerical method, change a core schema, or
-establish consumer/provider compatibility.
+The fiscal verification record identifies the source and checks for each phase.
+[Verification](../../conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/VERIFICATION.md)
 
 ## Shared transport and identity
 
@@ -239,15 +237,40 @@ government/payer transfer totals, exact zero net internal transfer, selected
 resource cost, excluded line IDs and only the applicable NMB/net-outlay output.
 Literal subgroup/replication keys are retained without aggregation.
 
-Optional `cohort_states` and `cessation_resources` arrays value supplied
-occupancy and cessation-resource amounts with the resource discount rate.
-Omission means an empty schedule. Each array has at most 256 unique IDs.
-Population counts and quantities are nonnegative exact rationals. Discounted
-schedule amounts are reported on `valued_cohort_states` and
-`valued_cessation_resources` with the packet `draw_id`, `strategy_id` and
-`subgroup_id` copied onto each row. They are not added to the four-category
-ledger and do not change selected resource cost, transfers or NMB. A row may
-carry its own perspective tag; that tag does not replace the packet key.
+Input and output domains are `dapane:fiscal-input:0.1\n` and
+`dapane:fiscal-output:0.1\n`. The output hash omits its own `output_digest`.
+Ledger lines and health flows are sorted by ID before input hashing.
+Evaluating `input_snapshot` reproduces the canonical report.
+
+## T2 cohort and cessation schedules
+
+The `dapane-fiscal/0.2` schema uses method `dapane-fiscal-exact-steps-v0.2.0`.
+This profile extends the 0.1 ledger contract with two optional input arrays.
+Use 0.1 for legacy packet replay. Schedule fields require 0.2.
+
+| Array | Fields in addition to the common row fields |
+| --- | --- |
+| `cohort_states` | `from_state`, `to_state`, `population_count` |
+| `cessation_resources` | `resource_type`, `quantity` |
+
+Each row declares `id`, `time_step`, `perspective`, `basis`,
+`undiscounted_amount` and synthetic `source`. Population counts and resource
+quantities are nonnegative exact rationals. The supplied amount is the signed
+incremental total for the row in the packet's currency and price year. The
+source perspective and basis follow the perspective table above.
+
+Each array accepts up to 256 rows with unique IDs within that array. Omission
+and an empty array both produce an empty schedule. The normalised snapshot
+omits empty schedules and sorts populated schedules by ID. The 0.2 output
+always contains `valued_cohort_states` and `valued_cessation_resources`.
+
+The evaluator discounts each supplied amount at the resource rate for the
+row's step. The report retains the row perspective and copies `draw_id`,
+`strategy_id` and `subgroup_id` from the packet key onto each row. The full key
+remains at report level. The separate schedule outputs let callers report the
+same activity without counting it again in the four-category ledger.
+The input and output digest domains are `dapane:fiscal-input:0.2\n` and
+`dapane:fiscal-output:0.2\n`.
 
 ## T2 equity-weighted subgroup sum
 
@@ -255,20 +278,18 @@ Schema `dapane-fiscal-equity/0.1`; method
 `dapane-fiscal-equity-weighted-sum-v0.1.0`.
 
 `packets` contains 1..32 entries. Each entry has a strictly positive exact
-`weight` and a complete fiscal packet. Aggregation requires one shared
-scenario, strategy, draw, replication, perspective, jurisdiction, currency,
-price year and aggregation rule. Subgroup identifiers must be unique and are
-returned as separate rows. The weighted sum is `Σ weight × component`, not a
-mean. When every weight is one, that sum equals the unweighted sum of
-`selected_resource_cost`, `discounted_qalys` and `net_monetary_benefit`.
-Output domain is `dapane:fiscal-equity-output:0.1\n`. This does not implement
-an upstream Tobac oracle.
+`weight` and a complete `fiscal` packet. A batch uses a single fiscal profile.
+Subgroups must declare the same scenario, strategy, comparator, draw ID,
+draw-set digest, replication, perspective, jurisdiction, currency, price year,
+aggregation rule, resource basis and discount policy. Health packets must also
+share a health model and threshold declaration. Each subgroup ID is unique.
 
-Input and output domains are `dapane:fiscal-input:0.1\n` and
-`dapane:fiscal-output:0.1\n`; output omits only its own `output_digest` when
-hashing. Ledger lines and health flows are sorted by ID before input hashing.
-The bounded replay test passed at the exact corrected source recorded in the
-owner quality evidence. It checks `input_snapshot` reproduces the canonical report.
+The report has one row per supplied subgroup, in input order, with its weight
+and its fiscal output digest. For each of `selected_resource_cost`,
+`discounted_qalys` and `net_monetary_benefit`, the weighted total is the sum of
+weight times component. Unit weights exactly conserve every unweighted sum.
+QALYs and NMB are null for public-finance packets. The output digest domain is
+`dapane:fiscal-equity-output:0.1\n`.
 
 ## Deferred capabilities
 
