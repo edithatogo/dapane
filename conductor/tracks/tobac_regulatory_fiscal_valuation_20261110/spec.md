@@ -4,7 +4,11 @@
 
 Provide versioned public-finance and health-system perspective valuation, excise/GST tax-transfer separation and subgroup equity-weighting interfaces for `tobac` (`edithatogo/tobac`) while retaining `tobac`'s ownership of tobacco/vaping cohort dynamics, customs/wastewater partial identification and regulatory decision models.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This specification retains the full track scope. The bounded phase-1 candidate
+is implemented in an isolated synthetic adapter; later phases remain planned.
+Bounded native quality/tests are now evidenced at an exact corrected source.
+Production/provider and security/release qualification remains separate. See
+[verification](VERIFICATION.md) and [handoff](HANDOFF.md).
 
 ## Scope and requirements
 
@@ -59,3 +63,20 @@ Select the minimal scalar and Polars/Arrow tabular interchange needed by `tobac`
 Follow the [phased plan](plan.md) and [repository workflow](../../workflow.md).
 Commands described by pending tasks are future acceptance instructions, not executed evidence.
 Record actual commands, source/artifact identities and outcomes in the metadata when work is performed.
+
+## Bounded T1 implementation boundary (2026-11-15)
+
+The [versioned contract](../../../adapters/decision_draws/CONTRACT.md) distinguishes
+economic costs, public expenditure and fiscal transfers; requires explicit
+medical/enforcement/excise/GST categories; and specifies signed increments,
+effective per-step exact discounting and compatible perspective rules. It is
+a synthetic reference candidate, not a core numerical method registration or
+production Tobac consumer. The exact production method/profile request belongs
+to the sole integrator.
+
+Read-only inspection at Tobac `891f79e07292b7754f78d7193130623bd5f9e243`
+found that the planned `src/tobac/economics.py` and `src/tobac/decision.py`
+paths above are absent. Related functions are in `src/tobac/health.py`;
+`src/tobac/interchange.py` handles evidence packets. This is a deferred
+T2/T3 reconciliation requirement, not evidence of oracle/consumer parity.
+No upstream source-adjudication work or source admission is duplicated.

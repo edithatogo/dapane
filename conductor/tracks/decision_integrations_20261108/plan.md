@@ -1,15 +1,15 @@
 # Implementation plan: Uncertainty and decision-library integration
 
-Status: new
+Status: in_progress
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
 
 ## Phase 1 — Draws and paired outcomes
 
-- [ ] D1.1 Specify parameter draws, correlation inputs, scenario/strategy/replication keys and separation of epistemic uncertainty from heterogeneity.
-- [ ] D1.2 Evaluate the supported costing model for explicit indexed draws; accept outcomes only through a separately identified model contract.
-- [ ] D1.3 Verify pairing, reproducibility, missing-draw rejection and scenario-comparison cases against independent expectations.
+- [~] D1.1 Specify parameter draws, correlation inputs, scenario/strategy/replication keys and separation of epistemic uncertainty from heterogeneity.
+- [~] D1.2 Evaluate the supported costing model for explicit indexed draws; accept outcomes only through a separately identified model contract.
+- [~] D1.3 Verify pairing, reproducibility, missing-draw rejection and scenario-comparison cases against independent expectations.
 
 ## Phase 2 — Provider adapters
 
@@ -24,7 +24,27 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [ ] D3.2 Document method maturity, source assumptions, external outcome limitations and alternative-perspective interpretations.
 - [ ] D3.3 Run the selected installed/provider integration cases and confirm that disabling all decision adapters leaves static costing available.
 
+## Bounded owner quality pass — 15 November 2026
+
+- [x] D1.Q1 Resolve the received Rust formatting failures; verify the unchanged bounded synthetic implementation with exact-source format, warnings-denied Clippy, all 37 D1/T1 tests and Conductor checks; record the scoped review and handoff.
+
 ## Evidence record
 
-No runtime acceptance evidence is recorded by this initial plan.
-Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.
+The [owner quality record](owner-quality-20261115.md) and [local command receipt](evidence/owner-quality-20261115.json)
+record clean-source checks at `9c177166899e588dc3dacadb13e4a0a3750bbce2`. Formatting, Clippy, locked/offline
+dependency resolution, 18 D1 + 19 T1 tests, Conductor validation and 12 lifecycle
+tests passed. The existing half-even generated-segment case passed unchanged.
+
+The integrator has completed source replay, both central registry corrections
+and explicit standalone CI. These shared files are preserved. Earlier recovery
+limitations and failed formatting outcomes remain historical evidence; they are
+not relabelled as current passes.
+
+Phase-1 tasks remain active for coordinator acceptance of the bounded candidate;
+the previous execution-environment block is resolved. Production signed-fiscal
+method/profile qualification, later provider phases and required security/release
+gates remain open. This quality repair does not complete the full track.
+
+See [verification](VERIFICATION.md), [review](REVIEW.md), [metadata](metadata.json)
+and the [exact-SHA handoff](HANDOFF.md). The [registry](../../tracks.md) already
+matches this track's `in_progress` state.

@@ -4,7 +4,11 @@
 
 Connect correctly paired cost outputs to Voiage, Innovate and Paignia while retaining their existing ownership of decision methods, adoption mechanisms and strategic models.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This specification retains the full track scope. The bounded phase-1 candidate
+is implemented in an isolated synthetic adapter; later phases remain planned.
+Bounded native quality/tests are now evidenced at an exact corrected source.
+Production/provider and security/release qualification remains separate. See
+[verification](VERIFICATION.md) and [handoff](HANDOFF.md).
 
 ## Scope and requirements
 
@@ -60,3 +64,12 @@ Select one genuinely supported method/example per provider before expanding the 
 Follow the [phased plan](plan.md) and [repository workflow](../../workflow.md).
 Commands described by pending tasks are future acceptance instructions, not executed evidence.
 Record actual commands, source/artifact identities and outcomes in the metadata when work is performed.
+
+## Bounded D1 implementation boundary (2026-11-15)
+
+The [versioned contract](../../../adapters/decision_draws/CONTRACT.md) defines
+explicit supplied joint vectors, six-key complete panels, native point/interval
+model evaluation, independent outcome identity and deterministic digest/replay
+rules. No RNG, local outcome estimator, VOI method, pooling or provider dispatch
+is introduced. The native interval rounding contract remains unchanged.
+D2/D3 qualification and installed consumers are still future work.

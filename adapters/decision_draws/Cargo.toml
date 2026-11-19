@@ -1,0 +1,27 @@
+[package]
+name = "dapane-decision-fiscal"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99.1"
+description = "Synthetic paired-draw and fiscal accounting contracts for Dapane"
+license = "Apache-2.0"
+publish = false
+
+# Isolated optional crate; workspace/CI wiring remains with the release integrator.
+[workspace]
+
+[dependencies]
+dapane-core = { path = "../../crates/dapane-core", version = "=0.1.0" }
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.154"
+num-bigint = "=0.4.8"
+num-rational = "=0.4.2"
+num-traits = "=0.2.19"
+sha2 = "=0.11.1"
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+all = "warn"

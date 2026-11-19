@@ -1,0 +1,116 @@
+{
+  "record_kind": "static_recovery_checks_not_native_execution",
+  "recorded_at": "2026-11-15T05:20:51Z",
+  "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "scope": "Recovered text and synthetic JSON in available JavaScript orchestration runtime",
+  "checks": {
+    "json_parse": {
+      "status": "passed",
+      "files": [
+        "adapters/decision_draws/fixtures/paired-synthetic.json",
+        "adapters/decision_draws/fixtures/fiscal-nz-synthetic.json",
+        "conductor/tracks/decision_integrations_20261108/metadata.json",
+        "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/metadata.json",
+        "conductor/tracks/decision_integrations_20261108/evidence/historical-execution-observations.json"
+      ]
+    },
+    "owned_path_allowlist": {
+      "status": "passed",
+      "checked_paths": 28,
+      "prefixes": [
+        "adapters/decision_draws/",
+        "conductor/tracks/decision_integrations_20261108/",
+        "conductor/tracks/tobac_regulatory_fiscal_valuation_20261110/"
+      ]
+    },
+    "local_markdown_links": {
+      "status": "passed",
+      "checked": 73,
+      "includes_planned_self_record": true
+    },
+    "test_declarations": {
+      "status": "counted_not_executed",
+      "paired": 18,
+      "fiscal": 19,
+      "total": 37
+    },
+    "draw_set_digest": {
+      "status": "passed_independent_reconstruction",
+      "value": "sha256:f413634790402dcd1780bdde5e7009d04c33778bc29708dae512926a85de35a7"
+    },
+    "sha256_known_vector": {
+      "status": "passed",
+      "input": "abc"
+    },
+    "independent_bigint_rational_arithmetic": {
+      "status": "passed",
+      "fiscal": {
+        "medical": "80/1",
+        "enforcement": "16/1",
+        "tax_receipts": "40/1",
+        "payer": "-40/1",
+        "net_transfer": "0/1",
+        "health_nmb": "20/1",
+        "societal_nmb": "4/1",
+        "public_outlay": "56/1",
+        "au_uniform_health_nmb": "0/1",
+        "au_uniform_societal_nmb": "-16/1",
+        "half_year_factor": "16/25",
+        "annual_equivalent_factor": "16/25",
+        "negative_tax_outlay": "136/1"
+      },
+      "paired": [
+        {
+          "draw_id": "draw-a",
+          "reference": "10/1",
+          "alternative": "20/1"
+        },
+        {
+          "draw_id": "draw-b",
+          "reference": "40/1",
+          "alternative": "80/1"
+        }
+      ]
+    },
+    "root_lock_registry_identities": {
+      "status": "passed_static_comparison",
+      "rootPackages": 39,
+      "lanePackages": 29,
+      "registryPackages": 27,
+      "unmatched": [],
+      "localPackages": [
+        {
+          "name": "dapane-core",
+          "version": "0.1.0"
+        },
+        {
+          "name": "dapane-decision-fiscal",
+          "version": "0.1.0"
+        }
+      ]
+    }
+  },
+  "adapter_file_sha256": {
+    "adapters/decision_draws/.gitignore": "sha256:306fd52e74fca6746e12acc750f232de15e71da917756a1270d74c91f5eb7368",
+    "adapters/decision_draws/Cargo.toml": "sha256:5e296561befff24b5518e1d6ef3fad890a0400ff362c804548a7f454025bfded",
+    "adapters/decision_draws/src/lib.rs": "sha256:e77df8f96499da3962c58b4e55b0b1e6834e38d99129e802a195bfc5ed37b784",
+    "adapters/decision_draws/Cargo.lock": "sha256:8e97ff7648eb1a75dad774aa6da897db646ff756c73db95adfd28dbcdc577080",
+    "adapters/decision_draws/src/common.rs": "sha256:0d80cfbe0c45a28f3effafe1103b7e618e819f1932dfdcfb06702603cc3b97b0",
+    "adapters/decision_draws/src/paired.rs": "sha256:3a88d4b595a9542254d83f44970e5fcb0dc2ad6087c93dbe44aff10db89d6364",
+    "adapters/decision_draws/src/fiscal.rs": "sha256:a6c684d7fd4e91850aa186926bd43aba1699ca6f325777fb1373a3e56ed90a8c",
+    "adapters/decision_draws/fixtures/paired-synthetic.json": "sha256:896e40463601850e02c67017062e6ce9e82d547f50d97d4b2c3215092036b042",
+    "adapters/decision_draws/fixtures/fiscal-nz-synthetic.json": "sha256:1740f719d03fa8f5cd2dd50a55c0fd5334578c5eee309b1c7a9d9111c9f953b6",
+    "adapters/decision_draws/tests/paired.rs": "sha256:f1b3466f6ab3cdf99b54a6e5bfbe5066b646415af3f3ecebf3a1939b8e0caf6b",
+    "adapters/decision_draws/tests/fiscal.rs": "sha256:d21dc2f601605fb243f763cc3e01c55336731fa9b076646e93008fd63aeb426f",
+    "adapters/decision_draws/README.md": "sha256:d147a0ffa300a55b3993dcb61762664fdfab5cddf8de3aae891a2a1f4b40941b",
+    "adapters/decision_draws/CONTRACT.md": "sha256:65c6b80defa0f74432df415a5da526241f4f51957f32c0aa303b49f401c2564c"
+  },
+  "exclusions": [
+    "No Rust compilation or tests",
+    "No rustfmt or Clippy",
+    "No Cargo lock acceptance",
+    "No complete Python Conductor validator",
+    "No provider or installed-consumer qualification",
+    "No comparison to lost local source bytes"
+  ]
+}

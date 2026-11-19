@@ -1,0 +1,350 @@
+{
+  "schema_version": "dapane-paired-draws/0.1",
+  "run_id": "synthetic-paired",
+  "draws": {
+    "id": "joint-draws",
+    "version": "1",
+    "axis": "epistemic_parameters",
+    "dependence_id": "two-point-positive-dependence",
+    "generator": {
+      "id": "hand-enumeration",
+      "version": "1",
+      "content_digest": "sha256:7307e0eea26bf7f126a308db79bc5c897fba099270b17c4d4b70e1583e85d056",
+      "evidence": "synthetic"
+    },
+    "seed": null,
+    "parameters": {
+      "hours": "hour",
+      "rate": "AUD"
+    },
+    "rows": [
+      {
+        "draw_id": "draw-a",
+        "values": {
+          "hours": {
+            "numerator": "1",
+            "denominator": "3"
+          },
+          "rate": {
+            "numerator": "30",
+            "denominator": "1"
+          }
+        }
+      },
+      {
+        "draw_id": "draw-b",
+        "values": {
+          "hours": {
+            "numerator": "2",
+            "denominator": "3"
+          },
+          "rate": {
+            "numerator": "60",
+            "denominator": "1"
+          }
+        }
+      }
+    ]
+  },
+  "design": {
+    "scenarios": [
+      "scenario-a"
+    ],
+    "strategies": [
+      "reference",
+      "alternative"
+    ],
+    "replications": [
+      "rep-a"
+    ],
+    "perspectives": [
+      "health_system"
+    ],
+    "subgroups": [
+      "Māori"
+    ],
+    "replication_axis": "conditional_replication"
+  },
+  "money": {
+    "currency": "AUD",
+    "price_year": 2026,
+    "basis": "financial_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "models": [
+    {
+      "cell": {
+        "scenario_id": "scenario-a",
+        "strategy_id": "reference",
+        "replication_id": "rep-a",
+        "perspective": "health_system",
+        "subgroup_id": "Māori"
+      },
+      "model": {
+        "id": "synthetic-reference",
+        "version": "1",
+        "content_digest": "sha256:77720457e351f1e1f7d8900168c1956b9488b283b6347ee556687e5d1550fc6d",
+        "evidence": "synthetic"
+      },
+      "method": "point",
+      "request": {
+        "schema_version": "0.1",
+        "run_id": "synthetic-cost-model",
+        "knowledge_cutoff": "2026-11-15",
+        "policy": {
+          "id": "synthetic-direct",
+          "version": "1",
+          "currency": "AUD",
+          "price_year": 2026,
+          "perspective": "health_system",
+          "basis": "financial_cost",
+          "rounding": {
+            "scale": 2,
+            "mode": "half_even"
+          }
+        },
+        "quotes": [
+          {
+            "id": "rate",
+            "kind": "resource_use",
+            "target": "staff",
+            "unit": "hour",
+            "amount": "30",
+            "per_quantity": "1",
+            "currency": "AUD",
+            "price_year": 2026,
+            "basis": "financial_cost",
+            "components": [
+              "labour"
+            ],
+            "valid_from": "2026-01-01",
+            "valid_to": "2027-01-01",
+            "known_from": "2026-01-01",
+            "source": {
+              "id": "synthetic-paired",
+              "version": "1",
+              "evidence": "synthetic",
+              "access": "public",
+              "validation": "unvalidated"
+            }
+          }
+        ],
+        "usage": [
+          {
+            "id": "staff-a",
+            "use_id": "staff-a",
+            "kind": "resource_use",
+            "target": "staff",
+            "unit": "hour",
+            "quantity": "1",
+            "service_date": "2026-06-01",
+            "quote_id": "rate",
+            "source": {
+              "id": "synthetic-paired",
+              "version": "1",
+              "evidence": "synthetic",
+              "access": "public",
+              "validation": "unvalidated"
+            }
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "parameter_id": "hours",
+          "kind": "usage_quantity",
+          "target_id": "staff-a"
+        },
+        {
+          "parameter_id": "rate",
+          "kind": "quote_amount",
+          "target_id": "rate"
+        }
+      ]
+    },
+    {
+      "cell": {
+        "scenario_id": "scenario-a",
+        "strategy_id": "alternative",
+        "replication_id": "rep-a",
+        "perspective": "health_system",
+        "subgroup_id": "Māori"
+      },
+      "model": {
+        "id": "synthetic-alternative",
+        "version": "1",
+        "content_digest": "sha256:c180997c2440f6a22a08b39a43e8a0e3094b5cee4e2164bb843e1de51276f758",
+        "evidence": "synthetic"
+      },
+      "method": "point",
+      "request": {
+        "schema_version": "0.1",
+        "run_id": "synthetic-cost-model",
+        "knowledge_cutoff": "2026-11-15",
+        "policy": {
+          "id": "synthetic-direct",
+          "version": "1",
+          "currency": "AUD",
+          "price_year": 2026,
+          "perspective": "health_system",
+          "basis": "financial_cost",
+          "rounding": {
+            "scale": 2,
+            "mode": "half_even"
+          }
+        },
+        "quotes": [
+          {
+            "id": "rate",
+            "kind": "resource_use",
+            "target": "staff",
+            "unit": "hour",
+            "amount": "30",
+            "per_quantity": "1",
+            "currency": "AUD",
+            "price_year": 2026,
+            "basis": "financial_cost",
+            "components": [
+              "labour"
+            ],
+            "valid_from": "2026-01-01",
+            "valid_to": "2027-01-01",
+            "known_from": "2026-01-01",
+            "source": {
+              "id": "synthetic-paired",
+              "version": "1",
+              "evidence": "synthetic",
+              "access": "public",
+              "validation": "unvalidated"
+            }
+          }
+        ],
+        "usage": [
+          {
+            "id": "staff-a",
+            "use_id": "staff-a",
+            "kind": "resource_use",
+            "target": "staff",
+            "unit": "hour",
+            "quantity": "1",
+            "service_date": "2026-06-01",
+            "quote_id": "rate",
+            "source": {
+              "id": "synthetic-paired",
+              "version": "1",
+              "evidence": "synthetic",
+              "access": "public",
+              "validation": "unvalidated"
+            }
+          },
+          {
+            "id": "staff-b",
+            "use_id": "staff-b",
+            "kind": "resource_use",
+            "target": "staff",
+            "unit": "hour",
+            "quantity": "1",
+            "service_date": "2026-06-01",
+            "quote_id": "rate",
+            "source": {
+              "id": "synthetic-paired",
+              "version": "1",
+              "evidence": "synthetic",
+              "access": "public",
+              "validation": "unvalidated"
+            }
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "parameter_id": "hours",
+          "kind": "usage_quantity",
+          "target_id": "staff-a"
+        },
+        {
+          "parameter_id": "rate",
+          "kind": "quote_amount",
+          "target_id": "rate"
+        },
+        {
+          "parameter_id": "hours",
+          "kind": "usage_quantity",
+          "target_id": "staff-b"
+        }
+      ]
+    }
+  ],
+  "outcomes": {
+    "model": {
+      "id": "synthetic-health-model",
+      "version": "1",
+      "content_digest": "sha256:1415875c53038b9c33dd8cf850eeb6cc620ae36664f340f10d5a82ac56ada10b",
+      "evidence": "synthetic"
+    },
+    "measure_id": "synthetic-QALY",
+    "unit": "QALY",
+    "draw_set_digest": "sha256:f413634790402dcd1780bdde5e7009d04c33778bc29708dae512926a85de35a7",
+    "rows": [
+      {
+        "key": {
+          "scenario_id": "scenario-a",
+          "strategy_id": "reference",
+          "replication_id": "rep-a",
+          "perspective": "health_system",
+          "subgroup_id": "Māori",
+          "draw_id": "draw-a"
+        },
+        "value": {
+          "numerator": "1",
+          "denominator": "1"
+        }
+      },
+      {
+        "key": {
+          "scenario_id": "scenario-a",
+          "strategy_id": "reference",
+          "replication_id": "rep-a",
+          "perspective": "health_system",
+          "subgroup_id": "Māori",
+          "draw_id": "draw-b"
+        },
+        "value": {
+          "numerator": "2",
+          "denominator": "1"
+        }
+      },
+      {
+        "key": {
+          "scenario_id": "scenario-a",
+          "strategy_id": "alternative",
+          "replication_id": "rep-a",
+          "perspective": "health_system",
+          "subgroup_id": "Māori",
+          "draw_id": "draw-a"
+        },
+        "value": {
+          "numerator": "3",
+          "denominator": "2"
+        }
+      },
+      {
+        "key": {
+          "scenario_id": "scenario-a",
+          "strategy_id": "alternative",
+          "replication_id": "rep-a",
+          "perspective": "health_system",
+          "subgroup_id": "Māori",
+          "draw_id": "draw-b"
+        },
+        "value": {
+          "numerator": "5",
+          "denominator": "2"
+        }
+      }
+    ]
+  }
+}

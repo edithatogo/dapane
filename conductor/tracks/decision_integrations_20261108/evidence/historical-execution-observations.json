@@ -1,0 +1,88 @@
+{
+  "record_kind": "reconstructed_observation_receipt_not_original_logs",
+  "recorded_at": "2026-11-15T05:20:51Z",
+  "exact_published_source_qualified": false,
+  "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "unpublished_local_d1_commit": "8c2a8589e005bf14a6cde5365fb218ed09f3ca98",
+  "unpublished_local_d1_commit_available_on_github": false,
+  "local_t1_committed": false,
+  "previous_adapter_path": "adapters/decision-fiscal",
+  "recovered_adapter_path": "adapters/decision_draws",
+  "environment": {
+    "os": "Linux x86_64",
+    "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "1.99.1 (5f94df478 2026-08-27)",
+    "offline": true
+  },
+  "evidence_basis": "Observed tool outputs from the earlier local checkout during this session. Temporary logs and exact local source bytes became unavailable; source was reconstructed from recorded patches.",
+  "observations": [
+    {
+      "check": "D1 integration tests",
+      "status": "passed_historically",
+      "passed": 18,
+      "failed": 0,
+      "command": "cargo test --manifest-path adapters/decision-fiscal/Cargo.toml --locked --offline --test paired"
+    },
+    {
+      "check": "D1 fmt check",
+      "status": "passed_historically",
+      "command": "cargo fmt --manifest-path adapters/decision-fiscal/Cargo.toml --all --check"
+    },
+    {
+      "check": "D1 clippy",
+      "status": "passed_historically",
+      "command": "cargo clippy --manifest-path adapters/decision-fiscal/Cargo.toml --locked --offline --all-targets -- -D warnings"
+    },
+    {
+      "check": "Initial T1 tests",
+      "status": "passed_historically",
+      "passed": 17,
+      "failed": 0,
+      "command": "cargo test --manifest-path adapters/decision-fiscal/Cargo.toml --locked --offline --test fiscal",
+      "scope": "Before resource-basis and category-completeness fixes"
+    },
+    {
+      "check": "Initial T1 clippy",
+      "status": "passed_historically",
+      "command": "cargo clippy --manifest-path adapters/decision-fiscal/Cargo.toml --locked --offline --all-targets -- -D warnings",
+      "scope": "Before resource-basis and category-completeness fixes"
+    },
+    {
+      "check": "Final local T1 tests",
+      "status": "passed_historically",
+      "passed": 19,
+      "failed": 0,
+      "command": "cargo test --manifest-path adapters/decision-fiscal/Cargo.toml --locked --offline --test fiscal",
+      "scope": "After resource-basis and category-completeness fixes; uncommitted checkout"
+    },
+    {
+      "check": "Final local T1 formatting",
+      "status": "format_command_executed",
+      "command": "cargo fmt --manifest-path adapters/decision-fiscal/Cargo.toml --all",
+      "scope": "Before final 19-test T1 run; no following final fmt --check result"
+    },
+    {
+      "check": "Final local T1 clippy",
+      "status": "not_run",
+      "reason": "Environment became unavailable at the next tool call"
+    },
+    {
+      "check": "Earlier whitespace diff check",
+      "status": "passed_historically",
+      "command": "git diff --check",
+      "scope": "Before final T1 and recovered-source changes"
+    }
+  ],
+  "current_recovered_source": {
+    "rustfmt_check": "not_run",
+    "cargo_clippy": "not_run",
+    "cargo_test": "not_run",
+    "cargo_locked_acceptance": "not_run",
+    "full_root_regression": "not_run",
+    "conductor_validator": "not_run",
+    "installed_consumers": "not_run",
+    "provider_methods_qualified": [],
+    "independent_agent_review": "not_run_user_prohibited_workers",
+    "merge_release_publication": "not_performed"
+  }
+}
