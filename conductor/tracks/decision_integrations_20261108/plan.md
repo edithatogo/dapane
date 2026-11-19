@@ -16,17 +16,26 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 2 — Provider adapters
 
-- [ ] D2.1 Inspect current Voiage contracts and qualified methods; implement a bounded paired-output adapter including perspective and subgroup identity.
-- [ ] D2.2 Implement one Innovate utilisation/adoption-to-resource scenario with explicit capacity thresholds and feedback orchestration.
-- [ ] D2.3 Implement one optional Paignia input adapter with an explicit supported-game and payoff transformation contract.
-- [ ] D2.4 Verify provider version negotiation, unsupported-method diagnostics, transfer accounting and independently derived decision examples.
+- [~] D2.1 Inspect current Voiage contracts and qualified methods; implement a bounded paired-output adapter including perspective and subgroup identity.
+  The adapter prepares the six-key panel. Execution with the selected Voiage wheel remains open.
+- [~] D2.2 Implement one Innovate utilisation/adoption-to-resource scenario with explicit capacity thresholds and feedback orchestration.
+  The native example carried one hour of backlog into the next period. Build provenance and the provider's price-feedback case remain open.
+- [~] D2.3 Implement one optional Paignia input adapter with an explicit supported-game and payoff transformation contract.
+  The native example selected B at a utility of 20. Build provenance and application validation against the selected profile remain open.
+- [~] D2.4 Verify provider version negotiation, unsupported-method diagnostics, transfer accounting and independently derived decision examples.
+  Tests cover declared compatibility, rejected inputs and synthetic transfer accounting. Installed provider version and artifact verification remain open.
 
 ## Phase 3 — Evidence and measurement planning
 
-- [ ] D3.1 Use a qualified Voiage capability to evaluate a bounded additional-evidence question such as staff time, repeat rate or utilisation measurement.
-- [x] D3.2 Document method maturity, source assumptions, external outcome limitations and alternative-perspective interpretations.   
-  **Executed 2026-11-19:** `adapters/decision_provider_d2/D3-EVIDENCE.md` documents method maturity limits, source assumptions, external outcome limitations and alternative-perspective interpretations. Covers: Dapane D1 native paired costs (candidate, not accepted), D2 Voiage six-key interchange (preparation only), Voiage native EVPI (not executed), Innovate adoption/capacity (externally supplied only), Paignia finite-game input (blueprint only), measurement evidence (invented reference only), alternative perspectives (explicitly separate), uncertainty (draw_id/replication_id/perspective/subgroup identity), costs and decision welfare (separate constructs), population impact (no population EVPI claim), and exact acceptance blockers (6 items).
-- [ ] D3.3 Run the selected installed/provider integration cases and confirm that disabling all decision adapters leaves static costing available.
+- [~] D3.1 Use a qualified Voiage capability to evaluate a bounded additional-evidence question such as staff time, repeat rate or utilisation measurement.
+  The analytical staff-time reference is AUD 10 per assay. The available wheel checksums differed from the recorded checksum, so the native result remains unverified.
+- [x] D3.2 Document method maturity, source assumptions, external outcome limitations and alternative-perspective interpretations.
+  The [D3 preparation dossier](../../../adapters/decision_provider_d2/D3-EVIDENCE.md) records the evidence assumptions, distinctions across perspectives and limits of the synthetic example.
+- [~] D3.3 Run the selected installed/provider integration cases and confirm that disabling all decision adapters leaves static costing available.
+  The standalone native CLI returned AUD 150.00 with the expected object totals and all optional decision providers disabled. The installed-provider integration cases remain open.
+
+The [19 November verification](VERIFICATION.md#decision-provider-evidence-review--19-november-2026)
+records the replays, artifact identities and remaining evidence for D2 and D3.
 
 ## Bounded owner quality pass — 15 November 2026
 
