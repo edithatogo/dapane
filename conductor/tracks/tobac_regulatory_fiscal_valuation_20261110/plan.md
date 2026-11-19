@@ -25,7 +25,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 
-- [ ] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.
+- [~] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.  
+  **In progress 2026-11-20:** `export_perspective_table` emits `dapane-fiscal-perspective-table/0.1` rows with the six-part key and the selected cost, QALY and NMB fields. Tobac and Voiage have not imported the table.
 - [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.  
   **Executed 2026-11-20:** [FALLBACK.md](FALLBACK.md) records the three perspective boundaries, the refusal to treat excise or GST as deadweight loss, and the requirement that a missing adapter leave `tobac` and `voiage` on their own code.
 - [ ] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.

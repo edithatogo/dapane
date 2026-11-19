@@ -1,7 +1,7 @@
 //! Independent exact fiscal accounting references; every amount and rate is invented.
 
 use dapane_decision_fiscal::fiscal::{
-    SCHEDULE_SCHEMA_VERSION, evaluate_equity_json, evaluate_fiscal_json,
+    SCHEDULE_SCHEMA_VERSION, evaluate_equity_json, evaluate_fiscal_json, export_perspective_table,
 };
 use serde_json::{Value, json};
 
@@ -894,4 +894,38 @@ fn equity_sums_retain_the_fiscal_precision_bound() {
     assert_eq!(report["weighted_sum"], report["unweighted_sum"]);
     assert_eq!(report["weighted_sum"]["discounted_qalys"], Value::Null);
     assert_eq!(report["weighted_sum"]["net_monetary_benefit"], Value::Null);
+}
+
+#[test]
+fn perspective_table_keeps_the_joint_draw_key() {
+    let fiscal = evaluate_fiscal_json(&fixture().to_string()).unwrap();
+    let table: Value = serde_json::from_str(&export_perspective_table(&fiscal).unwrap()).unwrap();
+    let row = &table["rows"][0];
+    assert_eq!(row["scenario_id"], "synthetic-NZ");
+    assert_eq!(row["strategy_id"], "alternative");
+    assert_eq!(row["draw_id"], "draw-a");
+    assert_eq!(row["replication_id"], "rep-a");
+    assert_eq!(row["perspective"], "health_system");
+    assert_eq!(row["subgroup_id"], "Māori / NZDep-1");
+    assert_eq!(row["selected_resource_cost"], r("80", "1"));
+    assert_eq!(row["net_monetary_benefit"], r("20", "1"));
+
+    let mut other = fixture();
+    other["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+    let equity =
+        evaluate_equity_json(&equity_input(&[("1", fixture()), ("1", other)]).to_string()).unwrap();
+    let table: Value = serde_json::from_str(&export_perspective_table(&equity).unwrap()).unwrap();
+    assert_eq!(table["rows"].as_array().unwrap().len(), 2);
+    assert_eq!(table["rows"][0]["draw_id"], "draw-a");
+    assert_eq!(table["rows"][1]["draw_id"], "draw-a");
+    assert_eq!(table["rows"][0]["replication_id"], "rep-a");
+    assert_eq!(table["rows"][1]["scenario_id"], "synthetic-NZ");
+    assert_ne!(
+        table["rows"][0]["subgroup_id"],
+        table["rows"][1]["subgroup_id"]
+    );
+    assert_eq!(
+        export_perspective_table("{}").unwrap_err().code,
+        "unsupported_schema"
+    );
 }
