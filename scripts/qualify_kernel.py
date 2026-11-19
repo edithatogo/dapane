@@ -20,21 +20,23 @@ NATIVE_PACKAGES = {
     "autocfg",
     "block-buffer",
     "cfg-if",
-    "chrono",
     "const-oid",
     "cpufeatures",
     "crypto-common",
     "dapane-cli",
     "dapane-core",
+    "deranged",
     "digest",
     "hybrid-array",
     "itoa",
     "libc",
     "memchr",
     "num-bigint",
+    "num-conv",
     "num-integer",
     "num-rational",
     "num-traits",
+    "powerfmt",
     "proc-macro2",
     "quote",
     "serde",
@@ -43,6 +45,9 @@ NATIVE_PACKAGES = {
     "serde_json",
     "sha2",
     "syn",
+    "time",
+    "time-core",
+    "time-macros",
     "typenum",
     "unicode-ident",
     "zmij",
@@ -219,10 +224,10 @@ def check_metadata(metadata: dict, lock: dict, recorded: dict) -> list[dict]:
             f"Unqualified dependency in minimal native closure: {package['name']}",
         )
         node = nodes[key]
-        if package["name"] == "chrono":
+        if package["name"] == "time":
             require(
-                set(node["features"]) <= {"std", "alloc"},
-                "Chrono native features include an unqualified clock/timezone capability",
+                set(node["features"]) == {"parsing"},
+                "Time native features must be parsing only",
             )
         for dependency in node["deps"]:
             if any(kind["kind"] != "dev" for kind in dependency["dep_kinds"]):

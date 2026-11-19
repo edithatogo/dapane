@@ -35,7 +35,7 @@ def synthetic_metadata(lock: dict, recorded: dict) -> dict:
         nodes.append(
             {
                 "id": ids[package["name"]],
-                "features": ["std", "alloc"] if package["name"] == "chrono" else [],
+                "features": ["parsing"] if package["name"] == "time" else [],
                 "deps": [
                     {
                         "pkg": ids[dependency.split()[0]],
@@ -62,7 +62,7 @@ class KernelQualificationTests(unittest.TestCase):
 
     def test_actual_static_declarations_pass(self):
         _, recorded, members = guard.load_static(ROOT)
-        self.assertEqual(len(recorded), 36)
+        self.assertEqual(len(recorded), 41)
         self.assertEqual(set(members), {"dapane-core", "dapane-cli", "dapane-python"})
 
     def test_changed_checksum_is_rejected(self):
@@ -116,9 +116,9 @@ class KernelQualificationTests(unittest.TestCase):
             guard.check_metadata(self.metadata, self.lock, self.recorded)
 
     def test_clock_features_are_rejected(self):
-        chrono = next(node for node in self.metadata["resolve"]["nodes"] if "chrono@" in node["id"])
-        chrono["features"].append("clock")
-        with self.assertRaisesRegex(guard.QualificationError, "clock/timezone"):
+        time = next(node for node in self.metadata["resolve"]["nodes"] if "time@" in node["id"])
+        time["features"].append("local-offset")
+        with self.assertRaisesRegex(guard.QualificationError, "parsing only"):
             guard.check_metadata(self.metadata, self.lock, self.recorded)
 
     def test_resolved_publication_gate_is_enforced(self):
