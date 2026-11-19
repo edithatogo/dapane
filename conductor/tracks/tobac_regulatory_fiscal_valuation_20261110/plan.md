@@ -7,9 +7,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 1 — Perspective and fiscal-transfer contracts
 
-- [~] T1.1 Freeze the versioned contract distinguishing `health_system_direct_cost`, `enforcement_resource_cost` and `discounted_tax_transfer` (excise/GST) with mandatory currency, price-year and perspective tags.
-- [~] T1.2 Construct independent exact arithmetic reference cases for NZ/AU tobacco excise transfers, differential discounting and societal versus health-system net monetary benefit.
-- [~] T1.3 Verify that invalid perspective combinations, missing price-year metadata or unlabelled transfer additions fail closed.
+- [x] T1.1 Freeze the versioned contract distinguishing `health_system_direct_cost`, `enforcement_resource_cost` and `discounted_tax_transfer` (excise/GST) with mandatory currency, price-year and perspective tags.  
+  **Executed 2026-11-19:** Contract `dapane-fiscal/0.1` implemented in `adapters/decision_draws/src/fiscal.rs` with `Perspective`, `Rule`, `Currency`, `Jurisdiction`, `MoneyUnit`, `AccountingBasis` enums; exact rational arithmetic; explicit perspective tags; currency/price-year/unit matching enforced. See `CONTRACT.md` and `adapters/decision_draws/README.md`.
+- [x] T1.2 Construct independent exact arithmetic reference cases for NZ/AU tobacco excise transfers, differential discounting and societal versus health-system net monetary benefit.  
+  **Executed 2026-11-19:** Reference cases in `tests/fiscal.rs` (19 tests) and `adapters/decision_draws/fixtures/fiscal-nz-synthetic.json`. Exact discounted values: medical 80, enforcement 16, government receipts 40, payer flow -40, net domestic transfer 0, health-system NMB 20, societal NMB 4, public net outlay 56. All pass.
+- [x] T1.3 Verify that invalid perspective combinations, missing price-year metadata or unlabelled transfer additions fail closed.  
+  **Executed 2026-11-19:** Fail-closed tests in `tests/fiscal.rs` reject perspective/currency/source mismatches, missing price-year metadata, unbalanced tax transfers, unsupported discount methods, unknown fields and numeric floats. All pass.
 
 ## Phase 2 — Cohort occupancy valuation and subgroup equity preservation
 
