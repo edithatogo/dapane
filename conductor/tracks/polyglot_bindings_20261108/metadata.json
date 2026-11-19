@@ -24,7 +24,7 @@
     "R is direct extendr and independent of C ABI, Julia and Python.",
     "C ABI proposes immutable opaque handles and caller-owned output buffers; foreign pointers remain documented caller preconditions.",
     "Do not implement Julia until the native C consumer qualifies the ABI.",
-    "The 20 November local Julia caller follows the recorded B3.2 C consumer. It is not an installed package, JLL artifact, or release qualification.",
+    "The 20 November local Julia caller follows the recorded B3.2 C consumer. The staged install copies one host library beside the package. It is not a JLL artifact or a release qualification.",
     "Original recovery evidence remains historical; the integrator replayed exact received source and each later head requires its own source-bound qualification.",
     "Shared namespace/registry/standalone CI requests accepted in PR20; this owner repair preserves those objects and does not implement Julia."
   ],
@@ -32,7 +32,7 @@
     "RQ-09",
     "RQ-02"
   ],
-  "capability_status": "Bounded installed Linux R/native C execution evidenced; owner quality corrected; local Julia caller exercised on one host; total ABI acceptance, installed Julia/JLL, optional dependency/legal gates, other hosts and release remain open",
+  "capability_status": "Bounded installed Linux R/native C execution evidenced; owner quality corrected; local Julia caller and one-host staged install exercised; total ABI acceptance, JLL, optional dependency/legal gates, other hosts and release remain open",
   "verification": {
     "status": "partial",
     "commands": [

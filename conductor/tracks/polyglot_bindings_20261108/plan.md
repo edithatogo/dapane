@@ -22,7 +22,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [x] B3.2 Exercise a minimal C consumer with allocation/free, malformed input and version-mismatch cases before binding Julia.
 - [x] B3.3 Implement Julia direct calls, GC preservation and target-native artifact resolution; use BinaryBuilder/JLL packaging when selected for release.  
   **Executed 2026-11-20:** `julia --project=bindings/polyglot/julia -e 'using Pkg; Pkg.test()'` passed 20 tests on Julia 1.13.4 against the release `libdapane_abi.dylib` built from this checkout. Workforce and interval JSON match the same-checkout CLI bytes. The caller preserves the request across the foreign call, copies the result, frees the handle, and rejects a library name for another platform. `GC.gc()` ran after the input buffer was overwritten. BinaryBuilder/JLL packaging is not selected.
-- [ ] B3.4 Install the Julia package against its packaged library and verify shared fixtures, lifetime cases and artifact resolution.
+- [x] B3.4 Install the Julia package against its packaged library and verify shared fixtures, lifetime cases and artifact resolution.  
+  **Executed 2026-11-20:** `prepare_cases.py` wrote 24 cases. `julia --startup-file=no bindings/polyglot/julia/test/installed.jl` developed a staged copy outside the checkout, with `libdapane_abi.dylib` under that copy's `artifacts/`. The installed package resolved that file with no explicit path. All 24 cases matched the CLI bytes, including core errors, and the first success survived input overwrite plus `GC.gc()`. The install assertions were 2 artifact checks and 44 case checks. This is one host library copied beside the package, not a BinaryBuilder/JLL artifact.
 
 ## Phase 4 — Independent publication readiness
 
@@ -44,7 +45,7 @@ acceptance passed; the local sanitizer attempt failed under traced execution.
 The correction source then passed all 41 hosted binding commands, including
 installed R and ASan/UBSan C acceptance. Final-head execution remains separately
 source-bound. B3.1 stays partial pending
-unsafe-boundary acceptance. B3.4 and B4.2 remain open.
+unsafe-boundary acceptance. B4.2 remains open.
 
 The integrator accepted `bindings/polyglot/`, reconciled the blocked registry and
 added standalone CI. Those shared requests are no longer blockers. Original

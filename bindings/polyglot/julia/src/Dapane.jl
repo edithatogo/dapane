@@ -44,14 +44,20 @@ function expected_library_name()
     end
 end
 
+"""Return the library copied beside an installed package, or an empty string."""
+function packaged_library()
+    path = abspath(joinpath(@__DIR__, "..", "artifacts", expected_library_name()))
+    isfile(path) ? path : ""
+end
+
 """Resolve one target-native `dapane-abi` library path.
 
-`library` is required. A file whose name belongs to another platform is rejected
-even when that file exists.
+An empty path uses `artifacts/<host library>` beside the installed package.
+A file whose name belongs to another platform is rejected even when it exists.
 """
-function resolve_library(library::AbstractString)
-    isempty(library) && throw(ArgumentError("Pass the target-native dapane-abi library path."))
-    path = abspath(library)
+function resolve_library(library::AbstractString = "")
+    path = isempty(library) ? packaged_library() : abspath(library)
+    isempty(path) && throw(ArgumentError("Pass the target-native dapane-abi library path, or install it under artifacts/."))
     isfile(path) || throw(ArgumentError("Dapane ABI library does not exist: $path"))
     name = basename(path)
     expected = expected_library_name()
@@ -102,7 +108,7 @@ across the foreign call and is not retained by Rust.
 """
 function evaluate_bytes(
     request::AbstractVector{UInt8};
-    library::AbstractString,
+    library::AbstractString = "",
     operation::Symbol = :point,
     requested_abi::UInt32 = ABI_VERSION,
 )
@@ -135,14 +141,14 @@ function evaluate_bytes(
     status, body
 end
 
-function evaluate_json(request::Missing; library::AbstractString, operation::Symbol = :point)
+function evaluate_json(request::Missing; library::AbstractString = "", operation::Symbol = :point)
     throw(ArgumentError("Supply one non-missing JSON string."))
 end
 
 """Evaluate one JSON string through the C ABI and return the kernel's JSON bytes as a `String`."""
 function evaluate_json(
     request::AbstractString;
-    library::AbstractString,
+    library::AbstractString = "",
     operation::Symbol = :point,
 )
     isvalid(request) || throw(ArgumentError("JSON input must be valid UTF-8."))

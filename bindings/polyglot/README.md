@@ -130,12 +130,15 @@ same checkout:
 cargo build --offline --locked --release -p dapane-cli
 cargo build --offline --locked --release --manifest-path bindings/polyglot/abi/Cargo.toml
 julia --project=bindings/polyglot/julia -e 'using Pkg; Pkg.test()'
+python3 bindings/polyglot/tests/prepare_cases.py --cli target/release/dapane --output /absolute/new-cases
+julia --startup-file=no bindings/polyglot/julia/test/installed.jl /absolute/new-stage /absolute/new-depot /absolute/new-cases bindings/polyglot/abi/target/release/libdapane_abi.dylib
 ```
 
-The 20 November run passed 20 tests on Julia 1.13.4: workforce and interval
-bytes matched the CLI, a foreign-platform library name was rejected, and the
-copied result survived input overwrite plus `GC.gc()`. This does not install a
-packaged library or select BinaryBuilder/JLL.
+The 20 November source run passed 20 tests on Julia 1.13.4. A separate staged
+install, outside the checkout, copied `libdapane_abi.dylib` into that package's
+`artifacts/` directory. With no explicit library path, the installed package
+matched all 24 prepared cases, and the first success survived input overwrite
+plus `GC.gc()`. BinaryBuilder/JLL packaging is not selected.
 
 ## Shared changes and rollback
 
