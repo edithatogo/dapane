@@ -8,6 +8,11 @@ corrections, the local counterpart passed its acceptance suite at
 before the execution environment became unavailable. [History](HISTORY.md)
 separates that observation from this reconstructed, unexecuted publication.
 
+The active runtime pin is `2311d6028f30ff7af01f064a76234cb0db7d1236`, the
+date-library repair. The frozen mutation inventory, workloads and acceptance
+conditions apply to this revision. Historical observations retain their
+original runtime pins.
+
 ## Questions and comparators
 
 1. Which deliberately introduced costing defects does the unchanged CLI reject,
