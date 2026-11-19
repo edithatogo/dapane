@@ -185,124 +185,133 @@ pub(crate) fn check_typed_size<T: Serialize>(request: &T) -> Result<(), DapaneEr
 
 #[cfg(test)]
 mod canonical_comparison_tests {
+    //! Golden byte-level unit tests for `write_canonical`.
+    //!
+    //! The 2026-11-19 comparison against `serde_json_canonicalizer` concluded
+    //! **NO-GO** (see `conductor/tracks/serde_canonicalization_qualification_20261118/plan.md`)
+    //! due to byte-incompatibilities on negative zero, integer bounds, and
+    //! whole-number floats; the dev-dependency was removed while retaining
+    //! these regression assertions on Dapane's canonical output.
+
     use super::*;
     use serde_json::json;
 
-    /// Compare Dapane's write_canonical output with serde_json_canonicalizer
-    /// for the same input value. They must produce byte-identical output.
-    fn compare_canonical(value: &Value) -> (String, String) {
-        let mut dapane_output = String::new();
-        write_canonical(value, &mut dapane_output).unwrap();
-        let canonicalizer_output = serde_json_canonicalizer::to_string(value).unwrap();
-        (dapane_output, canonicalizer_output)
+    fn canonical_str(value: &Value) -> String {
+        let mut out = String::new();
+        write_canonical(value, &mut out).unwrap();
+        out
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_empty_object() {
-        let (dapane, canonicalizer) = compare_canonical(&json!({}));
-        assert_eq!(dapane, canonicalizer);
+        assert_eq!(canonical_str(&json!({})), "{}");
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_empty_array() {
-        let (dapane, canonicalizer) = compare_canonical(&json!([]));
-        assert_eq!(dapane, canonicalizer);
+        assert_eq!(canonical_str(&json!([])), "[]");
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_sorted_keys() {
         let value = json!({"zebra": 1, "alpha": 2, "Mammal": 3});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        assert_eq!(dapane, canonicalizer);
-        // Both should sort by Unicode code point: Mammal < alpha < zebra
-        assert!(dapane.starts_with(r#"{"Mammal":3"#));
+        let dapane = canonical_str(&value);
+        // Sorted by Unicode code point (UTF-8 / char order): Mammal < alpha < zebra
+        assert_eq!(dapane, r#"{"Mammal":3,"alpha":2,"zebra":1}"#);
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_nested_objects() {
         let value = json!({"c": {"z": 1, "a": 2}, "a": {"b": 1, "c": 2}});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        assert_eq!(dapane, canonicalizer);
+        assert_eq!(
+            canonical_str(&value),
+            r#"{"a":{"b":1,"c":2},"c":{"a":2,"z":1}}"#
+        );
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_arrays() {
         let value = json!({"items": [3, 1, 2]});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        assert_eq!(dapane, canonicalizer);
+        assert_eq!(canonical_str(&value), r#"{"items":[3,1,2]}"#);
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_numbers() {
         let value = json!({"int": 42, "float": 123.456, "zero": 0});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        assert_eq!(dapane, canonicalizer);
+        assert_eq!(
+            canonical_str(&value),
+            r#"{"float":123.456,"int":42,"zero":0}"#
+        );
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_strings() {
         let value = json!({"text": "hello\nworld", "quote": "say \"hi\""});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        assert_eq!(dapane, canonicalizer);
+        assert_eq!(
+            canonical_str(&value),
+            r#"{"quote":"say \"hi\"","text":"hello\nworld"}"#
+        );
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_booleans_and_null() {
         let value = json!({"true": true, "false": false, "null": null});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        assert_eq!(dapane, canonicalizer);
+        assert_eq!(
+            canonical_str(&value),
+            r#"{"false":false,"null":null,"true":true}"#
+        );
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_powers_of_ten() {
-        // serde_json serializes 1e2 as 100, 1e-3 as 0.001
+        // KNOWN INCOMPATIBILITY documented in no-go evaluation:
+        // serde_json_canonicalizer drops `.0` (100.0 -> 100); Dapane preserves `100.0`.
         let value = json!({"hundred": 100.0, "thousandth": 0.001, "large": 1.5e10});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        // KNOWN INCOMPATIBILITY: canonicalizer drops .0 from whole-number floats
-        // Dapane preserves 100.0; canonicalizer produces 100
-        assert_ne!(dapane, canonicalizer);
-        assert!(dapane.contains("100.0"));
-        assert!(!canonicalizer.contains("100.0"));
+        let dapane = canonical_str(&value);
+        assert_eq!(
+            dapane,
+            r#"{"hundred":100.0,"large":15000000000.0,"thousandth":0.001}"#
+        );
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_unicode_escape() {
         let value = json!({"cafe": "caf\u{e9}", "emoji": "\u{1f600}"});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        assert_eq!(dapane, canonicalizer);
+        assert_eq!(
+            canonical_str(&value),
+            "{\"cafe\":\"café\",\"emoji\":\"😀\"}"
+        );
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_negative_zero() {
-        // serde_json represents -0.0 differently than Dapane's write_canonical
+        // KNOWN INCOMPATIBILITY documented in no-go evaluation:
+        // serde_json_canonicalizer normalizes `-0.0` to `0`; Dapane preserves `-0.0`.
         let value = json!({"neg_zero": -0.0_f64, "zero": 0.0_f64});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        // KNOWN INCOMPATIBILITY: canonicalizer normalizes -0.0 to 0
-        // Dapane preserves -0.0
-        assert_ne!(dapane, canonicalizer);
-        assert!(dapane.contains("-0.0"));
-        assert!(!canonicalizer.contains("-0.0"));
+        let dapane = canonical_str(&value);
+        assert_eq!(dapane, r#"{"neg_zero":-0.0,"zero":0.0}"#);
     }
 
     #[test]
     fn serde_json_canonicalizer_matches_dapane_on_integer_bounds() {
+        // KNOWN INCOMPATIBILITY documented in no-go evaluation:
+        // serde_json_canonicalizer rounds i64::MAX/MIN; Dapane preserves exact integer values.
         let value = json!({"max_i64": 9223372036854775807i64, "min_i64": -9223372036854775808i64});
-        let (dapane, canonicalizer) = compare_canonical(&value);
-        // KNOWN INCOMPATIBILITY: canonicalizer rounds i64::MAX/MIN
-        // Dapane preserves exact integer values
-        assert_ne!(dapane, canonicalizer);
-        assert!(dapane.contains("9223372036854775807"));
-        assert!(!canonicalizer.contains("9223372036854775807"));
+        let dapane = canonical_str(&value);
+        assert_eq!(
+            dapane,
+            r#"{"max_i64":9223372036854775807,"min_i64":-9223372036854775808}"#
+        );
     }
 
     #[test]
     fn serde_json_canonicalizer_duplicate_key_handling() {
-        // serde_json's default parser accepts duplicate keys (keeps last)
-        // serde_json_canonicalizer's from_str may handle them differently
+        // Note: Dapane's parse_value uses UniqueValue visitor which rejects duplicates;
+        // serde_json::from_str::<Value> keeps last by default.
         let input = "{\"a\": 1, \"a\": 2}";
-        let dapane_result = serde_json::from_str::<Value>(input);
-        assert!(dapane_result.is_ok()); // serde_json accepts duplicates, keeps last
-        // Note: Dapane's parse_value uses UniqueValue visitor which rejects duplicates
-        // This is a deliberate behavioral difference documented in json.rs
+        let parsed = serde_json::from_str::<Value>(input).unwrap();
+        assert_eq!(canonical_str(&parsed), r#"{"a":2}"#);
+        let strict = parse_value(input);
+        assert!(strict.is_err());
     }
 }
