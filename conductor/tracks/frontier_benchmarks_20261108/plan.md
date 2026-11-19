@@ -22,7 +22,8 @@ comparison or frontier literature review.
 - [x] F2.2 Implement and compare incremental revaluation with full recomputation on identical inputs and policies.
 - [ ] F2.3 After the relevant newborn_screening and process_models capabilities are qualified, compare object-centric and flattened pathway representations using shared-batch, repeat and capacity cases; retain this experiment as pending without blocking F2.1/F2.2.
 - [ ] F2.4 After the required decision_integrations capabilities are qualified, run measurement-priority and adoption/capacity experiments; retain this experiment as pending without blocking independent static benchmarks.
-- [ ] F2.5 Verify independent expected outcomes and retain all negative/null results, environment details and complete result bundles.
+- [x] F2.5 Verify independent expected outcomes and retain all negative/null results, environment details and complete result bundles.   
+  **Executed 2026-11-19:** Static slice independent expected outcomes verified: 23 tests pass, 24 mutation expectations, 24 comparisons across 8/32 independent requests, bundle verification of 144 pairs, source-truth detection 0/5 (documented limitation — evaluator lacks source truth). Negative/null results, environment details and complete result bundles retained in benchmarks/static/evidence/local-observations.json. Broader experiment set (F2.3–F2.4 dependent) remains open pending external provider qualification.
 
 F2.1/F2.2 are complete for the authorised synthetic static slice at
 `7137bb5e87b7e79e8c780e9c0576434606072065`: local and hosted runs passed 23 tests,

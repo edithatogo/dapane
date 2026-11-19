@@ -21,7 +21,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 ## Phase 3 — Evidence and measurement planning
 
 - [ ] D3.1 Use a qualified Voiage capability to evaluate a bounded additional-evidence question such as staff time, repeat rate or utilisation measurement.
-- [ ] D3.2 Document method maturity, source assumptions, external outcome limitations and alternative-perspective interpretations.
+- [x] D3.2 Document method maturity, source assumptions, external outcome limitations and alternative-perspective interpretations.   
+  **Executed 2026-11-19:** `adapters/decision_provider_d2/D3-EVIDENCE.md` documents method maturity limits, source assumptions, external outcome limitations and alternative-perspective interpretations. Covers: Dapane D1 native paired costs (candidate, not accepted), D2 Voiage six-key interchange (preparation only), Voiage native EVPI (not executed), Innovate adoption/capacity (externally supplied only), Paignia finite-game input (blueprint only), measurement evidence (invented reference only), alternative perspectives (explicitly separate), uncertainty (draw_id/replication_id/perspective/subgroup identity), costs and decision welfare (separate constructs), population impact (no population EVPI claim), and exact acceptance blockers (6 items).
 - [ ] D3.3 Run the selected installed/provider integration cases and confirm that disabling all decision adapters leaves static costing available.
 
 ## Bounded owner quality pass — 15 November 2026
