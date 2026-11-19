@@ -19,9 +19,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Programme and reporting qualification
 
-- [ ] N3.1 Select a real programme scope and acquire authorised, source-qualified workflow/quantity/rate inputs; record gaps explicitly.
-- [ ] N3.2 Produce costing outputs through the shared core. If reporting/profile support is selected, first qualify reporting_profiles_20261108 and then its UOGTO exports; otherwise retain that capability as pending. Neither this adapter nor real-programme source acquisition blocks Phases 1–2 synthetic costing. Keep outcomes/eligibility assumptions in the programme or health-economic model.
-- [ ] N3.3 Compare the programme calculations with independent examples, record unresolved source limitations and document reproduction/rollback before advertising real-programme support.
+- [x] N3.1 Select a real programme scope and acquire authorised, source-qualified workflow/quantity/rate inputs; record gaps explicitly.
+  - Bounded Queensland / Australian NBS labour pack implemented in [fixtures/newborn-qld-nbs](../../../fixtures/newborn-qld-nbs/README.md) composing pinned QLD Health HP3.1 base pay (`qld-health-hp3p1-reference-20261115`, `c351a7c6420a356c4c13d2da3010bc7e7d0341f9`) and manual DNA extraction (`manual-dna-extraction-v1`, `be2451f34a389f90e618cf37a5e8e1fcbb148dea`) with official QLD/AU NBS governance references and 11 explicit source gaps/exclusions (`programme.json`).
+- [x] N3.2 Produce costing outputs through the shared core. If reporting/profile support is selected, first qualify reporting_profiles_20261108 and then its UOGTO exports; otherwise retain that capability as pending. Neither this adapter nor real-programme source acquisition blocks Phases 1–2 synthetic costing. Keep outcomes/eligibility assumptions in the programme or health-economic model.
+  - Five prepared Dapane `0.1` requests (`qld-nbs-full-batch-6`, `qld-nbs-partial-batch-3`, `qld-nbs-failed-batch-repeat-3`, `qld-nbs-inadequate-card-recollection-3`, `qld-nbs-unresolved-failed-screen-3`) execute under the health-service `provider` perspective through both the native Rust CLI and installed wheel; family time & downstream care are explicitly excluded and `reporting_profiles_20261108` / UOGTO exports remain `pending` (PR #27 unmerged).
+- [~] N3.3 Compare the programme calculations with independent examples, record unresolved source limitations and document reproduction/rollback before advertising real-programme support.
+  - Independent exact-rational (`1612303/60000` / `26.87`, `1612303/30000` / `53.74`) and denominator references (`expected.json`), 11 source gaps, and reproduction/rollback docs (`README.md`) pass 19 dedicated installed-wheel tests (`215` full Python suite) and CLI parity locally on macOS arm64; broader non-extraction NBS stages, real perinatal epidemiology, empirical validation, and hosted Linux CI execution remain open.
 
 ## Evidence record
 
@@ -67,3 +70,21 @@ registry, shared schemas, crates, manifests, CI or root docs.
 The [exact-source handoff](handoff.md) and [verification receipt](verification.json)
 retain the published implementation SHA/tree, artifact identities, CLI digests,
 rounding control and executed-versus-unexecuted qualification.
+
+## Bounded QLD NBS Phase 3 increment, 2026-11-19
+
+On branch `feat/newborn-qld-nbs-n3` (from `main` `0658d94ad772023a0185a000b5254f9c2f4a63a9`),
+[fixtures/newborn-qld-nbs](../../../fixtures/newborn-qld-nbs/README.md) and
+[test_newborn_qld_nbs.py](../../../tests/python/test_newborn_qld_nbs.py) add a
+bounded Queensland / Australian NBS manual DNA extraction labour pack under the
+`provider` perspective, preserving all synthetic fixtures (`fixtures/newborn-synthetic/`,
+`fixtures/newborn-screening.json`, `fixtures/expected.json`), shared schemas,
+Rust crates, and `docs/provider-consumers.lock.json` untouched.
+
+Local verification (`Darwin arm64`, CPython `3.15.1`, Homebrew `rustc 1.100.0`;
+hosted Linux `1.99.1` CI remains separate) passed:
+- `cargo build --locked --release --no-default-features -p dapane-cli`
+- `cargo test --locked -p dapane-core` (`54 passed`) and `cargo test --locked -p dapane-cli -- --skip non_utf8_arguments_do_not_panic_and_file_paths_remain_usable` (`7 passed`; the skipped test panics on macOS APFS `EILSEQ` errno 92 when creating a `0xff` test filename)
+- Installed native wheel (`maturin build --locked --release`) outside checkout: `19 passed` in `test_newborn_qld_nbs.py`, `215 passed` across `tests/python`, and CLI/wheel parity across all five `qld-nbs-*.json` cases (`1612303/60000` = `26.87` for 1 batch; `1612303/30000` = `53.74` for 2 batches)
+- Ruff `0.17.4` check/format, `validate_contract.py`, `validate_intervals.py`, `validate_conductor.py`, `test_conductor_validation.py`, `release_assurance.py validate`, and `tests/release`
+- Exact checksums and report digests are recorded in [qld-nbs-verification.json](qld-nbs-verification.json). Non-extraction NBS stages, real perinatal epidemiology, family/societal perspectives, and `reporting_profiles_20261108` exports remain open.
