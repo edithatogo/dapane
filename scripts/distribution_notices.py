@@ -393,19 +393,7 @@ def main(argv=None):
             write_outputs(args.root, outputs)
         else:
             check_outputs(args.root, outputs)
-        manifest = json.loads(outputs[MANIFEST_PATH])
-        print(
-            json.dumps(
-                {
-                    "status": "written" if args.write else "verified",
-                    "registry_packages": len(manifest["packages"]),
-                    "unique_legal_texts": manifest["unique_legal_texts"],
-                    "notice_sha256": manifest["output"]["sha256"],
-                    "rust_version": manifest["toolchain"]["rust_version"],
-                },
-                sort_keys=True,
-            )
-        )
+        print('{"status": "written"}' if args.write else '{"status": "verified"}')
         return 0
     except (NoticeError, OSError, KeyError, TypeError, ValueError, tarfile.TarError) as error:
         print(f"Distribution notice verification failed: {error}", file=sys.stderr)

@@ -131,10 +131,14 @@ After installing the matching wheel and existing development requirements:
 
 ```sh
 python scripts/verify_run_bundle.py synthetic-history.json \
-  --head sha256:RETAINED_HEAD_DIGEST --as-of 2026-02-10
+  --head sha256:RETAINED_HEAD_DIGEST --as-of 2026-02-10 \
+  --output verified-selection.json
 ```
 
 The head argument must be an actual retained digest, not the illustrative placeholder.
+The CLI prints a verification status on stdout. Use `--output` to save the
+canonical selection and its report to a new JSON file with owner-only mode
+on POSIX systems. Store the file in a directory suitable for the underlying data.
 Errors return exit 2 with a structured diagnostic on stderr and no financial stdout.
 The installed-wheel acceptance suite constructs synthetic snapshots and an independent
 manifest digest, then exercises replacement, withdrawal, corrupt/resealed payloads,
