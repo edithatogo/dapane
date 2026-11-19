@@ -22,6 +22,16 @@ cargo build --locked --release --no-default-features -p dapane-core -p dapane-cl
 python3 scripts/validate_conductor.py
 ```
 
+### Pre-commit hooks
+
+This repository ships tracked pre-commit checks in [`.githooks/pre-commit`](.githooks/pre-commit) and a matching [`.pre-commit-config.yaml`](.pre-commit-config.yaml). Enable the tracked hook path in your local clone with:
+
+```sh
+git config --local core.hooksPath .githooks
+```
+
+The pre-commit hook runs staged `gitleaks` scanning, JSON structural and key/digest hygiene checks (`scripts/check_json_hygiene.py`), `cargo fmt --check` and `cargo clippy -- -D warnings` for touched workspace or adapter crates, `ruff` check/format on touched Python files, `scripts/validate_conductor.py`, and `scripts/release_assurance.py validate` when release inputs change. For full local Presidio personal-identifier scanning in addition to Gitleaks, follow [`edithatogo/repository-standards` local hooks guidance](https://github.com/edithatogo/repository-standards/blob/main/privacy/local-hooks.md).
+
 For public-contract changes, install the documented development requirements and run `python scripts/validate_contract.py --cli target/release/dapane`. For interval changes, also run `python scripts/validate_intervals.py --cli target/release/dapane`; schema-only checks do not qualify an executable. For Python changes, follow the quickstart's native-wheel build, installation and tests outside the source checkout; an import from the working tree is insufficient evidence.
 
 Use independently calculated synthetic expectations, including invalid inputs and allocation conservation. Distinguish computational verification from empirical validation. Version incompatible contract semantics deliberately and update migration guidance.

@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.99\.1'; then
+  CARGO=(rustup run 1.99.1 cargo)
+else
+  CARGO=(cargo)
+fi
+
+staged_files=()
+while IFS= read -r -d '' path; do
+  staged_files+=("$path")
+done < <(git diff --cached --name-only -z --diff-filter=ACMR)
+
+if [[ ${#staged_files[@]} -eq 0 ]]; then
+  exit 0
+fi
+
+# 1. Secrets gate (Gitleaks staged scan).
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is required on PATH to scan staged changes." >&2
+  exit 1
+fi
+gitleaks protect --staged --redact --no-banner
+
+# 2. JSON structural and key/digest hygiene gate.
+json_files=()
+py_files=()
+check_workspace_rust=0
+check_conductor=0
+check_release=0
+
+for path in "${staged_files[@]}"; do
+  case "$path" in
+    *.json) json_files+=("$path") ;;
+    *.py) py_files+=("$path") ;;
+  esac
+  if [[ "$path" =~ ^(Cargo\.toml|Cargo\.lock|crates/) ]]; then
+    check_workspace_rust=1
+  fi
+  if [[ "$path" =~ ^(conductor/|README\.md$|AGENTS\.md$|scripts/validate_conductor\.py$) ]]; then
+    check_conductor=1
+  fi
+  if [[ "$path" =~ ^(Cargo\.toml|Cargo\.lock|pyproject\.toml|rust-toolchain\.toml|requirements-.*\.txt|deny\.toml|release/|fixtures/|schemas/|licenses/|docs/provider-consumers\.lock\.json|scripts/release_assurance\.py|scripts/distribution_notices\.py|\.github/workflows/release-assurance\.yml) ]]; then
+    check_release=1
+  fi
+done
+
+if [[ ${#json_files[@]} -gt 0 ]]; then
+  python3 scripts/check_json_hygiene.py --staged
+fi
+
+# 3. Root workspace Rust formatting and Clippy gates.
+if [[ $check_workspace_rust -eq 1 ]]; then
+  "${CARGO[@]}" fmt --all --check
+  "${CARGO[@]}" clippy --workspace --locked --all-targets -- -D warnings
+fi
+
+# 4. Standalone adapter Rust formatting and Clippy gates.
+for manifest in adapters/*/Cargo.toml; do
+  [[ -f "$manifest" ]] || continue
+  adapter_dir="${manifest%/Cargo.toml}/"
+  touched=0
+  for path in "${staged_files[@]}"; do
+    if [[ "$path" == "$adapter_dir"* ]]; then
+      touched=1
+      break
+    fi
+  done
+  if [[ $touched -eq 1 ]]; then
+    "${CARGO[@]}" fmt --manifest-path "$manifest" --all --check
+    "${CARGO[@]}" clippy --manifest-path "$manifest" --locked --offline --all-targets -- -D warnings
+  fi
+done
+
+# 5. Python lint and formatting gate (pinned ruff 0.17.4 when via uvx).
+if [[ ${#py_files[@]} -gt 0 ]]; then
+  if command -v ruff >/dev/null 2>&1; then
+    RUFF=(ruff)
+  elif command -v uvx >/dev/null 2>&1; then
+    RUFF=(uvx --from ruff==0.17.4 ruff)
+  else
+    echo "pre-commit: ruff or uvx is required to check staged Python files." >&2
+    exit 1
+  fi
+  "${RUFF[@]}" check "${py_files[@]}"
+  "${RUFF[@]}" format --check "${py_files[@]}"
+fi
+
+# 6. Conductor link/metadata/registry consistency gate.
+if [[ $check_conductor -eq 1 ]]; then
+  python3 scripts/validate_conductor.py
+fi
+
+# 7. Release assurance manifest/evidence gate.
+if [[ $check_release -eq 1 ]]; then
+  python3 scripts/release_assurance.py validate
+fi
