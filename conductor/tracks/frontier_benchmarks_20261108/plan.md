@@ -22,9 +22,10 @@ comparison or frontier literature review.
 - [x] F2.2 Implement and compare incremental revaluation with full recomputation on identical inputs and policies.
 - [x] F2.3 After the relevant newborn_screening and process_models capabilities are qualified, compare object-centric and flattened pathway representations using shared-batch, repeat and capacity cases; retain this experiment as pending without blocking F2.1/F2.2.  
   **Executed 2026-11-20:** `python3 -m unittest benchmarks.static.tests.test_pathway` passed 3 tests. One shared 5.05 batch stays 38.05; copying it onto both recipients yields 43.10. Adding 30.00 of repeat labour yields 68.05, or 73.10 when the batch is copied as well. One instrument half-hour at 90/hour is 45, and the flattened two-infant copy is 90. The point oracle rejects `capacity_allocations`. This uses the qualified static point slice and the X1 shared-batch quantity. It is not an XES, newborn-programme or Kairos result.
-- [ ] F2.4 After the required decision_integrations capabilities are qualified, run measurement-priority and adoption/capacity experiments; retain this experiment as pending without blocking independent static benchmarks.
+- [x] F2.4 After the required decision_integrations capabilities are qualified, run measurement-priority and adoption/capacity experiments; retain this experiment as pending without blocking independent static benchmarks.  
+  **Executed 2026-11-20:** `python3 -m unittest benchmarks.static.tests.test_decision_slice` passed. Independent EVPI is 1 for the paired net-benefit matrix and 10 per assay for staff time, so staff time ranks first. Adoption of 4 then 1 at 2 hours each, with capacity 5, exceeds capacity only in 2026-01 and carries backlog 3 into a cleared second period. The Voiage and study packets remain `not_executed`; the adoption packet is an externally supplied trajectory. No installed wheel was run.
 - [x] F2.5 Verify independent expected outcomes and retain all negative/null results, environment details and complete result bundles.   
-  **Executed 2026-11-19:** Static slice independent expected outcomes verified: 23 tests pass, 24 mutation expectations, 24 comparisons across 8/32 independent requests, bundle verification of 144 pairs, source-truth detection 0/5 (documented limitation — evaluator lacks source truth). Negative/null results, environment details and complete result bundles retained in benchmarks/static/evidence/local-observations.json. F2.4 remains open.
+  **Executed 2026-11-19:** Static slice independent expected outcomes verified: 23 tests pass, 24 mutation expectations, 24 comparisons across 8/32 independent requests, bundle verification of 144 pairs, source-truth detection 0/5 (documented limitation — evaluator lacks source truth). Negative/null results, environment details and complete result bundles retained in benchmarks/static/evidence/local-observations.json. Phase 3 remains open.
 
 F2.1/F2.2 are complete for the authorised synthetic static slice at
 `7137bb5e87b7e79e8c780e9c0576434606072065`: local and hosted runs passed 23 tests,
@@ -34,7 +35,7 @@ retained as an identified artifact with an explicit expiry; durable retention is
 handed to the integrator. Source-truth detection remains 0/5. No within-request
 incremental engine or empirical/frontier claim follows. See the
 [quality follow-up](quality-followup-20261115.md), [handoff](HANDOFF.md) and
-[review](review.md). F2.5 remains open for the broader planned experiment set.
+[review](review.md). F2.3 and F2.4 now have synthetic results. Phase 3 external validation remains open.
 
 ## Phase 3 — External validation and publication
 
