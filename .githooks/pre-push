@@ -4,6 +4,12 @@ set -euo pipefail
 repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
 
+# Make Git commands inside tests discover their own temporary repositories.
+git_local_environment="$(git rev-parse --local-env-vars)"
+while IFS= read -r name; do
+  unset "$name"
+done <<< "$git_local_environment"
+
 ZERO_SHA="0000000000000000000000000000000000000000"
 
 if ! command -v gitleaks >/dev/null 2>&1; then
@@ -11,7 +17,7 @@ if ! command -v gitleaks >/dev/null 2>&1; then
   exit 1
 fi
 
-while read -r local_ref local_sha remote_ref remote_sha; do
+while read -r _local_ref local_sha remote_ref remote_sha; do
   [[ -n "${local_sha:-}" ]] || continue
   if [[ "$local_sha" == "$ZERO_SHA" ]]; then
     # Branch/tag deletion on remote.
