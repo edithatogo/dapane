@@ -16,9 +16,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 2 — Cohort occupancy valuation and subgroup equity preservation
 
-- [ ] T2.1 Evaluate cohort state-occupancy and cessation-resource schedules over indexed parameter draws while preserving `draw_id`, `strategy_id`, `perspective` and `subgroup_id`.
-- [ ] T2.2 Implement subgroup equity-weight and distributional cost-effectiveness aggregation rules with exact unweighted-sum conservation checks when weights are unity.
-- [ ] T2.3 Verify parity against `tobac`'s standalone reference oracle (`src/tobac/economics.py` and `src/tobac/decision.py`) on synthetic NZ/AU policy fixtures.
+- [x] T2.1 Evaluate cohort state-occupancy and cessation-resource schedules over indexed parameter draws while preserving `draw_id`, `strategy_id`, `perspective` and `subgroup_id`.  
+  **Executed 2026-11-20:** Optional `cohort_states` and `cessation_resources` discount supplied amounts at the resource rate and copy `draw_id`, `strategy_id` and `subgroup_id` onto each valued row. The row keeps its own perspective tag. Schedule amounts stay out of the four-category ledger. Empty state and resource-type identifiers fail as `invalid_identity`.
+- [x] T2.2 Implement subgroup equity-weight and distributional cost-effectiveness aggregation rules with exact unweighted-sum conservation checks when weights are unity.  
+  **Executed 2026-11-20:** `evaluate_equity_json` (`dapane-fiscal-equity/0.1`) sums `selected_resource_cost`, `discounted_qalys` and `net_monetary_benefit`. Two invented NZ packets at weight 1 give 160, 2 and 40 on both the weighted and unweighted sums. Weights 1 and 3 give weighted 320, 4 and 80 while the unweighted sum stays 160, 2 and 40. Repeated subgroups and a changed `draw_id` fail closed.
+- [ ] T2.3 Verify parity against `tobac`'s standalone reference oracle (`src/tobac/economics.py` and `src/tobac/decision.py`) on synthetic NZ/AU policy fixtures.  
+  Still open. Read-only inspection at Tobac `891f79e07292b7754f78d7193130623bd5f9e243` did not find those paths. Related functions were in `src/tobac/health.py`. That is not oracle parity.
 
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 
@@ -50,3 +53,9 @@ gates remain open. This quality repair does not complete the full track.
 See [verification](VERIFICATION.md), [review](REVIEW.md), [metadata](metadata.json)
 and the [exact-SHA handoff](HANDOFF.md). The [registry](../../tracks.md) already
 matches this track's `in_progress` state.
+
+**T2.1–T2.2 check, 2026-11-20:** from `adapters/decision_draws`,
+`cargo test --locked --offline` passed 24 fiscal tests and 18 paired tests, and
+`cargo clippy --locked --offline --all-targets -- -D warnings` passed. The
+schedules and equity sum are synthetic adapter behaviour. They do not qualify a
+Tobac consumer, a production method profile, or T2.3 oracle parity.

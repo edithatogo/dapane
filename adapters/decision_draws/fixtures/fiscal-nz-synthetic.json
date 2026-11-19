@@ -180,5 +180,7 @@
       "evidence": "synthetic"
     }
   },
+  "cohort_states": [],
+  "cessation_resources": [],
   "resource_basis": "public_expenditure"
 }

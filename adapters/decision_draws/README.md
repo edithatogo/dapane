@@ -97,11 +97,14 @@ its own hosted results; no ordinary quality pass waives a security/release gate.
 Only invented public synthetic declarations are accepted. A syntactic
 `evidence: synthetic` tag or SHA identifies a declaration, not the truth of its
 source. There is no network, RNG, private-record reader, provider dispatch, VOI
-estimator, cohort model, tax calculator, equity weighting or production price
-catalogue here. Outcomes remain external to D1; T1's declared draw digest is not
-an implemented D1-to-T1 consumer join.
+estimator, cohort-dynamics model, tax calculator or production price catalogue
+here. Supplied occupancy and cessation amounts can be discounted and reported
+without entering the four-category ledger. `evaluate_equity_json` sums those
+fiscal results with explicit positive weights and keeps each subgroup row.
+Outcomes remain external to D1; T1's declared draw digest is not an implemented
+D1-to-T1 consumer join.
 
-D2/D3 and T2/T3 remain open. Upstream Tobac was inspected read-only at
+D2/D3, T2.3 oracle parity and T3 remain open. Upstream Tobac was inspected read-only at
 `891f79e07292b7754f78d7193130623bd5f9e243`; source adjudication stays with its
 existing owner. Removing this optional directory leaves all shared runtime
 surfaces unchanged.
