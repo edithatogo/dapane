@@ -1,0 +1,271 @@
+{
+  "profile_id": "newborn-synthetic-recipe",
+  "profile_version": "0.1.0",
+  "status": "synthetic_prepared_requests_only",
+  "source_manifest": "sources.json",
+  "request_profiles": [
+    "0.1",
+    "0.2"
+  ],
+  "object_kinds": [
+    "infant",
+    "screening_episode",
+    "specimen",
+    "card",
+    "collection_attempt",
+    "assay",
+    "assay_batch",
+    "result",
+    "recall",
+    "confirmation",
+    "follow_up"
+  ],
+  "optional_object_kinds": [
+    "instrument"
+  ],
+  "relationships": [
+    {
+      "from_kind": "screening_episode",
+      "relationship": "screens",
+      "to_kind": "infant"
+    },
+    {
+      "from_kind": "collection_attempt",
+      "relationship": "belongs_to",
+      "to_kind": "screening_episode"
+    },
+    {
+      "from_kind": "specimen",
+      "relationship": "obtained_by",
+      "to_kind": "collection_attempt"
+    },
+    {
+      "from_kind": "specimen",
+      "relationship": "collected_from",
+      "to_kind": "infant"
+    },
+    {
+      "from_kind": "card",
+      "relationship": "holds",
+      "to_kind": "specimen"
+    },
+    {
+      "from_kind": "assay",
+      "relationship": "uses_specimen",
+      "to_kind": "specimen"
+    },
+    {
+      "from_kind": "assay",
+      "relationship": "runs_in",
+      "to_kind": "assay_batch"
+    },
+    {
+      "from_kind": "result",
+      "relationship": "reports",
+      "to_kind": "assay"
+    },
+    {
+      "from_kind": "result",
+      "relationship": "reports",
+      "to_kind": "specimen"
+    },
+    {
+      "from_kind": "recall",
+      "relationship": "belongs_to",
+      "to_kind": "screening_episode"
+    },
+    {
+      "from_kind": "confirmation",
+      "relationship": "follows",
+      "to_kind": "recall"
+    },
+    {
+      "from_kind": "follow_up",
+      "relationship": "follows",
+      "to_kind": "confirmation"
+    },
+    {
+      "from_kind": "assay",
+      "relationship": "repeats",
+      "to_kind": "assay"
+    },
+    {
+      "from_kind": "result",
+      "relationship": "triggers",
+      "to_kind": "assay"
+    },
+    {
+      "from_kind": "assay_batch",
+      "relationship": "uses_instrument",
+      "to_kind": "instrument"
+    }
+  ],
+  "stages": [
+    "collection",
+    "transport",
+    "accession_qc",
+    "setup",
+    "controls",
+    "assay",
+    "reporting",
+    "recall",
+    "confirmation",
+    "follow_up",
+    "programme_overhead",
+    "repeat_collection",
+    "repeat_assay",
+    "reflex_assay",
+    "added_panel",
+    "family_time",
+    "instrument_capacity"
+  ],
+  "branches": [
+    "primary",
+    "inadequate_specimen_then_repeat",
+    "failed_assay_then_repeat",
+    "unresolved_failure",
+    "reflex",
+    "partial_batch",
+    "added_panel",
+    "family_inclusion",
+    "capacity_below",
+    "capacity_at",
+    "capacity_above",
+    "capacity_missing_use",
+    "capacity_unknown_availability"
+  ],
+  "specimen_states": [
+    "adequate",
+    "inadequate"
+  ],
+  "result_states": [
+    "valid",
+    "failed",
+    "reflex_required"
+  ],
+  "composition": {
+    "workforce": {
+      "quote_ids": [
+        "salary-quote",
+        "oncost-quote"
+      ],
+      "same_use_components": [
+        "salary",
+        "oncost"
+      ],
+      "collection_minutes": "5",
+      "confirmation_minutes": "15"
+    },
+    "laboratory_batch": {
+      "quote_ids": [
+        "transport-quote",
+        "accession-qc-quote",
+        "setup-quote",
+        "controls-quote",
+        "assay-material-quote",
+        "programme-overhead-quote"
+      ],
+      "pool_policy": "full_pool_equal_participating_infant_weights",
+      "quantity_per_batch_resource": "1",
+      "primary_assays_per_specimen": 2
+    },
+    "repeat_collection": {
+      "collection_minutes": "5",
+      "incremental_quote_ids": [
+        "repeat-transport-quote",
+        "repeat-qc-quote"
+      ],
+      "retains_infant_and_episode": true,
+      "new_attempt_specimen_card": true
+    },
+    "failed_assay_then_repeat": {
+      "incremental_quote_ids": [
+        "repeat-assay-quote"
+      ],
+      "retains_failed_cost_and_result": true,
+      "new_assay_and_result": true
+    },
+    "reflex": {
+      "staff_minutes": "3",
+      "incremental_quote_ids": [
+        "reflex-material-quote"
+      ],
+      "retains_specimen": true,
+      "new_assay_and_result": true
+    },
+    "added_panel": {
+      "incremental_quote_ids": [
+        "added-panel-quote"
+      ],
+      "new_assay_per_specimen": true,
+      "new_fixed_batch_cost": false
+    },
+    "instrument_capacity": {
+      "unit": "instrument_hour",
+      "observation_coverage": "incomplete",
+      "allocation_profile": "0.2",
+      "source_scenarios": "sources.json#capacity_scenarios",
+      "availability_inferred_from_samples": false,
+      "threshold_rule": "Prepared one-block and two-block scenarios; no runtime capacity planning.",
+      "unallocated_meaning": "Unassigned source cost; not an idle-cost, waste, cash-saving or utilisation estimate."
+    }
+  },
+  "perspectives": {
+    "provider": {
+      "family_time_included": false
+    },
+    "provider_plus_family": {
+      "family_time_included": true,
+      "family_minutes_per_participant": "30"
+    }
+  },
+  "denominators": {
+    "eligible_birth": {
+      "unit": "distinct_infant",
+      "membership_date": "birth_date"
+    },
+    "participating_infant": {
+      "unit": "distinct_infant",
+      "membership_date": "participation_date"
+    },
+    "valid_screen": {
+      "unit": "distinct_infant",
+      "membership_date": "valid_screen_date",
+      "rule": "All explicitly selected final required results are valid."
+    },
+    "completed_pathway": {
+      "unit": "distinct_infant",
+      "membership_date": "completion_date"
+    },
+    "confirmed_diagnosis": {
+      "unit": "distinct_infant",
+      "membership_date": "confirmed_diagnosis_date"
+    }
+  },
+  "denominator_policy": {
+    "window": "half_open",
+    "repeat_counting": "same_infant_once",
+    "zero_denominator": "undefined_not_zero",
+    "numerator": "entire_scenario_source_ledger_in_declared_perspective",
+    "calculation_delivery": "independent_test_references_only; no new native reporting API"
+  },
+  "rounding": {
+    "scale": 2,
+    "mode": "half_even",
+    "point_policy": "per_source_line_before_sum",
+    "interval_policy": "existing_per_generated_segment_before_sum_unchanged"
+  },
+  "context_only_stages": {
+    "reporting": "No additional resource quantities supplied in this bounded fixture.",
+    "recall": "No additional resource quantities supplied in this bounded fixture.",
+    "follow_up": "No additional resource quantities supplied in this bounded fixture."
+  },
+  "excluded_capabilities": [
+    "Real provider recipe execution",
+    "Real programme data and clinical qualification",
+    "Automatic branch selection or probability simulation",
+    "Clinical scheduling",
+    "Native newborn recipe parser or denominator reporting",
+    "Reporting-profile qualification"
+  ]
+}

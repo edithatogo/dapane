@@ -36,6 +36,12 @@ The selected [installed provider composition](docs/python-provider-verification.
 connects a dated workforce base-pay quotation to manual DNA-extraction labour,
 with canonical/legacy compatibility and an explicit historical calculator path.
 The two provider environments keep their exact Python 3.15.2 and 3.15.1 pins.
+The [release handoff record](docs/release-handoff-2026-11-15.md) confirms that the
+setup, contracts, kernel and Python/provider archives are incorporated, and
+[post-merge `main` qualification](docs/release-qualification-2026-11-19.md)
+records verified `0658d94` candidate artifacts and signed trusted-main provenance.
+Release qualification consumes their existing records and checks the exact candidate
+artifacts; publication remains disabled.
 
 Broader provider coverage, richer exposure and economic methods, R/Julia,
 reporting exports, Power Apps and process execution remain separate work. See the [implemented contract](docs/contract-v0.1.md),
@@ -148,6 +154,21 @@ catalogue remain in [UOGTO PR 128](https://github.com/edithatogo/UOGTO/pull/128)
 Their merge/release status is recorded as a dated observation in the ecosystem
 document, not assumed from a planning dependency.
 
-No registry release, package-name reservation, app deployment or repository archive
-is asserted. The project licence remains an explicit release prerequisite;
-workspace packages disable Cargo publication until it is resolved.
+## Licence
+
+Dapane is licensed under the [Apache License, Version 2.0](LICENSE), selected by
+the project owner on 15 November 2026. [NOTICE](NOTICE) records project attribution.
+The Rust workspace and citation metadata declare `Apache-2.0` for project material.
+[THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt) retains the locked dependencies'
+and Rust standard library's licence and attribution texts. All three legal files
+accompany crate sources, wheels, Python source distributions and candidate CLI
+bundles. Python's optional aggregate distribution licence expression is omitted;
+the [controls guide](docs/release-controls.md) explains that metadata boundary.
+Separately obtained provider assets retain their own terms and are excluded.
+
+No registry release, package-name reservation or app deployment is asserted.
+Workspace publication remains disabled pending registry ownership and release
+qualification. The [release handoff record](docs/release-handoff-2026-11-15.md)
+and [post-merge `main` qualification](docs/release-qualification-2026-11-19.md)
+identify the incorporated archives, attested `0658d94` artifacts and remaining
+publication/security gates.

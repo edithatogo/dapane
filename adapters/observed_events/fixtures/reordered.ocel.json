@@ -1,0 +1,284 @@
+{
+  "objectTypes": [
+    {
+      "name": "specimen",
+      "attributes": []
+    },
+    {
+      "name": "instrument",
+      "attributes": []
+    },
+    {
+      "name": "infant",
+      "attributes": []
+    },
+    {
+      "name": "batch",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "assay",
+      "attributes": []
+    }
+  ],
+  "eventTypes": [
+    {
+      "name": "run-complete",
+      "attributes": [
+        {
+          "name": "sample-count",
+          "type": "integer"
+        },
+        {
+          "name": "control-ratio",
+          "type": "float"
+        },
+        {
+          "name": "accepted",
+          "type": "boolean"
+        },
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "calibrated-at",
+          "type": "time"
+        }
+      ]
+    },
+    {
+      "name": "run-start",
+      "attributes": []
+    },
+    {
+      "name": "collect",
+      "attributes": []
+    }
+  ],
+  "objects": [
+    {
+      "id": "instrument-1",
+      "type": "instrument",
+      "attributes": [],
+      "relationships": []
+    },
+    {
+      "id": "batch-1",
+      "type": "batch",
+      "attributes": [
+        {
+          "name": "state",
+          "time": "2026-01-01T00:32:00Z",
+          "value": "finished"
+        },
+        {
+          "name": "state",
+          "time": "2026-01-01T00:02:00Z",
+          "value": "running"
+        },
+        {
+          "name": "state",
+          "time": "2026-01-01T00:00:00Z",
+          "value": "queued"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "specimen-b",
+          "qualifier": "contains"
+        },
+        {
+          "objectId": "specimen-a",
+          "qualifier": "contains"
+        }
+      ]
+    },
+    {
+      "id": "assay-b",
+      "type": "assay",
+      "attributes": [],
+      "relationships": []
+    },
+    {
+      "id": "assay-a",
+      "type": "assay",
+      "attributes": [],
+      "relationships": []
+    },
+    {
+      "id": "specimen-b",
+      "type": "specimen",
+      "attributes": [],
+      "relationships": [
+        {
+          "objectId": "assay-b",
+          "qualifier": "tested-by"
+        },
+        {
+          "objectId": "assay-a",
+          "qualifier": "tested-by"
+        },
+        {
+          "objectId": "infant-b",
+          "qualifier": "collected-from"
+        }
+      ]
+    },
+    {
+      "id": "specimen-a",
+      "type": "specimen",
+      "attributes": [],
+      "relationships": [
+        {
+          "objectId": "assay-b",
+          "qualifier": "tested-by"
+        },
+        {
+          "objectId": "assay-a",
+          "qualifier": "tested-by"
+        },
+        {
+          "objectId": "infant-a",
+          "qualifier": "collected-from"
+        }
+      ]
+    },
+    {
+      "id": "infant-b",
+      "type": "infant",
+      "attributes": [],
+      "relationships": []
+    },
+    {
+      "id": "infant-a",
+      "type": "infant",
+      "attributes": [],
+      "relationships": []
+    }
+  ],
+  "events": [
+    {
+      "id": "run-complete",
+      "type": "run-complete",
+      "time": "2026-01-01T00:32:00Z",
+      "attributes": [
+        {
+          "name": "calibrated-at",
+          "value": "2026-01-01T00:00:00Z"
+        },
+        {
+          "name": "label",
+          "value": "synthetic-run"
+        },
+        {
+          "name": "accepted",
+          "value": true
+        },
+        {
+          "name": "control-ratio",
+          "value": 0.5
+        },
+        {
+          "name": "sample-count",
+          "value": 2
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "instrument-1",
+          "qualifier": "resource"
+        },
+        {
+          "objectId": "assay-b",
+          "qualifier": "assay"
+        },
+        {
+          "objectId": "assay-a",
+          "qualifier": "assay"
+        },
+        {
+          "objectId": "specimen-b",
+          "qualifier": "input"
+        },
+        {
+          "objectId": "specimen-a",
+          "qualifier": "input"
+        },
+        {
+          "objectId": "batch-1",
+          "qualifier": "batch"
+        }
+      ]
+    },
+    {
+      "id": "run-start",
+      "type": "run-start",
+      "time": "2026-01-01T00:02:00Z",
+      "attributes": [],
+      "relationships": [
+        {
+          "objectId": "instrument-1",
+          "qualifier": "resource"
+        },
+        {
+          "objectId": "assay-b",
+          "qualifier": "assay"
+        },
+        {
+          "objectId": "assay-a",
+          "qualifier": "assay"
+        },
+        {
+          "objectId": "specimen-b",
+          "qualifier": "input"
+        },
+        {
+          "objectId": "specimen-a",
+          "qualifier": "input"
+        },
+        {
+          "objectId": "batch-1",
+          "qualifier": "batch"
+        }
+      ]
+    },
+    {
+      "id": "collect-b",
+      "type": "collect",
+      "time": "2026-01-01T00:01:00Z",
+      "attributes": [],
+      "relationships": [
+        {
+          "objectId": "specimen-b",
+          "qualifier": "output"
+        },
+        {
+          "objectId": "infant-b",
+          "qualifier": "subject"
+        }
+      ]
+    },
+    {
+      "id": "collect-a",
+      "type": "collect",
+      "time": "2026-01-01T00:00:00Z",
+      "attributes": [],
+      "relationships": [
+        {
+          "objectId": "specimen-a",
+          "qualifier": "output"
+        },
+        {
+          "objectId": "infant-a",
+          "qualifier": "subject"
+        }
+      ]
+    }
+  ]
+}

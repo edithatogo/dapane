@@ -1,0 +1,214 @@
+{
+  "format": "dapane-process-models-expected/1",
+  "negative_cases": [
+    {
+      "expected_error": "unsupported_construct",
+      "kind": "pnml",
+      "model": "pnml/invalid-inhibitor-arc.pnml"
+    },
+    {
+      "expected_error": "unsupported_net_type",
+      "kind": "pnml",
+      "model": "pnml/invalid-net-type.pnml"
+    },
+    {
+      "expected_error": "disallowed_xml_construct",
+      "kind": "pnml",
+      "model": "pnml/invalid-doctype.pnml"
+    },
+    {
+      "expected_error": "cycle_not_allowed_in_core_profile",
+      "kind": "bpmn",
+      "model": "bpmn/rework-loop.bpmn",
+      "profile": "bpmn-core-acyclic-v1"
+    },
+    {
+      "expected_error": "unsupported_construct",
+      "kind": "bpmn",
+      "model": "bpmn/embedded-subprocess.bpmn",
+      "profile": "bpmn-core-acyclic-v1"
+    },
+    {
+      "expected_error": "unsupported_construct",
+      "kind": "bpmn",
+      "model": "bpmn/cancelled-terminate.bpmn",
+      "profile": "bpmn-core-acyclic-v1"
+    },
+    {
+      "expected_error": "unsupported_construct",
+      "kind": "bpmn",
+      "model": "bpmn/invalid-inclusive-gateway.bpmn",
+      "profile": "bpmn-extended-rework-subprocess-v1"
+    },
+    {
+      "expected_error": "unsupported_construct",
+      "kind": "bpmn",
+      "model": "bpmn/invalid-timer-event.bpmn",
+      "profile": "bpmn-extended-rework-subprocess-v1"
+    },
+    {
+      "expected_error": "unsupported_construct",
+      "kind": "bpmn",
+      "model": "bpmn/invalid-multi-instance.bpmn",
+      "profile": "bpmn-extended-rework-subprocess-v1"
+    },
+    {
+      "expected_error": "disallowed_xml_construct",
+      "kind": "bpmn",
+      "model": "bpmn/invalid-doctype.bpmn",
+      "profile": "bpmn-extended-rework-subprocess-v1"
+    }
+  ],
+  "positive_cases": {
+    "bpmn_alternative_confirm": {
+      "config": "bpmn/alternative-xor-confirm.config.json",
+      "dapane_usage_count": 3,
+      "elapsed_minutes": "23",
+      "kind": "bpmn",
+      "model": "bpmn/alternative-xor.bpmn",
+      "profile": "bpmn-core-acyclic-v1",
+      "status": "completed",
+      "step_count": 2,
+      "trace_usage_count": 3,
+      "v1_object_totals": {"infant-a": "61.00"},
+      "v1_total_rounded": "61.00",
+      "v2_object_totals": {"infant-a": "101.50"},
+      "v2_total_rounded": "101.50"
+    },
+    "bpmn_alternative_routine": {
+      "config": "bpmn/alternative-xor-routine.config.json",
+      "dapane_usage_count": 2,
+      "elapsed_minutes": "8",
+      "kind": "bpmn",
+      "model": "bpmn/alternative-xor.bpmn",
+      "profile": "bpmn-core-acyclic-v1",
+      "status": "completed",
+      "step_count": 2,
+      "trace_usage_count": 2,
+      "v1_object_totals": {"infant-a": "16.00"},
+      "v1_total_rounded": "16.00",
+      "v2_object_totals": {"infant-a": "28.00"},
+      "v2_total_rounded": "28.00"
+    },
+    "bpmn_cancelled_terminate": {
+      "config": "bpmn/cancelled-terminate.config.json",
+      "dapane_usage_count": 2,
+      "elapsed_minutes": "5",
+      "kind": "bpmn",
+      "model": "bpmn/cancelled-terminate.bpmn",
+      "profile": "bpmn-extended-rework-subprocess-v1",
+      "status": "cancelled",
+      "step_count": 2,
+      "trace_usage_count": 2,
+      "v1_object_totals": {"infant-a": "13.00"},
+      "v1_total_rounded": "13.00",
+      "v2_object_totals": {"infant-a": "22.00"},
+      "v2_total_rounded": "22.00"
+    },
+    "bpmn_concurrent_shared": {
+      "config": "bpmn/concurrent-and-shared.config.json",
+      "dapane_usage_count": 3,
+      "elapsed_minutes": "30",
+      "kind": "bpmn",
+      "model": "bpmn/concurrent-and-shared.bpmn",
+      "profile": "bpmn-core-acyclic-v1",
+      "status": "completed",
+      "step_count": 3,
+      "trace_usage_count": 4,
+      "v1_object_totals": {"infant-a": "65.50", "infant-b": "72.50"},
+      "v1_total_rounded": "138.00",
+      "v2_object_totals": {"infant-a": "104.50", "infant-b": "117.50"},
+      "v2_total_rounded": "222.00"
+    },
+    "bpmn_embedded_subprocess": {
+      "config": "bpmn/embedded-subprocess.config.json",
+      "dapane_usage_count": 4,
+      "elapsed_minutes": "15",
+      "kind": "bpmn",
+      "model": "bpmn/embedded-subprocess.bpmn",
+      "profile": "bpmn-extended-rework-subprocess-v1",
+      "status": "completed",
+      "step_count": 3,
+      "trace_usage_count": 4,
+      "v1_object_totals": {"infant-a": "85.00"},
+      "v1_total_rounded": "85.00",
+      "v2_object_totals": {"infant-a": "130.00"},
+      "v2_total_rounded": "130.00"
+    },
+    "bpmn_rework_loop": {
+      "config": "bpmn/rework-loop.config.json",
+      "dapane_usage_count": 3,
+      "elapsed_minutes": "16",
+      "kind": "bpmn",
+      "model": "bpmn/rework-loop.bpmn",
+      "profile": "bpmn-extended-rework-subprocess-v1",
+      "status": "completed",
+      "step_count": 3,
+      "trace_usage_count": 3,
+      "v1_object_totals": {"infant-a": "38.00"},
+      "v1_total_rounded": "38.00",
+      "v2_object_totals": {"infant-a": "56.00"},
+      "v2_total_rounded": "56.00"
+    },
+    "bpmn_sequential": {
+      "config": "bpmn/sequential.config.json",
+      "dapane_usage_count": 3,
+      "elapsed_minutes": "10",
+      "kind": "bpmn",
+      "model": "bpmn/sequential.bpmn",
+      "profile": "bpmn-core-acyclic-v1",
+      "status": "completed",
+      "step_count": 2,
+      "trace_usage_count": 3,
+      "v1_object_totals": {"infant-a": "41.00"},
+      "v1_total_rounded": "41.00",
+      "v2_object_totals": {"infant-a": "66.50"},
+      "v2_total_rounded": "66.50"
+    },
+    "pnml_cancelled_rework": {
+      "config": "pnml/cancelled-rework.config.json",
+      "dapane_usage_count": 2,
+      "elapsed_minutes": "5.5",
+      "kind": "pnml",
+      "model": "pnml/cancelled-rework.pnml",
+      "profile": "pnml-bounded-v1",
+      "status": "cancelled",
+      "step_count": 2,
+      "trace_usage_count": 2,
+      "v1_object_totals": {"infant-a": "18.00"},
+      "v1_total_rounded": "18.00",
+      "v2_object_totals": {"infant-a": "26.25"},
+      "v2_total_rounded": "26.25"
+    },
+    "pnml_sequential_assay": {
+      "config": "pnml/sequential-assay.config.json",
+      "dapane_usage_count": 2,
+      "elapsed_minutes": "8",
+      "kind": "pnml",
+      "model": "pnml/sequential-assay.pnml",
+      "profile": "pnml-bounded-v1",
+      "status": "completed",
+      "step_count": 2,
+      "trace_usage_count": 2,
+      "v1_object_totals": {"infant-a": "43.00", "infant-b": "25.00"},
+      "v1_total_rounded": "68.00",
+      "v2_object_totals": {"infant-a": "66.50", "infant-b": "35.00"},
+      "v2_total_rounded": "101.50"
+    },
+    "pnml_shared_batch_parallel": {
+      "config": "pnml/shared-batch-parallel.config.json",
+      "dapane_usage_count": 2,
+      "elapsed_minutes": "14.5",
+      "kind": "pnml",
+      "model": "pnml/shared-batch-parallel.pnml",
+      "profile": "pnml-bounded-v1",
+      "status": "completed",
+      "step_count": 2,
+      "trace_usage_count": 3,
+      "v1_object_totals": {"infant-a": "40.00", "infant-b": "40.00"},
+      "v1_total_rounded": "80.00",
+      "v2_object_totals": {"infant-a": "58.50", "infant-b": "58.50"},
+      "v2_total_rounded": "117.00"
+    }
+  }
+}

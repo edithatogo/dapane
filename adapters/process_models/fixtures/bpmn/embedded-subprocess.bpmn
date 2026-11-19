@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="def_subproc">
+  <process id="proc_sub" isExecutable="true">
+    <startEvent id="start_1"/>
+    <subProcess id="sub_dna" name="Manual DNA Extraction">
+      <startEvent id="sub_start"/>
+      <manualTask id="task_extract" name="Manual Extraction"/>
+      <serviceTask id="task_quantify" name="Quantification"/>
+      <endEvent id="sub_end"/>
+      <sequenceFlow id="sf1" sourceRef="sub_start" targetRef="task_extract"/>
+      <sequenceFlow id="sf2" sourceRef="task_extract" targetRef="task_quantify"/>
+      <sequenceFlow id="sf3" sourceRef="task_quantify" targetRef="sub_end"/>
+    </subProcess>
+    <userTask id="task_release" name="Clinical Sign-off"/>
+    <endEvent id="end_1"/>
+    <sequenceFlow id="f1" sourceRef="start_1" targetRef="sub_dna"/>
+    <sequenceFlow id="f2" sourceRef="sub_dna" targetRef="task_release"/>
+    <sequenceFlow id="f3" sourceRef="task_release" targetRef="end_1"/>
+  </process>
+</definitions>

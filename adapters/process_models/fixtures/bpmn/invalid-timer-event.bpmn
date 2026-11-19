@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="def_timer">
+  <process id="proc_timer" isExecutable="true">
+    <startEvent id="start_1"/>
+    <intermediateCatchEvent id="ev_wait">
+      <timerEventDefinition id="t_def"/>
+    </intermediateCatchEvent>
+    <endEvent id="end_1"/>
+    <sequenceFlow id="f1" sourceRef="start_1" targetRef="ev_wait"/>
+    <sequenceFlow id="f2" sourceRef="ev_wait" targetRef="end_1"/>
+  </process>
+</definitions>

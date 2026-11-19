@@ -1,0 +1,645 @@
+{
+  "profile_id": "newborn-qld-nbs-labour-pack",
+  "profile_version": "0.1.0",
+  "cases": {
+    "qld-nbs-full-batch-6": {
+      "request": "qld-nbs-full-batch-6.json",
+      "branch": "nominal_full_batch",
+      "perspective": "provider",
+      "scope": "six_infants_one_nominal_batch_with_context_only_confirmation",
+      "population_id": "qld-nbs-illustrative-cohort-8",
+      "window_id": "qld-nbs-window-2026-11-v1",
+      "cohort_basis": "illustrative_cohort_not_clinical_epidemiology",
+      "valuation_scope": "manual_dna_extraction_base_salary_only",
+      "episodes": [
+        {
+          "infant_id": "infant-01",
+          "episode_id": "episode-01",
+          "participation_date": "2026-11-03",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-01-1"
+          ]
+        },
+        {
+          "infant_id": "infant-02",
+          "episode_id": "episode-02",
+          "participation_date": "2026-11-04",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-02-1"
+          ]
+        },
+        {
+          "infant_id": "infant-03",
+          "episode_id": "episode-03",
+          "participation_date": "2026-11-05",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-03-1"
+          ]
+        },
+        {
+          "infant_id": "infant-04",
+          "episode_id": "episode-04",
+          "participation_date": "2026-11-06",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-04-1"
+          ]
+        },
+        {
+          "infant_id": "infant-05",
+          "episode_id": "episode-05",
+          "participation_date": "2026-11-07",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-05-1"
+          ]
+        },
+        {
+          "infant_id": "infant-06",
+          "episode_id": "episode-06",
+          "participation_date": "2026-11-08",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": "2026-11-15",
+          "required_final_result_ids": [
+            "result-06-1"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-01-1",
+          "result_id": "result-01-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-02-1",
+          "result_id": "result-02-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-03-1",
+          "result_id": "result-03-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-04-1",
+          "result_id": "result-04-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-05-1",
+          "result_id": "result-05-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-06-1",
+          "result_id": "result-06-1",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-01-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-02-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-03-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-04-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-05-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-06-1",
+          "status": "adequate"
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": "batch-1",
+          "specimen_ids": [
+            "specimen-01-1",
+            "specimen-02-1",
+            "specimen-03-1",
+            "specimen-04-1",
+            "specimen-05-1",
+            "specimen-06-1"
+          ],
+          "infant_ids": [
+            "infant-01",
+            "infant-02",
+            "infant-03",
+            "infant-04",
+            "infant-05",
+            "infant-06"
+          ],
+          "outcome": "completed",
+          "repeat_of": null
+        }
+      ],
+      "exclusions": [
+        "collection_workforce_and_consumables",
+        "specimen_transport",
+        "accession_and_qc",
+        "biochemical_msms_and_immunoassay",
+        "molecular_reagents_and_instruments",
+        "workforce_oncosts_and_loadings",
+        "reporting_recall_and_clinical_confirmation",
+        "programme_overhead",
+        "epidemiological_probabilities_and_timing",
+        "family_time_and_downstream_care",
+        "uogto_reporting_profiles"
+      ]
+    },
+    "qld-nbs-partial-batch-3": {
+      "request": "qld-nbs-partial-batch-3.json",
+      "branch": "partial_batch",
+      "perspective": "provider",
+      "scope": "three_infants_one_partial_batch_preserving_fixed_batch_labour",
+      "population_id": "qld-nbs-illustrative-cohort-4",
+      "window_id": "qld-nbs-window-2026-11-v1",
+      "cohort_basis": "illustrative_cohort_not_clinical_epidemiology",
+      "valuation_scope": "manual_dna_extraction_base_salary_only",
+      "episodes": [
+        {
+          "infant_id": "infant-01",
+          "episode_id": "episode-01",
+          "participation_date": "2026-11-03",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-01-1"
+          ]
+        },
+        {
+          "infant_id": "infant-02",
+          "episode_id": "episode-02",
+          "participation_date": "2026-11-04",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-02-1"
+          ]
+        },
+        {
+          "infant_id": "infant-03",
+          "episode_id": "episode-03",
+          "participation_date": "2026-11-05",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": "2026-11-15",
+          "required_final_result_ids": [
+            "result-03-1"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-01-1",
+          "result_id": "result-01-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-02-1",
+          "result_id": "result-02-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-03-1",
+          "result_id": "result-03-1",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-01-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-02-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-03-1",
+          "status": "adequate"
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": "batch-1",
+          "specimen_ids": [
+            "specimen-01-1",
+            "specimen-02-1",
+            "specimen-03-1"
+          ],
+          "infant_ids": [
+            "infant-01",
+            "infant-02",
+            "infant-03"
+          ],
+          "outcome": "completed",
+          "repeat_of": null
+        }
+      ],
+      "exclusions": [
+        "collection_workforce_and_consumables",
+        "specimen_transport",
+        "accession_and_qc",
+        "biochemical_msms_and_immunoassay",
+        "molecular_reagents_and_instruments",
+        "workforce_oncosts_and_loadings",
+        "reporting_recall_and_clinical_confirmation",
+        "programme_overhead",
+        "epidemiological_probabilities_and_timing",
+        "family_time_and_downstream_care",
+        "uogto_reporting_profiles"
+      ]
+    },
+    "qld-nbs-failed-batch-repeat-3": {
+      "request": "qld-nbs-failed-batch-repeat-3.json",
+      "branch": "failed_batch_then_repeat",
+      "perspective": "provider",
+      "scope": "three_infants_failed_batch_retained_plus_repeat_batch",
+      "population_id": "qld-nbs-illustrative-cohort-4",
+      "window_id": "qld-nbs-window-2026-11-v1",
+      "cohort_basis": "illustrative_cohort_not_clinical_epidemiology",
+      "valuation_scope": "manual_dna_extraction_base_salary_only",
+      "episodes": [
+        {
+          "infant_id": "infant-01",
+          "episode_id": "episode-01",
+          "participation_date": "2026-11-03",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-01-2"
+          ]
+        },
+        {
+          "infant_id": "infant-02",
+          "episode_id": "episode-02",
+          "participation_date": "2026-11-04",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-02-2"
+          ]
+        },
+        {
+          "infant_id": "infant-03",
+          "episode_id": "episode-03",
+          "participation_date": "2026-11-05",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": "2026-11-15",
+          "required_final_result_ids": [
+            "result-03-2"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-01-1",
+          "result_id": "result-01-1",
+          "status": "failed"
+        },
+        {
+          "assay_id": "assay-02-1",
+          "result_id": "result-02-1",
+          "status": "failed"
+        },
+        {
+          "assay_id": "assay-03-1",
+          "result_id": "result-03-1",
+          "status": "failed"
+        },
+        {
+          "assay_id": "assay-01-2",
+          "result_id": "result-01-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-02-2",
+          "result_id": "result-02-2",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-03-2",
+          "result_id": "result-03-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-01-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-02-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-03-1",
+          "status": "adequate"
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": "batch-1",
+          "specimen_ids": [
+            "specimen-01-1",
+            "specimen-02-1",
+            "specimen-03-1"
+          ],
+          "infant_ids": [
+            "infant-01",
+            "infant-02",
+            "infant-03"
+          ],
+          "outcome": "failed",
+          "repeat_of": null
+        },
+        {
+          "batch_id": "batch-2",
+          "specimen_ids": [
+            "specimen-01-1",
+            "specimen-02-1",
+            "specimen-03-1"
+          ],
+          "infant_ids": [
+            "infant-01",
+            "infant-02",
+            "infant-03"
+          ],
+          "outcome": "completed",
+          "repeat_of": "batch-1"
+        }
+      ],
+      "exclusions": [
+        "collection_workforce_and_consumables",
+        "specimen_transport",
+        "accession_and_qc",
+        "biochemical_msms_and_immunoassay",
+        "molecular_reagents_and_instruments",
+        "workforce_oncosts_and_loadings",
+        "reporting_recall_and_clinical_confirmation",
+        "programme_overhead",
+        "epidemiological_probabilities_and_timing",
+        "family_time_and_downstream_care",
+        "uogto_reporting_profiles"
+      ]
+    },
+    "qld-nbs-inadequate-card-recollection-3": {
+      "request": "qld-nbs-inadequate-card-recollection-3.json",
+      "branch": "inadequate_card_then_recollection",
+      "perspective": "provider",
+      "scope": "infant_01_inadequate_card_recollected_into_second_batch",
+      "population_id": "qld-nbs-illustrative-cohort-4",
+      "window_id": "qld-nbs-window-2026-11-v1",
+      "cohort_basis": "illustrative_cohort_not_clinical_epidemiology",
+      "valuation_scope": "manual_dna_extraction_base_salary_only",
+      "episodes": [
+        {
+          "infant_id": "infant-01",
+          "episode_id": "episode-01",
+          "participation_date": "2026-11-03",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-01-2"
+          ]
+        },
+        {
+          "infant_id": "infant-02",
+          "episode_id": "episode-02",
+          "participation_date": "2026-11-04",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-02-1"
+          ]
+        },
+        {
+          "infant_id": "infant-03",
+          "episode_id": "episode-03",
+          "participation_date": "2026-11-05",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": "2026-11-15",
+          "required_final_result_ids": [
+            "result-03-1"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-02-1",
+          "result_id": "result-02-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-03-1",
+          "result_id": "result-03-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-01-2",
+          "result_id": "result-01-2",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-01-1",
+          "status": "inadequate"
+        },
+        {
+          "specimen_id": "specimen-01-2",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-02-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-03-1",
+          "status": "adequate"
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": "batch-1",
+          "specimen_ids": [
+            "specimen-02-1",
+            "specimen-03-1"
+          ],
+          "infant_ids": [
+            "infant-02",
+            "infant-03"
+          ],
+          "outcome": "completed",
+          "repeat_of": null
+        },
+        {
+          "batch_id": "batch-2",
+          "specimen_ids": [
+            "specimen-01-2"
+          ],
+          "infant_ids": [
+            "infant-01"
+          ],
+          "outcome": "completed",
+          "repeat_of": null
+        }
+      ],
+      "exclusions": [
+        "collection_workforce_and_consumables",
+        "specimen_transport",
+        "accession_and_qc",
+        "biochemical_msms_and_immunoassay",
+        "molecular_reagents_and_instruments",
+        "workforce_oncosts_and_loadings",
+        "reporting_recall_and_clinical_confirmation",
+        "programme_overhead",
+        "epidemiological_probabilities_and_timing",
+        "family_time_and_downstream_care",
+        "uogto_reporting_profiles"
+      ]
+    },
+    "qld-nbs-unresolved-failed-screen-3": {
+      "request": "qld-nbs-unresolved-failed-screen-3.json",
+      "branch": "unresolved_failed_screen",
+      "perspective": "provider",
+      "scope": "infant_01_unresolved_failed_screen_no_repeat_in_window",
+      "population_id": "qld-nbs-illustrative-cohort-4",
+      "window_id": "qld-nbs-window-2026-11-v1",
+      "cohort_basis": "illustrative_cohort_not_clinical_epidemiology",
+      "valuation_scope": "manual_dna_extraction_base_salary_only",
+      "episodes": [
+        {
+          "infant_id": "infant-01",
+          "episode_id": "episode-01",
+          "participation_date": "2026-11-03",
+          "valid_screen_date": null,
+          "completion_date": null,
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-01-1"
+          ]
+        },
+        {
+          "infant_id": "infant-02",
+          "episode_id": "episode-02",
+          "participation_date": "2026-11-04",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-02-1"
+          ]
+        },
+        {
+          "infant_id": "infant-03",
+          "episode_id": "episode-03",
+          "participation_date": "2026-11-05",
+          "valid_screen_date": "2026-11-15",
+          "completion_date": "2026-11-15",
+          "confirmed_diagnosis_date": null,
+          "required_final_result_ids": [
+            "result-03-1"
+          ]
+        }
+      ],
+      "assay_results": [
+        {
+          "assay_id": "assay-01-1",
+          "result_id": "result-01-1",
+          "status": "failed"
+        },
+        {
+          "assay_id": "assay-02-1",
+          "result_id": "result-02-1",
+          "status": "valid"
+        },
+        {
+          "assay_id": "assay-03-1",
+          "result_id": "result-03-1",
+          "status": "valid"
+        }
+      ],
+      "specimen_states": [
+        {
+          "specimen_id": "specimen-01-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-02-1",
+          "status": "adequate"
+        },
+        {
+          "specimen_id": "specimen-03-1",
+          "status": "adequate"
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": "batch-1",
+          "specimen_ids": [
+            "specimen-01-1",
+            "specimen-02-1",
+            "specimen-03-1"
+          ],
+          "infant_ids": [
+            "infant-01",
+            "infant-02",
+            "infant-03"
+          ],
+          "outcome": "completed",
+          "repeat_of": null
+        }
+      ],
+      "exclusions": [
+        "collection_workforce_and_consumables",
+        "specimen_transport",
+        "accession_and_qc",
+        "biochemical_msms_and_immunoassay",
+        "molecular_reagents_and_instruments",
+        "workforce_oncosts_and_loadings",
+        "reporting_recall_and_clinical_confirmation",
+        "programme_overhead",
+        "epidemiological_probabilities_and_timing",
+        "family_time_and_downstream_care",
+        "uogto_reporting_profiles"
+      ]
+    }
+  }
+}

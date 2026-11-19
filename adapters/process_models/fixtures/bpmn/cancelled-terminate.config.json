@@ -1,0 +1,61 @@
+{
+  "evidence_basis": "simulated",
+  "max_steps": 64,
+  "model_id": "nbs-bpmn-terminate",
+  "model_version": "1.0.0",
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-bpmn-cancel-1",
+  "profile": "bpmn-extended-rework-subprocess-v1",
+  "recipes": {
+    "task_early_ok": {
+      "activity_id": "accession",
+      "duration_minutes": "2",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "consumption",
+          "target": "card_kit",
+          "unit": "item"
+        }
+      ]
+    },
+    "task_fast_abort": {
+      "activity_id": "withdraw_check",
+      "duration_minutes": "5",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "5",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "task_late_aborted": {
+      "activity_id": "deferred_assay",
+      "duration_minutes": "8",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "consumption",
+          "target": "reagent_pack",
+          "unit": "pack"
+        }
+      ]
+    }
+  }
+}

@@ -116,7 +116,14 @@ Do not force a historical run through a corrected method while retaining the old
 method label. A later migration must retain an explicit old-version path until
 affected consumers have qualified the new result.
 
+No repository should be archived based on these synthetic tests. Real provider
+integration, compatibility/rollback evidence and review of unique assets remain
+release/consolidation work. Dapane project material is Apache-2.0 under ADR-014;
+registry ownership and release qualification remain prerequisites. The workspace
+packages retain `publish = false`.
+
 Completing the selected provider track does not authorize repository retirement.
 Review of unique assets and functioning successors remains separate
 release/consolidation work. A project licence and registry identity are also
 unresolved release prerequisites; the workspace packages set `publish = false`.
+

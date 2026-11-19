@@ -1,0 +1,231 @@
+{
+  "manifest_version": "0.1.0",
+  "source": {
+    "id": "invented-newborn-inputs",
+    "version": "0.1.0",
+    "evidence": "synthetic",
+    "access": "public",
+    "validation": "unvalidated"
+  },
+  "origin": "Invented solely for computational qualification. No programme, patient, provider, or clinical records.",
+  "currency": "AUD",
+  "price_year": 2026,
+  "basis": "economic_cost",
+  "valid_from": "2026-01-01",
+  "valid_to": "2027-01-01",
+  "known_from": "2026-01-01",
+  "service_date": "2026-06-15",
+  "knowledge_cutoff": "2026-11-15",
+  "quotes": {
+    "salary-quote": {
+      "target": "staff_time",
+      "unit": "minute",
+      "amount": "1.50",
+      "per_quantity": "1",
+      "components": [
+        "salary"
+      ]
+    },
+    "oncost-quote": {
+      "target": "staff_time",
+      "unit": "minute",
+      "amount": "0.50",
+      "per_quantity": "1",
+      "components": [
+        "oncost"
+      ]
+    },
+    "transport-quote": {
+      "target": "batch_transport",
+      "unit": "batch",
+      "amount": "10.00",
+      "per_quantity": "1",
+      "components": [
+        "transport"
+      ]
+    },
+    "accession-qc-quote": {
+      "target": "batch_accession_qc",
+      "unit": "batch",
+      "amount": "10.00",
+      "per_quantity": "1",
+      "components": [
+        "accession_qc"
+      ]
+    },
+    "setup-quote": {
+      "target": "batch_setup",
+      "unit": "batch",
+      "amount": "20.00",
+      "per_quantity": "1",
+      "components": [
+        "setup"
+      ]
+    },
+    "controls-quote": {
+      "target": "batch_controls",
+      "unit": "batch",
+      "amount": "10.00",
+      "per_quantity": "1",
+      "components": [
+        "controls"
+      ]
+    },
+    "assay-material-quote": {
+      "target": "batch_assay_material",
+      "unit": "batch",
+      "amount": "40.00",
+      "per_quantity": "1",
+      "components": [
+        "assay_material"
+      ]
+    },
+    "programme-overhead-quote": {
+      "target": "batch_programme_overhead",
+      "unit": "batch",
+      "amount": "10.00",
+      "per_quantity": "1",
+      "components": [
+        "programme_overhead"
+      ]
+    },
+    "repeat-transport-quote": {
+      "target": "repeat_transport",
+      "unit": "specimen",
+      "amount": "5.00",
+      "per_quantity": "1",
+      "components": [
+        "transport"
+      ]
+    },
+    "repeat-qc-quote": {
+      "target": "repeat_accession_qc",
+      "unit": "specimen",
+      "amount": "5.00",
+      "per_quantity": "1",
+      "components": [
+        "accession_qc"
+      ]
+    },
+    "repeat-assay-quote": {
+      "target": "repeat_assay_material",
+      "unit": "assay",
+      "amount": "20.00",
+      "per_quantity": "1",
+      "components": [
+        "assay_material"
+      ]
+    },
+    "reflex-material-quote": {
+      "target": "reflex_assay_material",
+      "unit": "assay",
+      "amount": "14.00",
+      "per_quantity": "1",
+      "components": [
+        "assay_material"
+      ]
+    },
+    "added-panel-quote": {
+      "target": "added_panel_material",
+      "unit": "assay",
+      "amount": "10.00",
+      "per_quantity": "1",
+      "components": [
+        "assay_material"
+      ]
+    },
+    "family-time-quote": {
+      "target": "family_time",
+      "unit": "minute",
+      "amount": "0.50",
+      "per_quantity": "1",
+      "components": [
+        "family_time"
+      ]
+    },
+    "instrument-block-quote": {
+      "target": "instrument_block",
+      "unit": "block",
+      "amount": "100.00",
+      "per_quantity": "1",
+      "components": [
+        "instrument"
+      ]
+    }
+  },
+  "quantities": {
+    "collection_minutes": "5",
+    "confirmation_minutes": "15",
+    "reflex_minutes": "3",
+    "family_minutes_per_participant": "30",
+    "primary_assays_per_specimen": 2,
+    "batch_resource_quantity": "1",
+    "incremental_repeat_transport_specimens": "1",
+    "incremental_repeat_qc_specimens": "1",
+    "repeat_assays": "1",
+    "reflex_assays": "1",
+    "added_panel_assays_per_specimen": "1"
+  },
+  "capacity_scenarios": {
+    "capacity-below": {
+      "participants": [
+        "infant-a"
+      ],
+      "blocks": "1",
+      "available_instrument_hours": "2",
+      "known_hours_per_infant": "1"
+    },
+    "capacity-at": {
+      "participants": [
+        "infant-a",
+        "infant-b"
+      ],
+      "blocks": "1",
+      "available_instrument_hours": "2",
+      "known_hours_per_infant": "1"
+    },
+    "capacity-above": {
+      "participants": [
+        "infant-a",
+        "infant-b",
+        "infant-c"
+      ],
+      "blocks": "2",
+      "available_instrument_hours": "4",
+      "known_hours_per_infant": "1"
+    }
+  },
+  "window": {
+    "id": "screening-window-2026-06-v1",
+    "version": "1.0.0",
+    "start": "2026-06-01",
+    "end_exclusive": "2026-07-01"
+  },
+  "population": {
+    "id": "invented-birth-cohort-v1",
+    "version": "1.0.0",
+    "unit": "infant",
+    "members": [
+      {
+        "infant_id": "infant-a",
+        "birth_date": "2026-06-01"
+      },
+      {
+        "infant_id": "infant-b",
+        "birth_date": "2026-06-02"
+      },
+      {
+        "infant_id": "infant-c",
+        "birth_date": "2026-06-03"
+      },
+      {
+        "infant_id": "infant-window-end",
+        "birth_date": "2026-07-01"
+      }
+    ]
+  },
+  "exclusions": [
+    "Clinical probabilities, timing distributions and diagnostic accuracy are not modelled.",
+    "There are no real provider quotations, programme rates, health outcomes, or empirical validation."
+  ]
+}

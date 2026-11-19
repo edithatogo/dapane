@@ -60,3 +60,29 @@ Start with a deliberately bounded process profile. A real need and explicit case
 Follow the [phased plan](plan.md) and [repository workflow](../../workflow.md).
 Commands described by pending tasks are future acceptance instructions, not executed evidence.
 Record actual commands, source/artifact identities and outcomes in the metadata when work is performed.
+
+## Authorised bounded X1 fallback — 15 November 2026
+
+When dependency qualification blocks native execution, implement independent
+contracts and synthetic raw fixtures in a dedicated namespace. Preserve the full
+acceptance specification above. Fallback work does not complete native import,
+process execution or provider integration.
+
+The bounded contract specifies stable source identity, already-decoded UTC
+instants, explicit event pairing, immutable source revisions, correction
+rejection, observed/assumed/simulated basis, consumption/occupancy/transfer and
+all censoring states. Qualified context does not multiply use. Quantities are
+explicit; missing/censored use blocks the complete observed selection. No
+duration, price, allocation or exposure is inferred.
+
+The native model/source remains authoritative for typed attributes, history,
+qualifiers and unprojected data. The costing projection is not a replacement
+OCEL implementation. Full schema/round-trip, unknown native data, duplicate
+members, resource limits and XML safety require the selected qualified Rust4PM
+revision. The recovered typed-contract source has now been replayed and its
+formatting findings corrected; see [verification](verification.md) for exact
+source identities. This does not qualify native parsing or projection.
+
+Shared schema/core/CLI/Python and root Cargo/CI/registry changes are
+[integrator requests](integration-requests.md). Accepted per-generated-segment
+half-even monetary semantics remain unchanged.

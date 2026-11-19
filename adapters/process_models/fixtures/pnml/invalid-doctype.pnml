@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pnml [
+  <!ENTITY xxe "disallowed">
+]>
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+  <net id="net_xxe" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <page id="p1"><place id="p0"/><transition id="t0"/></page>
+  </net>
+</pnml>

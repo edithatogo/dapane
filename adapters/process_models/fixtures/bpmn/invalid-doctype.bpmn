@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE definitions [
+  <!ENTITY inject "disallowed">
+]>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="def_doctype">
+  <process id="proc_doctype" isExecutable="true">
+    <startEvent id="start_1"/>
+    <endEvent id="end_1"/>
+    <sequenceFlow id="f1" sourceRef="start_1" targetRef="end_1"/>
+  </process>
+</definitions>

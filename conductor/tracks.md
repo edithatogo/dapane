@@ -23,11 +23,17 @@ A completed planning task does not change a runtime capability from planned to q
 | [!] | [R and Julia bindings](./tracks/polyglot_bindings_20261108/index.md) | blocked | RQ-09, RQ-02 |
 | [~] | [Observed events, Petri nets and BPMN adapters](./tracks/process_models_20261108/index.md) | in_progress | RQ-10, RQ-01, RQ-03 |
 | [ ] | [Uncertainty and decision-library integration](./tracks/decision_integrations_20261108/index.md) | new | RQ-11, RQ-02, RQ-03 |
-| [ ] | [Release assurance and conditional consolidation](./tracks/release_consolidation_20261108/index.md) | new | RQ-12, RQ-04 |
+| [!] | [Release assurance and conditional consolidation](./tracks/release_consolidation_20261108/index.md) | blocked | RQ-12, RQ-04 |
 | [ ] | [Frontier research and comparative benchmarks](./tracks/frontier_benchmarks_20261108/index.md) | new | RQ-12, RQ-06, RQ-10, RQ-11 |
 | [ ] | [Regulatory public-finance and health-system valuation handoff for tobac](./tracks/tobac_regulatory_fiscal_valuation_20261110/index.md) | new | RQ-01, RQ-02, RQ-07, RQ-11 |
 
 ## Next executable work
+
+The [parallel ownership map](parallel-ownership.md) records Dylan's seven bounded
+roadmap lanes and the sole integration/release owner. Lane assignments do not
+change the lifecycle states above. Workers update their own tracks and request
+matching registry/shared-file changes through the integrator. Publication remains
+disabled and Power Platform is deferred.
 
 The setup track is complete and archived in place. The core-contract/reference track is completed and
 archived in place after PR #9 integration; its
@@ -47,10 +53,24 @@ The Python/two-consumer track is completed and archived in place after
 and [review with fixes](tracks/python_two_consumers_20261108/review.md).
 Its selected provider scope retains exact source identities, independent reference
 cases and historical entry points. Newborn and process-context tracks remain in
-progress. Next work addresses their acceptance criteria, broader provider and
+progress. On `main`, the process-model track now incorporates X1 independent contracts
+([`adapters/observed_events/`](../adapters/observed_events/README.md)) and bounded
+X2 PNML/BPMN adapters ([`adapters/process_models/`](../adapters/process_models/README.md)),
+while X1.2 raw XES/OCEL decoding (`edithatogo/mailweft#4`) and X3 Kairos integration
+remain open. Next work addresses their acceptance criteria, broader provider and
 quantity/correction semantics, and release prerequisites. The first release follows contracts → Rust kernel →
 installed Python and two real provider consumers → release assurance.
 Power Platform, R/Julia, process models and decision integrations are independently qualified optional branches.
+
+The [release handoff](../docs/release-handoff-2026-11-15.md) consumes all four
+incorporated archives and the existing provider qualification, and
+[post-merge `main` qualification](../docs/release-qualification-2026-11-19.md)
+records the `0658d94` matrix, exact-artifact provider check and signed
+trusted-main provenance. Release work completes distribution notices and verifies
+the exact candidate artifacts. Publication remains disabled pending
+channel/account choices; final qualification also retains the separate centrally
+managed offline-security execution gate (`43769725442` auto-cancelled after
+24h queue timeout with no runner).
 
 ## Synchronisation
 

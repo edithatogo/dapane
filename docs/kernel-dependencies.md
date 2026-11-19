@@ -61,10 +61,11 @@ a licence chosen for Dapane.
 preserves that unknown explicitly; the actual pinned-toolchain build provides
 compatibility evidence for the exercised target. It does not infer an older MSRV.
 
-Project-licence selection, source-data rights, distribution notices and registry
-publication remain with the [release track](../conductor/tracks/release_consolidation_20261108/index.md),
-as already assigned in the [decisions](../conductor/decisions.md). Every workspace
-package retains `publish = false`; every qualification observation reports
-`project_licence: unselected` and `release_qualified: false`. Kernel dependency
-qualification does not resolve that release decision or establish economic,
-clinical or source-data validity.
+The owner selected Apache-2.0 for project material in ADR-014. Source-data rights,
+distribution notices and registry publication remain with the
+[release track](../conductor/tracks/release_consolidation_20261108/index.md).
+Every workspace package retains `publish = false`; current qualification reports
+derive `project_licence` from the workspace manifest and retain
+`release_qualified: false`. Historical archived observations retain the licence
+state at their checked source. Kernel dependency qualification does not establish
+registry rights, economic, clinical or source-data validity.

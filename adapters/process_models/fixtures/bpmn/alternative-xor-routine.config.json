@@ -1,0 +1,64 @@
+{
+  "branch_decisions": {
+    "gw_xor_split": ["flow_routine"]
+  },
+  "evidence_basis": "simulated",
+  "max_steps": 64,
+  "model_id": "nbs-bpmn-xor",
+  "model_version": "1.0.0",
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-bpmn-xor-routine",
+  "profile": "bpmn-core-acyclic-v1",
+  "recipes": {
+    "task_confirm": {
+      "activity_id": "confirmatory_workup",
+      "duration_minutes": "20",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "20",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "task_routine": {
+      "activity_id": "routine_report",
+      "duration_minutes": "5",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "5",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "task_triage": {
+      "activity_id": "triage",
+      "duration_minutes": "3",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "3",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    }
+  }
+}

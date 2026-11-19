@@ -1,0 +1,248 @@
+{
+  "fixture_status": "synthetic",
+  "contract_version": "dapane-observed-contracts-v0.1.0",
+  "raw_execution_status": "blocked_dependency_qualification",
+  "observation_window": {
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2026-01-01T01:00:00Z"
+  },
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-b",
+      "kind": "infant"
+    },
+    {
+      "id": "specimen-a",
+      "kind": "specimen"
+    },
+    {
+      "id": "specimen-b",
+      "kind": "specimen"
+    },
+    {
+      "id": "assay-a",
+      "kind": "assay"
+    },
+    {
+      "id": "assay-b",
+      "kind": "assay"
+    },
+    {
+      "id": "batch-1",
+      "kind": "batch"
+    },
+    {
+      "id": "instrument-1",
+      "kind": "instrument"
+    }
+  ],
+  "event_instants": {
+    "collect-a": 1767225600,
+    "collect-b": 1767225660,
+    "run-start": 1767225720,
+    "run-complete": 1767227520
+  },
+  "object_relations": [
+    {
+      "from": "specimen-a",
+      "to": "infant-a",
+      "qualifier": "collected-from"
+    },
+    {
+      "from": "specimen-b",
+      "to": "infant-b",
+      "qualifier": "collected-from"
+    },
+    {
+      "from": "batch-1",
+      "to": "specimen-a",
+      "qualifier": "contains"
+    },
+    {
+      "from": "batch-1",
+      "to": "specimen-b",
+      "qualifier": "contains"
+    },
+    {
+      "from": "specimen-a",
+      "to": "assay-a",
+      "qualifier": "tested-by"
+    },
+    {
+      "from": "specimen-a",
+      "to": "assay-b",
+      "qualifier": "tested-by"
+    },
+    {
+      "from": "specimen-b",
+      "to": "assay-a",
+      "qualifier": "tested-by"
+    },
+    {
+      "from": "specimen-b",
+      "to": "assay-b",
+      "qualifier": "tested-by"
+    }
+  ],
+  "xes_event_identity_map": {
+    "collect-a": "00000000-0000-4000-8000-000000000001",
+    "collect-b": "00000000-0000-4000-8000-000000000002",
+    "run-start": "00000000-0000-4000-8000-000000000003",
+    "run-complete": "00000000-0000-4000-8000-000000000004"
+  },
+  "xes_object_context": "Explicit synthetic sidecar mapping only. XES trace membership does not reconstruct the OCEL graph.",
+  "expected_uses": [
+    {
+      "id": "collection-a",
+      "resource_id": "collection-kit",
+      "unit": "kit",
+      "kind": "consumption",
+      "basis": "observed",
+      "quantity": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "event_ids": [
+        "collect-a"
+      ],
+      "object_ids": [
+        "infant-a",
+        "specimen-a"
+      ]
+    },
+    {
+      "id": "collection-b",
+      "resource_id": "collection-kit",
+      "unit": "kit",
+      "kind": "consumption",
+      "basis": "observed",
+      "quantity": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "event_ids": [
+        "collect-b"
+      ],
+      "object_ids": [
+        "infant-b",
+        "specimen-b"
+      ]
+    },
+    {
+      "id": "batch-use",
+      "resource_id": "instrument-1",
+      "unit": "hour",
+      "kind": "occupancy",
+      "basis": "observed",
+      "quantity": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "event_ids": [
+        "run-start",
+        "run-complete"
+      ],
+      "object_ids": [
+        "infant-a",
+        "infant-b",
+        "specimen-a",
+        "specimen-b",
+        "assay-a",
+        "assay-b",
+        "batch-1"
+      ]
+    }
+  ],
+  "right_censored_expectation": {
+    "use_id": "batch-use",
+    "start_event_id": "run-start",
+    "end_event_id": null,
+    "censoring": "right",
+    "quantity": null,
+    "costing_readiness": "CensoredUse"
+  },
+  "cases": [
+    {
+      "file": "duplicate-id.ocel.json",
+      "sha256": "a26531d4a58339a749800a881ad0f458e6773b524853ae509d289bfd48a6a964",
+      "expectation": "reject_duplicate_identity",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "duplicate-id.xes",
+      "sha256": "020846083325c4abbc78cc1d48a019b8c6453e625a73fc4c169d95c0205b6a7e",
+      "expectation": "reject_duplicate_identity",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "duplicate-member.ocel.json",
+      "sha256": "dd4bdf5e1f6d1e93540254706d8c29bee7ad6f7628f6cd8d83e6ba876248299c",
+      "expectation": "reject_duplicate_json_member",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "many-to-many.ocel.json",
+      "sha256": "9dc13283b56b8fadf7eddd9c2b5f28fc9c7d8dab8557bcad6951f9964debc349",
+      "expectation": "same_three_explicit_uses",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "missing-time.ocel.json",
+      "sha256": "0145ba2601c4044bea8f068a5f1fc88f39bad03f3354aa4106ba889502b19f83",
+      "expectation": "reject_missing_timestamp",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "missing-time.xes",
+      "sha256": "ea82477a6516d48e238613a17e3c6b1cf6742707143c70c0222c9ceed4999a20",
+      "expectation": "reject_missing_timestamp",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "observed.xes",
+      "sha256": "4009a75685a81d853aadc2f7493a9c3bf06bc0857d2e7563fc593824f5caf178",
+      "expectation": "same_three_explicit_uses",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "offset-equivalent.ocel.json",
+      "sha256": "8786d4778ce6a599b36e8b7e51feede8043e013672f483dfb9c1c3c31d389a6c",
+      "expectation": "same_three_explicit_uses",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "offset-equivalent.xes",
+      "sha256": "c2ce041116e8df722e568d6f0ab7df8219febf3fad9d711e2ade0c2f54dbf4e2",
+      "expectation": "same_three_explicit_uses",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "reordered.ocel.json",
+      "sha256": "04dab43d00712f949514967e439e418de71c32ccfc14bde02efb96e6113f2297",
+      "expectation": "same_three_explicit_uses",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "reordered.xes",
+      "sha256": "7696405f4f7f078e0685e38b569748e6d9082799193c3e4e7cc07ccb53ea3828",
+      "expectation": "same_three_explicit_uses",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "right-censored.ocel.json",
+      "sha256": "31e53f072250006c3abbf41dce0b054b5d5e1cce94bb15064855362a0bbadb61",
+      "expectation": "retain_censoring_block_costing",
+      "raw_decoder_executed": false
+    },
+    {
+      "file": "right-censored.xes",
+      "sha256": "d0b64b8ca32eed186ae8bbcf4ad2ee36f3f2056a3bf83b1843a9779e99409612",
+      "expectation": "retain_censoring_block_costing",
+      "raw_decoder_executed": false
+    }
+  ]
+}

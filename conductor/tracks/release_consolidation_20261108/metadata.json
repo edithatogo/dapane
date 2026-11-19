@@ -1,9 +1,9 @@
 {
   "track_id": "release_consolidation_20261108",
   "type": "chore",
-  "status": "new",
+  "status": "blocked",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-19T06:38:37Z",
   "description": "Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.",
   "repositories": [
     "."
@@ -19,15 +19,75 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "Apache-2.0 for Dapane project material, explicitly selected by the owner on 15 November 2026; ADR-014."
+  ],
   "requirement_ids": [
     "RQ-12",
     "RQ-04"
   ],
-  "capability_status": "planned",
+  "capability_status": "main_candidate_attested_central_security_and_publication_blocked",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "ordinary_hosted_checks_and_attestation_passed_security_and_publication_blocked",
+    "tested_source": "0658d94ad772023a0185a000b5254f9c2f4a63a9",
+    "tree": "48c3ae972ed48e5e1e6e47862e99381323191fa7",
+    "evidence": [
+      "evidence.md",
+      "../../../docs/release-qualification-2026-11-19.md",
+      "../../../docs/release-qualification-0658d94.json"
+    ],
+    "commands": [
+      "python scripts/release_assurance.py validate",
+      "python -m unittest discover -s tests/release -v",
+      "python scripts/distribution_notices.py --check",
+      "cargo build --locked --release --no-default-features -p dapane-cli",
+      "maturin build --locked --release",
+      "python scripts/release_assurance.py compare",
+      "python scripts/release_assurance.py collect",
+      "python scripts/release_assurance.py verify",
+      "python scripts/release_assurance.py verify-matrix",
+      "python -m pytest --import-mode=importlib tests/python -q",
+      "python scripts/validate_intervals.py --cli <installed-cli>",
+      "python scripts/verify_provider_consumers.py <provider> --cli <release-cli>",
+      "cargo deny --locked --format json check advisories bans licenses sources",
+      "python -m pip_audit --strict",
+      "cargo cyclonedx --format json --spec-version 1.6",
+      "gh attestation verify <subject> --bundle <bundle> --repo edithatogo/dapane --signer-workflow edithatogo/dapane/.github/workflows/release-assurance.yml --source-ref refs/heads/main --source-digest 0658d94ad772023a0185a000b5254f9c2f4a63a9 --deny-self-hosted-runners"
+    ],
+    "results": {
+      "control_tests": 64,
+      "installed_tests_per_target": 196,
+      "independent_references_per_target": 10,
+      "interval_schema_rejections_per_target": 9,
+      "interval_runtime_rejections_per_target": 11,
+      "interval_tamper_controls_per_target": 15,
+      "matrix_targets": 4,
+      "native_dependency_packages": 29,
+      "python_runtime_dependencies": 0,
+      "interpreters": [
+        "3.12.16",
+        "3.13.18",
+        "3.14.10",
+        "3.15.2"
+      ],
+      "native_behavioral_tests": 62,
+      "kernel_tooling_tests": 11,
+      "artifact_archives_directly_inspected": 6,
+      "artifact_member_checksums_verified": 100,
+      "local_verify_matrix_clean_head": "passed (4 targets)",
+      "dual_builds": "byte-identical for each interpreter",
+      "wheel_sdist_metadata": "Metadata 2.4; optional aggregate fields absent; all three legal files declared and byte-verified",
+      "exact_artifact_provider_job": "passed (candidate artifact 14184700967; 196 native-boundary tests)",
+      "cargo_deny": "passed; zero errors/warnings in all four domains",
+      "python_audit": "36 resolved packages; no known vulnerabilities",
+      "sboms": 3,
+      "bounded_benchmark": "passed; raw measurements and limits retained (86,428 KiB peak RSS)",
+      "publication_gate": "expected exit 2; publication disabled and registry identity unverified",
+      "central_offline_security": "cancelled after 24h queue timeout on run 43769725442 / job 132982710619 (runner_id 0, 0 steps executed)",
+      "trusted_main_attestation": "passed on run 43769725207 / job 132994080532; artifact 14184669447 (14 distinct subjects, 20 files verified offline with gh attestation verify --bundle)"
+    },
+    "scope": "Main merge commit 0658d94 candidate artifacts on the declared Linux x86_64 interpreter matrix, selected providers and signed trusted-main provenance. Central offline security timed out unexecuted; no publication, empirical validation or other-platform claim.",
+    "command_context": "Abbreviated command families; exact arguments, environment paths and complete logs are retained by source-pinned Release assurance and Runtime workflow runs plus the local verification receipt linked in docs/release-qualification-2026-11-19.md."
   },
   "completion_evidence": [
     "A core/Python release can qualify after contracts, kernel and the two consumers; optional integration tracks remain independently planned or experimental.",
@@ -36,5 +96,252 @@
     "Installed artifacts exercise native functionality and reference cases; passing source-tree tests alone is insufficient.",
     "Existing consumer APIs have a documented migration and recovery path before shared machinery is removed.",
     "No archive is executed from a recommendation alone; unique history/research, rights, successor behaviour and any required authorization are retained."
-  ]
+  ],
+  "archive_requested": true,
+  "archive_performed": false,
+  "blockers": [
+    "Centrally managed offline AI security run 43769725442 (job 132982710619) timed out after 24h in queue and was cancelled with no runner assigned and 0 steps executed; its existing gate is retained before treating release_consolidation_20261108 as fully qualified.",
+    "First publication channels and controlling registry accounts/organisations remain unspecified; publication stays disabled."
+  ],
+  "review": {
+    "status": "completed_with_fixes",
+    "findings_resolved": 5,
+    "scope": "Candidate assurance, Apache-2.0 project licensing, full notice provenance, bounded merged providers and exact-release-artifact coupling; publication and central security execution remain open.",
+    "integration_findings_resolved": 1,
+    "handoff_integration": {
+      "status": "independent_review_passed",
+      "material_findings": 0,
+      "scope": "Exact-release-artifact provider coupling, publication and identity gates, complete legal payloads, optional aggregate licence omission; pinned Maturin source independently checked. Native execution remains a hosted gate."
+    },
+    "documentation_review": {
+      "status": "independent_review_passed",
+      "material_findings": 0,
+      "acceptance_section_unchanged_from": "d7063cecc26abe96a3f28fca575b99b450241430"
+    }
+  },
+  "historical_verification": [
+    {
+      "status": "local_candidate_passed_release_blocked",
+      "commands": [
+        "python scripts/release_assurance.py validate",
+        "python -m unittest discover -s tests/release -v",
+        "ruff check scripts/release_assurance.py tests/release",
+        "ruff format --check scripts/release_assurance.py tests/release",
+        "python scripts/validate_conductor.py"
+      ],
+      "evidence": [
+        "evidence.md",
+        "../../../docs/release-assurance.md",
+        "../../../docs/release-verification-2026-11-15.md"
+      ],
+      "results": {
+        "release_unit_tests": 31,
+        "native_behavioral_tests": 40,
+        "ruff": "passed",
+        "conductor": "passed",
+        "workflow_syntax": "passed",
+        "publication_gate": "expected exit 2",
+        "hosted_actions": {
+          "tested_source": "354df1fd47fabcf8f2f571ac51566ad03d9cd3e4",
+          "conductor": {
+            "run_id": 43652925908,
+            "conclusion": "success"
+          },
+          "privacy": {
+            "run_id": 43652925968,
+            "conclusion": "success"
+          },
+          "runtime": {
+            "run_id": 43652925937,
+            "conclusion": "success"
+          },
+          "release_assurance": {
+            "run_id": 43652925904,
+            "status": "queued"
+          }
+        },
+        "installed_matrix": {
+          "3.12.14": 74,
+          "3.13.5": 74,
+          "3.14.10": 74,
+          "3.15.2": 74
+        },
+        "independent_reference_cases_per_target": 10,
+        "dual_clean_builds": "byte-identical for all four targets",
+        "aggregate_matrix": "passed",
+        "cargo_deny": "passed: advisories/bans/licenses/sources",
+        "python_dependency_audit": "36 packages; no known vulnerabilities reported",
+        "cyclonedx_sboms": 3,
+        "bounded_benchmark": "passed; local synthetic scope",
+        "trusted_main_attestation": "not_run"
+      },
+      "environment": {
+        "python": "3.12.14",
+        "rust": "1.99.1",
+        "ruff": "0.17.4"
+      },
+      "tested_source": "354df1fd47fabcf8f2f571ac51566ad03d9cd3e4"
+    },
+    {
+      "status": "integrated_source_qualification_pending",
+      "commands": [
+        "python scripts/release_assurance.py validate",
+        "python -m unittest discover -s tests/release -v",
+        "ruff check scripts/release_assurance.py tests/release",
+        "ruff format --check scripts/release_assurance.py tests/release",
+        "python scripts/validate_conductor.py"
+      ],
+      "evidence": [
+        "evidence.md",
+        "../../../docs/release-integration-2026-11-15.md"
+      ],
+      "results": {
+        "release_unit_tests": 36,
+        "candidate_manifest": "passed",
+        "static_kernel_inventory": "passed",
+        "conductor": "passed",
+        "fresh_native_and_installed_matrix": "pending hosted execution",
+        "kernel_tooling_tests": 11,
+        "ruff": "passed",
+        "workflow_syntax": "passed: 12 Bash blocks, 2 Python blocks"
+      },
+      "scope": "Local control/static checks on the integration; historical compiled artifact evidence remains separately source-bound.",
+      "context": "Historical pre-handoff integration control checks; superseded by current owner receipt."
+    },
+    {
+      "status": "hosted_baseline_passed_security_queued",
+      "tested_source": "d37575ec5662393f3831db5f827d63df00bfc37d",
+      "tree": "170684cdb4480473e8e6fa0b729984a966c00899",
+      "evidence": [
+        "../../../docs/release-handoff-2026-11-15.md"
+      ],
+      "results": {
+        "release_assurance": 43664411107,
+        "installed_providers": 43664411050,
+        "runtime": 43664411087,
+        "conductor": 43664411096,
+        "privacy": 43664411082,
+        "codeql": 43664409923,
+        "installed_tests_per_target": 133,
+        "interpreters": [
+          "3.12.16",
+          "3.13.18",
+          "3.14.10",
+          "3.15.2"
+        ],
+        "dual_builds": "byte-identical for all four targets",
+        "cargo_deny": "passed; zero errors/warnings",
+        "pip_audit": "no known vulnerabilities",
+        "sboms": 3,
+        "offline_security": "queued; no runner assigned; no scanner result",
+        "trusted_main_attestation": "skipped on pull request"
+      }
+    },
+    {
+      "status": "local_controls_passed_fresh_hosted_execution_pending",
+      "commands": [
+        "python scripts/release_assurance.py validate",
+        "python -m unittest discover -s tests/release -v",
+        "python scripts/distribution_notices.py --check",
+        "ruff check scripts/release_assurance.py scripts/distribution_notices.py tests/release",
+        "ruff format --check scripts/release_assurance.py scripts/distribution_notices.py tests/release",
+        "python scripts/validate_conductor.py"
+      ],
+      "evidence": [
+        "evidence.md",
+        "../../../docs/release-handoff-2026-11-15.md"
+      ],
+      "results": {
+        "release_unit_tests": 64,
+        "ruff": "passed",
+        "notice_generator_review": "no material findings",
+        "notice_archives": 36,
+        "upstream_legal_files": 74,
+        "rust_supplement_files": 4,
+        "unique_legal_payloads": 30,
+        "notice_sha256": "531a87c73c797f15dec96e8f4aed96288d8f386cd8fa11d6ff00769b68ddbc95",
+        "fresh_native_and_installed_matrix": "pending exact-source hosted execution",
+        "central_offline_security": "queued; no runner assigned",
+        "candidate_manifest": "passed",
+        "notice_regeneration": "passed; exact checked output",
+        "conductor": "passed: 14 tracks, 12 requirements, 155 tasks, 557 links",
+        "workflow_syntax": "passed: 2 YAML workflows, 23 Bash blocks, 3 Python blocks"
+      },
+      "scope": "Local release controls and source notice provenance; current native/provider artifact qualification must run in hosted CI. Prior hosted results remain bound to d37575ec."
+    },
+    {
+      "status": "ordinary_hosted_checks_passed_security_and_publication_blocked",
+      "tested_source": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+      "tree": "191a295ee823297a3f517e7f584cf6023cbe4d40",
+      "evidence": [
+        "evidence.md",
+        "../../../docs/release-handoff-2026-11-15.md",
+        "../../../docs/release-qualification-5f03f28.json"
+      ],
+      "commands": [
+        "python scripts/release_assurance.py validate",
+        "python -m unittest discover -s tests/release -v",
+        "python scripts/distribution_notices.py --check",
+        "cargo build --locked --release --no-default-features -p dapane-cli",
+        "maturin build --locked --release",
+        "python scripts/release_assurance.py compare",
+        "python scripts/release_assurance.py collect",
+        "python scripts/release_assurance.py verify",
+        "python scripts/release_assurance.py verify-matrix",
+        "python -m pytest --import-mode=importlib tests/python -q",
+        "python scripts/validate_intervals.py --cli <installed-cli>",
+        "python scripts/verify_provider_consumers.py <provider> --cli <release-cli>",
+        "cargo deny --locked --format json check advisories bans licenses sources",
+        "python -m pip_audit --strict",
+        "cargo cyclonedx --format json --spec-version 1.6"
+      ],
+      "results": {
+        "control_tests": 64,
+        "installed_tests_per_target": 133,
+        "independent_references_per_target": 10,
+        "interval_schema_rejections_per_target": 9,
+        "interval_runtime_rejections_per_target": 11,
+        "interval_tamper_controls_per_target": 15,
+        "matrix_targets": 4,
+        "native_dependency_packages": 29,
+        "python_runtime_dependencies": 0,
+        "interpreters": [
+          "3.12.16",
+          "3.13.18",
+          "3.14.10",
+          "3.15.2"
+        ],
+        "native_behavioral_tests": 62,
+        "kernel_tooling_tests": 11,
+        "artifact_archives_directly_inspected": 5,
+        "artifact_member_checksums_verified": 100,
+        "dual_builds": "byte-identical for each interpreter",
+        "wheel_sdist_metadata": "Metadata 2.4; optional aggregate fields absent; all three legal files declared and byte-verified",
+        "exact_artifact_provider_job": "passed",
+        "cargo_deny": "passed; zero errors/warnings in all four domains",
+        "python_audit": "36 resolved packages; no known vulnerabilities",
+        "sboms": 3,
+        "bounded_benchmark": "passed; raw measurements and limits retained",
+        "publication_gate": "expected exit 2; publication disabled and registry identity unverified",
+        "central_offline_security": "queued; no execution result",
+        "trusted_main_attestation": "not run; ineligible pull-request event"
+      },
+      "scope": "Hosted candidate artifacts on the declared Linux x86_64 interpreter matrix and selected providers. Central offline security remains unexecuted; no publication, empirical validation or other-platform claim.",
+      "command_context": "Abbreviated command families; exact arguments, environment paths and complete logs are retained by source-pinned Release assurance and Runtime workflow runs linked in the receipt."
+    }
+  ],
+  "handoff": {
+    "received_provider_report_at": "2026-11-15T01:42:00Z",
+    "main": "e34f87c9df39a2132fecee142431cdeefb732471",
+    "release_baseline": "d37575ec5662393f3831db5f827d63df00bfc37d",
+    "incorporated_archived_tracks": [
+      "conductor_setup_20261108",
+      "core_contracts_20261108",
+      "rust_kernel_20261108",
+      "python_two_consumers_20261108"
+    ],
+    "provider_lock": "../../../docs/provider-consumers.lock.json",
+    "provider_evidence": "../../../docs/python-provider-verification.md",
+    "receipt": "../../../docs/release-handoff-2026-11-15.md"
+  }
 }

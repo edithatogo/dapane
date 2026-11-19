@@ -1,0 +1,81 @@
+{
+  "evidence_basis": "simulated",
+  "expected_final_marking": {
+    "p_assayed": 1,
+    "p_collected": 0,
+    "p_ready": 0
+  },
+  "max_steps": 16,
+  "model_id": "nbs-pnml-sequential",
+  "model_version": "1.0.0",
+  "object_relations": [
+    {
+      "from_object_id": "infant-a",
+      "relationship": "tested_in",
+      "to_object_id": "batch-1"
+    },
+    {
+      "from_object_id": "infant-b",
+      "relationship": "tested_in",
+      "to_object_id": "batch-1"
+    }
+  ],
+  "objects": [
+    {
+      "id": "batch-1",
+      "kind": "assay_batch"
+    },
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-b",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-pnml-seq-1",
+  "profile": "pnml-bounded-v1",
+  "recipes": {
+    "t_collect": {
+      "activity_id": "collection",
+      "duration_minutes": "5",
+      "object_ids": ["infant-a", "infant-b"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "4.5",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "t_report": {
+      "activity_id": "assay_batch_run",
+      "duration_minutes": "3",
+      "object_ids": ["batch-1", "infant-a", "infant-b"],
+      "resources": [
+        {
+          "batch_mode": "single_shared_batch",
+          "batch_object_id": "batch-1",
+          "quantity": "1",
+          "resource_kind": "consumption",
+          "target": "assay_batch",
+          "unit": "batch"
+        }
+      ]
+    }
+  },
+  "schedule": [
+    {
+      "multiplicity": 2,
+      "transition_id": "t_collect"
+    },
+    {
+      "multiplicity": 1,
+      "transition_id": "t_report"
+    }
+  ]
+}

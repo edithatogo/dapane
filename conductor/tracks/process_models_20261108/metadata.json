@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T04:40:00Z",
+  "updated_at": "2026-11-19T08:38:00Z",
   "description": "Produce resource-use records from observed or explicitly executed process models while keeping resource execution, discovery and monetary valuation independently owned.",
   "repositories": [
     "."
@@ -28,8 +28,48 @@
     "RQ-01",
     "RQ-03"
   ],
-  "capability_status": "context_contract_implemented_adapters_pending",
+  "capability_status": "x1_contracts_and_x2_bounded_models_verified_native_imports_and_kairos_open",
   "verification": {
+    "status": "x1_contracts_and_x2_bounded_models_passed_native_imports_and_kairos_open",
+    "scope": "X1 standalone typed contracts/fixtures qualified at 0621fecedd41bc99957d0042e32338e780f42dd2 (PR #21 merged at 96d0984), plus X2 bounded PNML/BPMN adapters (`adapters/process_models/`) verified across 31 Rust tests and CLI/wheel oracle fixtures. Native XES/OCEL decoding (X1.2) remains blocked on mailweft#4 and Kairos execution (X3) remains pending.",
+    "commands": [
+      "cargo fmt --manifest-path adapters/observed_events/Cargo.toml --all --check",
+      "cargo clippy --manifest-path adapters/observed_events/Cargo.toml --locked --offline --all-targets -- -D warnings",
+      "cargo test --manifest-path adapters/observed_events/Cargo.toml --locked --offline --all-targets",
+      "python3 -m unittest discover -s adapters/observed_events/tests -p 'test_fixtures.py' -v",
+      "cargo fmt --manifest-path adapters/process_models/Cargo.toml --all --check",
+      "cargo clippy --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets -- -D warnings",
+      "cargo test --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets",
+      "python3 -m unittest discover -s adapters/process_models/tests -p 'test_process_models.py' -v",
+      "python3 scripts/validate_conductor.py"
+    ],
+    "commands_status": "x1_passed_at_0621fecedd41bc99957d0042e32338e780f42dd2_and_x2_passed_on_darwin_arm64_2026-11-19",
+    "evidence": [
+      "conductor/tracks/process_models_20261108/verification.md",
+      "conductor/tracks/process_models_20261108/review.md",
+      "conductor/tracks/process_models_20261108/dependency-inspection.json",
+      "conductor/tracks/process_models_20261108/integration-requests.md",
+      "adapters/observed_events/fixtures/expected.json",
+      "conductor/tracks/process_models_20261108/handoff.md",
+      "conductor/tracks/process_models_20261108/handoff.json",
+      "conductor/tracks/process_models_20261108/owner-quality-20261115.md",
+      "conductor/tracks/process_models_20261108/owner-quality-20261115.json",
+      "conductor/tracks/process_models_20261108/x2-verification.md",
+      "conductor/tracks/process_models_20261108/x2-verification.json",
+      "adapters/process_models/fixtures/expected.json"
+    ],
+    "source_commit": "0621fecedd41bc99957d0042e32338e780f42dd2",
+    "source_tree": "19e0fb8c86d7ef1daf079aa3f377a204458b49f3"
+  },
+  "completion_evidence": [
+    "Infant/specimen/assay/batch object relationships survive observed-event import without forcing one flat independent case per event.",
+    "Each advertised Petri/BPMN construct has explicit timing, marking/branching and resource semantics; unsupported elements fail visibly.",
+    "Transfers, occupancy and consumption remain distinguishable; shared staff or batch use is not charged multiple times by trace duplication.",
+    "Changing only a quotation release leaves process execution and resource-use identities unchanged.",
+    "Kairos remains independent of Dapane; app-level feedback is explicit when prices affect behaviour.",
+    "Selected dependency versions/licences and supported subsets are recorded; an imported diagram is not advertised as a general BPMN simulator."
+  ],
+  "historical_verification": {
     "status": "passed_for_bounded_profile",
     "scope": "Date-level event, process-instance and object context is implemented. Importers, interval/timestamp derivation, process execution and actual Kairos adapter remain pending.",
     "commands": [
@@ -41,12 +81,20 @@
       "docs/contract-v0.1.md"
     ]
   },
-  "completion_evidence": [
-    "Infant/specimen/assay/batch object relationships survive observed-event import without forcing one flat independent case per event.",
-    "Each advertised Petri/BPMN construct has explicit timing, marking/branching and resource semantics; unsupported elements fail visibly.",
-    "Transfers, occupancy and consumption remain distinguishable; shared staff or batch use is not charged multiple times by trace duplication.",
-    "Changing only a quotation release leaves process execution and resource-use identities unchanged.",
-    "Kairos remains independent of Dapane; app-level feedback is explicit when prices affect behaviour.",
-    "Selected dependency versions/licences and supported subsets are recorded; an imported diagram is not advertised as a general BPMN simulator."
-  ]
+  "x1_lane": {
+    "owner": "Dapane — Observed XES and OCEL imports",
+    "base_commit": "e34f87c9df39a2132fecee142431cdeefb732471",
+    "owned_paths": [
+      "conductor/tracks/process_models_20261108/",
+      "adapters/observed_events/"
+    ],
+    "integration_owner_chat": "6af8e445-ffd4-83ec-8e51-ff6b596f11b1",
+    "raw_import_status": "blocked_dependency_qualification",
+    "recovered_source_status": "exact_source_replayed_formatting_corrected",
+    "publication": "disabled",
+    "merge": "integrator_only",
+    "implementation_commit": "9df8aa1aedcd54a9bcd5f205f4c13f8e5dee57d2",
+    "implementation_tree": "93f3ee798acfb53893e816c9507256ca76bb91aa",
+    "received_coordinator_head": "63e3f8368510641513b5fd84ae3074bb80e79c6f"
+  }
 }

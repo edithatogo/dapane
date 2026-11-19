@@ -1,0 +1,52 @@
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: json-hygiene
+        name: check staged JSON hygiene
+        entry: python3 scripts/check_json_hygiene.py --staged
+        language: system
+        types: [json]
+        pass_filenames: false
+      - id: cargo-fmt
+        name: cargo fmt workspace check
+        entry: bash -c 'if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q "^1\\.99\\.1"; then export PATH="$(dirname "$(rustup which rustc --toolchain 1.99.1)")":$PATH; fi; cargo fmt --all --check'
+        language: system
+        files: ^(Cargo\.toml|Cargo\.lock|crates/.*\.rs)$
+        pass_filenames: false
+      - id: cargo-clippy
+        name: cargo clippy workspace check
+        entry: bash -c 'if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q "^1\\.99\\.1"; then export PATH="$(dirname "$(rustup which rustc --toolchain 1.99.1)")":$PATH; fi; cargo clippy --workspace --locked --all-targets -- -D warnings'
+        language: system
+        files: ^(Cargo\.toml|Cargo\.lock|crates/.*\.rs)$
+        pass_filenames: false
+      - id: ruff-check
+        name: ruff check
+        entry: uvx --from ruff==0.17.4 ruff check
+        language: system
+        types: [python]
+      - id: ruff-format
+        name: ruff format check
+        entry: uvx --from ruff==0.17.4 ruff format --check
+        language: system
+        types: [python]
+      - id: validate-conductor
+        name: validate conductor consistency
+        entry: python3 scripts/validate_conductor.py
+        language: system
+        files: ^(conductor/|README\.md$|AGENTS\.md$|scripts/validate_conductor\.py$)
+        pass_filenames: false
+      - id: release-assurance-validate
+        name: validate release assurance manifest and evidence
+        entry: python3 scripts/release_assurance.py validate
+        language: system
+        files: ^(Cargo\.toml|Cargo\.lock|pyproject\.toml|rust-toolchain\.toml|requirements-.*\.txt|deny\.toml|release/|fixtures/|schemas/|licenses/|docs/provider-consumers\.lock\.json|scripts/release_assurance\.py|scripts/distribution_notices\.py|\.github/workflows/release-assurance\.yml)
+        pass_filenames: false

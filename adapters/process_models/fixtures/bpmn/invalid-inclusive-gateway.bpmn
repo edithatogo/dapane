@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="def_incl">
+  <process id="proc_incl" isExecutable="true">
+    <startEvent id="start_1"/>
+    <inclusiveGateway id="gw_or"/>
+    <endEvent id="end_1"/>
+    <sequenceFlow id="f1" sourceRef="start_1" targetRef="gw_or"/>
+    <sequenceFlow id="f2" sourceRef="gw_or" targetRef="end_1"/>
+  </process>
+</definitions>

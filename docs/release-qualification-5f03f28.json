@@ -1,0 +1,614 @@
+{
+  "observed_at": "2026-11-15T04:26:34.731076+00:00",
+  "source_commit": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+  "source_tree": "191a295ee823297a3f517e7f584cf6023cbe4d40",
+  "artifacts": [
+    {
+      "name": "candidate-python-3.12",
+      "artifact_id": 14146577884,
+      "archive_sha256": "1f802980dac7893ae85592ece24ecc56bfdf8449d4197a1da9cc1730eaa4e78c",
+      "checksums_verified": 20,
+      "source": {
+        "commit": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+        "tree": "191a295ee823297a3f517e7f584cf6023cbe4d40",
+        "epoch": 1794716374
+      },
+      "runtime": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "implementation": "CPython",
+        "python": "3.12.16",
+        "libc": [
+          "glibc",
+          "2.39"
+        ],
+        "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+        "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)"
+      },
+      "artifacts": [
+        {
+          "role": "cli",
+          "name": "dapane",
+          "bytes": 1446888,
+          "sha256": "2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2"
+        },
+        {
+          "role": "wheel",
+          "name": "dapane-0.1.0-cp312-cp312-manylinux_2_34_x86_64.whl",
+          "bytes": 722187,
+          "sha256": "a2902e5d23422962523654a1c5d2015837a8e6ba509792bc833dbdf23ecc8201"
+        }
+      ],
+      "wheel_metadata": {
+        "metadata_version": "2.4",
+        "license_expression": null,
+        "legacy_license": null,
+        "license_files": [
+          "LICENSE",
+          "NOTICE",
+          "THIRD_PARTY_NOTICES.txt"
+        ],
+        "requires_python": ">=3.12, <3.16",
+        "requires_dist": []
+      },
+      "legal_payload_hashes": {
+        "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "NOTICE": "e9a11dc82b40f759e3a4ab319daed92f5e548486a14babb249861e49aba16839",
+        "THIRD_PARTY_NOTICES.txt": "531a87c73c797f15dec96e8f4aed96288d8f386cd8fa11d6ff00769b68ddbc95"
+      },
+      "reproducibility": {
+        "format": "dapane-build-comparison/1",
+        "comparison": "two-clean-builds-same-runner",
+        "identical": true,
+        "cross_host_reproducibility": "not_assessed"
+      },
+      "reference_count": 10,
+      "minimal_native_packages": 29,
+      "publication_ready": false,
+      "publication_blockers": [
+        "Package publication is not enabled by this candidate-assurance workflow.",
+        "registry_identity: unverified"
+      ]
+    },
+    {
+      "name": "candidate-python-3.13",
+      "artifact_id": 14146458411,
+      "archive_sha256": "038d3f61ea6342230d2032590c4796d2d9189834e4eb0eaf5bfd1d6cbfb31d84",
+      "checksums_verified": 20,
+      "source": {
+        "commit": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+        "tree": "191a295ee823297a3f517e7f584cf6023cbe4d40",
+        "epoch": 1794716374
+      },
+      "runtime": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "implementation": "CPython",
+        "python": "3.13.18",
+        "libc": [
+          "glibc",
+          "2.39"
+        ],
+        "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+        "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)"
+      },
+      "artifacts": [
+        {
+          "role": "cli",
+          "name": "dapane",
+          "bytes": 1446888,
+          "sha256": "2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2"
+        },
+        {
+          "role": "wheel",
+          "name": "dapane-0.1.0-cp313-cp313-manylinux_2_34_x86_64.whl",
+          "bytes": 722508,
+          "sha256": "aff83cc061a22c112f0b4f45970409a2ccb37e2b4aacfc83454a8f608b8fdaf7"
+        }
+      ],
+      "wheel_metadata": {
+        "metadata_version": "2.4",
+        "license_expression": null,
+        "legacy_license": null,
+        "license_files": [
+          "LICENSE",
+          "NOTICE",
+          "THIRD_PARTY_NOTICES.txt"
+        ],
+        "requires_python": ">=3.12, <3.16",
+        "requires_dist": []
+      },
+      "legal_payload_hashes": {
+        "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "NOTICE": "e9a11dc82b40f759e3a4ab319daed92f5e548486a14babb249861e49aba16839",
+        "THIRD_PARTY_NOTICES.txt": "531a87c73c797f15dec96e8f4aed96288d8f386cd8fa11d6ff00769b68ddbc95"
+      },
+      "reproducibility": {
+        "format": "dapane-build-comparison/1",
+        "comparison": "two-clean-builds-same-runner",
+        "identical": true,
+        "cross_host_reproducibility": "not_assessed"
+      },
+      "reference_count": 10,
+      "minimal_native_packages": 29,
+      "publication_ready": false,
+      "publication_blockers": [
+        "Package publication is not enabled by this candidate-assurance workflow.",
+        "registry_identity: unverified"
+      ]
+    },
+    {
+      "name": "supply-chain-evidence",
+      "artifact_id": 14146089394,
+      "archive_sha256": "a4aff8143f498a3b7b75fdcf584bfd77153de4986eb7d6ca971ba98e58b99d91",
+      "checksums_verified": 15,
+      "advisory_revisions": {
+        "checked_at": "2026-11-15T04:23:43.285989+00:00",
+        "source_commit": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+        "cargo_deny_version": "0.20.2",
+        "exit_code": 0,
+        "databases": [
+          {
+            "database": "advisory-db-3157b0e258782691",
+            "commit": "4ef2df8e806a65e2f1ecc14f56f51249062b23d6"
+          }
+        ],
+        "project_license": "Apache-2.0; workspace crates are included in licence checks"
+      },
+      "cargo_deny_summary": [
+        {
+          "fields": {
+            "advisories": {
+              "errors": 0,
+              "helps": 0,
+              "notes": 0,
+              "warnings": 0
+            },
+            "bans": {
+              "errors": 0,
+              "helps": 0,
+              "notes": 0,
+              "warnings": 0
+            },
+            "licenses": {
+              "errors": 0,
+              "helps": 38,
+              "notes": 0,
+              "warnings": 0
+            },
+            "sources": {
+              "errors": 0,
+              "helps": 0,
+              "notes": 0,
+              "warnings": 0
+            }
+          },
+          "type": "summary"
+        }
+      ],
+      "python_audit_dependencies": 36,
+      "python_vulnerabilities": 0,
+      "sboms": [
+        {
+          "file": "dapane-cli.cdx.json",
+          "sha256": "73a72e6339d63da39c0357a5cda6685b61c0b7e6032422b37eafd5f061a67993",
+          "components": 27,
+          "root": "dapane-cli"
+        },
+        {
+          "file": "dapane-core.cdx.json",
+          "sha256": "3f2158c07ac9e6cf523fda478acd4b2a23bbf118962bb5239e8abdb14a7e1569",
+          "components": 26,
+          "root": "dapane-core"
+        },
+        {
+          "file": "dapane-python.cdx.json",
+          "sha256": "d488e6f4afd5f4bd5f5ad88fbe9dc01603ca2c77c9247d88ac2a442f1c434549",
+          "components": 36,
+          "root": "dapane-python"
+        }
+      ]
+    },
+    {
+      "name": "candidate-python-3.14",
+      "artifact_id": 14145824837,
+      "archive_sha256": "1a9ffdf030fae42af8fa4fe69e99b7ad6fd64ee6ebe1648bb73ba6f80a53c5ca",
+      "checksums_verified": 20,
+      "source": {
+        "commit": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+        "tree": "191a295ee823297a3f517e7f584cf6023cbe4d40",
+        "epoch": 1794716374
+      },
+      "runtime": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "implementation": "CPython",
+        "python": "3.14.10",
+        "libc": [
+          "glibc",
+          "2.39"
+        ],
+        "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+        "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)"
+      },
+      "artifacts": [
+        {
+          "role": "cli",
+          "name": "dapane",
+          "bytes": 1446888,
+          "sha256": "2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2"
+        },
+        {
+          "role": "wheel",
+          "name": "dapane-0.1.0-cp314-cp314-manylinux_2_34_x86_64.whl",
+          "bytes": 722651,
+          "sha256": "1fa1ed1671d67331d396c3f8e430a8802f737a18e21928ea5d603d3c77dada4a"
+        }
+      ],
+      "wheel_metadata": {
+        "metadata_version": "2.4",
+        "license_expression": null,
+        "legacy_license": null,
+        "license_files": [
+          "LICENSE",
+          "NOTICE",
+          "THIRD_PARTY_NOTICES.txt"
+        ],
+        "requires_python": ">=3.12, <3.16",
+        "requires_dist": []
+      },
+      "legal_payload_hashes": {
+        "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "NOTICE": "e9a11dc82b40f759e3a4ab319daed92f5e548486a14babb249861e49aba16839",
+        "THIRD_PARTY_NOTICES.txt": "531a87c73c797f15dec96e8f4aed96288d8f386cd8fa11d6ff00769b68ddbc95"
+      },
+      "reproducibility": {
+        "format": "dapane-build-comparison/1",
+        "comparison": "two-clean-builds-same-runner",
+        "identical": true,
+        "cross_host_reproducibility": "not_assessed"
+      },
+      "reference_count": 10,
+      "minimal_native_packages": 29,
+      "publication_ready": false,
+      "publication_blockers": [
+        "Package publication is not enabled by this candidate-assurance workflow.",
+        "registry_identity: unverified"
+      ]
+    },
+    {
+      "name": "candidate-python-3.15",
+      "artifact_id": 14145643783,
+      "archive_sha256": "f52fcbccb909ee971ffde41c85b3ede54b903d01b430cd5fd332bd7013ea31f7",
+      "checksums_verified": 25,
+      "source": {
+        "commit": "5f03f28e3aa5a98c45c0853ce7498c86b181d66a",
+        "tree": "191a295ee823297a3f517e7f584cf6023cbe4d40",
+        "epoch": 1794716374
+      },
+      "runtime": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "implementation": "CPython",
+        "python": "3.15.2",
+        "libc": [
+          "glibc",
+          "2.39"
+        ],
+        "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+        "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)"
+      },
+      "artifacts": [
+        {
+          "role": "cli",
+          "name": "dapane",
+          "bytes": 1446888,
+          "sha256": "2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2"
+        },
+        {
+          "role": "wheel",
+          "name": "dapane-0.1.0-cp315-cp315-manylinux_2_34_x86_64.whl",
+          "bytes": 722754,
+          "sha256": "d4a1adbf74710dfcebb1ab1ac887901ae7fa489b7ecd6a4e8c02df0cfc206369"
+        }
+      ],
+      "wheel_metadata": {
+        "metadata_version": "2.4",
+        "license_expression": null,
+        "legacy_license": null,
+        "license_files": [
+          "LICENSE",
+          "NOTICE",
+          "THIRD_PARTY_NOTICES.txt"
+        ],
+        "requires_python": ">=3.12, <3.16",
+        "requires_dist": []
+      },
+      "legal_payload_hashes": {
+        "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "NOTICE": "e9a11dc82b40f759e3a4ab319daed92f5e548486a14babb249861e49aba16839",
+        "THIRD_PARTY_NOTICES.txt": "531a87c73c797f15dec96e8f4aed96288d8f386cd8fa11d6ff00769b68ddbc95"
+      },
+      "reproducibility": {
+        "format": "dapane-build-comparison/1",
+        "comparison": "two-clean-builds-same-runner",
+        "identical": true,
+        "cross_host_reproducibility": "not_assessed"
+      },
+      "reference_count": 10,
+      "minimal_native_packages": 29,
+      "publication_ready": false,
+      "publication_blockers": [
+        "Package publication is not enabled by this candidate-assurance workflow.",
+        "registry_identity: unverified"
+      ],
+      "benchmark": {
+        "scope": "synthetic CLI valuation and shared-pool allocation, including process startup and JSON IO",
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "machine": "x86_64",
+        "python": "3.15.2",
+        "engine_version": "0.1.0",
+        "measurements": [
+          {
+            "mode": "valuation",
+            "usage_rows": 10,
+            "quotes": 1,
+            "input_bytes": 4413,
+            "output_bytes": 7642,
+            "repeats": 3,
+            "wall_seconds": [
+              0.001853054999997994,
+              0.0014415880000058223,
+              0.0014313789999960136
+            ],
+            "median_wall_seconds": 0.0014415880000058223,
+            "child_cpu_seconds": [
+              0.001606,
+              0.0012769999999999997,
+              0.0012930000000000003
+            ],
+            "output_digest": "sha256:013f38fd46d1e9638148f1062cf3ccfa71a2320a30191f47a26bca9b90298c6a"
+          },
+          {
+            "mode": "valuation",
+            "usage_rows": 1000,
+            "quotes": 1,
+            "input_bytes": 367745,
+            "output_bytes": 633330,
+            "repeats": 3,
+            "wall_seconds": [
+              0.036718784999976606,
+              0.03474055699999212,
+              0.04392413100001136
+            ],
+            "median_wall_seconds": 0.036718784999976606,
+            "child_cpu_seconds": [
+              0.035906,
+              0.034044,
+              0.04334400000000001
+            ],
+            "output_digest": "sha256:3c924007310dd5995ba309ec4f23e3bfb0346456bf776a36aa081c69a61a8e22"
+          },
+          {
+            "mode": "valuation",
+            "usage_rows": 5000,
+            "quotes": 1,
+            "input_bytes": 1835745,
+            "output_bytes": 3161333,
+            "repeats": 3,
+            "wall_seconds": [
+              0.20432109600000103,
+              0.2037106349999931,
+              0.1966177900000048
+            ],
+            "median_wall_seconds": 0.2037106349999931,
+            "child_cpu_seconds": [
+              0.20046299999999997,
+              0.200741,
+              0.19410800000000006
+            ],
+            "output_digest": "sha256:f0a308d0e084185b2526bea5ca161cc6f68ed2260b50148d7dca3ea255f9802e"
+          },
+          {
+            "mode": "allocation",
+            "usage_rows": 10,
+            "quotes": 1,
+            "input_bytes": 5555,
+            "output_bytes": 10665,
+            "repeats": 3,
+            "wall_seconds": [
+              0.0025930150000021968,
+              0.0016390360000002602,
+              0.001618296999993163
+            ],
+            "median_wall_seconds": 0.0016390360000002602,
+            "child_cpu_seconds": [
+              0.0018730000000000552,
+              0.001498000000000041,
+              0.001474000000000017
+            ],
+            "output_digest": "sha256:b3acfe644e55f55cbf706c2d2ee3c7c6a0447ff7c554f280c8721770a440d3e0"
+          },
+          {
+            "mode": "allocation",
+            "usage_rows": 1000,
+            "quotes": 1,
+            "input_bytes": 473827,
+            "output_bytes": 921477,
+            "repeats": 3,
+            "wall_seconds": [
+              0.049922190999978966,
+              0.04953810800000724,
+              0.049530072999999675
+            ],
+            "median_wall_seconds": 0.04953810800000724,
+            "child_cpu_seconds": [
+              0.049129000000000006,
+              0.04893000000000004,
+              0.048983000000000027
+            ],
+            "output_digest": "sha256:53d08f7db36aab3175b3c029ed3203f9571e9ee4cad2935ee1ffa7ffe745a567"
+          },
+          {
+            "mode": "allocation",
+            "usage_rows": 5000,
+            "quotes": 1,
+            "input_bytes": 2365827,
+            "output_bytes": 4601482,
+            "repeats": 3,
+            "wall_seconds": [
+              0.3173053219999815,
+              0.3175158449999742,
+              0.32370667800000774
+            ],
+            "median_wall_seconds": 0.3175158449999742,
+            "child_cpu_seconds": [
+              0.313732,
+              0.3135989999999999,
+              0.322036
+            ],
+            "output_digest": "sha256:b2949460c9032de543257ddae905609760ac92464cec055477affca773ae5a7e"
+          }
+        ],
+        "max_child_rss_kib_across_run": 86384,
+        "limits": "Linux ru_maxrss is peak child RSS across this run, not per-workload memory. No concurrency, provider or cross-machine comparison is implied."
+      },
+      "source_distribution": {
+        "name": "dapane-0.1.0.tar.gz",
+        "sha256": "9087e2fe0572b5ffc90beb1c6b743bc9583af13077aafecb0370c4d5f8ec810b",
+        "metadata_version": "2.4",
+        "license_expression": null,
+        "license_files": [
+          "LICENSE",
+          "NOTICE",
+          "THIRD_PARTY_NOTICES.txt"
+        ],
+        "legal_payloads_identical": true,
+        "crate_inventories": {
+          "dapane-core": {
+            "files": 18,
+            "legal_files_present": [
+              "LICENSE",
+              "NOTICE",
+              "THIRD_PARTY_NOTICES.txt"
+            ]
+          },
+          "dapane-cli": {
+            "files": 10,
+            "legal_files_present": [
+              "LICENSE",
+              "NOTICE",
+              "THIRD_PARTY_NOTICES.txt"
+            ]
+          },
+          "dapane-python": {
+            "files": 8,
+            "legal_files_present": [
+              "LICENSE",
+              "NOTICE",
+              "THIRD_PARTY_NOTICES.txt"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "format_version": "1",
+  "qualification_status": "ordinary_hosted_checks_passed_central_security_unexecuted",
+  "source_scope": "Exact tested implementation commit. This follow-up receipt does not relabel its artifacts as built from the documentation commit.",
+  "workflows": {
+    "release_assurance": {
+      "run_id": 43676274010,
+      "conclusion": "success",
+      "provider_job_id": 132697595562,
+      "matrix_job_id": 132697964071,
+      "attestation": "skipped; pull-request run"
+    },
+    "runtime": {
+      "run_id": 43676274053,
+      "conclusion": "success",
+      "native_tests": 62,
+      "tooling_tests": 11,
+      "installed_tests_per_target": 133,
+      "merge_checkout": "556fc6867a29ae1bf9acb6767dfd141844f3cc7c",
+      "merge_tree_matches_tested_source": true
+    },
+    "standalone_providers": {
+      "run_id": 43676274020,
+      "conclusion": "success"
+    },
+    "conductor": {
+      "run_id": 43676274022,
+      "conclusion": "success"
+    },
+    "privacy": {
+      "run_id": 43676274024,
+      "conclusion": "success"
+    },
+    "codeql": {
+      "run_id": 43676271782,
+      "aggregate_check_id": 132697093803,
+      "conclusion": "success"
+    }
+  },
+  "release_checks": {
+    "control_tests": 64,
+    "installed_tests_per_target": 133,
+    "independent_references_per_target": 10,
+    "interval_schema_rejections_per_target": 9,
+    "interval_runtime_rejections_per_target": 11,
+    "interval_tamper_controls_per_target": 15,
+    "matrix_targets": 4,
+    "native_dependency_packages": 29,
+    "python_runtime_dependencies": 0
+  },
+  "provider_candidate": {
+    "workflow_run": 43676274010,
+    "job_id": 132697595562,
+    "downloaded_artifact_id": 14145643783,
+    "downloaded_archive_sha256": "f52fcbccb909ee971ffde41c85b3ede54b903d01b430cd5fd332bd7013ea31f7",
+    "cli_sha256": "2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2",
+    "wheel_sha256": "d4a1adbf74710dfcebb1ab1ac887901ae7fa489b7ecd6a4e8c02df0cfc206369",
+    "workforce_python": "3.15.2",
+    "genomics_python": "3.15.1",
+    "qualification": "passed; existing provider verifier and 133 native-boundary tests",
+    "provider_lock": "provider-consumers.lock.json"
+  },
+  "central_security": {
+    "status": "queued; no execution result",
+    "pull_request_run": 43676274294,
+    "push_run": 43676270592,
+    "required_runner_labels": [
+      "self-hosted",
+      "linux",
+      "x64",
+      "ai-security-offline"
+    ],
+    "caller_unchanged": true,
+    "bypass": false,
+    "runner_id": 0,
+    "runner_name": "",
+    "steps_executed": 0,
+    "observed_at": "2026-11-15T04:28:00Z",
+    "observation_source": "Supported workflow-run jobs list endpoints for the current PR and push runs."
+  },
+  "publication": {
+    "enabled": false,
+    "registry_identity": "unverified",
+    "owner_choices_pending": [
+      "first-release channels",
+      "controlling registry accounts/organisations"
+    ]
+  },
+  "retention": "GitHub Actions artifacts have 30-day retention. Retain qualified artifacts beyond that window before publication or recovery-dependent consolidation; this JSON preserves source identities, outcomes and hashes, not artifact bytes.",
+  "source_archive": {
+    "name": "source.tar.gz",
+    "bytes": 627617,
+    "sha256": "11349fa1fa444f556fd2a84b4d0f961a964b4de5ebe2cf96bca11bb649d8d47f",
+    "identical_across_all_four_candidates": true
+  }
+}

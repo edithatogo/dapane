@@ -1,0 +1,86 @@
+{
+  "format_version": "1",
+  "track_id": "newborn_screening_20261108",
+  "scope": "bounded_qld_nbs_manual_extraction_labour_slice_n3_1_n3_2_partial_n3_3",
+  "qualified_at": "2026-11-19T07:03:44Z",
+  "base_commit": "0658d94ad772023a0185a000b5254f9c2f4a63a9",
+  "environment": {
+    "system": "Darwin",
+    "machine": "arm64",
+    "python": "3.15.1",
+    "rustc": "rustc 1.100.0 (0ef1bc386 2026-11-09) (Homebrew)",
+    "cli_version": "dapane 0.1.0 (contracts 0.1, 0.2; intervals 0.1)",
+    "cli_sha256": "3e3e578e3e95bffbb0ecae5cea292180aac6ddd2ab4ab43208e5b0b7c7af90d6",
+    "wheel_name": "dapane-0.1.0-cp315-cp315-macosx_11_0_arm64.whl",
+    "wheel_sha256": "9ff15f155cb4133f7f9aef252c5d071ad53b2d4ed34f2507381d55bdaea1fd7b",
+    "ruff": "0.17.4",
+    "pytest": "9.2.0",
+    "jsonschema": "4.26.0",
+    "host_note": "Local macOS arm64 check with Homebrew rustc 1.100.0; hosted Linux x86_64 Rust 1.99.1 CI remains separate."
+  },
+  "provider_pins": {
+    "lock_file": "docs/provider-consumers.lock.json",
+    "workforce_commit": "c351a7c6420a356c4c13d2da3010bc7e7d0341f9",
+    "workforce_artifact_sha256": "9cd5e8bb48b29186b7fd4ea911f914c0e0dbf4f3fc188a1f6728cbe65947ec60",
+    "genomics_commit": "be2451f34a389f90e618cf37a5e8e1fcbb148dea",
+    "workbook_sha256": "2990ff57504a51c5a9152b053a8e7cfa0e490f27a75bb356810f3564f96b5eb4"
+  },
+  "file_sha256": {
+    "fixtures/newborn-qld-nbs/README.md": "0831c20f7e5d46623a571bf6e1cffe8b28c7471daa17d052704b7debabfdb8b5",
+    "fixtures/newborn-qld-nbs/expected.json": "65967c197dc3b6d4cf9290bc46d3c992bb72024790af15a38ca35618e671f9b3",
+    "fixtures/newborn-qld-nbs/programme.json": "09000e50deed36734c490e3509c5e8a61d5cd144804cbcd87df4db600f8de93d",
+    "fixtures/newborn-qld-nbs/qld-nbs-failed-batch-repeat-3.json": "770dea7306143d3b2cb32a46dbf9960077ae0ffa9ec9ec32a28119aac5e60cc3",
+    "fixtures/newborn-qld-nbs/qld-nbs-full-batch-6.json": "e10170aea136e6ad1fcb8533d595d0d174352185e6127ac082164063f2f11ba8",
+    "fixtures/newborn-qld-nbs/qld-nbs-inadequate-card-recollection-3.json": "aa531d955a5a5065d385eb0efa8ea7b2298238ee889d9251fe6aebcf7ae2ef41",
+    "fixtures/newborn-qld-nbs/qld-nbs-partial-batch-3.json": "2f4688e4e5bd4a64f2c60459417729237d73bd6fd9d3c4edaf309ede45a50505",
+    "fixtures/newborn-qld-nbs/qld-nbs-unresolved-failed-screen-3.json": "30545fb8a8e2d1013e428529073e86accf7e5b80e2d64f52aa3438b63e07829c",
+    "fixtures/newborn-qld-nbs/scenarios.json": "7b653e258e9d03b70178bea3ab6767514c48a9f5bee0d098b12e8fe917191e78",
+    "tests/python/test_newborn_qld_nbs.py": "da690433657f5dbc6da6d22838afe087c255ee2bf3778a3ab54835fa0d6efcd3"
+  },
+  "case_digests": {
+    "qld-nbs-full-batch-6": {
+      "input_digest": "sha256:0d37f1e80f1bc1da69162ca75b32f6296727549a2b986c747cc3d6791ae01728",
+      "output_digest": "sha256:2f1f363b2793a970715df5b6b5540a2fe97c6d5b5bf13e5946ed989c6b50580f",
+      "rounded_total": "26.87",
+      "exact_total": "1612303/60000"
+    },
+    "qld-nbs-partial-batch-3": {
+      "input_digest": "sha256:1b68f2b5408713f9569d56c360e4814f3d089afa9fa236a715ca2376e2963e6b",
+      "output_digest": "sha256:31f49a4f9156c5ca4bd55b6b53582a702aea8d80f2f01390e101cb65933278fc",
+      "rounded_total": "26.87",
+      "exact_total": "1612303/60000"
+    },
+    "qld-nbs-failed-batch-repeat-3": {
+      "input_digest": "sha256:72e79013d1a12cea95141927247100b3fee54f9adcb44af318ad9cd9cf2b04c9",
+      "output_digest": "sha256:09f5e113d341bd9f09b4cf3a35d1a5cec6479735838e08661a64505b747bc15e",
+      "rounded_total": "53.74",
+      "exact_total": "1612303/30000"
+    },
+    "qld-nbs-inadequate-card-recollection-3": {
+      "input_digest": "sha256:43364a1b76dbb56421aee4675a3d953c832d7f0b6abcecf224f6547aa9ee89d7",
+      "output_digest": "sha256:96f6be24ec58f0e7e9d3854660bec4e93297b8f4322e35cc56f3b65a3feee722",
+      "rounded_total": "53.74",
+      "exact_total": "1612303/30000"
+    },
+    "qld-nbs-unresolved-failed-screen-3": {
+      "input_digest": "sha256:9d494c667cbc9be505d653331797d7f1a40e87e7fdd7bfafedc7fb20d8f3e65b4",
+      "output_digest": "sha256:e74410c72377a4860edc0b738a63e64040452435a1e192a6f94ecda6fe5a4426",
+      "rounded_total": "26.87",
+      "exact_total": "1612303/60000"
+    }
+  },
+  "checks": {
+    "native_core_tests": "54 passed",
+    "native_cli_tests": "7 passed on macOS APFS (1 filtered: non_utf8_arguments_do_not_panic_and_file_paths_remain_usable fails on APFS EILSEQ errno 92)",
+    "installed_wheel_qld_nbs_tests": 19,
+    "installed_wheel_full_python_tests": 215,
+    "cli_python_parity_cases": 5,
+    "ruff_lint_and_format": "passed"
+  },
+  "unqualified_or_excluded": [
+    "Non-extraction NBS stages (collection, transport, accession/QC, biochemical MS/MS and immunoassay, reagents, instruments, on-costs, recall, confirmation, programme overhead)",
+    "Real Queensland perinatal epidemiology and clinical probabilities",
+    "Family-time and societal perspectives",
+    "UOGTO/standards_check reporting profiles (reporting_profiles_20261108 pending)"
+  ]
+}

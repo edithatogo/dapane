@@ -16,6 +16,8 @@ their repository owners.
 | [Decisions](decisions.md) | Architectural choices and unresolved implementation decisions |
 | [Technology stack](tech-stack.md) | Selected directions, dependency qualification and actual tooling |
 | [Workflow](workflow.md) | Agent-executable tasks, evidence, review and synchronisation |
+| [Parallel ownership](parallel-ownership.md) | Seven bounded lane owners, pinned baseline, shared interfaces and integrator-only changes |
+| [Roadmap PR intake](roadmap-intake-2026-11-15.md) | Exact published lane heads, shared integration, executed qualification and remaining owner/upstream gates |
 | [Style guides](code_styleguides/index.md) | Rust, Python, FFI and documentation conventions |
 | [Repository map](repository-map.md) | Actual files, provenance and planned implementation areas |
 | [Ecosystem](ecosystem.md) | Source owners, provider readiness, migration and rollback |
@@ -26,6 +28,8 @@ their repository owners.
 - [Implemented contract 0.1](../docs/contract-v0.1.md), [quickstart](../docs/quickstart.md) and [runtime verification](../docs/runtime-verification.md): the working bounded Rust/CLI/Python candidate.
 - [Event/process/object model](../docs/event-process-object-model.md) and [provider boundaries](../docs/provider-boundaries.md): independent core and optional Kairos/provider integration.
 - [Installed workforce and genomics consumers](../docs/python-provider-verification.md): dated quotation composition, canonical/legacy imports and selected historical-workbook qualification.
+- [Release handoff and qualification](../docs/release-handoff-2026-11-15.md): incorporated archives, exact hosted baseline, distribution notices and remaining publication/security blockers.
+- [Post-merge `main` release qualification and attestation](../docs/release-qualification-2026-11-19.md): `0658d94` verified matrix, exact-artifact providers, signed provenance and cancelled central offline security status.
 
 - [Roadmap](roadmap.md): capability milestones and optional delivery paths.
 - [Track registry](tracks.md): status and entry points for all tracks.

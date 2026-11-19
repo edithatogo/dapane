@@ -1,0 +1,119 @@
+{
+  "format_version": "1",
+  "channel": "unpublished-candidate",
+  "package": {
+    "name": "dapane",
+    "version": "0.1.0"
+  },
+  "profiles": {
+    "0.1": "dapane-exact-v0.1.0",
+    "0.2": "dapane-exact-v0.2.0"
+  },
+  "candidate_capabilities": [
+    "rust-core",
+    "json-cli",
+    "python-native",
+    "synthetic-workforce",
+    "synthetic-genomics",
+    "partial-capacity",
+    "declared-calendar-day-intervals",
+    "versioned-run-bundles",
+    "installed-workforce-quotation-consumer",
+    "installed-manual-extraction-consumer"
+  ],
+  "targets": [
+    {
+      "runner": "ubuntu-24.04",
+      "system": "Linux",
+      "machine": "x86_64",
+      "implementation": "CPython",
+      "python": "3.12",
+      "abi": "interpreter-specific"
+    },
+    {
+      "runner": "ubuntu-24.04",
+      "system": "Linux",
+      "machine": "x86_64",
+      "implementation": "CPython",
+      "python": "3.13",
+      "abi": "interpreter-specific"
+    },
+    {
+      "runner": "ubuntu-24.04",
+      "system": "Linux",
+      "machine": "x86_64",
+      "implementation": "CPython",
+      "python": "3.14",
+      "abi": "interpreter-specific"
+    },
+    {
+      "runner": "ubuntu-24.04",
+      "system": "Linux",
+      "machine": "x86_64",
+      "implementation": "CPython",
+      "python": "3.15",
+      "abi": "interpreter-specific"
+    }
+  ],
+  "required_tracks": [
+    "core_contracts_20261108",
+    "rust_kernel_20261108",
+    "python_two_consumers_20261108"
+  ],
+  "optional_tracks": [
+    "mchs_source_adapters_20261108",
+    "reporting_profiles_20261108",
+    "newborn_screening_20261108",
+    "power_platform_20261108",
+    "polyglot_bindings_20261108",
+    "process_models_20261108",
+    "decision_integrations_20261108",
+    "frontier_benchmarks_20261108",
+    "tobac_regulatory_fiscal_valuation_20261110"
+  ],
+  "publication": {
+    "enabled": false,
+    "project_license": "Apache-2.0",
+    "registry_identity": "unverified",
+    "source_redistribution": "project-source-Apache-2.0-external-assets-excluded",
+    "workforce_provider": "qualified-selected-qld-hp3p1-base-salary",
+    "genomics_provider": "qualified-manual-extraction-labour"
+  },
+  "source_rights": {
+    "included": "tracked-project-source-synthetic-fixtures-and-dependency-notices",
+    "external_provider_assets": "excluded",
+    "source_claims": "caller-declarations-not-independent-validation"
+  },
+  "consolidation": {
+    "selected_archives": [],
+    "remove_duplicated_machinery": false
+  },
+  "additional_profiles": {
+    "intervals": {
+      "schema_version": "0.1",
+      "method_version": "dapane-intervals-v0.1.0",
+      "interfaces": [
+        "Rust",
+        "CLI"
+      ]
+    },
+    "run_bundle": {
+      "schema_version": "0.1",
+      "interfaces": [
+        "repository-verifier"
+      ],
+      "valuation_profiles": [
+        "0.1",
+        "0.2"
+      ]
+    }
+  },
+  "provider_consumers": {
+    "lock_file": "docs/provider-consumers.lock.json",
+    "qualification_record": "docs/python-provider-verification.md",
+    "workforce_scope": "selected-quotation-and-retained-legacy-entry-points",
+    "genomics_scope": "manual-dna-extraction-labour-and-bounded-historical-replay",
+    "environments": "separate-locked-provider-environments",
+    "source_asset_redistribution": "excluded"
+  }
+}
