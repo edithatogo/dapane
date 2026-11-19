@@ -171,3 +171,44 @@ aggregation, standalone providers, Conductor, Privacy and CodeQL passed. The
 central offline jobs remain queued; trusted-main attestation was correctly skipped
 on the PR. These results establish the recorded candidate scope while publication
 and final security qualification remain blocked.
+
+## Post-merge main qualification and signed attestation (0658d94 — 19 November 2026)
+
+Following PR #17 (`f9e8fd7`) and PR #22 (`0658d94`) merges to `main`, source
+`0658d94ad772023a0185a000b5254f9c2f4a63a9` (tree
+`48c3ae972ed48e5e1e6e47862e99381323191fa7`) completed its `main` workflow runs.
+The [post-merge qualification record](../../../docs/release-qualification-2026-11-19.md)
+and [artifact receipt](../../../docs/release-qualification-0658d94.json) retain
+the verified run IDs, artifact hashes, checksums, benchmark measurements and
+offline attestation check:
+
+- **Passed ordinary `main` workflows:** Release assurance (`43769725207`,
+  including `manifest` 64 control tests, 4 candidate builds, `supply-chain`,
+  `provider-candidate` on artifact `14184700967` with workforce 3.15.2 /
+  genomics 3.15.1 / 196 native-boundary tests, `matrix` and trusted-main
+  `attest` job `132994080532`), Runtime (`43769725112`: 62 native tests, 11
+  tooling tests, 196 installed tests per CPython 3.12–3.15), Installed provider
+  consumers (`43769725145`), Conductor validation (`43769725080`: 14 tracks, 12
+  requirements, 155 tasks, 629 local links, 12 regression tests), Privacy and
+  secrets (`43769725087`: 0 Gitleaks findings, Presidio 25/25 files clean),
+  Standalone roadmap lanes (`43769725139`: newborn qualified) and CodeQL
+  (`43769724700` / `44010763585`).
+- **Downloaded artifact & matrix verification on clean `0658d94`:** All six
+  archives from run `43769725207` matched their GitHub API SHA-256 digests; all
+  100 `CHECKSUMS.sha256` entries (`20 + 20 + 20 + 25 + 15`) passed; and
+  `python3 scripts/release_assurance.py verify-matrix` passed across all four
+  CPython targets (`3.12.16`, `3.13.18`, `3.14.10`, `3.15.2`).
+- **Signed trusted-main provenance verification:** `candidate-provenance`
+  (`14184669447`, `attestation.json` 12,920 bytes, SHA-256
+  `42e9a2d39c18233d5245af5728372d5554bb929a5dc333926c2ed4dd812e3d4a`) holds 14
+  distinct SHA-256 subjects under `https://slsa.dev/provenance/v1` (Rekor log
+  index `3912525884`, repository attestation `67905453`). All 20 candidate
+  subject files across all four interpreter directories passed
+  `gh attestation verify --bundle` (`gh 2.105.0`, `--source-ref refs/heads/main`,
+  `--source-digest 0658d94ad772023a0185a000b5254f9c2f4a63a9`,
+  `--deny-self-hosted-runners`).
+- **Remaining blockers (`L1.2` and `L4.2`):** Publication stays disabled pending
+  owner channel and registry-account choices (`L1.2`), and `Offline AI security`
+  run `43769725442` (job `132982710619`) timed out in queue after 24 hours and
+  was cancelled (`2026-11-16T22:31:07Z`) with `runner_id: 0` and 0 steps
+  executed (`L4.2`). Track status remains `blocked` with `archive_performed: false`.

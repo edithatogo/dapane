@@ -13,7 +13,11 @@ measured limits at its exact source. The later
 [handoff and hosted qualification record](release-handoff-2026-11-15.md) records
 the incorporated owners' work and successful ordinary hosted checks at `5f03f28`,
 with a [source-bound artifact receipt](release-qualification-5f03f28.json).
-Central offline security remains unexecuted. Each subsequent source revision
+Following PR #17 and PR #22 merges to `main`,
+[post-merge `main` qualification](release-qualification-2026-11-19.md) and its
+[artifact receipt](release-qualification-0658d94.json) record passed ordinary
+checks and trusted-main signed attestation at `0658d94`, while central offline
+security timed out in queue unexecuted. Each subsequent source revision
 still needs its own complete qualification.
 
 ## Scope and first-release prerequisites

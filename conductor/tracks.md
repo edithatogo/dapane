@@ -59,10 +59,14 @@ installed Python and two real provider consumers → release assurance.
 Power Platform, R/Julia, process models and decision integrations are independently qualified optional branches.
 
 The [release handoff](../docs/release-handoff-2026-11-15.md) consumes all four
-incorporated archives and the existing provider qualification. Release work
-completes distribution notices and verifies the exact candidate artifacts.
-Publication remains disabled pending channel/account choices; final qualification
-also retains the separate centrally managed offline-security execution gate.
+incorporated archives and the existing provider qualification, and
+[post-merge `main` qualification](../docs/release-qualification-2026-11-19.md)
+records the `0658d94` matrix, exact-artifact provider check and signed
+trusted-main provenance. Release work completes distribution notices and verifies
+the exact candidate artifacts. Publication remains disabled pending
+channel/account choices; final qualification also retains the separate centrally
+managed offline-security execution gate (`43769725442` auto-cancelled after
+24h queue timeout with no runner).
 
 ## Synchronisation
 
