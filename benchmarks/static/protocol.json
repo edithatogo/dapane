@@ -1,7 +1,7 @@
 {
   "protocol_id": "dapane-static-synthetic-v1.2",
   "registered_on": "2026-11-15",
-  "runtime_base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "runtime_base_sha": "2311d6028f30ff7af01f064a76234cb0db7d1236",
   "portfolio_sizes": [
     8,
     32

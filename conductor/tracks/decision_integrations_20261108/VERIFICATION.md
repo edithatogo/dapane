@@ -1,6 +1,37 @@
 # Verification and source-recovery limits
 
-## Current owner follow-up — 15 November 2026
+## Decision provider evidence review — 19 November 2026
+
+The Dapane source tested was `7c2f23dd337341366c65faf79e7c271991d7bc3f`.
+On macOS arm64 with CPython 3.15.2, all 78 tests passed with
+`python -B -m unittest discover -s tests -v` from
+`adapters/decision_provider_d2/`. These tests check declared provider
+compatibility, including source revision format and supported contracts and
+methods. The focused Rust test
+`transfer_changes_do_not_change_societal_or_health_nmb` also passed in
+`adapters/decision_draws/tests/fiscal.rs`.
+
+| Case | Observed result | Remaining qualification evidence |
+| --- | --- | --- |
+| Innovate adoption and capacity | Dapane's native wrapper called `dapane_adoption_capacity`. At 0.5 staff hours per adoption and capacity of 4 hours, the first period's 10 adoptions produced demand of 5 hours, 4 served and 1 carried forward. The second period's 2 adoptions produced demand of 2 hours including the carryover, all served. Executable SHA-256 `5d2d1cc8d40c2298773e0530528e9d241edfcfa9d575c7af2471d26b0f87ca29`. | A reviewed source-to-binary build record and a provider execution case for the price-feedback path. |
+| Paignia finite game | Dapane's native wrapper solved the one-player case with explicit utilities of 10 and 20. The solver selected action B and returned 20. Executable SHA-256 `3ddf588cb7b425e0a036d4359741311b33fb34fce33aa658f53bf4db484f4922`. | A reviewed source-to-binary build record and application validation against the selected Paignia profile. |
+| Voiage staff-time EVPI | The four synthetic net-benefit cells give an analytical reference of AUD 10 per assay. Available copies of `voiage-3.1.0-cp315-abi3-macosx_11_0_arm64.whl` differed from the claimed SHA-256 `71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140`. Native EVPI was unverified. | The selected wheel, its source-to-wheel and installed extension evidence, and a native execution receipt for the four-cell case. |
+
+Dapane's standalone CLI was built from the tested source with Rust 1.99.1
+using `cargo build --locked --offline --release --no-default-features -p dapane-cli`.
+The executable SHA-256 was
+`d6b365cee5da744cfb37a77101b94e3e2a084001d82739593d8e39a9d4b950e2`.
+From isolated Python (`-I -S`), `study.run_static_without_providers` ran
+`dapane evaluate -` on [the synthetic newborn-screening fixture](../../../fixtures/newborn-screening.json).
+The total was AUD 150.00, and all six object totals matched the
+[hand-calculated expectations](../../../fixtures/expected.json). The native
+report output digest was `sha256:a38641e5373cb775f84fec290cb48e7e030a344bf86e44c0d1f76e1b44cd0d9c`.
+
+D3.3's standalone costing check is verified. The selected installed-provider
+integration cases remain pending. Provider qualification and the Conductor
+track remain in progress.
+
+## D1/T1 owner follow-up — 15 November 2026
 
 The [bounded quality repair](owner-quality-20261115.md) records clean-source execution at
 `9c177166899e588dc3dacadb13e4a0a3750bbce2` (tree `db6e32d39ae8960da9d30a24ed37eb965caea36d`). Rustfmt, Clippy with `-D warnings`,
@@ -18,7 +49,7 @@ handed to PR23/PR20. No earlier result is relabelled as evidence for a later hea
 Request 4 (production signed-fiscal method/profile), D2/D3, T2/T3, required
 offline-security and coordinator privacy/release acceptance remain open. No
 provider method is qualified, no extra worker created, and no merge or release
-performed. Both tracks remain `in_progress` and PR23 remains draft.
+performed. Both tracks were `in_progress` and PR23 was draft at that checkpoint.
 
 ## Initial recovery record — historical, superseded where stated above
 

@@ -7,8 +7,10 @@ import argparse
 import copy
 import hashlib
 import json
+import os
 import re
 import sys
+import tempfile
 from datetime import date
 from functools import lru_cache
 from pathlib import Path
@@ -316,21 +318,44 @@ def verify_history(records: list, *, expected_head_digest: str, as_of: str) -> d
     }
 
 
+def write_result(path: Path, result: dict) -> None:
+    """Publish a complete result to a new file private to the invoking user."""
+    encoded = canonical(result) + b"\n"
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(encoded)
+        os.link(temporary, path)
+    except OSError as exc:
+        raise BundleError(
+            "output_unavailable", "/output", "cannot write a new result file"
+        ) from exc
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("history", type=Path, help="ordered JSON array of immutable bundles")
     parser.add_argument("--head", required=True, help="independently retained head digest")
     parser.add_argument("--as-of", required=True, help="knowledge date, YYYY-MM-DD")
+    parser.add_argument(
+        "--output", type=Path, help="write the verified selection to a new JSON file"
+    )
     args = parser.parse_args()
     try:
         result = verify_history(
             read_history(args.history), expected_head_digest=args.head, as_of=args.as_of
         )
+        if args.output is not None:
+            write_result(args.output, result)
     except BundleError as exc:
         error = {"code": exc.code, "path": exc.path, "message": exc.message}
         print(json.dumps({"error": error}), file=sys.stderr)
         return 2
-    print(canonical(result).decode("utf-8"))
+    print('{"status":"verified"}')
     return 0
 
 

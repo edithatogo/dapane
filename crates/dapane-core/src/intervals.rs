@@ -5,10 +5,10 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use chrono::NaiveDate;
 use num_bigint::BigInt;
 use num_rational::BigRational;
 use serde::{Deserialize, Serialize};
+use time::Date;
 
 use crate::{
     DapaneError, ExactNumber, MAX_JSON_BYTES, MeasureKind, Rational, Report, Request, SourceRef,
@@ -120,8 +120,8 @@ pub struct IntervalReport {
 }
 
 struct SelectedSegment<'a> {
-    start: NaiveDate,
-    end: NaiveDate,
+    start: Date,
+    end: Date,
     quote: &'a UnitQuote,
 }
 
@@ -172,7 +172,7 @@ pub fn evaluate_intervals_json(input: &str) -> Result<String, DapaneError> {
 fn select<'a>(
     usage: &IntervalUsage,
     quotes: &BTreeMap<&str, &'a UnitQuote>,
-    cutoff: NaiveDate,
+    cutoff: Date,
     path: &str,
 ) -> Result<Vec<SelectedSegment<'a>>, DapaneError> {
     let start = validation::date(&usage.start, &format!("{path}/start"))?;
@@ -566,13 +566,13 @@ pub fn evaluate_intervals(request: &IntervalRequest) -> Result<IntervalReport, D
         let quantity = numeric::parse(&usage.quantity, &path)?;
         let start = validation::date(&usage.start, &format!("/intervals/{index}/start"))?;
         let end = validation::date(&usage.end, &format!("/intervals/{index}/end"))?;
-        let total_days = (end - start).num_days();
+        let total_days = (end - start).whole_days();
         let template = &parent.usage[point_count + index];
         let fixed_size = json::encoded_size(template)? - varying_size(template)?;
         for segment in selected {
             let start = segment.start.to_string();
             let end = segment.end.to_string();
-            let days = (segment.end - segment.start).num_days();
+            let days = (segment.end - segment.start).whole_days();
             let exact = numeric::bounded(
                 &quantity * BigRational::new(BigInt::from(days), BigInt::from(total_days)),
                 &path,

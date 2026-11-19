@@ -36,8 +36,8 @@ dependencies, and requires every resolved package to belong to the reviewed
 native package set. This positive list rejects new wrappers, table engines,
 network clients, simulators and accelerators even if their names are unfamiliar.
 The traversal includes target-dependent dependencies conservatively and excludes
-development-only edges. Chrono may enable only `std`/`alloc`; clock and timezone
-capabilities are excluded. Python remains a separate workspace member.
+development-only edges. The `time` dependency must resolve with the
+`parsing` feature alone. Python remains a separate workspace member.
 
 The script emits a JSON observation with its scope, compiler/host identity when
 checked, package counts and the resolved native closure. It does not compile code.

@@ -31,7 +31,7 @@ jobs:
           egress-policy: audit
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: ${{ github.event_name == 'pull_request' && 0 || 1 }}
+          fetch-depth: 0
           persist-credentials: false
       - name: Select affected runtime targets
         id: select
@@ -150,7 +150,7 @@ jobs:
       - name: Install build tools
         run: |
           PROFILE="$RUNNER_TEMP/runtime-py-profile.jsonl"
-          python3 scripts/ci_profile.py run --name rustup-minimal --profile-file "$PROFILE" -- rustup toolchain install 1.99.1 --profile minimal
+          python3 scripts/ci_profile.py run --name rustup-minimal --profile-file "$PROFILE" -- rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
           python3 scripts/ci_profile.py run --name pip-dev-deps --profile-file "$PROFILE" -- python -m pip install -r requirements-dev.txt
       - name: Build and install wheel
         run: |

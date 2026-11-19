@@ -134,7 +134,13 @@ fn non_utf8_arguments_do_not_panic_and_file_paths_remain_usable() {
     assert!(invalid_command.stdout.is_empty());
 
     let mut name = format!("dapane-cli-fixture-{}-", std::process::id()).into_bytes();
-    name.extend_from_slice(&[0xff, b'.', b'j', b's', b'o', b'n']);
+    // The standard macOS filesystems require UTF-8 filenames.
+    let suffix = if cfg!(target_os = "macos") {
+        "é.json".as_bytes()
+    } else {
+        b"\xff.json"
+    };
+    name.extend_from_slice(suffix);
     let path = std::env::temp_dir().join(OsString::from_vec(name));
     let mut file = std::fs::OpenOptions::new()
         .write(true)

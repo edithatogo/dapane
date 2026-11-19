@@ -630,10 +630,11 @@ def consumer(run: Runner, native_artifacts: Path) -> tuple[Path, Path]:
             "dapane",
             "--module",
             "dapane",
+            "--receipt",
+            str(run.artifacts / "installed-native.json"),
         ],
         cwd=cwd,
         needs=("native-install",),
-        stdout=run.artifacts / "installed-native.json",
     )
     return python, cwd
 
@@ -780,10 +781,11 @@ def python_lane(run: Runner, lane: str, sources: Path | None) -> None:
                 "dapane-mchs-atlas",
                 "--module",
                 "dapane_mchs_atlas",
+                "--receipt",
+                str(run.artifacts / "installed-mchs.json"),
             ],
             cwd=cwd,
             needs=("mchs-install",),
-            stdout=run.artifacts / "installed-mchs.json",
         )
         run.step(
             "mchs-tests",
@@ -1392,6 +1394,7 @@ def main() -> int:
     installed.add_argument("--checkout", type=Path, required=True)
     installed.add_argument("--distribution", required=True)
     installed.add_argument("--module", required=True)
+    installed.add_argument("--receipt", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "discover":
         lanes = discover(ROOT)
@@ -1422,12 +1425,9 @@ def main() -> int:
             )
         )
     else:
-        print(
-            json.dumps(
-                verify_installed(args.wheel, args.checkout, args.distribution, args.module),
-                indent=2,
-            )
-        )
+        receipt = verify_installed(args.wheel, args.checkout, args.distribution, args.module)
+        write_json(args.receipt, receipt)
+        print('{"status": "verified"}')
     return 0
 
 

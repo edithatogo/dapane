@@ -6,6 +6,7 @@ import csv
 import hashlib
 import importlib.util
 import io
+import os
 import subprocess
 import tempfile
 import unittest
@@ -309,7 +310,10 @@ class WheelTests(unittest.TestCase):
 
 class SourceTests(unittest.TestCase):
     def test_dirty_tracked_source_cannot_produce_evidence(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ):
+            # Git hooks export repository paths that would redirect the fixture's writes.
+            for name in release.command(["git", "rev-parse", "--local-env-vars"]).splitlines():
+                os.environ.pop(name, None)
             root = Path(directory)
             commands = (
                 ["git", "init", "-q"],

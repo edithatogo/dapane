@@ -3,6 +3,8 @@
 import copy
 import importlib.util
 import json
+import os
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -152,6 +154,7 @@ def test_cli_replay_and_rejection_have_separate_output_channels(tmp_path):
     records = REFERENCE.history()
     path = tmp_path / "history.json"
     path.write_text(json.dumps(records), encoding="utf-8")
+    output = tmp_path / "verified.json"
     command = [
         sys.executable,
         str(ROOT / "scripts/verify_run_bundle.py"),
@@ -161,10 +164,31 @@ def test_cli_replay_and_rejection_have_separate_output_channels(tmp_path):
         "--as-of",
         "2026-02-10",
     ]
-    valid = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, timeout=30)
+    valid = subprocess.run(
+        [*command, "--output", str(output)],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
     assert valid.returncode == 0, valid.stderr
-    assert json.loads(valid.stdout)["report"]["totals"]["rounded"] == "125.00"
+    assert json.loads(valid.stdout) == {"status": "verified"}
+    original = output.read_bytes()
+    if os.name == "posix":
+        assert stat.S_IMODE(output.stat().st_mode) == 0o600
+    assert json.loads(original)["report"]["totals"]["rounded"] == "125.00"
     assert not valid.stderr
+    collision = subprocess.run(
+        [*command, "--output", str(output)],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert collision.returncode == 2
+    assert not collision.stdout
+    assert json.loads(collision.stderr)["error"]["code"] == "output_unavailable"
+    assert output.read_bytes() == original
     path.write_text('[{"duplicate":1,"duplicate":2}]', encoding="utf-8")
     invalid = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, timeout=30)
     assert invalid.returncode == 2

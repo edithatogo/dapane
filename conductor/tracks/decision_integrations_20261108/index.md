@@ -14,9 +14,11 @@ Connect correctly paired cost outputs to Voiage, Innovate and Paignia while reta
 
 Requirements: RQ-11, RQ-02, RQ-03.
 
-Capability status: bounded synthetic native checks pass at the exact corrected
-source recorded below. Production/provider qualification and security/release
-gates remain separate; the whole track is not complete.
+The D2/D3 adapter suite passed 78 synthetic contract tests. Native replays
+reproduced the Innovate capacity and Paignia payoff examples, and the standalone
+Dapane CLI reproduced the newborn-screening total. Voiage's native staff-time
+result and installed-provider qualification remain open. See the
+[19 November verification](VERIFICATION.md#decision-provider-evidence-review--19-november-2026).
 
 - [Adapter and contract](../../../adapters/decision_draws/README.md)
 - [Verification and evidence limits](VERIFICATION.md)
@@ -25,6 +27,8 @@ gates remain separate; the whole track is not complete.
 
 - [Owner quality repair and executed evidence](owner-quality-20261115.md)
 - [D2/D3 optional provider preparation adapter](../../../adapters/decision_provider_d2/README.md)
-- [D3 local preparation evidence and open gates](../../../adapters/decision_provider_d2/D3-EVIDENCE.md)
+- [18 November D3 preparation dossier](../../../adapters/decision_provider_d2/D3-EVIDENCE.md)
 
-The integrator has reconciled the central registry and added standalone CI for `adapters/decision_draws/` and `adapters/decision_provider_d2/`. Later provider phases (`D2.1`–`D3.3`), installed Voiage/Innovate/Paignia execution, and production/release qualification remain open.
+The integrator has reconciled the central registry and added standalone CI for
+`adapters/decision_draws/` and `adapters/decision_provider_d2/`. Production,
+security and release qualification remain open.
