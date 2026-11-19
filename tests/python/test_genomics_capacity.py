@@ -29,7 +29,7 @@ def schemas():
     for path in (ROOT / "schemas").rglob("*.schema.json"):
         value = json.loads(path.read_text())
         Draft202012Validator.check_schema(value)
-        documents[str(path.relative_to(ROOT / "schemas"))] = value
+        documents[path.relative_to(ROOT / "schemas").as_posix()] = value
         registry = registry.with_resource(value["$id"], Resource.from_contents(value))
     return {
         name: Draft202012Validator(value, registry=registry, format_checker=FormatChecker())
