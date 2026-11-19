@@ -2,7 +2,7 @@
 
 Track: `reporting_profiles_20261108`
 
-Status: in_progress
+Status: completed
 
 Consume UOGTO costing semantics and the standards_check source catalogue to produce evidence-linked, conditionally applicable reporting coverage from Dapane run bundles.
 

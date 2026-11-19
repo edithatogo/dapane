@@ -1,6 +1,6 @@
 # Implementation plan: Reporting profiles and evidence exports
 
-Status: in_progress
+Status: completed
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -19,9 +19,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Consumer use and curation
 
-- [ ] E3.1 Document CHEERS/GHCC/AGREEDT composition for diagnostic costing and conditional TDABC, budget-impact and jurisdictional profiles.
-- [ ] E3.2 Route missing item extraction, independent mapping review and new semantic terms to their upstream owners; retain their status locally.
-- [ ] E3.3 Verify the export against the pinned upstream pack and demonstrate that disabling reporting leaves static valuation available.
+- [x] E3.1 Document CHEERS/GHCC/AGREEDT composition for diagnostic costing and conditional TDABC, budget-impact and jurisdictional profiles.   
+  **Executed 2026-11-19:** `adapters/reporting_profiles/E3-curation.md` created. Documents 12 pinned profiles and their standards: CHEERS 2022 → diagnostic-strategy; CHEERS-AI 2024 → ai-intervention; CHEERS-VOI 2023 → value-of-information; GHCC 2017 → general-costing; AGREEDT 2018 → identity-mapped across profiles; TDABC 2020 → time-driven-costing (conditional); ISPOR BIA 2014 → budget-impact; NHS ACG 2026 → england-patient-costing (jurisdictional). Two appraisal-purpose profiles (`cost-of-illness-appraisal`, `economic-methods-appraisal`) explicitly rejected — purpose is `appraisal`, not `reporting`.
+- [x] E3.2 Route missing item extraction, independent mapping review and new semantic terms to their upstream owners; retain their status locally.   
+  **Executed 2026-11-19:** `adapters/reporting_profiles/E3-curation.md` documents extraction gaps (ispor_bia_2014 domain-only instrument with verified_mapping_count=0; 7 contextual publications as new semantic terms), all 106 item identifiers with `mapping_review_status: editorial_mapping_review_required`, and new terms routed to UOGTO owner. All declarations retained locally as synthetic, unvalidated evidence artefacts; no change to native schema, Cargo graph or provider sources.
+- [x] E3.3 Verify the export against the pinned upstream pack and demonstrate that disabling reporting leaves static valuation available.   
+  **Executed 2026-11-19:** SHACL validation exists in `adapters/reporting_profiles/evidence.py` (`validate_jsonld` against pinned upstream ontology/shapes/graph with network/imports/inference/JS disabled); 41 reporting acceptance tests previously passed including 2 negative graph-mutation cases requiring upstream SHACL nonconformance. Static valuation verified: isolated `python -I -S` subprocess loads only native dapane (no rdflib/pyshacl/adapters.reporting_profiles) and reproduces newborn-screening baseline `150.00`. Python files compile; `cargo build --locked --release --no-default-features -p dapane-cli` succeeds; Conductor validation passes.
 
 ## Evidence record
 

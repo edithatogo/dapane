@@ -1,9 +1,9 @@
 {
   "track_id": "reporting_profiles_20261108",
   "type": "feature",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-15T05:40:39.841549Z",
+  "updated_at": "2026-11-19T00:00:00Z",
   "description": "Consume UOGTO costing semantics and the standards_check source catalogue to produce evidence-linked, conditionally applicable reporting coverage from Dapane run bundles.",
   "repositories": [
     "."
@@ -23,9 +23,9 @@
     "RQ-07",
     "RQ-01"
   ],
-  "capability_status": "bounded_synthetic_candidate",
+  "capability_status": "synthetic_source_verified_e1_e2_complete_e3_documented",
   "verification": {
-    "status": "partial",
+    "status": "passed",
     "bounded_e1_e2_status": "passed",
     "implementation_commit": "8f7c5dcbe14287759d62fd41d0804a92b734b75f",
     "implementation_tree": "7bbc79089737c462460ba3029a901e60f86ff68d",
