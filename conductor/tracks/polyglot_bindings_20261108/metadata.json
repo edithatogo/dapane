@@ -1,9 +1,9 @@
 {
   "track_id": "polyglot_bindings_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "blocked",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-15T08:17:24.328524Z",
   "description": "Expose the same Rust numerical implementation to R and Julia with explicit ownership, exact transport and installed-artifact parity. R and Julia are independent delivery branches.",
   "repositories": [
     "."
@@ -18,15 +18,37 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "Own only bindings/polyglot/ and this track; shared root/CI/registry changes are integrator requests.",
+    "Preserve exact JSON and existing point/capacity/interval Rust functions; no host numerical reimplementation.",
+    "R is direct extendr and independent of C ABI, Julia and Python.",
+    "C ABI proposes immutable opaque handles and caller-owned output buffers; foreign pointers remain documented caller preconditions.",
+    "Do not implement Julia until the native C consumer qualifies the ABI.",
+    "Original recovery evidence remains historical; the integrator replayed exact received source and each later head requires its own source-bound qualification.",
+    "Shared namespace/registry/standalone CI requests accepted in PR20; this owner repair preserves those objects and does not implement Julia."
+  ],
   "requirement_ids": [
     "RQ-09",
     "RQ-02"
   ],
-  "capability_status": "planned",
+  "capability_status": "Bounded installed Linux R/native C execution evidenced; owner quality corrected; total ABI acceptance, optional dependency/legal gates, other hosts and Julia remain open",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "partial",
+    "commands": [
+      "RECEIVED hosted source 8716c423f15c6449940df902fbabfab870d38f4d: installed R/native C acceptance passed; ABI Clippy and Python formatting failed.",
+      "CORRECTION source 988e41158a17d6613006b9bffe59cd59a3aa9cca: Ruff checks, R/ABI formatting, ABI Clippy -D warnings, 5 ABI tests, 4 packaging tests, locked/offline builds, 24 cases/400 ordinary native calls, Conductor and 12 regressions passed.",
+      "FAILED local sanitizer execution: LeakSanitizer cannot run under ptrace; no pass inferred.",
+      "HOSTED CORRECTION 988e41158a17d6613006b9bffe59cd59a3aa9cca: all 41 binding commands passed, including R installation/host acceptance and C ASan/UBSan with leak detection; 228 source files and 103 retained entries verified. Final documentation head replay remains separate."
+    ],
+    "evidence": "owner-quality-20261115.md",
+    "receipt": "owner-quality-20261115.json",
+    "final_source_qualified": false,
+    "implementation_commit": "9904252c1e3a94f63ff5dd89c4e855a2ef617f4d",
+    "owner_correction_commit": "988e41158a17d6613006b9bffe59cd59a3aa9cca",
+    "handoff": "handoff.md",
+    "hosted_correction_receipt": "omitted_from_git_due_to_gitleaks_workflow_sha_pattern_see_owner_quality_20261115_json",
+    "hosted_correction_run": 43693257570,
+    "total_abi_qualified": false
   },
   "completion_evidence": [
     "The R wrapper calls the core directly and can be completed without the C ABI, Julia or Python bindings.",

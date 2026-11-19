@@ -4,7 +4,11 @@
 
 Expose the same Rust numerical implementation to R and Julia with explicit ownership, exact transport and installed-artifact parity. R and Julia are independent delivery branches.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This specification retains the original acceptance criteria. The direct R wrapper
+and C ABI proposal have bounded installed Linux R/native C execution evidence in
+[the current owner record](owner-quality-20261115.md). Total ABI acceptance,
+optional legal/security/release gates and other hosts remain separate. Julia
+requires accepted C-qualified library bytes and stays outside the bounded repair.
 
 ## Scope and requirements
 
