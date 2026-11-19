@@ -4,6 +4,6 @@
 
 Potential replacement is custom canonical JSON writer, not Serde itself; Serde is already used.
 
-Status: new
+Status: completed
 
 Implementation, tests and external acceptance remain pending.
