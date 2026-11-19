@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<log xmlns="http://www.xes-standard.org/" xes.version="2.0" xes.features="nested-attributes" openxes.version="synthetic-fixture">
+  <extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+  <extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext" />
+  <extension name="Lifecycle" prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext" />
+  <extension name="Identity" prefix="identity" uri="http://www.xes-standard.org/identity.xesext" />
+  <string key="concept:name" value="Synthetic X1 contract fixture; no real records" />
+  <string key="lifecycle:model" value="standard" />
+  <trace>
+    <string key="concept:name" value="batch-1" />
+    <id key="identity:id" value="00000000-0000-4000-8000-000000000100" />
+    <event>
+      <id key="identity:id" value="00000000-0000-4000-8000-000000000001" />
+      <string key="concept:name" value="collect" />
+      <string key="lifecycle:transition" value="complete" />
+      <date key="time:timestamp" value="2026-01-01T00:00:00Z" />
+    </event>
+    <event>
+      <id key="identity:id" value="00000000-0000-4000-8000-000000000002" />
+      <string key="concept:name" value="collect" />
+      <string key="lifecycle:transition" value="complete" />
+      <date key="time:timestamp" value="2026-01-01T00:01:00Z" />
+    </event>
+    <event>
+      <id key="identity:id" value="00000000-0000-4000-8000-000000000003" />
+      <string key="concept:name" value="run" />
+      <string key="lifecycle:transition" value="start" />
+      <date key="time:timestamp" value="2026-01-01T00:02:00Z" />
+    </event>
+    <event>
+      <id key="identity:id" value="00000000-0000-4000-8000-000000000004" />
+      <string key="concept:name" value="run" />
+      <string key="lifecycle:transition" value="complete" />
+      <date key="time:timestamp" value="2026-01-01T00:32:00Z" />
+    </event>
+    <event>
+      <id key="identity:id" value="00000000-0000-4000-8000-000000000001" />
+      <string key="concept:name" value="collect" />
+      <string key="lifecycle:transition" value="complete" />
+      <date key="time:timestamp" value="2026-01-01T00:00:00Z" />
+    </event>
+  </trace>
+</log>

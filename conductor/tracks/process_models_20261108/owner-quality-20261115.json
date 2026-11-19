@@ -1,0 +1,251 @@
+{
+  "format": "dapane-observed-owner-checks/1",
+  "started_at": "2026-11-15T07:09:30.305491+00:00",
+  "source": "0621fecedd41bc99957d0042e32338e780f42dd2",
+  "tree": "19e0fb8c86d7ef1daf079aa3f377a204458b49f3",
+  "received_head": "63e3f8368510641513b5fd84ae3074bb80e79c6f",
+  "clean_before": true,
+  "coordinator_ancestor_preserved": true,
+  "changed_paths": [
+    "adapters/observed_events/src/lib.rs",
+    "adapters/observed_events/tests/contracts.rs",
+    "adapters/observed_events/tests/test_fixtures.py",
+    "conductor/tracks/process_models_20261108/plan.md"
+  ],
+  "scope": "Owner formatting follow-up; no raw parser or release qualification",
+  "host": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "commands": [
+    {
+      "name": "rust-version",
+      "arguments": [
+        "rustc",
+        "--version",
+        "--verbose"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.037,
+      "output_sha256": "f22d5e4e9ced367e774ce5bc140d9e6b1235c1882fec80d011044851f3ae6369",
+      "output": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n"
+    },
+    {
+      "name": "cargo-version",
+      "arguments": [
+        "cargo",
+        "--version"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.005,
+      "output_sha256": "c35608815f43d0b8788a9b826fad2bb17384f49fb328dc4fe64da9db5f5ef4d6",
+      "output": "cargo 1.99.1 (5f94df478 2026-08-27)\n"
+    },
+    {
+      "name": "ruff-version",
+      "arguments": [
+        "/workspace/scratch/60c594ca84f1/release-build-env/bin/ruff",
+        "--version"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.004,
+      "output_sha256": "773f0ef311f89fca4363d46ab94f339dcbc4e61fb6d0ca6e6fcad0ea7dfd84bc",
+      "output": "ruff 0.17.4\n"
+    },
+    {
+      "name": "observed-fetch",
+      "arguments": [
+        "cargo",
+        "fetch",
+        "--offline",
+        "--locked",
+        "--manifest-path",
+        "adapters/observed_events/Cargo.toml"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.024,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output": ""
+    },
+    {
+      "name": "observed-format",
+      "arguments": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "adapters/observed_events/Cargo.toml",
+        "--all",
+        "--check"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.039,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output": ""
+    },
+    {
+      "name": "observed-clippy",
+      "arguments": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "adapters/observed_events/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--all-targets",
+        "--target-dir",
+        "/home/agent/observed-owner-checks-ddf5b1cb2dce/target",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.081,
+      "output_sha256": "ee1d3fffa2022e962e63e0dbe4d35c9c198450a20c29fc09030f635dbb38bfcd",
+      "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s\n"
+    },
+    {
+      "name": "observed-tests",
+      "arguments": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "adapters/observed_events/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--all-targets",
+        "--target-dir",
+        "/home/agent/observed-owner-checks-ddf5b1cb2dce/target"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.034,
+      "output_sha256": "2de4e0d5f875ec96d5dbe05a798d22ff88c87b00f553060c0a49b78e22e60fcb",
+      "output": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s\n     Running unittests src/lib.rs (/home/agent/observed-owner-checks-ddf5b1cb2dce/target/debug/deps/dapane_observed_contracts-32855d7ad10a3219)\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running tests/contracts.rs (/home/agent/observed-owner-checks-ddf5b1cb2dce/target/debug/deps/contracts-5a0bcc01b8195d2e)\n\nrunning 37 tests\ntest a_contract_with_no_uses_cannot_claim_costing_readiness ... ok\ntest completed_interval_cannot_claim_censoring ... ok\ntest censored_endpoint_is_never_filled_from_observation_cutoff ... ok\ntest all_four_censoring_shapes_are_explicit_and_only_complete_is_ready ... ok\ntest assumed_and_simulated_quantities_are_never_promoted_to_observed ... ok\ntest arbitrary_set_order_changes_neither_normalized_contract_nor_use_identity ... ok\ntest conflicting_duplicate_event_is_not_resolved_by_last_write ... ok\ntest dangling_object_relation_is_rejected ... ok\ntest dangling_event_and_use_object_edges_are_rejected ... ok\ntest duplicate_event_identity_is_rejected_even_when_identical ... ok\ntest duplicate_object_is_rejected ... ok\ntest denominator_must_be_positive_and_quantity_digits_are_bounded ... ok\ntest exact_quantity_spelling_is_preserved_without_reduction ... ok\ntest duration_does_not_supply_or_change_recorded_quantity ... ok\ntest incomplete_interval_cannot_be_marked_complete ... ok\ntest interval_end_at_cutoff_is_an_observed_anchor ... ok\ntest invalid_digest_spelling_is_rejected_without_claiming_verification ... ok\ntest invalid_fraction_and_out_of_range_instants_fail ... ok\ntest missing_time_does_not_acquire_current_or_zero_time ... ok\ntest native_format_tag_never_enables_a_decoder ... ok\ntest occupancy_needs_explicit_pairing_instead_of_a_single_event ... ok\ntest out_of_window_anchors_and_empty_windows_fail ... ok\ntest negative_exponent_float_and_nonfinite_quantities_fail ... ok\ntest qualified_parallel_edges_survive_including_empty_qualifier ... ok\ntest replacement_and_retraction_fail_before_any_readiness_result ... ok\ntest repeated_qualified_edges_fail_instead_of_disappearing ... ok\ntest shared_batch_is_one_use_for_two_specimens_and_two_assays ... ok\ntest reversed_or_zero_length_occupancy_is_rejected ... ok\ntest simultaneous_distinct_events_are_preserved_without_causal_order ... ok\ntest tokens_are_bounded_and_errors_do_not_echo_values ... ok\ntest trace_duplication_cannot_repeat_an_underlying_use ... ok\ntest transfer_is_retained_but_blocks_costing_selection_atomically ... ok\ntest all_event_permutations_have_identical_contracts ... ok\ntest unicode_identity_is_preserved_without_case_folding ... ok\ntest dangling_event_anchor_is_rejected ... ok\ntest zero_and_missing_quantity_are_different ... ok\ntest record_and_nested_reference_bounds_fail_before_mapping ... ok\n\ntest result: ok. 37 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n"
+    },
+    {
+      "name": "observed-metadata",
+      "arguments": [
+        "cargo",
+        "metadata",
+        "--manifest-path",
+        "adapters/observed_events/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--format-version",
+        "1"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.023,
+      "output_sha256": "e25118dc742882ead687a0340f2f7355d617ca8c13e964364d4c5e38a2af9f64",
+      "output": "{\"packages\":[{\"name\":\"dapane-observed-contracts\",\"version\":\"0.1.0\",\"id\":\"path+file:///home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events#dapane-observed-contracts@0.1.0\",\"license\":\"Apache-2.0\",\"license_file\":null,\"description\":\"Independent X1 observation contracts; raw import qualification is blocked\",\"source\":null,\"dependencies\":[],\"targets\":[{\"kind\":[\"lib\"],\"crate_types\":[\"lib\"],\"name\":\"dapane_observed_contracts\",\"src_path\":\"/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events/src/lib.rs\",\"edition\":\"2024\",\"doc\":true,\"doctest\":true,\"test\":true},{\"kind\":[\"test\"],\"crate_types\":[\"bin\"],\"name\":\"contracts\",\"src_path\":\"/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events/tests/contracts.rs\",\"edition\":\"2024\",\"doc\":false,\"doctest\":false,\"test\":true}],\"features\":{},\"manifest_path\":\"/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events/Cargo.toml\",\"metadata\":null,\"publish\":[],\"authors\":[],\"categories\":[],\"keywords\":[],\"readme\":\"README.md\",\"repository\":\"https://github.com/edithatogo/dapane\",\"homepage\":null,\"documentation\":null,\"edition\":\"2024\",\"links\":null,\"default_run\":null,\"rust_version\":\"1.99.1\"}],\"workspace_members\":[\"path+file:///home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events#dapane-observed-contracts@0.1.0\"],\"workspace_default_members\":[\"path+file:///home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events#dapane-observed-contracts@0.1.0\"],\"resolve\":{\"nodes\":[{\"id\":\"path+file:///home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events#dapane-observed-contracts@0.1.0\",\"dependencies\":[],\"deps\":[],\"features\":[]}],\"root\":\"path+file:///home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events#dapane-observed-contracts@0.1.0\"},\"target_directory\":\"/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events/target\",\"build_directory\":\"/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events/target\",\"version\":1,\"workspace_root\":\"/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce/adapters/observed_events\",\"metadata\":null}\n"
+    },
+    {
+      "name": "python-lint",
+      "arguments": [
+        "/workspace/scratch/60c594ca84f1/release-build-env/bin/ruff",
+        "check",
+        "adapters/observed_events/tests/test_fixtures.py"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.007,
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "output": "All checks passed!\n"
+    },
+    {
+      "name": "python-format",
+      "arguments": [
+        "/workspace/scratch/60c594ca84f1/release-build-env/bin/ruff",
+        "format",
+        "--check",
+        "adapters/observed_events/tests/test_fixtures.py"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.008,
+      "output_sha256": "fd2299c9f1c6dc869070883e281051bfe93aacf66c1a3b0069f45b4aa410ca50",
+      "output": "1 file already formatted\n"
+    },
+    {
+      "name": "fixture-tests",
+      "arguments": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "adapters/observed_events/tests",
+        "-p",
+        "test_fixtures.py",
+        "-v"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.068,
+      "output_sha256": "f09c1e35986a5c9fd467716cd293fa4c31b97bda262a53ca048dd247b98da5d1",
+      "output": "test_all_source_bytes_are_bound_to_explicit_unexecuted_cases (test_fixtures.SyntheticFixtureTests.test_all_source_bytes_are_bound_to_explicit_unexecuted_cases) ... ok\ntest_duplicate_id_cases_are_exact_duplicates_not_different_resource_use (test_fixtures.SyntheticFixtureTests.test_duplicate_id_cases_are_exact_duplicates_not_different_resource_use) ... ok\ntest_duplicate_json_member_is_visible_to_the_independent_reader (test_fixtures.SyntheticFixtureTests.test_duplicate_json_member_is_visible_to_the_independent_reader) ... ok\ntest_equivalent_offsets_are_different_bytes_with_same_event_instants (test_fixtures.SyntheticFixtureTests.test_equivalent_offsets_are_different_bytes_with_same_event_instants) ... ok\ntest_explicit_event_instants_match_independent_epoch_values (test_fixtures.SyntheticFixtureTests.test_explicit_event_instants_match_independent_epoch_values) ... ok\ntest_missing_timestamps_are_present_as_negative_cases (test_fixtures.SyntheticFixtureTests.test_missing_timestamps_are_present_as_negative_cases) ... ok\ntest_ocel_object_types_and_many_to_many_graph_match_manual_expectation (test_fixtures.SyntheticFixtureTests.test_ocel_object_types_and_many_to_many_graph_match_manual_expectation) ... ok\ntest_ocel_retains_five_native_attribute_types_and_timed_history (test_fixtures.SyntheticFixtureTests.test_ocel_retains_five_native_attribute_types_and_timed_history) ... ok\ntest_reordered_ocel_preserves_full_fixture_not_just_costing_projection (test_fixtures.SyntheticFixtureTests.test_reordered_ocel_preserves_full_fixture_not_just_costing_projection) ... ok\ntest_right_censoring_has_no_invented_completion_or_quantity (test_fixtures.SyntheticFixtureTests.test_right_censoring_has_no_invented_completion_or_quantity) ... ok\ntest_three_hand_stated_uses_are_not_multiplied_by_related_objects (test_fixtures.SyntheticFixtureTests.test_three_hand_stated_uses_are_not_multiplied_by_related_objects) ... ok\ntest_xes_ids_and_explicit_lifecycle_anchors_survive_reordering (test_fixtures.SyntheticFixtureTests.test_xes_ids_and_explicit_lifecycle_anchors_survive_reordering) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.003s\n\nOK\n"
+    },
+    {
+      "name": "conductor",
+      "arguments": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "scripts/validate_conductor.py"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.074,
+      "output_sha256": "ad30061d9c65f285caf4d5804610d59d34a6116f96707809e0f9e9fd10c885d8",
+      "output": "Conductor validation passed: 14 tracks, 12 requirements, 154 tasks, 550 local links.\nThis checks project records only; runtime and scientific qualification remain separate.\n"
+    },
+    {
+      "name": "conductor-lifecycle",
+      "arguments": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_conductor_validation.py",
+        "-v"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 1.034,
+      "output_sha256": "4c3f6e97c336922c0c7407ae555887ac23075b106ec2a83b47308e39630aa041",
+      "output": "test_archived_track_rejects_unfinished_tasks (test_conductor_validation.ConductorValidationTests.test_archived_track_rejects_unfinished_tasks) ... ok\ntest_archived_track_requires_passed_verification (test_conductor_validation.ConductorValidationTests.test_archived_track_requires_passed_verification) ... ok\ntest_cancellation_is_distinct_from_verified_archival (test_conductor_validation.ConductorValidationTests.test_cancellation_is_distinct_from_verified_archival) ... ok\ntest_conflicting_status_lines_are_rejected (test_conductor_validation.ConductorValidationTests.test_conflicting_status_lines_are_rejected) ... ok\ntest_duplicate_status_lines_are_rejected (test_conductor_validation.ConductorValidationTests.test_duplicate_status_lines_are_rejected) ... ok\ntest_plan_requires_status_line (test_conductor_validation.ConductorValidationTests.test_plan_requires_status_line) ... ok\ntest_plan_status_must_match_metadata (test_conductor_validation.ConductorValidationTests.test_plan_status_must_match_metadata) ... ok\ntest_single_status_accepts_plain_and_paired_backticks (test_conductor_validation.ConductorValidationTests.test_single_status_accepts_plain_and_paired_backticks) ... ok\ntest_status_backticks_must_be_paired (test_conductor_validation.ConductorValidationTests.test_status_backticks_must_be_paired) ... ok\ntest_status_value_cannot_cross_lines (test_conductor_validation.ConductorValidationTests.test_status_value_cannot_cross_lines) ... ok\ntest_valid_archive_remains_a_registered_dependency (test_conductor_validation.ConductorValidationTests.test_valid_archive_remains_a_registered_dependency) ... ok\ntest_valid_completed_track_passes (test_conductor_validation.ConductorValidationTests.test_valid_completed_track_passes) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.956s\n\nOK\n"
+    },
+    {
+      "name": "diff-check",
+      "arguments": [
+        "git",
+        "diff",
+        "--check",
+        "63e3f8368510641513b5fd84ae3074bb80e79c6f",
+        "0621fecedd41bc99957d0042e32338e780f42dd2"
+      ],
+      "cwd": "/home/agent/dapane-observed-owner-fixes-ddf5b1cb2dce",
+      "exit_code": 0,
+      "elapsed_seconds": 0.003,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output": ""
+    }
+  ],
+  "review": {
+    "adapters/observed_events/src/lib.rs:formatter_output_only": true,
+    "adapters/observed_events/tests/contracts.rs:formatter_output_only": true,
+    "python_ast_unchanged": true,
+    "fixture_tree_unchanged": true,
+    "shared_files_unchanged": true,
+    "manifest_unchanged": true
+  },
+  "clean_after": true,
+  "finished_at": "2026-11-15T07:09:31.789714+00:00",
+  "passed": true
+}
