@@ -7,21 +7,21 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 1 — Perspective and fiscal-transfer contracts
 
-- [x] T1.1 Freeze the versioned contract distinguishing `health_system_direct_cost`, `enforcement_resource_cost` and `discounted_tax_transfer` (excise/GST) with mandatory currency, price-year and perspective tags.  
-  **Executed 2026-11-19:** Contract `dapane-fiscal/0.1` implemented in `adapters/decision_draws/src/fiscal.rs` with `Perspective`, `Rule`, `Currency`, `Jurisdiction`, `MoneyUnit`, `AccountingBasis` enums; exact rational arithmetic; explicit perspective tags; currency/price-year/unit matching enforced. See `CONTRACT.md` and `adapters/decision_draws/README.md`.
-- [x] T1.2 Construct independent exact arithmetic reference cases for NZ/AU tobacco excise transfers, differential discounting and societal versus health-system net monetary benefit.  
-  **Executed 2026-11-19:** Reference cases in `tests/fiscal.rs` (19 tests) and `adapters/decision_draws/fixtures/fiscal-nz-synthetic.json`. Exact discounted values: medical 80, enforcement 16, government receipts 40, payer flow -40, net domestic transfer 0, health-system NMB 20, societal NMB 4, public net outlay 56. All pass.
-- [x] T1.3 Verify that invalid perspective combinations, missing price-year metadata or unlabelled transfer additions fail closed.  
-  **Executed 2026-11-19:** Fail-closed tests in `tests/fiscal.rs` reject perspective/currency/source mismatches, missing price-year metadata, unbalanced tax transfers, unsupported discount methods, unknown fields and numeric floats. All pass.
+- [x] T1.1 Freeze the versioned contract distinguishing `health_system_direct_cost`, `enforcement_resource_cost` and `discounted_tax_transfer` (excise/GST) with mandatory currency, price-year and perspective tags.
+  The 20 November run reproduced the 0.1 fixture's input and output digests from the reconciled base.
+- [x] T1.2 Construct independent exact arithmetic reference cases for NZ/AU tobacco excise transfers, differential discounting and societal versus health-system net monetary benefit.
+  The existing NZ/AU, annual and subannual fixtures passed. The NZ reference gives medical cost 80, enforcement 16, government receipts 40, payer flow −40, health-system NMB 20, societal NMB 4 and public net outlay 56.
+- [x] T1.3 Verify that invalid perspective combinations, missing price-year metadata or unlabelled transfer additions fail closed.
+  The rerun retained all 19 T1 cases, including the checks for an incompatible resource basis, a missing ledger category and an invalid perspective rule. [Fiscal tests](../../../adapters/decision_draws/tests/fiscal.rs)
 
 ## Phase 2 — Cohort occupancy valuation and subgroup equity preservation
 
-- [x] T2.1 Evaluate cohort state-occupancy and cessation-resource schedules over indexed parameter draws while preserving `draw_id`, `strategy_id`, `perspective` and `subgroup_id`.  
-  **Executed 2026-11-20:** Optional `cohort_states` and `cessation_resources` discount supplied amounts at the resource rate and copy `draw_id`, `strategy_id` and `subgroup_id` onto each valued row. The row keeps its own perspective tag. Schedule amounts stay out of the four-category ledger. Empty state and resource-type identifiers fail as `invalid_identity`.
-- [x] T2.2 Implement subgroup equity-weight and distributional cost-effectiveness aggregation rules with exact unweighted-sum conservation checks when weights are unity.  
-  **Executed 2026-11-20:** `evaluate_equity_json` (`dapane-fiscal-equity/0.1`) sums `selected_resource_cost`, `discounted_qalys` and `net_monetary_benefit`. Two invented NZ packets at weight 1 give 160, 2 and 40 on both the weighted and unweighted sums. Weights 1 and 3 give weighted 320, 4 and 80 while the unweighted sum stays 160, 2 and 40. Repeated subgroups and a changed `draw_id` fail closed.
-- [ ] T2.3 Verify parity against `tobac`'s standalone reference oracle (`src/tobac/economics.py` and `src/tobac/decision.py`) on synthetic NZ/AU policy fixtures.  
-  Still open. Read-only inspection at Tobac `891f79e07292b7754f78d7193130623bd5f9e243` did not find those paths. Related functions were in `src/tobac/health.py`. That is not oracle parity.
+- [x] T2.1 Evaluate cohort state-occupancy and cessation-resource schedules over indexed parameter draws while preserving `draw_id`, `strategy_id`, `perspective` and `subgroup_id`.
+  The synthetic 0.2 profile reproduced the exact schedule amounts and retained the packet key and row perspectives. Schedule values are reported separately from the incremental ledger.
+- [x] T2.2 Implement subgroup equity-weight and distributional cost-effectiveness aggregation rules with exact unweighted-sum conservation checks when weights are unity.
+  The synthetic equity profile conserved cost, QALYs and NMB at unit weights. Tests also checked non-unit weights, exact precision and rejection of repeated subgroups or incompatible valuation contexts.
+- [ ] T2.3 Verify parity against `tobac`'s standalone reference oracle on synthetic NZ/AU policy fixtures.
+  Tobac main at `891f79e07292b7754f78d7193130623bd5f9e243` has related functions in `src/tobac/health.py`. Mapping that interface to the fiscal packets and running the parity fixtures remain open.
 
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 
@@ -45,17 +45,7 @@ and explicit standalone CI. These shared files are preserved. Earlier recovery
 limitations and failed formatting outcomes remain historical evidence; they are
 not relabelled as current passes.
 
-Phase-1 tasks remain active for coordinator acceptance of the bounded candidate;
-the previous execution-environment block is resolved. Production signed-fiscal
-method/profile qualification, later provider phases and required security/release
-gates remain open. This quality repair does not complete the full track.
-
-See [verification](VERIFICATION.md), [review](REVIEW.md), [metadata](metadata.json)
-and the [exact-SHA handoff](HANDOFF.md). The [registry](../../tracks.md) already
-matches this track's `in_progress` state.
-
-**T2.1–T2.2 check, 2026-11-20:** from `adapters/decision_draws`,
-`cargo test --locked --offline` passed 24 fiscal tests and 18 paired tests, and
-`cargo clippy --locked --offline --all-targets -- -D warnings` passed. The
-schedules and equity sum are synthetic adapter behaviour. They do not qualify a
-Tobac consumer, a production method profile, or T2.3 oracle parity.
+The track remains `in_progress`. The 20 November checkpoint verification covers
+T1 and the bounded synthetic T2.1–T2.2 implementation. T2.3 parity, T3 consumer
+handoff and production method qualification remain open.
+[Verification](VERIFICATION.md) · [Metadata](metadata.json) · [Handoff](HANDOFF.md)

@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-10T00:00:00Z",
-  "updated_at": "2026-11-15T08:10:09.323942+00:00",
+  "updated_at": "2026-11-19T20:27:29Z",
   "description": "Provide versioned public-finance and health-system perspective valuation, excise/GST tax-transfer separation and subgroup equity-weighting interfaces for tobac regulatory policy evaluation.",
   "repositories": [
     "."
@@ -21,7 +21,8 @@
     "edithatogo"
   ],
   "decisions": [
-    "D1/T1 are isolated in adapters/decision_draws; only phase 1 is in scope. Shared core/CLI/Python/schema/workspace/CI/registry changes belong to the sole release integrator."
+    "The initial D1/T1 handoff isolated phase 1 in adapters/decision_draws. Shared core, packaging, schemas, CI and registry remain with the release integrator.",
+    "The bounded phase 2 follow-up uses fiscal 0.2 for separately discounted schedules and a standalone equity profile. Fiscal 0.1 retains its replay identity."
   ],
   "requirement_ids": [
     "RQ-01",
@@ -29,7 +30,7 @@
     "RQ-07",
     "RQ-11"
   ],
-  "capability_status": "synthetic_phase1_native_checks_passed_broader_qualification_open",
+  "capability_status": "synthetic_phase1_and_phase2_local_native_checks_passed",
   "verification": {
     "status": "partial",
     "commands": [
@@ -47,7 +48,7 @@
     "validated_source_sha": "9c177166899e588dc3dacadb13e4a0a3750bbce2",
     "current_source_execution": "passed_bounded_native_scope",
     "native_quality_status": "passed",
-    "reason": "All named bounded synthetic checks pass; production signed-fiscal profile, later provider phases and security/release gates remain open.",
+    "reason": "The local T1 and T2.1–T2.2 synthetic checks passed. T2.3 oracle parity, installed consumers and production signed-fiscal qualification remain open.",
     "owner_quality_record": "../decision_integrations_20261108/owner-quality-20261115.md",
     "execution_receipt": "../decision_integrations_20261108/evidence/owner-quality-20261115.json",
     "exact_sha_handoff": "HANDOFF.md",
@@ -58,7 +59,21 @@
     "historical_observation_record": "../decision_integrations_20261108/evidence/historical-execution-observations.json",
     "initial_recovery_static_record": "../decision_integrations_20261108/evidence/recovery-static-checks.json",
     "initial_publication_readback": "../decision_integrations_20261108/evidence/publication-readback.json",
-    "provider_methods_qualified": []
+    "provider_methods_qualified": [],
+    "phase2_local": {
+      "status": "passed",
+      "validated_source_sha": "4d567f366c93103870f15c16a1a4918f77e46898",
+      "base_sha": "5c035f655aa0acab0469fedc8de5da539a84b7de",
+      "platform": "macOS 27.2.1 arm64",
+      "rust": "1.99.1",
+      "python": "3.15.2",
+      "test_counts": {
+        "fiscal": 31,
+        "paired_draw": 18,
+        "conductor_lifecycle": 12
+      },
+      "verification_record": "VERIFICATION.md"
+    }
   },
   "completion_evidence": [
     "Health-system direct medical costs and public-finance excise/GST transfers are represented as distinct typed accounting lines; societal totals never add transfer payments to real resource costs without an explicit net-transfer rule.",
@@ -79,7 +94,11 @@
     "provider_methods_qualified": [],
     "integration_owner_chat": "6af8e445-ffd4-83ec-8e51-ff6b596f11b1",
     "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
-    "later_phases": "pending_out_of_scope",
+    "follow_up_phases": [
+      "T2.1",
+      "T2.2"
+    ],
+    "later_phases": "T2.3 oracle parity and T3 consumer handoff pending",
     "pull_request": "https://github.com/edithatogo/dapane/pull/23"
   }
 }
