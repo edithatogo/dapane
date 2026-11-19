@@ -1,0 +1,88 @@
+{
+  "evidence_basis": "simulated",
+  "max_steps": 64,
+  "model_id": "nbs-bpmn-concurrent-shared",
+  "model_version": "1.0.0",
+  "object_relations": [
+    {
+      "from_object_id": "infant-a",
+      "relationship": "tested_in",
+      "to_object_id": "batch-1"
+    },
+    {
+      "from_object_id": "infant-b",
+      "relationship": "tested_in",
+      "to_object_id": "batch-1"
+    }
+  ],
+  "objects": [
+    {
+      "id": "batch-1",
+      "kind": "assay_batch"
+    },
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-b",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-bpmn-concurrent-1",
+  "profile": "bpmn-core-acyclic-v1",
+  "recipes": {
+    "task_prep_cards": {
+      "activity_id": "prep_cards",
+      "duration_minutes": "15",
+      "object_ids": ["infant-a", "infant-b"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "consumption",
+          "target": "card_kit",
+          "unit": "item"
+        },
+        {
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "transfer",
+          "target": "tray_transfer",
+          "unit": "handover"
+        }
+      ]
+    },
+    "task_run_analyzer": {
+      "activity_id": "analyzer_batch",
+      "duration_minutes": "25",
+      "object_ids": ["batch-1", "infant-a", "infant-b"],
+      "resources": [
+        {
+          "batch_mode": "single_shared_batch",
+          "batch_object_id": "batch-1",
+          "quantity": "25",
+          "resource_kind": "occupancy",
+          "target": "analyzer_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "task_signoff": {
+      "activity_id": "signoff",
+      "duration_minutes": "5",
+      "object_ids": ["infant-b"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-b",
+          "batch_mode": "per_firing",
+          "quantity": "5",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    }
+  }
+}

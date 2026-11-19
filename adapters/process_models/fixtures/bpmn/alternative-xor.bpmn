@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="def_xor">
+  <process id="proc_xor" isExecutable="true">
+    <startEvent id="start_1"/>
+    <userTask id="task_triage" name="Initial Triage"/>
+    <exclusiveGateway id="gw_xor_split" name="Follow-up Branch"/>
+    <task id="task_routine" name="Routine Report"/>
+    <task id="task_confirm" name="Confirmatory Workup"/>
+    <exclusiveGateway id="gw_xor_merge"/>
+    <endEvent id="end_1"/>
+    <sequenceFlow id="f_s_tr" sourceRef="start_1" targetRef="task_triage"/>
+    <sequenceFlow id="f_tr_sp" sourceRef="task_triage" targetRef="gw_xor_split"/>
+    <sequenceFlow id="flow_routine" sourceRef="gw_xor_split" targetRef="task_routine"/>
+    <sequenceFlow id="flow_confirm" sourceRef="gw_xor_split" targetRef="task_confirm"/>
+    <sequenceFlow id="f_ro_mg" sourceRef="task_routine" targetRef="gw_xor_merge"/>
+    <sequenceFlow id="f_co_mg" sourceRef="task_confirm" targetRef="gw_xor_merge"/>
+    <sequenceFlow id="f_mg_en" sourceRef="gw_xor_merge" targetRef="end_1"/>
+  </process>
+</definitions>

@@ -1,0 +1,231 @@
+{
+  "allocations": [
+    {
+      "id": "alloc-assay-batch",
+      "match_activity_id": "assay_batch_run",
+      "match_target": "assay_batch",
+      "weights": [
+        {"object_id": "infant-a", "weight": "1"},
+        {"object_id": "infant-b", "weight": "1"}
+      ]
+    },
+    {
+      "id": "alloc-incubator-time",
+      "match_activity_id": "batch_incubation",
+      "match_target": "incubator_time",
+      "weights": [
+        {"object_id": "infant-a", "weight": "1"},
+        {"object_id": "infant-b", "weight": "1"}
+      ]
+    },
+    {
+      "id": "alloc-reagent-batch",
+      "match_activity_id": "batch_incubation",
+      "match_target": "reagent_pack",
+      "weights": [
+        {"object_id": "infant-a", "weight": "1"},
+        {"object_id": "infant-b", "weight": "1"}
+      ]
+    },
+    {
+      "id": "alloc-analyzer-batch",
+      "match_activity_id": "analyzer_batch",
+      "match_target": "analyzer_time",
+      "weights": [
+        {"object_id": "infant-a", "weight": "1"},
+        {"object_id": "infant-b", "weight": "1"}
+      ]
+    }
+  ],
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "basis": "economic_cost",
+    "currency": "AUD",
+    "id": "synthetic-process-models-v2",
+    "perspective": "provider",
+    "price_year": 2026,
+    "rounding": {
+      "mode": "half_even",
+      "scale": 2
+    },
+    "version": "2.0.0"
+  },
+  "quote_bindings": {
+    "analyzer_time": "rate-analyzer-v2",
+    "assay_batch": "rate-batch-v2",
+    "card_kit": "rate-card-v2",
+    "dna_kit": "rate-dna-kit-v2",
+    "incubator_time": "rate-incubator-v2",
+    "reagent_pack": "rate-reagent-v2",
+    "staff_time": "rate-staff-v2"
+  },
+  "quotes": [
+    {
+      "amount": "3.50",
+      "basis": "economic_cost",
+      "components": ["salary"],
+      "currency": "AUD",
+      "id": "rate-staff-v2",
+      "kind": "resource_use",
+      "known_from": "2026-01-01",
+      "per_quantity": "1",
+      "price_year": 2026,
+      "source": {
+        "access": "public",
+        "evidence": "synthetic",
+        "id": "synthetic-quotes-v2",
+        "locator": "adapters/process_models/fixtures/quotes-release-2026-v2.json",
+        "validation": "unvalidated",
+        "version": "2.0.0"
+      },
+      "target": "staff_time",
+      "unit": "minute",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01"
+    },
+    {
+      "amount": "70.00",
+      "basis": "economic_cost",
+      "components": ["assay"],
+      "currency": "AUD",
+      "id": "rate-batch-v2",
+      "kind": "resource_use",
+      "known_from": "2026-01-01",
+      "per_quantity": "1",
+      "price_year": 2026,
+      "source": {
+        "access": "public",
+        "evidence": "synthetic",
+        "id": "synthetic-quotes-v2",
+        "locator": "adapters/process_models/fixtures/quotes-release-2026-v2.json",
+        "validation": "unvalidated",
+        "version": "2.0.0"
+      },
+      "target": "assay_batch",
+      "unit": "batch",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01"
+    },
+    {
+      "amount": "6.00",
+      "basis": "economic_cost",
+      "components": ["equipment"],
+      "currency": "AUD",
+      "id": "rate-incubator-v2",
+      "kind": "resource_use",
+      "known_from": "2026-01-01",
+      "per_quantity": "1",
+      "price_year": 2026,
+      "source": {
+        "access": "public",
+        "evidence": "synthetic",
+        "id": "synthetic-quotes-v2",
+        "locator": "adapters/process_models/fixtures/quotes-release-2026-v2.json",
+        "validation": "unvalidated",
+        "version": "2.0.0"
+      },
+      "target": "incubator_time",
+      "unit": "minute",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01"
+    },
+    {
+      "amount": "21.00",
+      "basis": "economic_cost",
+      "components": ["reagents"],
+      "currency": "AUD",
+      "id": "rate-reagent-v2",
+      "kind": "resource_use",
+      "known_from": "2026-01-01",
+      "per_quantity": "1",
+      "price_year": 2026,
+      "source": {
+        "access": "public",
+        "evidence": "synthetic",
+        "id": "synthetic-quotes-v2",
+        "locator": "adapters/process_models/fixtures/quotes-release-2026-v2.json",
+        "validation": "unvalidated",
+        "version": "2.0.0"
+      },
+      "target": "reagent_pack",
+      "unit": "pack",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01"
+    },
+    {
+      "amount": "4.50",
+      "basis": "economic_cost",
+      "components": ["consumables"],
+      "currency": "AUD",
+      "id": "rate-card-v2",
+      "kind": "resource_use",
+      "known_from": "2026-01-01",
+      "per_quantity": "1",
+      "price_year": 2026,
+      "source": {
+        "access": "public",
+        "evidence": "synthetic",
+        "id": "synthetic-quotes-v2",
+        "locator": "adapters/process_models/fixtures/quotes-release-2026-v2.json",
+        "validation": "unvalidated",
+        "version": "2.0.0"
+      },
+      "target": "card_kit",
+      "unit": "item",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01"
+    },
+    {
+      "amount": "8.00",
+      "basis": "economic_cost",
+      "components": ["equipment"],
+      "currency": "AUD",
+      "id": "rate-analyzer-v2",
+      "kind": "resource_use",
+      "known_from": "2026-01-01",
+      "per_quantity": "1",
+      "price_year": 2026,
+      "source": {
+        "access": "public",
+        "evidence": "synthetic",
+        "id": "synthetic-quotes-v2",
+        "locator": "adapters/process_models/fixtures/quotes-release-2026-v2.json",
+        "validation": "unvalidated",
+        "version": "2.0.0"
+      },
+      "target": "analyzer_time",
+      "unit": "minute",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01"
+    },
+    {
+      "amount": "55.00",
+      "basis": "economic_cost",
+      "components": ["consumables"],
+      "currency": "AUD",
+      "id": "rate-dna-kit-v2",
+      "kind": "resource_use",
+      "known_from": "2026-01-01",
+      "per_quantity": "1",
+      "price_year": 2026,
+      "source": {
+        "access": "public",
+        "evidence": "synthetic",
+        "id": "synthetic-quotes-v2",
+        "locator": "adapters/process_models/fixtures/quotes-release-2026-v2.json",
+        "validation": "unvalidated",
+        "version": "2.0.0"
+      },
+      "target": "dna_kit",
+      "unit": "kit",
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01"
+    }
+  ],
+  "run_id": "synthetic-process-release-v2",
+  "service_date": "2026-06-15",
+  "source_access": "public",
+  "source_evidence": "synthetic",
+  "source_locator": "adapters/process_models/fixtures/quotes-release-2026-v2.json",
+  "source_validation": "unvalidated"
+}

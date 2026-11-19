@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="def_mi">
+  <process id="proc_mi" isExecutable="true">
+    <startEvent id="start_1"/>
+    <task id="task_batch">
+      <multiInstanceLoopCharacteristics/>
+    </task>
+    <endEvent id="end_1"/>
+    <sequenceFlow id="f1" sourceRef="start_1" targetRef="task_batch"/>
+    <sequenceFlow id="f2" sourceRef="task_batch" targetRef="end_1"/>
+  </process>
+</definitions>

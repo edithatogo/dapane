@@ -1,0 +1,82 @@
+{
+  "evidence_basis": "simulated",
+  "expected_final_marking": {
+    "p_complete": 1,
+    "p_in": 0,
+    "p_qc": 0
+  },
+  "max_steps": 16,
+  "model_id": "nbs-pnml-cancel",
+  "model_version": "1.0.0",
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-pnml-cancel-1",
+  "profile": "pnml-bounded-v1",
+  "recipes": {
+    "t_finish": {
+      "activity_id": "release_result",
+      "duration_minutes": "2",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "2",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "t_repeat": {
+      "activity_id": "qc_rework_check",
+      "duration_minutes": "1.5",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "1.5",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "t_run": {
+      "activity_id": "initial_assay",
+      "duration_minutes": "4",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "consumption",
+          "target": "reagent_pack",
+          "unit": "pack"
+        }
+      ]
+    }
+  },
+  "schedule": [
+    {
+      "multiplicity": 1,
+      "transition_id": "t_run"
+    },
+    {
+      "cancel_after": true,
+      "cancel_reason": "qc_abort_after_repeat",
+      "multiplicity": 1,
+      "transition_id": "t_repeat"
+    },
+    {
+      "multiplicity": 1,
+      "transition_id": "t_finish"
+    }
+  ]
+}

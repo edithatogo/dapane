@@ -21,10 +21,10 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 2 — Bounded process models
 
-- [ ] X2.1 Specify a PNML/Petri-net profile with initial/final markings, firing multiplicity, timing and resource assumptions.
-- [ ] X2.2 Qualify a named BPMN subset covering selected start/end events, tasks and exclusive/parallel gateways; reject unsupported constructs.
-- [ ] X2.3 Add loops, richer gateways/events and subprocesses only through separate supported-subset cases.
-- [ ] X2.4 Verify sequential, alternative, concurrent, rework, shared-resource and cancelled paths; record limitations and source licences.
+- [x] X2.1 Specify a PNML/Petri-net profile with initial/final markings, firing multiplicity, timing and resource assumptions.
+- [x] X2.2 Qualify a named BPMN subset covering selected start/end events, tasks and exclusive/parallel gateways; reject unsupported constructs.
+- [x] X2.3 Add loops, richer gateways/events and subprocesses only through separate supported-subset cases.
+- [x] X2.4 Verify sequential, alternative, concurrent, rework, shared-resource and cancelled paths; record limitations and source licences.
 
 ## Phase 3 — Provider integration
 
@@ -34,7 +34,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Evidence record
 
-The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. That historical checkpoint left X1.1 partial. The 15 November contract specifies explicit timestamps, basis, correction rejection and censoring. X1.2 remains blocked; X1.3 retains native-import verification work. X3.1 and all X2 work remain pending; the earlier Kairos observation is not requalified by this lane.
+The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. That historical checkpoint left X1.1 partial. The 15 November contract specifies explicit timestamps, basis, correction rejection and censoring. X1.2 remains blocked; X1.3 retains native-import verification work. On 19 November 2026, [`dapane-process-models`](../../../adapters/process_models/README.md) delivered the bounded X2 PNML (`pnml-bounded-v1`) and BPMN 2.0 (`bpmn-core-acyclic-v1` and `bpmn-extended-rework-subprocess-v1`) adapters with `X2.1`–`X2.4` verified across 31 Rust tests and independent CLI/wheel oracle fixtures; see the [X2 verification record](x2-verification.md) and [X2 machine receipt](x2-verification.json). X3.1–X3.3 remain pending upstream Kairos Track 114 qualification (`edithatogo/kairos` `a1f6283575ad26918230adc122a99b5c08fc4da3`).
 
 Historical core-context scope and commands remain in [runtime verification](../../../docs/runtime-verification.md). The [verification record](verification.md) retains the recovery history; the [owner follow-up](owner-quality-20261115.md) records the later exact-source execution. This track remains in progress.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.

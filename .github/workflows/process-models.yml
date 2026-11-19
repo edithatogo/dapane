@@ -1,0 +1,49 @@
+name: Process models X2
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: process-models-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  process-models:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install pinned Rust toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
+      - name: Format, Clippy, Rust tests, and release binaries
+        run: |
+          cargo fmt --manifest-path adapters/process_models/Cargo.toml --all --check
+          cargo clippy --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets -- -D warnings
+          cargo test --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets
+          cargo build --manifest-path adapters/process_models/Cargo.toml --locked --offline --release
+          cargo build --locked --release --no-default-features -p dapane-core -p dapane-cli
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.15'
+      - name: Build and install native wheel and verify X2 fixtures outside checkout
+        run: |
+          python -m pip install -r requirements-dev.txt
+          maturin build --locked --release --interpreter python --out "$RUNNER_TEMP/dist"
+          python -m pip install --no-deps "$RUNNER_TEMP"/dist/*.whl
+          cd "$RUNNER_TEMP"
+          DAPANE_CLI="$GITHUB_WORKSPACE/target/release/dapane" \
+            DAPANE_PROCESS_MODELS_CLI="$GITHUB_WORKSPACE/adapters/process_models/target/release/dapane-process-models" \
+            REQUIRE_DAPANE_WHEEL=1 \
+            python -m unittest discover -s "$GITHUB_WORKSPACE/adapters/process_models/tests" -p test_process_models.py -v
+          python -m unittest discover -s "$GITHUB_WORKSPACE/tests/tooling" -p test_json_hygiene.py -v
+      - name: Python lint and formatting checks
+        run: |
+          ruff check adapters/process_models/tests/test_process_models.py scripts/check_json_hygiene.py tests/tooling/test_json_hygiene.py
+          ruff format --check adapters/process_models/tests/test_process_models.py scripts/check_json_hygiene.py tests/tooling/test_json_hygiene.py

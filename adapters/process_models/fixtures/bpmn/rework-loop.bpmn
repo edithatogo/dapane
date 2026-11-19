@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="def_rework">
+  <process id="proc_rework" isExecutable="true">
+    <startEvent id="start_1"/>
+    <exclusiveGateway id="gw_loop_entry"/>
+    <serviceTask id="task_assay" name="Primary Assay"/>
+    <exclusiveGateway id="gw_qc"/>
+    <manualTask id="task_rework" name="Re-punch Sample"/>
+    <endEvent id="end_1"/>
+    <sequenceFlow id="f1" sourceRef="start_1" targetRef="gw_loop_entry"/>
+    <sequenceFlow id="f2" sourceRef="gw_loop_entry" targetRef="task_assay"/>
+    <sequenceFlow id="f3" sourceRef="task_assay" targetRef="gw_qc"/>
+    <sequenceFlow id="flow_rework" sourceRef="gw_qc" targetRef="task_rework"/>
+    <sequenceFlow id="f_loop_back" sourceRef="task_rework" targetRef="gw_loop_entry"/>
+    <sequenceFlow id="flow_pass" sourceRef="gw_qc" targetRef="end_1"/>
+  </process>
+</definitions>

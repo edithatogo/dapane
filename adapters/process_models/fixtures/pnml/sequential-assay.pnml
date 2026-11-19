@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+  <net id="net_sequential_assay" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <name><text>Sequential Screening Assay P/T Net</text></name>
+    <page id="page_main">
+      <place id="p_ready">
+        <initialMarking><text>2</text></initialMarking>
+      </place>
+      <place id="p_collected">
+        <initialMarking><text>0</text></initialMarking>
+      </place>
+      <place id="p_assayed">
+        <initialMarking><text>0</text></initialMarking>
+      </place>
+      <transition id="t_collect">
+        <name><text>Collect Samples</text></name>
+      </transition>
+      <transition id="t_report">
+        <name><text>Assay Batch Report</text></name>
+      </transition>
+      <arc id="a1" source="p_ready" target="t_collect">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="a2" source="t_collect" target="p_collected">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="a3" source="p_collected" target="t_report">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="a4" source="t_report" target="p_assayed">
+        <inscription><text>1</text></inscription>
+      </arc>
+    </page>
+  </net>
+</pnml>

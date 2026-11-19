@@ -1,0 +1,45 @@
+{
+  "contract_version": "dapane-process-models-v0.1.0",
+  "date": "2026-11-19",
+  "external_readiness_snapshot": {
+    "kairos_main_head": "a1f6283575ad26918230adc122a99b5c08fc4da3",
+    "kairos_track_114_status": "open_pending",
+    "mailweft_issue_4_state": "OPEN",
+    "rust4pm_fork_head": "85179f2aa8"
+  },
+  "licences": {
+    "adapter_crate": "Apache-2.0",
+    "avoided_obligations": [
+      "PM4Py (AGPL-3.0 / commercial)",
+      "quick-xml < 0.41.0 (RUSTSEC-2026-0194 / RUSTSEC-2026-0195)"
+    ],
+    "external_crate_dependencies": [],
+    "standards_referenced": [
+      "ISO/IEC 15909-2 (PNML 2009 URIs)",
+      "OMG BPMN 2.0.2 / ISO/IEC 19510 (namespace URIs)"
+    ]
+  },
+  "profiles": [
+    "pnml-bounded-v1",
+    "bpmn-core-acyclic-v1",
+    "bpmn-extended-rework-subprocess-v1"
+  ],
+  "remaining_open_scopes": [
+    "X1.2 raw XES/OCEL decoding blocked on mailweft#4",
+    "X1.3 native-import verification waiting on qualified decoder",
+    "X3.1-X3.3 Kairos Track 114 execution contract and consumption"
+  ],
+  "rust_test_counts": {
+    "integration_tests_passed": 30,
+    "unit_tests_passed": 1
+  },
+  "status": "passed_for_bounded_x2_profiles",
+  "toolchain": {
+    "clippy": "0.1.99",
+    "platform": "Darwin arm64",
+    "python": "3.15.1",
+    "ruff": "0.17.4",
+    "rustc": "1.99.1"
+  },
+  "track_id": "process_models_20261108"
+}

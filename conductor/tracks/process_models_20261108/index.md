@@ -14,11 +14,23 @@ Produce resource-use records from observed or explicitly executed process models
 
 Requirements: RQ-10, RQ-01, RQ-03.
 
-Capability status: independent X1 contracts implemented and source-verified;
-raw XES/OCEL imports remain blocked on dependency qualification. Verification
-is bound to the commits in the owner follow-up, not to an arbitrary later head.
+Capability status: independent X1 contracts and X2 bounded PNML/BPMN adapters
+are implemented and source-verified on synthetic fixtures; raw XES/OCEL imports
+(`X1.2`) remain blocked on `edithatogo/mailweft#4`, and Kairos provider
+integration (`X3.1`–`X3.3`) remains pending on `edithatogo/kairos` Track 114.
 Historical [runtime evidence](../../../docs/runtime-verification.md) remains
 limited to the existing core context. Full track acceptance remains open.
+
+## X2 bounded PNML and BPMN adapters — 19 November 2026
+
+- [X2 adapter package](../../../adapters/process_models/README.md) (`adapters/process_models/`, zero external crates, Apache-2.0)
+- [X2 CI workflow](../../../.github/workflows/process-models.yml)
+- [X2 verification record](x2-verification.md) and [X2 machine receipt](x2-verification.json)
+
+Covers `X2.1`–`X2.4`: `pnml-bounded-v1`, `bpmn-core-acyclic-v1`, and
+`bpmn-extended-rework-subprocess-v1`, with explicit transfer/occupancy/consumption
+separation, shared-batch non-duplication, and Dapane `0.1` valuation parity
+across independent quotation releases.
 
 ## X1 lane — 15 November 2026
 

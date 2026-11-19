@@ -1,0 +1,69 @@
+{
+  "evidence_basis": "assumed",
+  "max_steps": 64,
+  "model_id": "nbs-bpmn-subprocess",
+  "model_version": "1.0.0",
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-bpmn-subproc-1",
+  "profile": "bpmn-extended-rework-subprocess-v1",
+  "recipes": {
+    "sub_dna/task_extract": {
+      "activity_id": "manual_extraction",
+      "duration_minutes": "7",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "consumption",
+          "target": "dna_kit",
+          "unit": "kit"
+        },
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "7",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "sub_dna/task_quantify": {
+      "activity_id": "dna_quantify",
+      "duration_minutes": "5",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "5",
+          "resource_kind": "occupancy",
+          "target": "analyzer_time",
+          "unit": "minute"
+        }
+      ]
+    },
+    "task_release": {
+      "activity_id": "signoff",
+      "duration_minutes": "3",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "3",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    }
+  }
+}

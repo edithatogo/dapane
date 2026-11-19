@@ -1,0 +1,50 @@
+{
+  "branch_decisions": {
+    "gw_qc": ["flow_rework", "flow_pass"]
+  },
+  "evidence_basis": "simulated",
+  "max_node_visits": 8,
+  "max_steps": 64,
+  "model_id": "nbs-bpmn-rework-loop",
+  "model_version": "1.0.0",
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-bpmn-rework-1",
+  "profile": "bpmn-extended-rework-subprocess-v1",
+  "recipes": {
+    "task_assay": {
+      "activity_id": "assay_step",
+      "duration_minutes": "6",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "consumption",
+          "target": "reagent_pack",
+          "unit": "pack"
+        }
+      ]
+    },
+    "task_rework": {
+      "activity_id": "rework_punch",
+      "duration_minutes": "4",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "4",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        }
+      ]
+    }
+  }
+}
