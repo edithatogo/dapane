@@ -7,9 +7,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 1 — Draws and paired outcomes
 
-- [~] D1.1 Specify parameter draws, correlation inputs, scenario/strategy/replication keys and separation of epistemic uncertainty from heterogeneity.
-- [~] D1.2 Evaluate the supported costing model for explicit indexed draws; accept outcomes only through a separately identified model contract.
-- [~] D1.3 Verify pairing, reproducibility, missing-draw rejection and scenario-comparison cases against independent expectations.
+- [x] D1.1 Specify parameter draws, correlation inputs, scenario/strategy/replication keys and separation of epistemic uncertainty from heterogeneity.   
+  **Executed 2026-11-19:** `adapters/decision_draws/src/paired.rs` implements DrawSet with axis `epistemic_parameters`, 1..128 parameters, 1..256 draws, joint value alignment per draw, replication_axis `conditional_replication`, scenario/strategy/perspective/subgroup keys, six-key panel completeness. All 18 D1 tests pass.
+- [x] D1.2 Evaluate the supported costing model for explicit indexed draws; accept outcomes only through a separately identified model contract.   
+  **Executed 2026-11-19:** `evaluate_paired_json` delegates each cell/draw to the existing Dapane core entry points (point/interval 0.1/0.2), embeds native reports unmodified, joins externally supplied outcomes on all six keys (scenario_id, strategy_id, draw_id, replication_id, perspective, subgroup_id), rejects missing/extra/duplicate outcomes.
+- [x] D1.3 Verify pairing, reproducibility, missing-draw rejection and scenario-comparison cases against independent expectations.   
+  **Executed 2026-11-19:** 18 D1 tests cover: actual cost model with correlated draws and independent outcomes, byte reproducibility under outer row/axis reordering, missing/extra/duplicate outcome rejection, embedded core error propagation, missing model cell/pooled subgroup rejection, malformed exact value rejection, binding target/unit compatibility, perspective/currency/source mismatch rejection, joint draw identity preservation (no marginal replacement), unsupported method/unknown field/numeric float rejection, request replay to identical native reports, output digest independent reconstruction, negative outcome preservation with negative cost parameter rejection, interval per-segment rounding, capacity contract survival, key axis survival across cells/replications. All 18 D1 tests pass.
 
 ## Phase 2 — Provider adapters
 
