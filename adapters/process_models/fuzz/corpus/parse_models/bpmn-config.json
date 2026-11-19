@@ -1,0 +1,54 @@
+{
+  "evidence_basis": "simulated",
+  "max_steps": 64,
+  "model_id": "nbs-bpmn-sequential",
+  "model_version": "1.0.0",
+  "objects": [
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-bpmn-seq-1",
+  "profile": "bpmn-core-acyclic-v1",
+  "recipes": {
+    "task_intake": {
+      "activity_id": "intake",
+      "duration_minutes": "4",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "4",
+          "resource_kind": "occupancy",
+          "target": "staff_time",
+          "unit": "minute"
+        },
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "consumption",
+          "target": "card_kit",
+          "unit": "item"
+        }
+      ]
+    },
+    "task_screen": {
+      "activity_id": "primary_screen",
+      "duration_minutes": "6",
+      "object_ids": ["infant-a"],
+      "resources": [
+        {
+          "attribution_object_id": "infant-a",
+          "batch_mode": "per_firing",
+          "quantity": "6",
+          "resource_kind": "occupancy",
+          "target": "analyzer_time",
+          "unit": "minute"
+        }
+      ]
+    }
+  }
+}
