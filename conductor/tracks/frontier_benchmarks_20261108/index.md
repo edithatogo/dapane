@@ -2,7 +2,7 @@
 
 Track: `frontier_benchmarks_20261108`
 
-Status: new
+Status: in_progress
 
 Test whether evidence-linked, object-centric costing provides measurable advantages over strong current alternatives. Treat novelty and frontier claims as empirical questions.
 
@@ -14,4 +14,19 @@ Test whether evidence-linked, object-centric costing provides measurable advanta
 
 Requirements: RQ-12, RQ-06, RQ-10, RQ-11.
 
-Capability status: planned. A documented plan is not implementation or release evidence.
+Capability status: the scoped synthetic static slice passed exact-source local
+and hosted qualification at `7137bb5e87b7e79e8c780e9c0576434606072065`.
+The [quality follow-up](quality-followup-20261115.md) records the formatting-only
+repair, independent computational checks and remaining integration/security holds.
+Earlier failures and unexecuted publication observations remain historical evidence.
+
+Lane: Dapane — Independent static benchmarks. Authorised slice: F1/F2.1–2.
+Implementation: `benchmarks/static/`, matching the integrator's ownership map.
+
+- [Protocol and implementation](../../../benchmarks/static/README.md)
+- [Executed and unexecuted observations](../../../benchmarks/static/evidence/local-observations.json)
+- [Integrator handoff](HANDOFF.md)
+- [Review and remaining findings](review.md)
+
+The sole release integrator owns shared files, registry/CI changes and merge decisions.
+No production evaluator or shared numerical fixture was changed.

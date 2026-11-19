@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.1",
+  "request": {
+    "schema_version": "0.1",
+    "run_id": "synthetic-static-interval",
+    "knowledge_cutoff": "2026-11-08",
+    "policy": {
+      "id": "synthetic-static-policy",
+      "version": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "perspective": "provider",
+      "basis": "economic_cost",
+      "rounding": {
+        "scale": 2,
+        "mode": "half_even"
+      }
+    },
+    "quotes": [
+      {
+        "id": "left",
+        "kind": "resource_use",
+        "target": "service",
+        "unit": "unit",
+        "amount": "0.01",
+        "per_quantity": "1",
+        "currency": "AUD",
+        "price_year": 2026,
+        "basis": "economic_cost",
+        "components": [
+          "service"
+        ],
+        "valid_from": "2026-01-01",
+        "valid_to": "2026-01-02",
+        "known_from": "2026-01-01",
+        "source": {
+          "id": "synthetic-left",
+          "version": "1",
+          "evidence": "synthetic",
+          "access": "public",
+          "validation": "unvalidated",
+          "locator": "benchmarks/static/fixtures"
+        }
+      },
+      {
+        "id": "right",
+        "kind": "resource_use",
+        "target": "service",
+        "unit": "unit",
+        "amount": "0.01",
+        "per_quantity": "1",
+        "currency": "AUD",
+        "price_year": 2026,
+        "basis": "economic_cost",
+        "components": [
+          "service"
+        ],
+        "valid_from": "2026-01-02",
+        "valid_to": "2026-01-03",
+        "known_from": "2026-01-01",
+        "source": {
+          "id": "synthetic-right",
+          "version": "1",
+          "evidence": "synthetic",
+          "access": "public",
+          "validation": "unvalidated",
+          "locator": "benchmarks/static/fixtures"
+        }
+      }
+    ],
+    "usage": []
+  },
+  "intervals": [
+    {
+      "id": "interval",
+      "use_id": "use-interval",
+      "kind": "resource_use",
+      "target": "service",
+      "unit": "unit",
+      "quantity": "1",
+      "start": "2026-01-01",
+      "end": "2026-01-03",
+      "quote_ids": [
+        "left",
+        "right"
+      ],
+      "source": {
+        "id": "synthetic-interval",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      },
+      "exposure": "uniform_calendar_day"
+    }
+  ]
+}

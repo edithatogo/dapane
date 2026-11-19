@@ -1,9 +1,9 @@
 {
   "track_id": "frontier_benchmarks_20261108",
   "type": "research",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-15T09:12:02Z",
   "description": "Test whether evidence-linked, object-centric costing provides measurable advantages over strong current alternatives. Treat novelty and frontier claims as empirical questions.",
   "repositories": [
     "."
@@ -18,17 +18,100 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "F1/F2.1–2 uses complete independent request caching in benchmarks/static; every changed valuation remains in unchanged Rust CLI.",
+    "Preserve local v1 diagnostic failures and v1.1 observations; reconstructed namespace v1.2 requires exact-head reexecution before qualification.",
+    "2026-11-15: close five formatting failures with pinned Ruff 0.17.4; unchanged syntax trees/comments, fixtures and runtime. Record source-specific execution and all upstream holds separately."
+  ],
   "requirement_ids": [
     "RQ-12",
     "RQ-06",
     "RQ-10",
     "RQ-11"
   ],
-  "capability_status": "planned",
+  "capability_status": "static_synthetic_slice_exact_source_checks_passed",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "passed",
+    "scope": "F1/F2.1–2 synthetic complete-request static slice only",
+    "source_sha": "7137bb5e87b7e79e8c780e9c0576434606072065",
+    "source_tree": "e8935161f9e2c42c5adb2013feabf8feab45b756",
+    "commands": [
+      {
+        "command": "ruff check benchmarks/static",
+        "status": "passed"
+      },
+      {
+        "command": "ruff format --check benchmarks/static",
+        "status": "passed",
+        "files": 14
+      },
+      {
+        "command": "python3 -m benchmarks.static.build --target-dir <fresh target> --receipt <unused receipt>",
+        "status": "passed",
+        "underlying_build": "cargo build --offline --locked --release -p dapane-cli"
+      },
+      {
+        "command": "DAPANE_BENCH_CLI=<built CLI> python3 -m unittest discover -s benchmarks/static/tests -v",
+        "status": "passed",
+        "tests": 23,
+        "elapsed_seconds": 0.404
+      },
+      {
+        "command": "python3 -m benchmarks.static.run --cli <built CLI> --build-receipt <receipt> --output <unused output>",
+        "status": "passed",
+        "comparisons": 24
+      },
+      {
+        "command": "python3 -m benchmarks.static.verify <local bundle>",
+        "status": "passed",
+        "pairs_including_warmups": 144,
+        "distinct_request_report_checks": 70,
+        "mutation_cases": 24
+      },
+      {
+        "command": "python3 scripts/validate_conductor.py",
+        "status": "passed",
+        "tracks": 14,
+        "requirements": 12,
+        "tasks": 154,
+        "local_links": 545
+      },
+      {
+        "command": "python3 -m unittest discover -s tests -p test_conductor_validation.py -v",
+        "status": "passed",
+        "tests": 12
+      },
+      {
+        "command": "python3 -m unittest discover -s tests/tooling -p test_roadmap_qualification.py -v",
+        "status": "passed",
+        "tests": 20,
+        "note": "Printed failed subcases are intentional negative controls; the unittest suite passed."
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed"
+      }
+    ],
+    "hosted": {
+      "run_id": 43697346539,
+      "commands_passed": 15,
+      "static_tests": 23,
+      "controller_tests": 20,
+      "artifact_id": 14154424008,
+      "artifact_expires_at": "2026-12-15T09:04:11Z"
+    },
+    "evidence": "quality-followup-20261115.md",
+    "machine_receipt": "evidence/quality-20261115/qualification-summary.json",
+    "independent_review": "Executed AST/comment/formatter equivalence, immutable Git/source/artifact hashes and independent arithmetic. Implementation-owner diff review; no independent human reviewer.",
+    "final_documentation_head": "Must receive a fresh hosted run and head-specific PR receipt; results for 7137bb5 are not inherited.",
+    "remaining": [
+      "Both offline-security jobs observed on 7137bb5 remain queued, not passed.",
+      "Coordination PR #20 privacy findings require independent central review; lane passes do not clear them.",
+      "PR #17 receiving-tree runtime/provenance revision and requalification remain required before combination.",
+      "Independent human/integrator review and all release/publication holds remain.",
+      "F2.3–5 and F3 broader process, decision, external and publication work remain open.",
+      "Complete raw hosted archive must be retained before its recorded expiry; the derived receipt is not a replacement."
+    ]
   },
   "completion_evidence": [
     "Comparators are selected from a dated review and use equivalent inputs, methods and declared capabilities.",
@@ -38,5 +121,67 @@
     "Measurement-planning and capacity experiments use qualified decision/provider contracts and distinguish epistemic uncertainty, heterogeneity and transfers.",
     "External validation reports transportability, missingness, model limitations and analyst effort; synthetic success is not described as empirical programme validation.",
     "Any privacy-preserving or federated experiment measures disclosure risk and utility rather than merely asserting privacy."
+  ],
+  "lane_owner": "Dapane — Independent static benchmarks",
+  "historical_verification": [
+    {
+      "record": "initial publication; preserved without relabelling",
+      "status": "blocked",
+      "commands": [
+        {
+          "command": "cargo build --offline --locked --release -p dapane-cli",
+          "status": "passed",
+          "details": "Fresh target directory; unchanged core/CLI compiled using the locked cached dependency graph. Reported build duration 15.17 seconds, not a runtime benchmark."
+        },
+        {
+          "command": "python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+          "stage": "initial RED",
+          "status": "failed",
+          "details": "Expected import failure: cache module did not yet exist. Not evidence of a numerical test failure."
+        },
+        {
+          "command": "DAPANE_BENCH_CLI=<built-cli> python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+          "stage": "first native suite",
+          "status": "failed",
+          "tests": 21,
+          "failures": 1,
+          "details": "Mutation-inventory assertion failed because two preregistered diagnostic codes were wrong; both native requests were correctly rejected."
+        },
+        {
+          "command": "ruff check benchmarks/static_v1",
+          "status": "passed",
+          "scope": "Early cache/oracle/suite/tests before runner/build additions"
+        },
+        {
+          "command": "ruff format --check benchmarks/static_v1",
+          "status": "failed",
+          "details": "Two files needed formatting."
+        },
+        {
+          "command": "ruff format benchmarks/static_v1",
+          "status": "passed",
+          "details": "Two files reformatted before local acceptance commit."
+        },
+        {
+          "command": "DAPANE_BENCH_CLI=<built-cli> python3 -m unittest discover -s benchmarks/static_v1/tests -v",
+          "stage": "local v1.1 acceptance",
+          "status": "passed",
+          "source_sha": "5cc42f41d1713afab9348d781a38717d515b6b75",
+          "tests": 21,
+          "elapsed_seconds": 0.395,
+          "details": "Test-suite duration is not a benchmark latency measurement."
+        }
+      ],
+      "local_tested_sha": "5cc42f41d1713afab9348d781a38717d515b6b75",
+      "publication_head_tested": false,
+      "remaining": [
+        "Restore execution and rebuild/test/lint the exact published head.",
+        "Execute fixed paired protocol and retain complete checksummed bundle; report null/equal/slower results.",
+        "Integrator synchronises registry and adds hosted benchmark invocation; no gates waived."
+      ],
+      "publication_source_sha": "a6ccbacf458cd9785397b0771052d5e8ca29de7d",
+      "publication_tree": "62e2bde1367a6784839cfbd69c5aa53a39f1b7a4",
+      "source_transfer": "50/50 uploaded blobs match authored content; only owned paths differ from base"
+    }
   ]
 }

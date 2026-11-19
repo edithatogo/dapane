@@ -1,0 +1,51 @@
+{
+  "received_source": "237ddb238997b0babe12266cb7775207c597dfd4",
+  "reviewed_source_sha": "7137bb5e87b7e79e8c780e9c0576434606072065",
+  "review_kind": "Independent mechanical source and artifact checks plus implementation-owner review; no second worker or independent human review.",
+  "python": "Python 3.12.14",
+  "ruff": "ruff 0.17.4",
+  "files": [
+    {
+      "path": "benchmarks/static/build.py",
+      "ast_equal": true,
+      "comments_equal": true,
+      "equals_pinned_formatter_output": true
+    },
+    {
+      "path": "benchmarks/static/oracle.py",
+      "ast_equal": true,
+      "comments_equal": true,
+      "equals_pinned_formatter_output": true
+    },
+    {
+      "path": "benchmarks/static/run.py",
+      "ast_equal": true,
+      "comments_equal": true,
+      "equals_pinned_formatter_output": true
+    },
+    {
+      "path": "benchmarks/static/verify.py",
+      "ast_equal": true,
+      "comments_equal": true,
+      "equals_pinned_formatter_output": true
+    },
+    {
+      "path": "benchmarks/static/tests/test_bundle_gate.py",
+      "ast_equal": true,
+      "comments_equal": true,
+      "equals_pinned_formatter_output": true
+    }
+  ],
+  "only_authorised_paths_changed": true,
+  "all_other_tracked_files_unchanged_at_review": true,
+  "protocol_fixtures_runtime_and_historical_evidence_unchanged": true,
+  "changed_paths": [
+    "benchmarks/static/build.py",
+    "benchmarks/static/oracle.py",
+    "benchmarks/static/run.py",
+    "benchmarks/static/tests/test_bundle_gate.py",
+    "benchmarks/static/verify.py",
+    "conductor/tracks/frontier_benchmarks_20261108/plan.md"
+  ],
+  "method": "For each received Git blob, compare ast.dump(ast.parse(text, type_comments=True), include_attributes=False), Python COMMENT tokens and Ruff 0.17.4 format --stdin-filename output with edited source. Assert the changed-path set. Executed before local environment disconnected."
+}

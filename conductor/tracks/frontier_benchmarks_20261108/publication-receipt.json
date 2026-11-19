@@ -1,0 +1,23 @@
+{
+  "recorded_on": "2026-11-15",
+  "source_sha": "a6ccbacf458cd9785397b0771052d5e8ca29de7d",
+  "tree": "62e2bde1367a6784839cfbd69c5aa53a39f1b7a4",
+  "blob_content_verification": "50/50 uploaded Git blobs equal authored UTF-8 content",
+  "scope": "Only benchmarks/static and its existing Conductor track",
+  "changed_files": 50,
+  "production_blobs_unchanged": true,
+  "python_execution": false,
+  "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "base_tree": "c07a6b2589b9d665f619f5d977d66e513180bab4",
+  "verification_kind": "remote_tree_and_authored_content_identity_only",
+  "additional_checks": {
+    "valid_json_documents": 30,
+    "declared_mutation_cases": 24,
+    "intentional_duplicate_key_retained": true,
+    "shared_production_files_modified": 0
+  },
+  "native_tests_on_published_head": null,
+  "paired_timings": null,
+  "memory_observations": null,
+  "reason": "Execution environment unavailable; earlier local counterpart evidence remains separate."
+}

@@ -1,0 +1,183 @@
+{
+  "schema_version": "0.1",
+  "run_id": "synthetic-static-point",
+  "knowledge_cutoff": "2026-11-08",
+  "policy": {
+    "id": "synthetic-static-policy",
+    "version": "1",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "economic_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "labour-rate",
+      "kind": "resource_use",
+      "target": "labour",
+      "unit": "hour",
+      "amount": "90",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "labour"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-labour-rate",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      }
+    },
+    {
+      "id": "material-rate",
+      "kind": "resource_use",
+      "target": "material",
+      "unit": "item",
+      "amount": "3",
+      "per_quantity": "2",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "material"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-material-rate",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      }
+    },
+    {
+      "id": "batch-rate",
+      "kind": "resource_use",
+      "target": "batch",
+      "unit": "batch",
+      "amount": "5.05",
+      "per_quantity": "1",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "economic_cost",
+      "components": [
+        "batch"
+      ],
+      "valid_from": "2026-01-01",
+      "valid_to": "2027-01-01",
+      "known_from": "2026-01-01",
+      "source": {
+        "id": "synthetic-batch-rate",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "labour",
+      "use_id": "use-labour",
+      "kind": "resource_use",
+      "target": "labour",
+      "unit": "hour",
+      "quantity": {
+        "numerator": "1",
+        "denominator": "3"
+      },
+      "service_date": "2026-06-15",
+      "quote_id": "labour-rate",
+      "source": {
+        "id": "synthetic-labour",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      },
+      "attribution_object_id": "a"
+    },
+    {
+      "id": "material",
+      "use_id": "use-material",
+      "kind": "resource_use",
+      "target": "material",
+      "unit": "item",
+      "quantity": "2",
+      "service_date": "2026-06-15",
+      "quote_id": "material-rate",
+      "source": {
+        "id": "synthetic-material",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      },
+      "attribution_object_id": "b"
+    },
+    {
+      "id": "batch",
+      "use_id": "use-batch",
+      "kind": "resource_use",
+      "target": "batch",
+      "unit": "batch",
+      "quantity": "1",
+      "service_date": "2026-06-15",
+      "quote_id": "batch-rate",
+      "source": {
+        "id": "synthetic-batch",
+        "version": "1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "locator": "benchmarks/static/fixtures"
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "a",
+      "kind": "synthetic_recipient"
+    },
+    {
+      "id": "b",
+      "kind": "synthetic_recipient"
+    }
+  ],
+  "allocations": [
+    {
+      "id": "shared",
+      "source_line_ids": [
+        "batch"
+      ],
+      "weights": [
+        {
+          "object_id": "a",
+          "weight": "1"
+        },
+        {
+          "object_id": "b",
+          "weight": "1"
+        }
+      ]
+    }
+  ]
+}
