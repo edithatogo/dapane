@@ -24,8 +24,27 @@ class JsonHygieneTests(unittest.TestCase):
 
     def test_rejects_duplicate_object_keys(self) -> None:
         payload = b'{"id": "first", "id": "second"}'
-        with self.assertRaisesRegex(hygiene.JsonHygieneError, "duplicate JSON object key"):
+        with self.assertRaisesRegex(
+            hygiene.JsonHygieneError, r"dup\.json: duplicate JSON object key"
+        ):
             hygiene.validate_json_bytes(payload, label="dup.json")
+
+    def test_allows_duplicate_keys_only_when_explicitly_permitted(self) -> None:
+        payload = b'{"id": "first", "id": "second"}'
+        hygiene.validate_json_bytes(payload, label="dup.json", allow_duplicate_keys=True)
+
+    def test_allow_duplicate_keys_still_rejects_non_finite_constants(self) -> None:
+        payload = b'{"value": NaN}'
+        with self.assertRaisesRegex(
+            hygiene.JsonHygieneError, r"nan\.json: non-finite JSON constant"
+        ):
+            hygiene.validate_json_bytes(payload, label="nan.json", allow_duplicate_keys=True)
+
+    def test_allow_duplicate_keys_scans_overwritten_risky_keys(self) -> None:
+        digest = "0123456789abcdef" * 4
+        payload = f'{{"api_key": "{digest}", "api_key": "safe"}}'.encode()
+        with self.assertRaisesRegex(hygiene.JsonHygieneError, r"dup-risky\.json:.*Gitleaks"):
+            hygiene.validate_json_bytes(payload, label="dup-risky.json", allow_duplicate_keys=True)
 
     def test_rejects_non_finite_constants(self) -> None:
         for constant in (b"NaN", b"Infinity", b"-Infinity"):
@@ -67,3 +86,26 @@ class JsonHygieneTests(unittest.TestCase):
             # Now stage the clean file and confirm pass.
             subprocess.run(["git", "add", "sample.json"], cwd=repo, check=True)
             self.assertEqual(hygiene.main(["--staged", "--root", str(repo)]), 0)
+
+    def test_staged_mode_duplicate_key_allowlist_and_secret_scan(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="json-hygiene-dup-") as tmp:
+            repo = Path(tmp)
+            subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+            allowed = repo / "benchmarks/static/fixtures/cases/duplicate-json-key.json"
+            allowed.parent.mkdir(parents=True, exist_ok=True)
+            allowed.write_text('{"run_id": "a", "run_id": "b"}\n', encoding="utf-8")
+            subprocess.run(["git", "add", str(allowed.relative_to(repo))], cwd=repo, check=True)
+            self.assertEqual(hygiene.main(["--staged", "--root", str(repo)]), 0)
+
+            other = repo / "other-dup.json"
+            other.write_text('{"run_id": "a", "run_id": "b"}\n', encoding="utf-8")
+            subprocess.run(["git", "add", "other-dup.json"], cwd=repo, check=True)
+            self.assertEqual(hygiene.main(["--staged", "--root", str(repo)]), 1)
+            subprocess.run(["git", "rm", "-q", "-f", "other-dup.json"], cwd=repo, check=True)
+
+            bad_digest = "a" * 64
+            allowed.write_text(
+                f'{{"api_key": "{bad_digest}", "api_key": "safe"}}\n', encoding="utf-8"
+            )
+            subprocess.run(["git", "add", str(allowed.relative_to(repo))], cwd=repo, check=True)
+            self.assertEqual(hygiene.main(["--staged", "--root", str(repo)]), 1)

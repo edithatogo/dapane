@@ -16,10 +16,20 @@ RISKY_KEY_RE = re.compile(
     re.IGNORECASE,
 )
 HEX_64_RE = re.compile(r"(?<![0-9a-fA-F])[0-9a-fA-F]{64}(?![0-9a-fA-F])")
+INTENTIONAL_DUPLICATE_KEY_FIXTURES = frozenset(
+    {
+        "adapters/observed_events/fixtures/duplicate-member.ocel.json",
+        "benchmarks/static/fixtures/cases/duplicate-json-key.json",
+    }
+)
 
 
 class JsonHygieneError(ValueError):
     """Raised when JSON decoding or key/digest hygiene checks fail."""
+
+
+class _DuplicateKeyObject(list[tuple[str, Any]]):
+    """Retain every JSON object member in order when duplicate keys are permitted."""
 
 
 def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -37,7 +47,12 @@ def _invalid_constant(value: str) -> Any:
 
 def _scan_value(value: Any, path: str, *, risky_ancestor: bool = False) -> list[str]:
     findings: list[str] = []
-    if isinstance(value, dict):
+    if isinstance(value, _DuplicateKeyObject):
+        for idx, (key, item) in enumerate(value):
+            child_path = f"{path}/{key}[#{idx}]"
+            is_risky = risky_ancestor or bool(RISKY_KEY_RE.search(key))
+            findings.extend(_scan_value(item, child_path, risky_ancestor=is_risky))
+    elif isinstance(value, dict):
         for key, item in value.items():
             child_path = f"{path}/{key}"
             is_risky = risky_ancestor or bool(RISKY_KEY_RE.search(key))
@@ -53,18 +68,37 @@ def _scan_value(value: Any, path: str, *, risky_ancestor: bool = False) -> list[
     return findings
 
 
-def validate_json_bytes(raw: bytes, label: str = "<input>") -> None:
+def _allows_duplicate_keys(path_label: str, repo_root: Path | None = None) -> bool:
+    normalized = path_label.replace("\\", "/").lstrip("./")
+    if normalized in INTENTIONAL_DUPLICATE_KEY_FIXTURES:
+        return True
+    if repo_root is not None:
+        try:
+            rel = Path(path_label).resolve().relative_to(repo_root.resolve()).as_posix()
+        except (ValueError, OSError):
+            rel = ""
+        if rel in INTENTIONAL_DUPLICATE_KEY_FIXTURES:
+            return True
+    return False
+
+
+def validate_json_bytes(
+    raw: bytes, label: str = "<input>", *, allow_duplicate_keys: bool = False
+) -> None:
     """Validate UTF-8 decoding, strict JSON syntax, and risky key+digest pairs."""
     try:
         text = raw.decode("utf-8")
     except UnicodeDecodeError as exc:
         raise JsonHygieneError(f"{label}: invalid UTF-8: {exc}") from exc
+    object_pairs_hook = _DuplicateKeyObject if allow_duplicate_keys else _unique_object
     try:
         parsed = json.loads(
             text,
-            object_pairs_hook=_unique_object,
+            object_pairs_hook=object_pairs_hook,
             parse_constant=_invalid_constant,
         )
+    except JsonHygieneError as exc:
+        raise JsonHygieneError(f"{label}: {exc}") from exc
     except json.JSONDecodeError as exc:
         raise JsonHygieneError(f"{label}: invalid JSON: {exc}") from exc
     findings = _scan_value(parsed, "$")
@@ -113,14 +147,22 @@ def main(argv: list[str] | None = None) -> int:
         for rel_path in staged_json_paths(args.root):
             checked += 1
             try:
-                validate_json_bytes(read_staged_blob(args.root, rel_path), label=rel_path)
+                validate_json_bytes(
+                    read_staged_blob(args.root, rel_path),
+                    label=rel_path,
+                    allow_duplicate_keys=_allows_duplicate_keys(rel_path),
+                )
             except (JsonHygieneError, subprocess.CalledProcessError) as exc:
                 errors.append(str(exc))
 
     for file_path in args.paths:
         checked += 1
         try:
-            validate_json_bytes(file_path.read_bytes(), label=str(file_path))
+            validate_json_bytes(
+                file_path.read_bytes(),
+                label=str(file_path),
+                allow_duplicate_keys=_allows_duplicate_keys(str(file_path), repo_root=args.root),
+            )
         except (JsonHygieneError, OSError) as exc:
             errors.append(str(exc))
 
