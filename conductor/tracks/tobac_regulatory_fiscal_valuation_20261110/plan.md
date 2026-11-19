@@ -21,7 +21,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [x] T2.2 Implement subgroup equity-weight and distributional cost-effectiveness aggregation rules with exact unweighted-sum conservation checks when weights are unity.
   The synthetic equity profile conserved cost, QALYs and NMB at unit weights. Tests also checked non-unit weights, exact precision and rejection of repeated subgroups or incompatible valuation contexts.
 - [!] T2.3 Verify parity against `tobac`'s standalone reference oracle on synthetic NZ/AU policy fixtures.
-  **Blocked 2026-11-20:** Tobac main `891f79e07292b7754f78d7193130623bd5f9e243` still has no `src/tobac/economics.py` or `src/tobac/decision.py`. Related functions are in `src/tobac/health.py`. Next action: map that interface, then run the synthetic fixtures. This inspection is not parity.
+  **Blocked 2026-11-20:** Tobac `891f79e07292b7754f78d7193130623bd5f9e243` has no `src/tobac/economics.py` or `src/tobac/decision.py`. The published scalar identity in `tests/test_workstream_integration.py` was executed from that tree: `discounted_resource_cost((100, -55), (0, 1), 0.10)` returned 50 and `discounted_tax_transfer((66, 22), (0, 1), 0.10)` returned `(86, -86)`. The exact adapter reproduces those integers, and the societal total stays 50 after the transfer pair cancels. `equity_weighted_qaly_score` weights population QALY totals and accepts a zero weight; the Dapane sum requires a strictly positive weight on cost, QALYs and NMB. Cohort and cessation schedules were not compared, so this is not policy-fixture parity.
 
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 

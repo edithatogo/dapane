@@ -929,3 +929,44 @@ fn perspective_table_keeps_the_joint_draw_key() {
         "unsupported_schema"
     );
 }
+
+#[test]
+fn tobac_published_transfer_identity_matches_exact_steps() {
+    // Tobac 891f79e health.discounted_resource_cost((100, -55), (0, 1), 0.10) is 50.
+    // discounted_tax_transfer((66, 22), (0, 1), 0.10) is (86, -86). The resource
+    // total remains after the transfer pair cancels. Equity scoring is a different
+    // contract and is not compared here.
+    let mut input = fixture();
+    input["discount"]["resource_rate"] = r("1", "10");
+    input["discount"]["transfer_rate"] = r("1", "10");
+    input["lines"][0]["time_step"] = json!(0);
+    input["lines"][1]["time_step"] = json!(0);
+    input["lines"][1]["undiscounted_amount"]["amount"] = r("0", "1");
+    input["lines"][2]["time_step"] = json!(0);
+    input["lines"][2]["undiscounted_amount"]["amount"] = r("66", "1");
+    input["lines"][3]["undiscounted_amount"]["amount"] = r("22", "1");
+    let mut later = input["lines"][0].clone();
+    later["id"] = json!("later-medical");
+    later["time_step"] = json!(1);
+    later["undiscounted_amount"]["amount"] = r("-55", "1");
+    input["lines"].as_array_mut().unwrap().push(later);
+
+    let report = result(&input);
+    assert_eq!(
+        report["resources"]["health_system_direct_cost"],
+        r("50", "1")
+    );
+    assert_eq!(
+        report["resources"]["enforcement_resource_cost"],
+        r("0", "1")
+    );
+    assert_eq!(report["tax_transfers"]["government_receipts"], r("86", "1"));
+    assert_eq!(report["tax_transfers"]["payer_outflows"], r("-86", "1"));
+    assert_eq!(report["tax_transfers"]["net_within_boundary"], r("0", "1"));
+    assert_eq!(report["selected_resource_cost"], r("50", "1"));
+
+    set_view(&mut input, "societal", "societal_net_domestic_transfers");
+    let report = result(&input);
+    assert_eq!(report["selected_resource_cost"], r("50", "1"));
+    assert_eq!(report["net_monetary_benefit"], r("50", "1"));
+}
