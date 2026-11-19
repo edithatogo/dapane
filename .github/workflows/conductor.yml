@@ -19,15 +19,24 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
 
       - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Validate Conductor context
-        run: python3 scripts/validate_conductor.py
-      - name: Test Conductor lifecycle validation
-        run: python3 -m unittest discover -s tests -p 'test_conductor_validation.py' -v
+      - name: Validate Conductor context and lifecycle
+        run: |
+          PROFILE="$RUNNER_TEMP/conductor-profile.jsonl"
+          python3 scripts/ci_profile.py run --name validate-conductor --profile-file "$PROFILE" -- python3 scripts/validate_conductor.py
+          python3 scripts/ci_profile.py run --name conductor-tests --profile-file "$PROFILE" -- python3 -m unittest discover -s tests -p 'test_conductor_validation.py' -v
+      - name: Publish Conductor timing profile
+        if: always()
+        run: |
+          python3 scripts/ci_profile.py summarize \
+            --profile-file "$RUNNER_TEMP/conductor-profile.jsonl" \
+            --title "Conductor validation profile" \
+            --summary-file "$GITHUB_STEP_SUMMARY" || true

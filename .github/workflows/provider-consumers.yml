@@ -19,19 +19,52 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      run_provider_consumers: ${{ steps.select.outputs.run_provider_consumers }}
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+      - if: github.event_name == 'pull_request'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select provider-consumer scope
+        id: select
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ] && [ -n "${{ github.event.pull_request.base.sha }}" ] && [ -n "${{ github.event.pull_request.head.sha }}" ]; then
+            python3 scripts/ci_select.py --mode pr \
+              --base "${{ github.event.pull_request.base.sha }}" \
+              --head "${{ github.event.pull_request.head.sha }}" \
+              --github-output "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "pull_request" ] && [ "${{ env.ACT }}" = "true" ]; then
+            python3 scripts/ci_select.py --mode pr --base "HEAD~1" --head "HEAD" --github-output "$GITHUB_OUTPUT"
+          else
+            echo "run_provider_consumers=true" >> "$GITHUB_OUTPUT"
+          fi
+
   installed-providers:
+    needs: changes
     if: >-
-      github.event_name == 'pull_request' ||
-      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      github.event_name == 'workflow_call' ||
+      (github.event_name == 'pull_request' && needs.changes.outputs.run_provider_consumers == 'true')
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
 
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
@@ -69,14 +102,14 @@ jobs:
                   assert re.fullmatch("[0-9a-f]{40}", commit), commit
                   output.write(f"{name}_ref={commit}\n")
           PY
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: edithatogo/microcosting_healthworkforce
           ref: ${{ steps.pins.outputs.workforce_ref }}
           path: providers/workforce
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: edithatogo/microcosting_genomics
           ref: ${{ steps.pins.outputs.genomics_ref }}
@@ -86,19 +119,34 @@ jobs:
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
         with:
           version: '0.13.8'
+          enable-cache: true
+      - name: Cache Cargo registry and standalone build target
+        if: ${{ !inputs.use_release_candidate }}
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-providers-1.99.1-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-providers-1.99.1-
       - name: Prepare pinned Python environments and verifier tooling
         run: |
+          PROFILE="$RUNNER_TEMP/provider-consumers-profile.jsonl"
           uv python install 3.15.1 3.15.2
           uv venv --python 3.15.1 "$RUNNER_TEMP/dapane-build"
-          uv pip install --python "$RUNNER_TEMP/dapane-build/bin/python" -r requirements-dev.txt
+          python3 scripts/ci_profile.py run --name uv-dev-deps --profile-file "$PROFILE" -- uv pip install --python "$RUNNER_TEMP/dapane-build/bin/python" -r requirements-dev.txt
           "$RUNNER_TEMP/dapane-build/bin/ruff" check scripts/verify_provider_consumers.py
           "$RUNNER_TEMP/dapane-build/bin/ruff" format --check --diff scripts/verify_provider_consumers.py
       - name: Build the shared native interfaces for standalone qualification
         if: ${{ !inputs.use_release_candidate }}
         run: |
+          PROFILE="$RUNNER_TEMP/provider-consumers-profile.jsonl"
           rustup toolchain install 1.99.1 --profile minimal
-          cargo build --locked --release -p dapane-cli
-          "$RUNNER_TEMP/dapane-build/bin/maturin" build --locked --release --interpreter "$RUNNER_TEMP/dapane-build/bin/python" --out "$RUNNER_TEMP/dapane-wheels"
+          python3 scripts/ci_profile.py run --name cargo-build-cli --profile-file "$PROFILE" -- cargo build --locked --release -p dapane-cli
+          python3 scripts/ci_profile.py run --name maturin-wheel --profile-file "$PROFILE" -- "$RUNNER_TEMP/dapane-build/bin/maturin" build --locked --release --interpreter "$RUNNER_TEMP/dapane-build/bin/python" --out "$RUNNER_TEMP/dapane-wheels"
       - name: Install the shared native wheel for boundary tests
         run: |
           uv pip install --python "$RUNNER_TEMP/dapane-build/bin/python" --no-deps "$RUNNER_TEMP"/dapane-wheels/*.whl
@@ -120,21 +168,31 @@ jobs:
           uv pip install --python "$UV_PROJECT_ENVIRONMENT/bin/python" --no-deps "$RUNNER_TEMP"/genomics-wheels/*.whl "$RUNNER_TEMP"/dapane-wheels/*.whl
       - name: Exercise workforce and export the pinned quotation artifact
         run: |
-          cd "$RUNNER_TEMP"
-          "$RUNNER_TEMP/workforce-installed/bin/python" -I "$GITHUB_WORKSPACE/scripts/verify_provider_consumers.py" workforce \
+          PROFILE="$RUNNER_TEMP/provider-consumers-profile.jsonl"
+          python3 "$GITHUB_WORKSPACE/scripts/ci_profile.py" run --name verify-workforce --cwd "$RUNNER_TEMP" --profile-file "$PROFILE" -- \
+            "$RUNNER_TEMP/workforce-installed/bin/python" -I "$GITHUB_WORKSPACE/scripts/verify_provider_consumers.py" workforce \
             --provider-root "$GITHUB_WORKSPACE/providers/workforce" \
             --dapane-root "$GITHUB_WORKSPACE" \
             --cli "$GITHUB_WORKSPACE/target/release/dapane" \
             --output "$RUNNER_TEMP/provider-evidence"
       - name: Compose the installed genomics consumer and verify historical scope
         run: |
-          cd "$RUNNER_TEMP"
-          "$RUNNER_TEMP/genomics-installed/bin/python" -I "$GITHUB_WORKSPACE/scripts/verify_provider_consumers.py" genomics \
+          PROFILE="$RUNNER_TEMP/provider-consumers-profile.jsonl"
+          python3 "$GITHUB_WORKSPACE/scripts/ci_profile.py" run --name verify-genomics --cwd "$RUNNER_TEMP" --profile-file "$PROFILE" -- \
+            "$RUNNER_TEMP/genomics-installed/bin/python" -I "$GITHUB_WORKSPACE/scripts/verify_provider_consumers.py" genomics \
             --provider-root "$GITHUB_WORKSPACE/providers/genomics" \
             --dapane-root "$GITHUB_WORKSPACE" \
             --cli "$GITHUB_WORKSPACE/target/release/dapane" \
             --output "$RUNNER_TEMP/provider-evidence"
       - name: Check installed native-boundary regressions
         run: |
-          cd "$RUNNER_TEMP"
-          "$RUNNER_TEMP/dapane-build/bin/python" -I -m pytest --import-mode=importlib "$GITHUB_WORKSPACE/tests/python" -q
+          PROFILE="$RUNNER_TEMP/provider-consumers-profile.jsonl"
+          python3 "$GITHUB_WORKSPACE/scripts/ci_profile.py" run --name pytest-boundary --cwd "$RUNNER_TEMP" --profile-file "$PROFILE" -- \
+            "$RUNNER_TEMP/dapane-build/bin/python" -I -m pytest --import-mode=importlib --durations=10 --durations-min=0.05 "$GITHUB_WORKSPACE/tests/python" -q
+      - name: Publish provider-consumers timing profile
+        if: always()
+        run: |
+          python3 scripts/ci_profile.py summarize \
+            --profile-file "$RUNNER_TEMP/provider-consumers-profile.jsonl" \
+            --title "Installed provider consumers profile" \
+            --summary-file "$GITHUB_STEP_SUMMARY" || true

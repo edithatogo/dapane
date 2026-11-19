@@ -1256,13 +1256,30 @@ def receipt_locations(directory: Path, lanes: list[str]) -> list[Path]:
 
 
 def verify_receipts(
-    root: Path, directory: Path, lanes: list[str], expected: str, jobs: dict | None = None
+    root: Path,
+    directory: Path,
+    lanes: list[str],
+    expected: str,
+    jobs: dict | None = None,
+    *,
+    expected_lanes: list[str] | None = None,
 ) -> dict:
     require(
         len(lanes) == len(set(lanes)) and set(lanes) <= set(LANES),
         "Invalid expected lane inventory",
     )
-    require(lanes == discover(root), "Declared lane coverage differs from this source")
+    discovered = discover(root)
+    if expected_lanes is None:
+        require(lanes == discovered, "Declared lane coverage differs from this source")
+    else:
+        require(
+            len(expected_lanes) == len(set(expected_lanes))
+            and set(expected_lanes) <= set(discovered),
+            "Selective expected lanes contain unknown or absent lane",
+        )
+        require(
+            lanes == expected_lanes, "Declared lane coverage differs from selective change scope"
+        )
     source = source_identity(root, expected)
     if jobs is not None:
         for name in ("discovery", "controls"):
@@ -1368,6 +1385,7 @@ def main() -> int:
     verify.add_argument("--expected-source", required=True)
     verify.add_argument("--directory", type=Path, required=True)
     verify.add_argument("--lanes", required=True)
+    verify.add_argument("--expected-lanes")
     verify.add_argument("--job-results")
     installed = commands.add_parser("installed")
     installed.add_argument("--wheel", type=Path, required=True)
@@ -1396,6 +1414,9 @@ def main() -> int:
                     json.loads(args.lanes),
                     args.expected_source,
                     json.loads(args.job_results) if args.job_results else None,
+                    expected_lanes=(
+                        json.loads(args.expected_lanes) if args.expected_lanes else None
+                    ),
                 ),
                 indent=2,
             )

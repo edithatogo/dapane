@@ -123,6 +123,34 @@ builds the pinned provider revisions and exercises them in their separate
 Python 3.15.2 and 3.15.1 environments. The provider-owned migration guides
 describe their APIs and preserved historical paths.
 
+## Local CI/CD hooks, selective routing, and profiling
+
+Local Git hooks live in [`.githooks/`](../.githooks/pre-commit) (activate with
+`git config core.hooksPath .githooks`, and mirrored in
+[`.pre-commit-config.yaml`](../.pre-commit-config.yaml)):
+
+- **`pre-commit`** runs Gitleaks, staged JSON hygiene, Ruff lint/format, selective Rust
+  `fmt`/`clippy` for touched crates only, Conductor validation, release-manifest
+  checks, and fast affected unit tests, printing a compact wall-clock profile.
+  Set `DAPANE_PRECOMMIT_ACT=1` to also run affected workflows in `act`.
+- **`pre-push`** runs Gitleaks across the pushed commit range and invokes
+  [`scripts/run_local_ci.py`](../scripts/run_local_ci.py) on affected scopes.
+
+Run local CI manually on any diff or the full suite:
+
+```sh
+python3 scripts/run_local_ci.py --dry-run
+python3 scripts/run_local_ci.py --runner auto --profile
+python3 scripts/run_local_ci.py --all --runner native --profile
+```
+
+With `--runner auto` and [`.actrc`](../.actrc), affected GitHub Actions workflows
+run via `act` when a Docker daemon (e.g. `colima start`) is reachable, and otherwise
+fall back cleanly to profiled native parity execution (using `cargo-nextest` when
+installed). [`scripts/ci_select.py`](../scripts/ci_select.py) drives both local hooks
+and PR workflow filtering, while [`scripts/ci_profile.py`](../scripts/ci_profile.py)
+records step wall/CPU/RSS metrics and publishes `$GITHUB_STEP_SUMMARY` tables in CI.
+
 Separate capabilities remain on the roadmap: broader source packs and domain
 recipes, richer interval exposure, financial corrections, richer economic
 methods, reporting/ontology exports, R/Julia, Power Apps, process import/execution

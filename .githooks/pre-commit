@@ -7,8 +7,8 @@ cd "$repo_root"
 if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.99\.1'; then
   toolchain_bin="$(dirname "$(rustup which rustc --toolchain 1.99.1)")"
   export PATH="${toolchain_bin}:${PATH}"
+  export RUSTUP_TOOLCHAIN="1.99.1"
 fi
-CARGO=(cargo)
 
 staged_files=()
 while IFS= read -r -d '' path; do
@@ -19,64 +19,91 @@ if [[ ${#staged_files[@]} -eq 0 ]]; then
   exit 0
 fi
 
+profile="${TMPDIR:-/tmp}/dapane-precommit-$$.jsonl"
+cleanup() {
+  if [[ -f "$profile" ]] && [[ -f scripts/ci_profile.py ]]; then
+    python3 scripts/ci_profile.py summarize --profile-file "$profile" --title "pre-commit" --compact || true
+    rm -f "$profile"
+  fi
+}
+trap cleanup EXIT
+
+run_profiled() {
+  local name="$1"
+  shift
+  if [[ -f scripts/ci_profile.py ]]; then
+    python3 scripts/ci_profile.py run --name "$name" --profile-file "$profile" -- "$@"
+  else
+    "$@"
+  fi
+}
+
 # 1. Secrets gate (Gitleaks staged scan).
 if ! command -v gitleaks >/dev/null 2>&1; then
   echo "pre-commit: gitleaks is required on PATH to scan staged changes." >&2
   exit 1
 fi
-gitleaks protect --staged --redact --no-banner
+run_profiled "gitleaks-staged" gitleaks protect --staged --redact --no-banner
 
-# 2. JSON structural and key/digest hygiene gate.
+# 2. Classify staged paths using selective CI router when available.
 json_files=()
 py_files=()
 check_workspace_rust=0
 check_conductor=0
 check_release=0
+check_d2_tests=0
+check_json_hygiene_tests=0
+check_ci_tooling_tests=0
 
 for path in "${staged_files[@]}"; do
   case "$path" in
     *.json) json_files+=("$path") ;;
-    *.py) py_files+=("$path") ;;
+    *.py)
+      if [[ -f "$path" ]]; then
+        py_files+=("$path")
+      fi
+      ;;
   esac
-  if [[ "$path" =~ ^(Cargo\.toml|Cargo\.lock|crates/) ]]; then
+  if [[ "$path" =~ ^(Cargo\.toml|Cargo\.lock|rust-toolchain\.toml|crates/) ]]; then
     check_workspace_rust=1
   fi
-  if [[ "$path" =~ ^(conductor/|README\.md$|AGENTS\.md$|scripts/validate_conductor\.py$) ]]; then
+  if [[ "$path" =~ ^(conductor/|docs/.*\.md$|README\.md$|AGENTS\.md$|scripts/validate_conductor\.py$|tests/test_conductor_validation\.py$) ]]; then
     check_conductor=1
   fi
   if [[ "$path" =~ ^(Cargo\.toml|Cargo\.lock|pyproject\.toml|rust-toolchain\.toml|requirements-.*\.txt|deny\.toml|release/|fixtures/|schemas/|licenses/|docs/provider-consumers\.lock\.json|scripts/release_assurance\.py|scripts/distribution_notices\.py|\.github/workflows/release-assurance\.yml) ]]; then
     check_release=1
   fi
-done
-
-if [[ ${#json_files[@]} -gt 0 ]]; then
-  python3 scripts/check_json_hygiene.py --staged
-fi
-
-# 3. Root workspace Rust formatting and Clippy gates.
-if [[ $check_workspace_rust -eq 1 ]]; then
-  "${CARGO[@]}" fmt --all --check
-  "${CARGO[@]}" clippy --workspace --locked --all-targets -- -D warnings
-fi
-
-# 4. Standalone adapter Rust formatting and Clippy gates.
-for manifest in adapters/*/Cargo.toml; do
-  [[ -f "$manifest" ]] || continue
-  adapter_dir="${manifest%/Cargo.toml}/"
-  touched=0
-  for path in "${staged_files[@]}"; do
-    if [[ "$path" == "$adapter_dir"* ]]; then
-      touched=1
-      break
-    fi
-  done
-  if [[ $touched -eq 1 ]]; then
-    "${CARGO[@]}" fmt --manifest-path "$manifest" --all --check
-    "${CARGO[@]}" clippy --manifest-path "$manifest" --locked --offline --all-targets -- -D warnings
+  if [[ "$path" == adapters/decision_provider_d2/* ]]; then
+    check_d2_tests=1
+  fi
+  if [[ "$path" == "scripts/check_json_hygiene.py" || "$path" == "tests/tooling/test_json_hygiene.py" ]]; then
+    check_json_hygiene_tests=1
+  fi
+  if [[ "$path" =~ ^(scripts/ci_(select|profile)\.py|scripts/run_local_ci\.py|tests/tooling/test_(ci_select|ci_profile|run_local_ci)\.py)$ ]]; then
+    check_ci_tooling_tests=1
   fi
 done
 
-# 5. Python lint and formatting gate (pinned ruff 0.17.4 when via uvx).
+if [[ -f scripts/ci_select.py ]]; then
+  sel_json="$(python3 scripts/ci_select.py --staged --json)"
+  eval "$(
+    SEL_JSON="$sel_json" python3 - <<'PY'
+import json, os
+d = json.loads(os.environ["SEL_JSON"])
+print(f"sel_conductor={1 if d.get('run_conductor') else 0}")
+print(f"sel_release={1 if (d.get('run_release_validate') or d.get('run_release_heavy')) else 0}")
+PY
+  )"
+  if [[ "${sel_conductor:-0}" -eq 1 ]]; then check_conductor=1; fi
+  if [[ "${sel_release:-0}" -eq 1 ]]; then check_release=1; fi
+fi
+
+# 3. JSON structural and key/digest hygiene gate.
+if [[ ${#json_files[@]} -gt 0 ]]; then
+  run_profiled "json-hygiene" python3 scripts/check_json_hygiene.py --staged
+fi
+
+# 4. Python lint and formatting gate (pinned ruff 0.17.4).
 if [[ ${#py_files[@]} -gt 0 ]]; then
   if command -v ruff >/dev/null 2>&1; then
     RUFF=(ruff)
@@ -86,16 +113,56 @@ if [[ ${#py_files[@]} -gt 0 ]]; then
     echo "pre-commit: ruff or uvx is required to check staged Python files." >&2
     exit 1
   fi
-  "${RUFF[@]}" check "${py_files[@]}"
-  "${RUFF[@]}" format --check "${py_files[@]}"
+  run_profiled "ruff-check" "${RUFF[@]}" check "${py_files[@]}"
+  run_profiled "ruff-format" "${RUFF[@]}" format --check "${py_files[@]}"
 fi
 
-# 6. Conductor link/metadata/registry consistency gate.
+# 5. Root workspace Rust formatting and Clippy gates (selective).
+if [[ $check_workspace_rust -eq 1 ]]; then
+  run_profiled "rust-fmt" cargo fmt --all --check
+  run_profiled "rust-clippy" cargo clippy --workspace --locked --all-targets -- -D warnings
+fi
+
+# 6. Affected standalone adapter Rust formatting and Clippy gates.
+for manifest in adapters/*/Cargo.toml; do
+  [[ -f "$manifest" ]] || continue
+  adapter_dir="${manifest%/Cargo.toml}/"
+  label="$(basename "${manifest%/Cargo.toml}")"
+  touched=0
+  for path in "${staged_files[@]}"; do
+    if [[ "$path" == "$adapter_dir"* ]]; then
+      touched=1
+      break
+    fi
+  done
+  if [[ $touched -eq 1 ]]; then
+    run_profiled "${label}-fmt" cargo fmt --manifest-path "$manifest" --all --check
+    run_profiled "${label}-clippy" cargo clippy --manifest-path "$manifest" --locked --offline --all-targets -- -D warnings
+  fi
+done
+
+# 7. Selective documentation, release assurance, and fast stdlib unit tests.
 if [[ $check_conductor -eq 1 ]]; then
-  python3 scripts/validate_conductor.py
+  run_profiled "validate-conductor" python3 scripts/validate_conductor.py
 fi
 
-# 7. Release assurance manifest/evidence gate.
 if [[ $check_release -eq 1 ]]; then
-  python3 scripts/release_assurance.py validate
+  run_profiled "release-validate" python3 scripts/release_assurance.py validate
+fi
+
+if [[ $check_d2_tests -eq 1 ]] && [[ -d adapters/decision_provider_d2/tests ]]; then
+  python3 scripts/ci_profile.py run --name "d2-tests" --profile-file "$profile" --cwd adapters/decision_provider_d2 -- python3 -m unittest discover -s tests -q
+fi
+
+if [[ $check_json_hygiene_tests -eq 1 ]]; then
+  run_profiled "json-hygiene-tests" python3 -m unittest discover -s tests/tooling -p 'test_json_hygiene.py' -q
+fi
+
+if [[ $check_ci_tooling_tests -eq 1 ]]; then
+  run_profiled "ci-tooling-tests" python3 -m unittest discover -s tests/tooling -p 'test_*ci*.py' -q
+fi
+
+# 8. Optional local GitHub Actions container validation when explicitly requested.
+if [[ "${DAPANE_PRECOMMIT_ACT:-0}" == "1" ]] && [[ -f scripts/run_local_ci.py ]]; then
+  run_profiled "act-staged" python3 scripts/run_local_ci.py --staged --runner act --no-profile
 fi

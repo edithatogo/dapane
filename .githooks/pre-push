@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+ZERO_SHA="0000000000000000000000000000000000000000"
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-push: gitleaks is required on PATH to scan pushed commits." >&2
+  exit 1
+fi
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [[ -n "${local_sha:-}" ]] || continue
+  if [[ "$local_sha" == "$ZERO_SHA" ]]; then
+    # Branch/tag deletion on remote.
+    continue
+  fi
+
+  base_sha=""
+  if [[ -n "${remote_sha:-}" ]] && [[ "$remote_sha" != "$ZERO_SHA" ]] && git cat-file -e "${remote_sha}^{commit}" 2>/dev/null; then
+    base_sha="$remote_sha"
+  else
+    base_sha="$(git merge-base origin/main "$local_sha" 2>/dev/null || git rev-parse "${local_sha}~1" 2>/dev/null || true)"
+  fi
+
+  if [[ -n "$base_sha" ]] && [[ "$base_sha" == "$local_sha" ]]; then
+    echo "pre-push: $remote_ref already matches $local_sha; nothing new to verify."
+    continue
+  fi
+
+  if [[ -n "$base_sha" ]]; then
+    echo "pre-push: verifying selective CI for ${base_sha:0:8}..${local_sha:0:8}"
+    gitleaks git --log-opts="${base_sha}..${local_sha}" --redact --no-banner
+    python3 scripts/run_local_ci.py \
+      --base "$base_sha" \
+      --head "$local_sha" \
+      --runner "${DAPANE_LOCAL_CI_RUNNER:-auto}" \
+      --profile
+  else
+    echo "pre-push: verifying full local CI for initial push ${local_sha:0:8}"
+    gitleaks dir . --redact --no-banner
+    python3 scripts/run_local_ci.py \
+      --all \
+      --runner "${DAPANE_LOCAL_CI_RUNNER:-auto}" \
+      --profile
+  fi
+done

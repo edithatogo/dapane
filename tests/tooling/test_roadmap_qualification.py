@@ -237,6 +237,17 @@ class RoadmapControls(unittest.TestCase):
         with self.assertRaisesRegex(guard.QualificationError, "Declared lane coverage"):
             guard.verify_receipts(self.repo, self.directory, [], self.sha)
 
+    def test_selective_expected_lanes_accepts_subset_and_rejects_omitted_or_unknown(self):
+        root, _, _ = self.receipt()
+        result = guard.verify_receipts(
+            self.repo, root, ["observed"], self.sha, expected_lanes=["observed"]
+        )
+        self.assertEqual(set(result["lanes"]), {"observed"})
+        with self.assertRaisesRegex(guard.QualificationError, "selective change scope"):
+            guard.verify_receipts(self.repo, root, [], self.sha, expected_lanes=["observed"])
+        with self.assertRaisesRegex(guard.QualificationError, "unknown or absent"):
+            guard.verify_receipts(self.repo, root, ["static"], self.sha, expected_lanes=["static"])
+
     def test_omitted_source_or_style_guard_cannot_pass(self):
         root, path, record = self.receipt()
         original = record["commands"]

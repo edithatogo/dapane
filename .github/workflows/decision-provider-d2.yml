@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -13,11 +14,43 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      run_decision_provider_d2: ${{ steps.select.outputs.run_decision_provider_d2 }}
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: ${{ github.event_name == 'pull_request' && 0 || 1 }}
+          persist-credentials: false
+      - name: Select decision-provider-d2 scope
+        id: select
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ] && [ -n "${{ github.event.pull_request.base.sha }}" ] && [ -n "${{ github.event.pull_request.head.sha }}" ]; then
+            python3 scripts/ci_select.py --mode pr \
+              --base "${{ github.event.pull_request.base.sha }}" \
+              --head "${{ github.event.pull_request.head.sha }}" \
+              --github-output "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "pull_request" ] && [ "${{ env.ACT }}" = "true" ]; then
+            python3 scripts/ci_select.py --mode pr --base "HEAD~1" --head "HEAD" --github-output "$GITHUB_OUTPUT"
+          else
+            python3 scripts/ci_select.py --mode full --github-output "$GITHUB_OUTPUT"
+          fi
+
   decision-provider-d2:
+    needs: changes
+    if: needs.changes.outputs.run_decision_provider_d2 == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
@@ -27,15 +60,27 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'requirements-dev.txt'
       - name: Run D2/D3 stdlib unit tests
-        working-directory: adapters/decision_provider_d2
-        run: python -m unittest discover -s tests -v
+        run: |
+          PROFILE="$RUNNER_TEMP/d2-profile.jsonl"
+          python3 scripts/ci_profile.py run --name d2-unittest --cwd adapters/decision_provider_d2 --profile-file "$PROFILE" -- python -m unittest discover -s tests -v
       - name: Check Python bytecode compilation and evidence JSON hygiene
         run: |
-          python -m compileall -q adapters/decision_provider_d2
-          python scripts/check_json_hygiene.py adapters/decision_provider_d2/evidence/verification.json
+          PROFILE="$RUNNER_TEMP/d2-profile.jsonl"
+          python3 scripts/ci_profile.py run --name compileall --profile-file "$PROFILE" -- python -m compileall -q adapters/decision_provider_d2
+          python3 scripts/ci_profile.py run --name json-hygiene --profile-file "$PROFILE" -- python scripts/check_json_hygiene.py adapters/decision_provider_d2/evidence/verification.json
       - name: Check Ruff lint and formatting
         run: |
-          python -m pip install ruff==0.17.4
-          ruff check adapters/decision_provider_d2
-          ruff format --check adapters/decision_provider_d2
+          PROFILE="$RUNNER_TEMP/d2-profile.jsonl"
+          python3 scripts/ci_profile.py run --name pip-ruff --profile-file "$PROFILE" -- python -m pip install ruff==0.17.4
+          python3 scripts/ci_profile.py run --name ruff-check --profile-file "$PROFILE" -- ruff check adapters/decision_provider_d2
+          python3 scripts/ci_profile.py run --name ruff-format --profile-file "$PROFILE" -- ruff format --check adapters/decision_provider_d2
+      - name: Publish D2/D3 step timing profile
+        if: always()
+        run: |
+          python3 scripts/ci_profile.py summarize \
+            --profile-file "$RUNNER_TEMP/d2-profile.jsonl" \
+            --title "Decision provider D2/D3 profile" \
+            --summary-file "$GITHUB_STEP_SUMMARY" || true

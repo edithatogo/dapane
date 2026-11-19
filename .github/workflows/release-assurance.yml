@@ -16,8 +16,11 @@ jobs:
   manifest:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    outputs:
+      run_heavy: ${{ steps.select.outputs.run_release_heavy }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
@@ -25,21 +28,46 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: ${{ github.event_name == 'pull_request' && 0 || 1 }}
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.15'
+          cache: 'pip'
+          cache-dependency-path: 'requirements-dev.txt'
+      - name: Select heavy release assurance scope
+        id: select
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ] && [ -n "${{ github.event.pull_request.base.sha }}" ] && [ -n "${{ github.event.pull_request.head.sha }}" ]; then
+            python3 scripts/ci_select.py --mode pr \
+              --base "${{ github.event.pull_request.base.sha }}" \
+              --head "${{ github.event.pull_request.head.sha }}" \
+              --github-output "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "pull_request" ] && [ "${{ env.ACT }}" = "true" ]; then
+            python3 scripts/ci_select.py --mode pr --base "HEAD~1" --head "HEAD" --github-output "$GITHUB_OUTPUT"
+          else
+            echo "run_release_heavy=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Check the candidate policy and rejection cases
         run: |
-          python scripts/release_assurance.py validate
-          python -m unittest discover -s tests/release -v
-          python -m pip install ruff==0.17.4
-          ruff check scripts/release_assurance.py scripts/distribution_notices.py tests/release
-          ruff format --check scripts/release_assurance.py scripts/distribution_notices.py tests/release
-          python scripts/validate_conductor.py
+          PROFILE="$RUNNER_TEMP/release-manifest-profile.jsonl"
+          python3 scripts/ci_profile.py run --name release-validate --profile-file "$PROFILE" -- python scripts/release_assurance.py validate
+          python3 scripts/ci_profile.py run --name release-tests --profile-file "$PROFILE" -- python -m unittest discover -s tests/release -v
+          python3 scripts/ci_profile.py run --name pip-ruff --profile-file "$PROFILE" -- python -m pip install ruff==0.17.4
+          python3 scripts/ci_profile.py run --name ruff-check --profile-file "$PROFILE" -- ruff check scripts/release_assurance.py scripts/distribution_notices.py tests/release
+          python3 scripts/ci_profile.py run --name ruff-format --profile-file "$PROFILE" -- ruff format --check scripts/release_assurance.py scripts/distribution_notices.py tests/release
+          python3 scripts/ci_profile.py run --name validate-conductor --profile-file "$PROFILE" -- python scripts/validate_conductor.py
+      - name: Publish manifest timing profile
+        if: always()
+        run: |
+          python3 scripts/ci_profile.py summarize \
+            --profile-file "$RUNNER_TEMP/release-manifest-profile.jsonl" \
+            --title "Release assurance manifest profile" \
+            --summary-file "$GITHUB_STEP_SUMMARY" || true
 
   candidate:
     needs: manifest
+    if: github.event_name == 'push' || needs.manifest.outputs.run_heavy == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
@@ -54,6 +82,7 @@ jobs:
       LC_ALL: C.UTF-8
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
@@ -65,26 +94,42 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements-dev.txt'
+      - name: Cache read-only Cargo registry and git crates (clean target dirs preserved)
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+          key: ${{ runner.os }}-cargo-registry-1.99.1-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-1.99.1-
       - name: Install the pinned build tools
         run: |
           rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
           python -m pip install -r requirements-dev.txt
       - name: Verify locked dependency notices
         run: |
+          PROFILE="$RUNNER_TEMP/release-candidate-profile.jsonl"
           cargo fetch --locked
-          python scripts/distribution_notices.py --check
+          python3 scripts/ci_profile.py run --name notices-check --profile-file "$PROFILE" -- python scripts/distribution_notices.py --check
       - name: Build twice from clean target directories
         shell: bash
         run: |
           set -euo pipefail
+          PROFILE="$RUNNER_TEMP/release-candidate-profile.jsonl"
           export SOURCE_DATE_EPOCH="$(git show -s --format=%ct HEAD)"
           export RUSTFLAGS="--remap-path-prefix=$GITHUB_WORKSPACE=/dapane/source --remap-path-prefix=$RUNNER_TEMP/dapane-target-first=/dapane/target --remap-path-prefix=$RUNNER_TEMP/dapane-target-second=/dapane/target"
           for attempt in first second; do
             export CARGO_TARGET_DIR="$RUNNER_TEMP/dapane-target-$attempt"
             mkdir "$RUNNER_TEMP/dapane-$attempt"
-            cargo build --locked --release --no-default-features -p dapane-cli
+            python3 scripts/ci_profile.py run --name "cargo-build-$attempt" --profile-file "$PROFILE" -- \
+              cargo build --locked --release --no-default-features -p dapane-cli
             install -m 755 "$CARGO_TARGET_DIR/release/dapane" "$RUNNER_TEMP/dapane-$attempt/dapane"
-            maturin build --locked --release --interpreter python --out "$RUNNER_TEMP/dapane-$attempt"
+            python3 scripts/ci_profile.py run --name "maturin-$attempt" --profile-file "$PROFILE" -- \
+              maturin build --locked --release --interpreter python --out "$RUNNER_TEMP/dapane-$attempt"
           done
           mkdir "$RUNNER_TEMP/dapane-candidate"
           python scripts/release_assurance.py compare \
@@ -99,27 +144,32 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          PROFILE="$RUNNER_TEMP/release-candidate-profile.jsonl"
           artifact="$RUNNER_TEMP/dapane-candidate"
           python -m venv "$RUNNER_TEMP/dapane-consumer"
           consumer="$RUNNER_TEMP/dapane-consumer/bin/python"
           "$consumer" -m pip install --no-deps --no-index "$artifact/"*.whl
           mkdir "$RUNNER_TEMP/dapane-consumer-cwd"
-          cd "$RUNNER_TEMP/dapane-consumer-cwd"
           "$consumer" "$GITHUB_WORKSPACE/scripts/release_assurance.py" collect \
             --cli "$artifact/dapane" --wheel "$artifact/"*.whl \
             --output "$artifact/evidence.json"
           "$consumer" "$GITHUB_WORKSPACE/scripts/release_assurance.py" verify \
             --evidence "$artifact/evidence.json" --artifact-dir "$artifact"
           "$consumer" -m pip install -r "$GITHUB_WORKSPACE/requirements-dev.txt"
-          "$consumer" -m pytest --import-mode=importlib "$GITHUB_WORKSPACE/tests/python" \
+          python3 "$GITHUB_WORKSPACE/scripts/ci_profile.py" run --name pytest-candidate --cwd "$RUNNER_TEMP/dapane-consumer-cwd" --profile-file "$PROFILE" -- \
+            "$consumer" -m pytest --import-mode=importlib --durations=10 --durations-min=0.05 "$GITHUB_WORKSPACE/tests/python" \
             --junitxml="$artifact/installed-tests.xml" -q
-          "$consumer" "$GITHUB_WORKSPACE/scripts/validate_contract.py" --cli "$artifact/dapane"
-          "$consumer" "$GITHUB_WORKSPACE/scripts/validate_intervals.py" --cli "$artifact/dapane" \
+          python3 "$GITHUB_WORKSPACE/scripts/ci_profile.py" run --name validate-contract --cwd "$RUNNER_TEMP/dapane-consumer-cwd" --profile-file "$PROFILE" -- \
+            "$consumer" "$GITHUB_WORKSPACE/scripts/validate_contract.py" --cli "$artifact/dapane"
+          python3 "$GITHUB_WORKSPACE/scripts/ci_profile.py" run --name validate-intervals --cwd "$RUNNER_TEMP/dapane-consumer-cwd" --profile-file "$PROFILE" -- \
+            "$consumer" "$GITHUB_WORKSPACE/scripts/validate_intervals.py" --cli "$artifact/dapane" \
             | tee "$artifact/installed-intervals.log"
       - name: Record bounded throughput and memory on CPython 3.15
         if: matrix.python == '3.15'
         run: |
-          "$RUNNER_TEMP/dapane-consumer/bin/python" scripts/benchmark_cli.py \
+          PROFILE="$RUNNER_TEMP/release-candidate-profile.jsonl"
+          python3 scripts/ci_profile.py run --name benchmark-cli --profile-file "$PROFILE" -- \
+            "$RUNNER_TEMP/dapane-consumer/bin/python" scripts/benchmark_cli.py \
             --cli "$RUNNER_TEMP/dapane-candidate/dapane" \
             --counts 10 1000 5000 --repeats 3 \
             --output "$RUNNER_TEMP/dapane-candidate/benchmark.json"
@@ -184,13 +234,22 @@ jobs:
           path: ${{ runner.temp }}/dapane-candidate/
           if-no-files-found: error
           retention-days: 30
+      - name: Publish candidate timing profile
+        if: always()
+        run: |
+          python3 scripts/ci_profile.py summarize \
+            --profile-file "$RUNNER_TEMP/release-candidate-profile.jsonl" \
+            --title "Release candidate (${{ matrix.python }}) profile" \
+            --summary-file "$GITHUB_STEP_SUMMARY" || true
 
   supply-chain:
     needs: manifest
+    if: github.event_name == 'push' || needs.manifest.outputs.run_heavy == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
@@ -202,22 +261,39 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.15'
+          cache: 'pip'
+          cache-dependency-path: 'requirements-release.txt'
+      - name: Cache pinned supply-chain tools and Cargo registry
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo/bin/cargo-deny
+            ~/.cargo/bin/cargo-cyclonedx
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+          key: ${{ runner.os }}-assurance-tools-1.99.1-deny-0.20.2-cdx-0.5.10
       - name: Install pinned assurance tools
         run: |
+          PROFILE="$RUNNER_TEMP/release-supply-profile.jsonl"
           rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
-          cargo install --locked --version 0.20.2 cargo-deny
-          cargo install --locked --version 0.5.10 cargo-cyclonedx
-          python -m pip install -r requirements-release.txt
-          mkdir "$RUNNER_TEMP/dapane-supply-chain"
+          if ! cargo deny --version 2>/dev/null | grep -qF "0.20.2"; then
+            python3 scripts/ci_profile.py run --name install-cargo-deny --profile-file "$PROFILE" -- cargo install --locked --version 0.20.2 cargo-deny
+          fi
+          if ! cargo cyclonedx --version 2>/dev/null | grep -qF "0.5.10"; then
+            python3 scripts/ci_profile.py run --name install-cargo-cyclonedx --profile-file "$PROFILE" -- cargo install --locked --version 0.5.10 cargo-cyclonedx
+          fi
+          python3 scripts/ci_profile.py run --name pip-release-deps --profile-file "$PROFILE" -- python -m pip install -r requirements-release.txt
+          mkdir -p "$RUNNER_TEMP/dapane-supply-chain"
       - name: Check dependency advisories, licences, duplicates and sources
         shell: bash
         run: |
           set -euo pipefail
+          PROFILE="$RUNNER_TEMP/release-supply-profile.jsonl"
           evidence="$RUNNER_TEMP/dapane-supply-chain"
           cargo metadata --locked --format-version 1 > "$evidence/cargo-metadata.json"
           cargo tree --locked --duplicates > "$evidence/duplicate-crates.txt"
           cargo deny --version > "$evidence/cargo-deny-version.txt"
-          if cargo deny --locked --format json check advisories bans licenses sources > "$evidence/cargo-deny.jsonl" 2>&1; then
+          if python3 scripts/ci_profile.py run --name cargo-deny --profile-file "$PROFILE" -- bash -c 'cargo deny --locked --format json check advisories bans licenses sources > "$1/cargo-deny.jsonl" 2>&1' _ "$evidence"; then
             export DAPANE_DENY_EXIT=0
           else
             export DAPANE_DENY_EXIT=$?
@@ -253,16 +329,20 @@ jobs:
           exit "$DAPANE_DENY_EXIT"
       - name: Audit Python build and assurance dependencies
         run: |
-          python -m pip_audit --strict --progress-spinner off \
+          PROFILE="$RUNNER_TEMP/release-supply-profile.jsonl"
+          python3 scripts/ci_profile.py run --name pip-audit --profile-file "$PROFILE" -- \
+            python -m pip_audit --strict --progress-spinner off \
             --requirement requirements-dev.txt --requirement requirements-release.txt \
             --format json --output "$RUNNER_TEMP/dapane-supply-chain/python-build-advisories.json"
       - name: Generate native dependency SBOMs without changing resolution
         shell: bash
         run: |
           set -euo pipefail
+          PROFILE="$RUNNER_TEMP/release-supply-profile.jsonl"
           export SOURCE_DATE_EPOCH="$(git show -s --format=%ct HEAD)"
           cargo cyclonedx --version > "$RUNNER_TEMP/dapane-supply-chain/cargo-cyclonedx-version.txt"
-          CARGO_NET_OFFLINE=true cargo cyclonedx --format json --spec-version 1.6 \
+          python3 scripts/ci_profile.py run --name cargo-cyclonedx --profile-file "$PROFILE" -- \
+            env CARGO_NET_OFFLINE=true cargo cyclonedx --format json --spec-version 1.6 \
             --target x86_64-unknown-linux-gnu --override-filename bom
           git diff --exit-code -- Cargo.lock
           for crate in dapane-core dapane-cli dapane-python; do
@@ -281,19 +361,29 @@ jobs:
           path: ${{ runner.temp }}/dapane-supply-chain/
           if-no-files-found: error
           retention-days: 30
+      - name: Publish supply-chain timing profile
+        if: always()
+        run: |
+          python3 scripts/ci_profile.py summarize \
+            --profile-file "$RUNNER_TEMP/release-supply-profile.jsonl" \
+            --title "Release supply-chain profile" \
+            --summary-file "$GITHUB_STEP_SUMMARY" || true
 
   provider-candidate:
-    needs: candidate
+    needs: [manifest, candidate]
+    if: github.event_name == 'push' || needs.manifest.outputs.run_heavy == 'true'
     uses: ./.github/workflows/provider-consumers.yml
     with:
       use_release_candidate: true
 
   matrix:
-    needs: [candidate, supply-chain, provider-candidate]
+    needs: [manifest, candidate, supply-chain, provider-candidate]
+    if: github.event_name == 'push' || needs.manifest.outputs.run_heavy == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
@@ -326,6 +416,7 @@ jobs:
       attestations: write
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        if: ${{ env.ACT != 'true' }}
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
