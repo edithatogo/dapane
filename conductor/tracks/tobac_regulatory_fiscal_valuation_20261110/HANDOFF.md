@@ -6,8 +6,9 @@ The fiscal source follow-up starts at merged Dapane main `5c035f6` and carries
 the Tobac checkpoint through `21dce9a`. The verified implementation is
 `4d567f366c93103870f15c16a1a4918f77e46898`. Its changes are in
 `adapters/decision_draws/` and this track. The existing standalone CI covers
-the adapter crate. The next track task is T2.3, which requires a mapped
-Tobac interface and an executed parity comparison.
+the adapter crate. T2.3 is blocked: Tobac main `891f79e` still has no `economics.py` or
+`decision.py`. T3.2 is recorded in [FALLBACK.md](FALLBACK.md). The next open
+tasks are T3.1 and T3.3, which need an installed consumer.
 [Verification](VERIFICATION.md)
 
 ## T1 owner follow-up — 15 November 2026
