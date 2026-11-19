@@ -4,13 +4,18 @@ This is a standalone standard-library contract adapter. It consumes D1's unchang
 native result, externally produced adoption/valuation records and explicit game
 utilities. It does not fit an Innovate model, price resources, run Voiage methods,
 solve Paignia games or convert financial transfers into utilities.
+When qualified native provider binaries are available, D2 can invoke them
+through subprocess for provider-backed execution.
 """
 
 from __future__ import annotations
 
 import json
 import math
+import os
 import re
+import subprocess
+import tempfile
 from fractions import Fraction
 from hashlib import sha256
 from itertools import product
@@ -605,5 +610,242 @@ def paignia_packet(payload: Any) -> dict[str, Any]:
             "exact_payoffs": exact_payoffs,
             "game_specification": {"schema_version": "1.0.0", "id": game_id, "game": graph},
             "application_requirement": "Construct Paignia native structs and validate_for_profile on qualified artifacts",
+        },
+    )
+
+
+def innovate_adoption_capacity_native(payload: Any, innovate_binary: str) -> dict[str, Any]:
+    """Call Innovate's native execute_json for adoption-capacity evaluation.
+
+    Converts Dapane's d2-innovate input to Innovate's execute_json format,
+    calls the innovate-native binary via subprocess, and returns the result
+    wrapped in Dapane's d2-innovate output envelope.
+    """
+    p = _object(
+        payload,
+        "/",
+        {
+            "schema_version",
+            "provider",
+            "run_id",
+            "iteration",
+            "previous_evaluation_digest",
+            "key",
+            "resource",
+            "observations",
+            "feedback",
+        },
+    )
+    if p["schema_version"] != "dapane-d2-innovate/0.1":
+        _bad("unsupported_schema", "/schema_version", "Only dapane-d2-innovate/0.1")
+    pin = negotiate(p["provider"])
+    if pin["provider"] != "edithatogo/innovate":
+        _bad("unsupported_provider", "/provider", "Expected Innovate")
+
+    run_id = _ident(p["run_id"], "/run_id")
+    iteration = p["iteration"]
+    if type(iteration) is not int or not 0 <= iteration <= 16:
+        _bad("invalid_iteration", "/iteration", "Expected integer iteration 0..16")
+
+    key = dict(zip(KEY_FIELDS, _key(p["key"], "/key")))
+
+    # Build Innovate execute_json request
+    innovate_request = {
+        "schema_version": "2.0",
+        "operation": "dapane_adoption_capacity",
+        "model_key": "dapane-adoption-capacity",
+        "payload": {
+            "run_id": run_id,
+            "iteration": iteration,
+            "previous_evaluation_digest": p["previous_evaluation_digest"],
+            "key": key,
+            "resource": p["resource"],
+            "observations": p["observations"],
+            "feedback": p["feedback"],
+        },
+    }
+
+    # Write request to temp file and call innovate-native
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as req_file:
+        req_file.write(json.dumps(innovate_request))
+        req_path = req_file.name
+    out_path = req_path + ".out"
+    try:
+        result = subprocess.run(
+            [innovate_binary, "predict", "--request", req_path, "--output", out_path],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        if result.returncode != 0:
+            _bad(
+                "native_provider_failed",
+                "/",
+                f"Innovate native exited {result.returncode}: {result.stderr.strip()}",
+            )
+        with open(out_path, encoding="utf-8") as f:
+            innovate_response = json.loads(f.read())
+    finally:
+        for path in (req_path, out_path):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+
+    if innovate_response.get("error") is not None:
+        err = innovate_response["error"]
+        _bad(
+            "native_provider_error",
+            "/",
+            f"Innovate error: {err.get('code', 'unknown')}: {err.get('message', 'unknown')}",
+        )
+
+    result_data = innovate_response.get("result", {})
+
+    return _closed_output(
+        "dapane:d2-adoption:0.1\n",
+        {
+            "schema_version": p["schema_version"],
+            "run_id": run_id,
+            "provider": pin,
+            "provider_execution": "native_invoked",
+            "key": key,
+            "iteration": iteration,
+            "previous_evaluation_digest": p["previous_evaluation_digest"],
+            "feedback_mode": p["feedback"].get("mode", "none"),
+            "triggering_valuation_digest": p["feedback"].get("valuation_digest"),
+            "resource": result_data.get("resource", p["resource"]),
+            "periods": result_data.get("periods", []),
+            "pricing_execution": "native_invoked",
+            "innovate_response": innovate_response,
+        },
+    )
+
+
+def paignia_game_solve_native(payload: Any, paignia_binary: str) -> dict[str, Any]:
+    """Call Paignia's native solve for static game evaluation.
+
+    Converts Dapane's d2-paignia input to Paignia's GameSpecification JSON
+    format, calls the paignia-native binary via subprocess, and returns the
+    solution wrapped in Dapane's d2-paignia output envelope.
+    """
+    p = _object(
+        payload,
+        "/",
+        {
+            "schema_version",
+            "provider",
+            "game_id",
+            "player_id",
+            "key",
+            "payoff_mapping",
+            "actions",
+        },
+    )
+    if p["schema_version"] != "dapane-d2-paignia/0.1":
+        _bad("unsupported_schema", "/schema_version", "Only dapane-d2-paignia/0.1")
+    pin = negotiate(p["provider"])
+    if pin["provider"] != "edithatogo/paignia":
+        _bad("unsupported_provider", "/provider", "Expected Paignia")
+
+    game_id = _ident(p["game_id"], "/game_id")
+    player_id = _ident(p["player_id"], "/player_id")
+    key = dict(zip(KEY_FIELDS, _key(p["key"], "/key")))
+
+    # Build Paignia GameSpecification JSON
+    actions = p["actions"]
+    if not isinstance(actions, list) or not 2 <= len(actions) <= 32:
+        _bad("invalid_request", "/actions", "Two to 32 explicit actions required")
+
+    edges = []
+    terminals = {}
+    action_ids = set()
+    exact_payoffs = []
+    for i, row in enumerate(actions):
+        a = _object(row, f"/actions/{i}", {"id", "utility"})
+        action = _ident(a["id"], f"/actions/{i}/id")
+        if action in action_ids:
+            _bad("duplicate_action", f"/actions/{i}/id", "Each decision action must be unique")
+        action_ids.add(action)
+        terminal = f"terminal:{action}"
+        if len(terminal.encode("utf-8")) > 128:
+            _bad(
+                "invalid_identity",
+                f"/actions/{i}/id",
+                "Terminal identity would exceed 128 bytes",
+            )
+        v = _fraction(a["utility"], f"/actions/{i}/utility")
+        terminals[terminal] = {
+            "kind": "Terminal",
+            "payoffs": {player_id: _f64(v, f"/actions/{i}/utility")},
+        }
+        edges.append({"action": action, "target": terminal})
+        exact_payoffs.append({"action": action, "utility": _wire(v)})
+
+    game_spec = {
+        "schema_version": "1.0.0",
+        "id": game_id,
+        "game": {
+            "root": "start",
+            "nodes": {
+                "start": {
+                    "kind": "Decision",
+                    "player": player_id,
+                    "edges": edges,
+                },
+                **terminals,
+            },
+        },
+    }
+
+    # Write request to temp file and call paignia-native
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as req_file:
+        json.dump(game_spec, req_file)
+        req_path = req_file.name
+    out_path = req_path + ".out"
+    try:
+        result = subprocess.run(
+            [paignia_binary, "solve", "--request", req_path, "--output", out_path],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        if result.returncode != 0:
+            _bad(
+                "native_provider_failed",
+                "/",
+                f"Paignia native exited {result.returncode}: {result.stderr.strip()}",
+            )
+        with open(out_path, encoding="utf-8") as f:
+            paignia_response = json.loads(f.read())
+    finally:
+        for path in (req_path, out_path):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+
+    if "solution" not in paignia_response:
+        _bad(
+            "native_provider_error",
+            "/",
+            "Paignia native did not return a solution",
+        )
+
+    sol = paignia_response["solution"]
+
+    return _closed_output(
+        "dapane:d2-paignia:0.1\n",
+        {
+            "schema_version": p["schema_version"],
+            "provider": pin,
+            "provider_execution": "native_invoked",
+            "native_wire_supported": True,
+            "key": key,
+            "payoff_mapping": p["payoff_mapping"],
+            "exact_payoffs": exact_payoffs,
+            "game_specification": game_spec,
+            "paignia_solution": sol,
+            "application_requirement": None,
         },
     )
