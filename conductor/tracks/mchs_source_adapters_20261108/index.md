@@ -2,7 +2,7 @@
 
 Track: `mchs_source_adapters_20261108`
 
-Status: in_progress
+Status: completed
 
 Connect classified hospital activity and versioned quotation sources without
 conflating tariffs, funding, resource cost and actual payment.

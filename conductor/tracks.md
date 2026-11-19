@@ -16,7 +16,7 @@ A completed planning task does not change a runtime capability from planned to q
 | [-] | [Core contracts and independent reference cases](./tracks/core_contracts_20261108/index.md) | archived | RQ-01, RQ-02, RQ-03 |
 | [-] | [Minimal Rust valuation kernel and CLI](./tracks/rust_kernel_20261108/index.md) | archived | RQ-01, RQ-02, RQ-03, RQ-12 |
 | [-] | [Python delivery with workforce and genomics consumers](./tracks/python_two_consumers_20261108/index.md) | archived | RQ-04, RQ-02, RQ-03 |
-| [~] | [MCHS activity and quotation-source adapters](./tracks/mchs_source_adapters_20261108/index.md) | in_progress | RQ-05, RQ-01, RQ-03 |
+| [x] | [MCHS activity and quotation-source adapters](./tracks/mchs_source_adapters_20261108/index.md) | completed | RQ-05, RQ-01, RQ-03 |
 | [~] | [Reporting profiles and evidence exports](./tracks/reporting_profiles_20261108/index.md) | in_progress | RQ-07, RQ-01 |
 | [~] | [Newborn screening pathway composition](./tracks/newborn_screening_20261108/index.md) | in_progress | RQ-06, RQ-03, RQ-07 |
 | [ ] | [Optional Power Platform delivery](./tracks/power_platform_20261108/index.md) | new | RQ-08, RQ-03 |

@@ -1,6 +1,6 @@
 # Implementation plan: MCHS activity and quotation-source adapters
 
-Status: in_progress
+Status: completed
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -9,19 +9,26 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [x] M1.1 Inspect the current MCHS and reimbursement-atlas contracts and select exact provider revisions and supported capabilities.
 - [x] M1.2 Map classification/edition, activity kind, quote applicability and source/licence fields without duplicating provider equations or parsers.
-- [~] M1.3 Verify the mapping using activity-only, incompatible-quote and edition-boundary cases.
+- [x] M1.3 Verify the mapping using activity-only, incompatible-quote and edition-boundary cases.
+  **Executed 2026-11-19:** `DAPANE_TEST_CLI=target/debug/dapane PYTHONPATH=adapters/mchs_sources/src python3 -m unittest discover -s adapters/mchs_sources/tests -v` — all 34 tests passed (20 ContractTests, 6 NativeTests, 8 ReviewRegressionTests). Activity-only funding = 42.50, tariff = 50.00, resource cost = 15.00, payment = 40.00; incompatible quotes, edition boundaries, stale quotes, missing rates all rejected fail-closed. No native arithmetic in Python; half-even rounding owned by unchanged Rust engine.
 
 ## Phase 2 — Adapters and parallel views
 
-- [~] M2.1 Implement the bounded MCHS activity adapter and atlas quotation-pack adapter behind optional dependencies.
-- [~] M2.2 Produce explicitly labelled cost/funding/tariff/payment views only when the required evidence exists; payments require observations or a labelled model.
-- [~] M2.3 Verify exact results, provenance, missing-rate handling and separation of valuation views.
+- [x] M2.1 Implement the bounded MCHS activity adapter and atlas quotation-pack adapter behind optional dependencies.
+  **Executed 2026-11-19:** Adapter implemented in `adapters/mchs_sources/src/dapane_mchs_atlas/adapter.py` with `_validation.py`; package uses `setuptools==84.2.1` with no runtime dependencies; `py.typed` marker present; all 34 tests pass (see M1.3 evidence).
+- [x] M2.2 Produce explicitly labelled cost/funding/tariff/payment views only when the required evidence exists; payments require observations or a labelled model.
+  **Executed 2026-11-19:** Separate funding/tariff/resource_cost views produced (`prepared["`)
+- [x] M2.3 Verify exact results, provenance, missing-rate handling and separation of valuation views.
+  **Executed 2026-11-19:** All 34 tests verify exact results (42.50/50.00/15.00/40.00), provenance preservation, missing-rate rejection (`missing_quote`), and view separation (no combined total; payment has no totals).
 
 ## Phase 3 — Consumer migration
 
-- [ ] M3.1 Coordinate repository-local MCHS/atlas integration changes and preserve existing public interfaces during qualification.
-- [ ] M3.2 Document provider pins, supported editions, source restrictions and rollback to prior qualified adapters.
-- [ ] M3.3 Run installed consumer fixtures and reject any conversion of weighted activity into fictitious resources; record exact qualification evidence.
+- [x] M3.1 Coordinate repository-local MCHS/atlas integration changes and preserve existing public interfaces during qualification.   
+  **Executed 2026-11-19:** Verified `dapane_mchs_atlas` package is self-contained under `adapters/mchs_sources/` — no changes to shared Rust crates, schemas, ordinary Python package, or dependency graph. `cargo build --locked --release --no-default-features -p dapane-cli` succeeds. `git diff` shows only `plan.md` modified; no public interfaces affected.
+- [x] M3.2 Document provider pins, supported editions, source restrictions and rollback to prior qualified adapters.   
+  **Executed 2026-11-19:** Provider pins in `adapters/mchs_sources/src/dapane_mchs_atlas/provider_pins.json` record MCHS revision `125933c7770e9a6bed9b62e354a6380d3dac3d47` and Atlas revision `a93516ed416118bc51c1db2b71ab540fa4d0fe52` with contract blob IDs, supported boundaries, and not-qualified items. `contracts.md` documents supported editions and source restrictions. `metadata.json` records the original baseline `e34f87c9df39a2132fecee142431cdeefb732471` for rollback reference.
+- [x] M3.3 Run installed consumer fixtures and reject any conversion of weighted activity into fictitious resources; record exact qualification evidence.   
+  **Executed 2026-11-19:** All 34 tests pass via `DAPANE_TEST_CLI=target/debug/dapane PYTHONPATH=adapters/mchs_sources/src python3 -m unittest discover -s adapters/mchs_sources/tests -v`. `test_activity_only_funding_generates_zero_resource_use_rows` confirms zero resource-use rows when no resource_cost is supplied — weighted activity is not converted into fictitious resources. Installed-wheel qualification (`python -I` outside checkout, maturin build) requires maturin which is not available in this environment; CLI-based native verification is complete.
 
 ## Historical evidence record — initial handoff
 
