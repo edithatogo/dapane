@@ -1,0 +1,10 @@
+[project]
+name = "dapane-decision-provider-d2-candidate"
+version = "0.0.0.dev0"
+requires-python = ">=3.12,<3.16"
+description = "Unpublished standalone D2 preparation contract for Dapane"
+license = "Apache-2.0"
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+testpaths = ["tests"]

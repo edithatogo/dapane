@@ -1,0 +1,129 @@
+{
+  "schema_version": "dapane-d2-local-preparation-receipt/0.1",
+  "date": "2026-11-18",
+  "baseline": {
+    "pr": 23,
+    "head": "d994e638685c4c48d22d5f474d03fe9261efa546",
+    "base_tree": "70661f7f12c7fd0a0f7689ac7c9b159d2f70ff81"
+  },
+  "scope": "local_pure_contract_only",
+  "execution": {
+    "python": "CPython 3.13.5",
+    "command": "python -m unittest discover -s tests -v",
+    "tests_passed": 34,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "compile_command": "python -m compileall -q bridge.py tests",
+    "compile_result": "passed",
+    "red_initial": "ModuleNotFoundError: No module named 'bridge'",
+    "green": "34 passed after implementing bridge and correcting invalid-provider diagnostic"
+  },
+  "sources": {
+    "bridge_git_blob": "6223c4a25efca90b4130e6e27e229f32714baba6",
+    "tests_git_blob": "b7b13b0951944f46294adbbb53a00b785aefd652",
+    "readme_git_blob": "efbf17cf353864272e771f19e55a404d774578a8"
+  },
+  "method_boundaries": {
+    "voiage": "ValueArray construction only, no installed numerical method",
+    "innovate": "external adoption observations and exact capacity envelope only, no native trajectory execution or valuation",
+    "paignia": "native graph-construction blueprint only, no native validation/solver",
+    "D1": "invented structural report fixture; no installed native replay"
+  },
+  "ready_for_merge": false,
+  "reason": "sole integrator namespace approval, D1 native acceptance, actual Voiage/Innovate/Paignia installed-provider checks and receiving-head CI pending",
+  "privacy_repair": {
+    "prior_head": "c4e62324188c11f8a94606b2b92cab92c3e863d2",
+    "observed_workflow": "https://github.com/edithatogo/dapane/actions/runs/44170322270/job/134347367171",
+    "finding": {
+      "rule": "generic-api-key",
+      "file": "adapters/decision_provider_d2/bridge.py",
+      "old_line": 244,
+      "review": "source is a pairing-error string, no credentials"
+    },
+    "resolution": "Replace ambiguous diagnostic wording, preserve pairing_mismatch code and /net_benefits/{i}/key path; no security suppression or change to scanner. 34 tests and compileall re-executed locally after source change.",
+    "new_head_ci": "12 passed/2 queued at corrected prior D2 head, not acceptance for D3 descendant"
+  },
+  "d3": {
+    "date": "2026-11-18",
+    "scope": "local_synthetic_contract_and_native_runner_negative_tests",
+    "source_revision_baseline": "b796be5633ee828601787f1937e77d743ac6062e",
+    "red_tests": [
+      "ModuleNotFoundError: No module named 'study'",
+      "wheel artifact substitution self-claim accepted before pin-link check",
+      "unsafe and duplicate native wheel ZIP members not rejected"
+    ],
+    "green_checks": [
+      {
+        "command": "python -m unittest discover -s tests -q",
+        "passed": 44,
+        "failed": 0,
+        "skipped": 0,
+        "interpreter": "CPython 3.13.5"
+      },
+      {
+        "command": "python -m pytest -q tests",
+        "passed": 44,
+        "failed": 0,
+        "skipped": 0,
+        "interpreter": "CPython 3.13.5"
+      },
+      {
+        "command": "python -m compileall -q study.py native_voiage.py tests",
+        "result": "passed"
+      }
+    ],
+    "sources": {
+      "adapters/decision_provider_d2/study.py": "e13e163bc7878949a7fcee193a6331caf7f39b30",
+      "adapters/decision_provider_d2/native_voiage.py": "8d4cf0c92929678e515c1d3764e72550eeab80a9",
+      "adapters/decision_provider_d2/tests/test_study.py": "88616b4c64d42578864e8142fcdd2c8bea41c9ab",
+      "adapters/decision_provider_d2/tests/test_native_runner.py": "6c345673674b7bc5bf3b0ea38dc5282dae03384f"
+    },
+    "analytic_reference": {
+      "source": "independent_synthetic_finite_2_by_2",
+      "mean_current": -80,
+      "mean_change": -90,
+      "mean_perfect_information": -70,
+      "evpi_aud_per_assay": 10,
+      "evsi_evaluated": false
+    },
+    "installed_provider_tests": "not_run_no_qualified_artifact_in_local_container",
+    "actual_native_dapane_cli_test": "not_run_no_native_binary_in_local_container",
+    "static_fallback_local_check": "synthetic_fake_cli_only",
+    "blocking_gates": [
+      "D1/native installed output acceptance",
+      "Voiage installed wheel native EVPI",
+      "Innovate native adoption scenario",
+      "Paignia native static profile and application",
+      "Dapane static compiled CLI without decision providers",
+      "sole integrator path ownership and D2+D3 hosted qualification",
+      "required security and release acceptance"
+    ]
+  },
+  "prior_d2_hosted_snapshot": {
+    "source": "b796be5633ee828601787f1937e77d743ac6062e",
+    "conclusions": {
+      "success": 12,
+      "queued": 2,
+      "failures": 0
+    },
+    "scope": "existing Dapane root and D1/T1 checks, not the new D2 Python or D3 tests; two offline-security jobs queued"
+  },
+  "lint_format_reconciliation_20261119": {
+    "date": "2026-11-19",
+    "scope": "mechanical_ruff_format_and_lint_cleanup_no_behavior_change",
+    "ruff_version": "0.17.4",
+    "unittest_command": "python3 -m unittest discover -s tests -v",
+    "tests_passed": 78,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "compileall_passed": true,
+    "updated_sources": {
+      "adapters/decision_provider_d2/bridge.py": "235be3c7147f6acecf13e337021ca0e9fc0d9c5a",
+      "adapters/decision_provider_d2/study.py": "d2b07c28ba580f44001a38a1c9f56a94ee5ca654",
+      "adapters/decision_provider_d2/native_voiage.py": "7b3e7f51d33721fea3c1d371de0b930085e9e2fc",
+      "adapters/decision_provider_d2/tests/test_bridge.py": "84f2546ced2a07288dcbbc4414df9e5be610f893",
+      "adapters/decision_provider_d2/tests/test_study.py": "3048a963c214d0d5c8e164f18d3274e566aa3501",
+      "adapters/decision_provider_d2/tests/test_native_runner.py": "662d8b93c8fc71e31d655c54892ceb2070663163"
+    }
+  }
+}
