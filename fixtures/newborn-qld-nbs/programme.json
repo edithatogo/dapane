@@ -1,0 +1,369 @@
+{
+  "profile_id": "newborn-qld-nbs-labour-pack",
+  "profile_version": "0.1.0",
+  "status": "bounded_sourced_labour_slice_with_explicit_gaps",
+  "jurisdiction": "QLD",
+  "country": "Australia",
+  "bounded_assay_scope": "molecular_dna_extraction_labour_only",
+  "perspective": "provider",
+  "reporting_profile": {
+    "status": "pending",
+    "required_track": "reporting_profiles_20261108",
+    "note": "UOGTO/standards_check reporting export (PR #27) is not yet qualified on main; core valuation and denominator references operate independently."
+  },
+  "programme_references": [
+    {
+      "id": "qcg-mn25-53",
+      "title": "Queensland Clinical Guidelines: Newborn bloodspot screening (MN25.53)",
+      "uri": "https://www.health.qld.gov.au/qcg",
+      "scope": "Statewide clinical guideline governing consent, 48-72h heel-prick DBS collection, early discharge pathways, and repeat-specimen indications."
+    },
+    {
+      "id": "qld-gov-nbs-overview",
+      "title": "Queensland Government / Pathology Queensland: Newborn Bloodspot Screening",
+      "uri": "https://www.qld.gov.au/health/children/babies/newborn-bloodspot-screening",
+      "scope": "Public overview of Pathology Queensland screening for 25-30+ serious rare conditions including CF, CH, PKU/amino acid disorders, CAH, galactosaemia, fatty acid oxidation disorders, SMA, and SCID."
+    },
+    {
+      "id": "au-dohac-nbs",
+      "title": "Australian Government Department of Health: Newborn Bloodspot Screening",
+      "uri": "https://www.health.gov.au/our-work/newborn-bloodspot-screening",
+      "scope": "National NBS framework and expansion scope covering endocrine, metabolic, CF, SMA, SCID, and galactosaemia conditions."
+    }
+  ],
+  "qualified_provider_inputs": {
+    "workforce": {
+      "repository": "edithatogo/microcosting_healthworkforce",
+      "commit": "c351a7c6420a356c4c13d2da3010bc7e7d0341f9",
+      "python": "3.15.2",
+      "release_id": "qld-health-hp3p1-reference-20261115",
+      "source_id": "qld-health-hp-reference-20261009",
+      "source_uri": "https://www.health.qld.gov.au/hrpolicies/wage-rates/health-practitioners#table36083",
+      "source_sha256": "6948663378e34af05b8dbf91d8799ad1dc14ee831136dc57165d3241d1af17ff",
+      "release_snapshot_sha256": "160c58975b20e708fb6b46d33782391230fa97e0c033ea2341545ad1255c516c",
+      "exported_artifact_sha256": "9cd5e8bb48b29186b7fd4ea911f914c0e0dbf4f3fc188a1f6728cbe65947ec60",
+      "quote": {
+        "id": "qld-hp3p1-minute-20260901",
+        "kind": "resource_use",
+        "target": "laboratory-scientist",
+        "unit": "minute",
+        "amount": "46.0658",
+        "per_quantity": "60",
+        "currency": "AUD",
+        "price_year": 2026,
+        "basis": "financial_cost",
+        "components": [
+          "base_salary"
+        ],
+        "valid_from": "2026-09-01",
+        "valid_to": "2026-11-16",
+        "known_from": "2026-11-15",
+        "source": {
+          "id": "qld-health-hp-reference-20261009",
+          "version": "qld-health-hp3p1-reference-20261115",
+          "evidence": "observed",
+          "access": "public",
+          "validation": "source_verified",
+          "content_digest": "sha256:6948663378e34af05b8dbf91d8799ad1dc14ee831136dc57165d3241d1af17ff",
+          "locator": "https://www.health.qld.gov.au/hrpolicies/wage-rates/health-practitioners#table36083"
+        }
+      }
+    },
+    "genomics_extraction_recipe": {
+      "repository": "edithatogo/microcosting_genomics",
+      "commit": "be2451f34a389f90e618cf37a5e8e1fcbb148dea",
+      "python": "3.15.1",
+      "recipe_id": "manual-dna-extraction-v1",
+      "workbook_sha256": "2990ff57504a51c5a9152b053a8e7cfa0e490f27a75bb356810f3564f96b5eb4",
+      "sheet": "Labour - Usage - VCGS",
+      "steps": [
+        {
+          "id": "labwork",
+          "batch_minutes": "30",
+          "source_cell": "D22"
+        },
+        {
+          "id": "admin",
+          "batch_minutes": "5",
+          "source_cell": "D23"
+        }
+      ],
+      "nominal_batch_specimens": 6,
+      "role_mapping_basis": "Analyst scenario maps QLD Health HP3.1 laboratory-scientist published base hourly reference to historical manual DNA extraction batch minutes; no payroll entitlement, on-cost, or Pathology Queensland operational timing equivalence is claimed."
+    }
+  },
+  "window": {
+    "id": "qld-nbs-window-2026-11-v1",
+    "version": "1.0.0",
+    "start": "2026-11-01",
+    "end_exclusive": "2026-11-16"
+  },
+  "populations": {
+    "qld-nbs-illustrative-cohort-8": {
+      "id": "qld-nbs-illustrative-cohort-8",
+      "version": "1.0.0",
+      "unit": "infant",
+      "evidence": "illustrative_cohort_not_clinical_epidemiology",
+      "members": [
+        {
+          "infant_id": "infant-01",
+          "birth_date": "2026-11-01"
+        },
+        {
+          "infant_id": "infant-02",
+          "birth_date": "2026-11-02"
+        },
+        {
+          "infant_id": "infant-03",
+          "birth_date": "2026-11-03"
+        },
+        {
+          "infant_id": "infant-04",
+          "birth_date": "2026-11-04"
+        },
+        {
+          "infant_id": "infant-05",
+          "birth_date": "2026-11-05"
+        },
+        {
+          "infant_id": "infant-06",
+          "birth_date": "2026-11-06"
+        },
+        {
+          "infant_id": "infant-07",
+          "birth_date": "2026-11-07"
+        },
+        {
+          "infant_id": "infant-08",
+          "birth_date": "2026-11-08"
+        },
+        {
+          "infant_id": "infant-09-window-end",
+          "birth_date": "2026-11-16"
+        }
+      ]
+    },
+    "qld-nbs-illustrative-cohort-4": {
+      "id": "qld-nbs-illustrative-cohort-4",
+      "version": "1.0.0",
+      "unit": "infant",
+      "evidence": "illustrative_cohort_not_clinical_epidemiology",
+      "members": [
+        {
+          "infant_id": "infant-01",
+          "birth_date": "2026-11-01"
+        },
+        {
+          "infant_id": "infant-02",
+          "birth_date": "2026-11-02"
+        },
+        {
+          "infant_id": "infant-03",
+          "birth_date": "2026-11-03"
+        },
+        {
+          "infant_id": "infant-04",
+          "birth_date": "2026-11-04"
+        },
+        {
+          "infant_id": "infant-05-window-end",
+          "birth_date": "2026-11-16"
+        }
+      ]
+    }
+  },
+  "object_kinds": [
+    "infant",
+    "screening_episode",
+    "specimen",
+    "card",
+    "collection_attempt",
+    "assay",
+    "assay_batch",
+    "result",
+    "recall",
+    "confirmation",
+    "follow_up"
+  ],
+  "relationships": [
+    {
+      "from_kind": "screening_episode",
+      "relationship": "screens",
+      "to_kind": "infant"
+    },
+    {
+      "from_kind": "collection_attempt",
+      "relationship": "belongs_to",
+      "to_kind": "screening_episode"
+    },
+    {
+      "from_kind": "specimen",
+      "relationship": "obtained_by",
+      "to_kind": "collection_attempt"
+    },
+    {
+      "from_kind": "specimen",
+      "relationship": "collected_from",
+      "to_kind": "infant"
+    },
+    {
+      "from_kind": "card",
+      "relationship": "holds",
+      "to_kind": "specimen"
+    },
+    {
+      "from_kind": "assay",
+      "relationship": "uses_specimen",
+      "to_kind": "specimen"
+    },
+    {
+      "from_kind": "assay",
+      "relationship": "runs_in",
+      "to_kind": "assay_batch"
+    },
+    {
+      "from_kind": "result",
+      "relationship": "reports",
+      "to_kind": "assay"
+    },
+    {
+      "from_kind": "result",
+      "relationship": "reports",
+      "to_kind": "specimen"
+    },
+    {
+      "from_kind": "recall",
+      "relationship": "belongs_to",
+      "to_kind": "screening_episode"
+    },
+    {
+      "from_kind": "confirmation",
+      "relationship": "follows",
+      "to_kind": "recall"
+    },
+    {
+      "from_kind": "follow_up",
+      "relationship": "follows",
+      "to_kind": "confirmation"
+    },
+    {
+      "from_kind": "assay",
+      "relationship": "repeats",
+      "to_kind": "assay"
+    },
+    {
+      "from_kind": "result",
+      "relationship": "triggers",
+      "to_kind": "assay"
+    }
+  ],
+  "stages": [
+    "collection",
+    "transport",
+    "accession_qc",
+    "manual_dna_extraction",
+    "reporting",
+    "recall",
+    "confirmation",
+    "follow_up",
+    "repeat_collection",
+    "repeat_batch_extraction"
+  ],
+  "denominators": {
+    "eligible_birth": {
+      "unit": "distinct_infant",
+      "membership_date": "birth_date"
+    },
+    "participating_infant": {
+      "unit": "distinct_infant",
+      "membership_date": "participation_date"
+    },
+    "valid_screen": {
+      "unit": "distinct_infant",
+      "membership_date": "valid_screen_date",
+      "rule": "All explicitly selected final required results are valid and trace to the infant."
+    },
+    "completed_pathway": {
+      "unit": "distinct_infant",
+      "membership_date": "completion_date"
+    },
+    "confirmed_diagnosis": {
+      "unit": "distinct_infant",
+      "membership_date": "confirmed_diagnosis_date"
+    }
+  },
+  "source_gaps": [
+    {
+      "id": "collection_workforce_and_consumables",
+      "stage": "collection",
+      "status": "unqualified_source_gap",
+      "detail": "Midwifery/nursing/GP collection minutes, heel-stick lancets, and Guthrie filter-paper cards are context-only events here; no Queensland Health NBS collection microcost study or consumable price release is pinned."
+    },
+    {
+      "id": "specimen_transport",
+      "stage": "transport",
+      "status": "unqualified_source_gap",
+      "detail": "Statewide courier and postal transit rates from maternity units to Pathology Queensland central laboratories are not publicly priced in a machine-readable quotation source."
+    },
+    {
+      "id": "accession_and_qc",
+      "stage": "accession_qc",
+      "status": "unqualified_source_gap",
+      "detail": "Specimen receipt, card punching, demographic entry, and visual bloodspot adequacy QC resource quantities and staff roles are not yet sourced."
+    },
+    {
+      "id": "biochemical_msms_and_immunoassay",
+      "stage": "assay",
+      "status": "unqualified_source_gap",
+      "detail": "Tandem mass spectrometry (TMS), fluoroimmunoassay (CH, CAH, CF IRT), and galactosaemia enzyme assay labour/reagent costs remain outside the manual DNA extraction scope."
+    },
+    {
+      "id": "molecular_reagents_and_instruments",
+      "stage": "assay",
+      "status": "unqualified_source_gap",
+      "detail": "DNA extraction kit reagents, PCR/sequencing consumables, equipment depreciation, maintenance contracts, and instrument capacity denominators are excluded; genomics_microcosting manual-dna-extraction-v1 covers labour minutes only."
+    },
+    {
+      "id": "workforce_oncosts_and_loadings",
+      "stage": "manual_dna_extraction",
+      "status": "unqualified_source_gap",
+      "detail": "qld-health-hp3p1-reference-20261115 supplies base_salary (AUD 46.0658/h) only; superannuation, leave loading, shift penalties, payroll tax, and productive-hours adjustments are unquoted."
+    },
+    {
+      "id": "reporting_recall_and_clinical_confirmation",
+      "stage": "confirmation",
+      "status": "unqualified_source_gap",
+      "detail": "Result reporting, positive-screen family recall, sweat testing, confirmatory molecular diagnostics, and multidisciplinary follow-up costs remain unvalued context objects."
+    },
+    {
+      "id": "programme_overhead",
+      "stage": "programme_overhead",
+      "status": "unqualified_source_gap",
+      "detail": "Laboratory LIMS administration, programme coordination, and state registry governance overheads are not supplied."
+    },
+    {
+      "id": "epidemiological_probabilities_and_timing",
+      "stage": "programme",
+      "status": "unqualified_source_gap",
+      "detail": "Birth cohorts, inadequate-card recollection probabilities, batch failure rates, and condition prevalence are illustrative test structures, not Queensland perinatal epidemiology."
+    },
+    {
+      "id": "family_time_and_downstream_care",
+      "stage": "family_time",
+      "status": "excluded_by_perspective",
+      "detail": "Excluded under the selected health-service provider perspective (N3.2); parental travel, time, and downstream clinical treatment remain out of scope."
+    },
+    {
+      "id": "uogto_reporting_profiles",
+      "stage": "reporting_export",
+      "status": "pending_optional_track",
+      "detail": "CHEERS/GHCC/AGREEDT JSON-LD reporting export remains pending until reporting_profiles_20261108 (PR #27) is qualified on main; static core execution remains independent."
+    }
+  ],
+  "rollback": {
+    "prior_profile_path": "fixtures/newborn-synthetic/",
+    "prior_profile_version": "0.1.0",
+    "provider_lock": "docs/provider-consumers.lock.json",
+    "note": "Revert or deselect fixtures/newborn-qld-nbs/ and tests/python/test_newborn_qld_nbs.py without altering fixtures/newborn-synthetic/, fixtures/newborn-screening.json, or core Rust/Python contracts."
+  }
+}

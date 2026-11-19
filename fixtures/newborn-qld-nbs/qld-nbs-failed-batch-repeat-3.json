@@ -1,0 +1,663 @@
+{
+  "schema_version": "0.1",
+  "run_id": "qld-nbs-failed-batch-repeat-3",
+  "knowledge_cutoff": "2026-11-15",
+  "policy": {
+    "id": "qld-nbs-provider-labour",
+    "version": "0.1.0",
+    "currency": "AUD",
+    "price_year": 2026,
+    "perspective": "provider",
+    "basis": "financial_cost",
+    "rounding": {
+      "scale": 2,
+      "mode": "half_even"
+    }
+  },
+  "quotes": [
+    {
+      "id": "qld-hp3p1-minute-20260901",
+      "kind": "resource_use",
+      "target": "laboratory-scientist",
+      "unit": "minute",
+      "amount": "46.0658",
+      "per_quantity": "60",
+      "currency": "AUD",
+      "price_year": 2026,
+      "basis": "financial_cost",
+      "components": [
+        "base_salary"
+      ],
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-11-16",
+      "known_from": "2026-11-15",
+      "source": {
+        "id": "qld-health-hp-reference-20261009",
+        "version": "qld-health-hp3p1-reference-20261115",
+        "evidence": "observed",
+        "access": "public",
+        "validation": "source_verified",
+        "content_digest": "sha256:6948663378e34af05b8dbf91d8799ad1dc14ee831136dc57165d3241d1af17ff",
+        "locator": "https://www.health.qld.gov.au/hrpolicies/wage-rates/health-practitioners#table36083"
+      }
+    }
+  ],
+  "usage": [
+    {
+      "id": "batch-1:labwork",
+      "use_id": "batch-1:labwork",
+      "kind": "resource_use",
+      "target": "laboratory-scientist",
+      "unit": "minute",
+      "quantity": "30",
+      "service_date": "2026-11-15",
+      "quote_id": "qld-hp3p1-minute-20260901",
+      "source": {
+        "id": "manual-extraction-v15",
+        "version": "manual-dna-extraction-v1",
+        "evidence": "derived",
+        "access": "public",
+        "validation": "unvalidated",
+        "content_digest": "sha256:2990ff57504a51c5a9152b053a8e7cfa0e490f27a75bb356810f3564f96b5eb4",
+        "locator": "Labour - Usage - VCGS!D22; batch=batch-1; outcome=failed; repeat_of=None; role_mapping=Analyst scenario maps QLD Health HP3.1 laboratory-scientist published base hourly reference to historical manual DNA extraction batch minutes; no payroll entitlement, on-cost, or Pathology Queensland operational timing equivalence is claimed."
+      },
+      "event_id": "event:batch-1",
+      "process_id": "proc:batch-1",
+      "activity_id": "manual_dna_extraction",
+      "object_ids": [
+        "batch-1",
+        "specimen-01-1",
+        "specimen-02-1",
+        "specimen-03-1"
+      ]
+    },
+    {
+      "id": "batch-1:admin",
+      "use_id": "batch-1:admin",
+      "kind": "resource_use",
+      "target": "laboratory-scientist",
+      "unit": "minute",
+      "quantity": "5",
+      "service_date": "2026-11-15",
+      "quote_id": "qld-hp3p1-minute-20260901",
+      "source": {
+        "id": "manual-extraction-v15",
+        "version": "manual-dna-extraction-v1",
+        "evidence": "derived",
+        "access": "public",
+        "validation": "unvalidated",
+        "content_digest": "sha256:2990ff57504a51c5a9152b053a8e7cfa0e490f27a75bb356810f3564f96b5eb4",
+        "locator": "Labour - Usage - VCGS!D23; batch=batch-1; outcome=failed; repeat_of=None; role_mapping=Analyst scenario maps QLD Health HP3.1 laboratory-scientist published base hourly reference to historical manual DNA extraction batch minutes; no payroll entitlement, on-cost, or Pathology Queensland operational timing equivalence is claimed."
+      },
+      "event_id": "event:batch-1",
+      "process_id": "proc:batch-1",
+      "activity_id": "manual_dna_extraction",
+      "object_ids": [
+        "batch-1",
+        "specimen-01-1",
+        "specimen-02-1",
+        "specimen-03-1"
+      ]
+    },
+    {
+      "id": "batch-2:labwork",
+      "use_id": "batch-2:labwork",
+      "kind": "resource_use",
+      "target": "laboratory-scientist",
+      "unit": "minute",
+      "quantity": "30",
+      "service_date": "2026-11-15",
+      "quote_id": "qld-hp3p1-minute-20260901",
+      "source": {
+        "id": "manual-extraction-v15",
+        "version": "manual-dna-extraction-v1",
+        "evidence": "derived",
+        "access": "public",
+        "validation": "unvalidated",
+        "content_digest": "sha256:2990ff57504a51c5a9152b053a8e7cfa0e490f27a75bb356810f3564f96b5eb4",
+        "locator": "Labour - Usage - VCGS!D22; batch=batch-2; outcome=completed; repeat_of=batch-1; role_mapping=Analyst scenario maps QLD Health HP3.1 laboratory-scientist published base hourly reference to historical manual DNA extraction batch minutes; no payroll entitlement, on-cost, or Pathology Queensland operational timing equivalence is claimed."
+      },
+      "event_id": "event:batch-2",
+      "process_id": "proc:batch-2",
+      "activity_id": "repeat_batch_extraction",
+      "object_ids": [
+        "batch-2",
+        "specimen-01-1",
+        "specimen-02-1",
+        "specimen-03-1"
+      ]
+    },
+    {
+      "id": "batch-2:admin",
+      "use_id": "batch-2:admin",
+      "kind": "resource_use",
+      "target": "laboratory-scientist",
+      "unit": "minute",
+      "quantity": "5",
+      "service_date": "2026-11-15",
+      "quote_id": "qld-hp3p1-minute-20260901",
+      "source": {
+        "id": "manual-extraction-v15",
+        "version": "manual-dna-extraction-v1",
+        "evidence": "derived",
+        "access": "public",
+        "validation": "unvalidated",
+        "content_digest": "sha256:2990ff57504a51c5a9152b053a8e7cfa0e490f27a75bb356810f3564f96b5eb4",
+        "locator": "Labour - Usage - VCGS!D23; batch=batch-2; outcome=completed; repeat_of=batch-1; role_mapping=Analyst scenario maps QLD Health HP3.1 laboratory-scientist published base hourly reference to historical manual DNA extraction batch minutes; no payroll entitlement, on-cost, or Pathology Queensland operational timing equivalence is claimed."
+      },
+      "event_id": "event:batch-2",
+      "process_id": "proc:batch-2",
+      "activity_id": "repeat_batch_extraction",
+      "object_ids": [
+        "batch-2",
+        "specimen-01-1",
+        "specimen-02-1",
+        "specimen-03-1"
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "infant-01",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-02",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-03",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-04",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-05-window-end",
+      "kind": "infant"
+    },
+    {
+      "id": "episode-01",
+      "kind": "screening_episode"
+    },
+    {
+      "id": "attempt-01-1",
+      "kind": "collection_attempt"
+    },
+    {
+      "id": "specimen-01-1",
+      "kind": "specimen"
+    },
+    {
+      "id": "card-01-1",
+      "kind": "card"
+    },
+    {
+      "id": "episode-02",
+      "kind": "screening_episode"
+    },
+    {
+      "id": "attempt-02-1",
+      "kind": "collection_attempt"
+    },
+    {
+      "id": "specimen-02-1",
+      "kind": "specimen"
+    },
+    {
+      "id": "card-02-1",
+      "kind": "card"
+    },
+    {
+      "id": "episode-03",
+      "kind": "screening_episode"
+    },
+    {
+      "id": "attempt-03-1",
+      "kind": "collection_attempt"
+    },
+    {
+      "id": "specimen-03-1",
+      "kind": "specimen"
+    },
+    {
+      "id": "card-03-1",
+      "kind": "card"
+    },
+    {
+      "id": "batch-1",
+      "kind": "assay_batch"
+    },
+    {
+      "id": "assay-01-1",
+      "kind": "assay"
+    },
+    {
+      "id": "result-01-1",
+      "kind": "result"
+    },
+    {
+      "id": "assay-02-1",
+      "kind": "assay"
+    },
+    {
+      "id": "result-02-1",
+      "kind": "result"
+    },
+    {
+      "id": "assay-03-1",
+      "kind": "assay"
+    },
+    {
+      "id": "result-03-1",
+      "kind": "result"
+    },
+    {
+      "id": "batch-2",
+      "kind": "assay_batch"
+    },
+    {
+      "id": "assay-01-2",
+      "kind": "assay"
+    },
+    {
+      "id": "result-01-2",
+      "kind": "result"
+    },
+    {
+      "id": "assay-02-2",
+      "kind": "assay"
+    },
+    {
+      "id": "result-02-2",
+      "kind": "result"
+    },
+    {
+      "id": "assay-03-2",
+      "kind": "assay"
+    },
+    {
+      "id": "result-03-2",
+      "kind": "result"
+    },
+    {
+      "id": "recall-03",
+      "kind": "recall"
+    },
+    {
+      "id": "confirmation-03",
+      "kind": "confirmation"
+    },
+    {
+      "id": "follow-up-03",
+      "kind": "follow_up"
+    }
+  ],
+  "processes": [
+    {
+      "id": "qld-nbs-pathway",
+      "model_id": "newborn-qld-nbs-labour-pack",
+      "model_version": "0.1.0"
+    },
+    {
+      "id": "proc:batch-1",
+      "model_id": "manual-dna-extraction",
+      "model_version": "manual-dna-extraction-v1"
+    },
+    {
+      "id": "proc:batch-2",
+      "model_id": "manual-dna-extraction",
+      "model_version": "manual-dna-extraction-v1"
+    }
+  ],
+  "events": [
+    {
+      "id": "event-collection-01-1",
+      "occurred_on": "2026-11-03",
+      "process_id": "qld-nbs-pathway",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-01",
+        "episode-01",
+        "attempt-01-1",
+        "specimen-01-1",
+        "card-01-1"
+      ]
+    },
+    {
+      "id": "event-collection-02-1",
+      "occurred_on": "2026-11-04",
+      "process_id": "qld-nbs-pathway",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-02",
+        "episode-02",
+        "attempt-02-1",
+        "specimen-02-1",
+        "card-02-1"
+      ]
+    },
+    {
+      "id": "event-collection-03-1",
+      "occurred_on": "2026-11-05",
+      "process_id": "qld-nbs-pathway",
+      "activity_id": "collection",
+      "object_ids": [
+        "infant-03",
+        "episode-03",
+        "attempt-03-1",
+        "specimen-03-1",
+        "card-03-1"
+      ]
+    },
+    {
+      "id": "event:batch-1",
+      "occurred_on": "2026-11-15",
+      "process_id": "proc:batch-1",
+      "activity_id": "manual_dna_extraction",
+      "object_ids": [
+        "batch-1",
+        "specimen-01-1",
+        "specimen-02-1",
+        "specimen-03-1"
+      ]
+    },
+    {
+      "id": "event:batch-2",
+      "occurred_on": "2026-11-15",
+      "process_id": "proc:batch-2",
+      "activity_id": "repeat_batch_extraction",
+      "object_ids": [
+        "batch-2",
+        "specimen-01-1",
+        "specimen-02-1",
+        "specimen-03-1"
+      ]
+    },
+    {
+      "id": "event-confirmation-03",
+      "occurred_on": "2026-11-15",
+      "process_id": "qld-nbs-pathway",
+      "activity_id": "confirmation",
+      "object_ids": [
+        "infant-03",
+        "episode-03",
+        "recall-03",
+        "confirmation-03",
+        "follow-up-03"
+      ]
+    }
+  ],
+  "object_relations": [
+    {
+      "from_object_id": "episode-01",
+      "to_object_id": "infant-01",
+      "relationship": "screens"
+    },
+    {
+      "from_object_id": "attempt-01-1",
+      "to_object_id": "episode-01",
+      "relationship": "belongs_to"
+    },
+    {
+      "from_object_id": "specimen-01-1",
+      "to_object_id": "attempt-01-1",
+      "relationship": "obtained_by"
+    },
+    {
+      "from_object_id": "specimen-01-1",
+      "to_object_id": "infant-01",
+      "relationship": "collected_from"
+    },
+    {
+      "from_object_id": "card-01-1",
+      "to_object_id": "specimen-01-1",
+      "relationship": "holds"
+    },
+    {
+      "from_object_id": "episode-02",
+      "to_object_id": "infant-02",
+      "relationship": "screens"
+    },
+    {
+      "from_object_id": "attempt-02-1",
+      "to_object_id": "episode-02",
+      "relationship": "belongs_to"
+    },
+    {
+      "from_object_id": "specimen-02-1",
+      "to_object_id": "attempt-02-1",
+      "relationship": "obtained_by"
+    },
+    {
+      "from_object_id": "specimen-02-1",
+      "to_object_id": "infant-02",
+      "relationship": "collected_from"
+    },
+    {
+      "from_object_id": "card-02-1",
+      "to_object_id": "specimen-02-1",
+      "relationship": "holds"
+    },
+    {
+      "from_object_id": "episode-03",
+      "to_object_id": "infant-03",
+      "relationship": "screens"
+    },
+    {
+      "from_object_id": "attempt-03-1",
+      "to_object_id": "episode-03",
+      "relationship": "belongs_to"
+    },
+    {
+      "from_object_id": "specimen-03-1",
+      "to_object_id": "attempt-03-1",
+      "relationship": "obtained_by"
+    },
+    {
+      "from_object_id": "specimen-03-1",
+      "to_object_id": "infant-03",
+      "relationship": "collected_from"
+    },
+    {
+      "from_object_id": "card-03-1",
+      "to_object_id": "specimen-03-1",
+      "relationship": "holds"
+    },
+    {
+      "from_object_id": "assay-01-1",
+      "to_object_id": "specimen-01-1",
+      "relationship": "uses_specimen"
+    },
+    {
+      "from_object_id": "assay-01-1",
+      "to_object_id": "batch-1",
+      "relationship": "runs_in"
+    },
+    {
+      "from_object_id": "result-01-1",
+      "to_object_id": "assay-01-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "result-01-1",
+      "to_object_id": "specimen-01-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "assay-02-1",
+      "to_object_id": "specimen-02-1",
+      "relationship": "uses_specimen"
+    },
+    {
+      "from_object_id": "assay-02-1",
+      "to_object_id": "batch-1",
+      "relationship": "runs_in"
+    },
+    {
+      "from_object_id": "result-02-1",
+      "to_object_id": "assay-02-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "result-02-1",
+      "to_object_id": "specimen-02-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "assay-03-1",
+      "to_object_id": "specimen-03-1",
+      "relationship": "uses_specimen"
+    },
+    {
+      "from_object_id": "assay-03-1",
+      "to_object_id": "batch-1",
+      "relationship": "runs_in"
+    },
+    {
+      "from_object_id": "result-03-1",
+      "to_object_id": "assay-03-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "result-03-1",
+      "to_object_id": "specimen-03-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "assay-01-2",
+      "to_object_id": "specimen-01-1",
+      "relationship": "uses_specimen"
+    },
+    {
+      "from_object_id": "assay-01-2",
+      "to_object_id": "batch-2",
+      "relationship": "runs_in"
+    },
+    {
+      "from_object_id": "result-01-2",
+      "to_object_id": "assay-01-2",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "result-01-2",
+      "to_object_id": "specimen-01-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "assay-01-2",
+      "to_object_id": "assay-01-1",
+      "relationship": "repeats"
+    },
+    {
+      "from_object_id": "assay-02-2",
+      "to_object_id": "specimen-02-1",
+      "relationship": "uses_specimen"
+    },
+    {
+      "from_object_id": "assay-02-2",
+      "to_object_id": "batch-2",
+      "relationship": "runs_in"
+    },
+    {
+      "from_object_id": "result-02-2",
+      "to_object_id": "assay-02-2",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "result-02-2",
+      "to_object_id": "specimen-02-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "assay-02-2",
+      "to_object_id": "assay-02-1",
+      "relationship": "repeats"
+    },
+    {
+      "from_object_id": "assay-03-2",
+      "to_object_id": "specimen-03-1",
+      "relationship": "uses_specimen"
+    },
+    {
+      "from_object_id": "assay-03-2",
+      "to_object_id": "batch-2",
+      "relationship": "runs_in"
+    },
+    {
+      "from_object_id": "result-03-2",
+      "to_object_id": "assay-03-2",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "result-03-2",
+      "to_object_id": "specimen-03-1",
+      "relationship": "reports"
+    },
+    {
+      "from_object_id": "assay-03-2",
+      "to_object_id": "assay-03-1",
+      "relationship": "repeats"
+    },
+    {
+      "from_object_id": "recall-03",
+      "to_object_id": "episode-03",
+      "relationship": "belongs_to"
+    },
+    {
+      "from_object_id": "confirmation-03",
+      "to_object_id": "recall-03",
+      "relationship": "follows"
+    },
+    {
+      "from_object_id": "follow-up-03",
+      "to_object_id": "confirmation-03",
+      "relationship": "follows"
+    }
+  ],
+  "allocations": [
+    {
+      "id": "pool:batch-1",
+      "source_line_ids": [
+        "batch-1:labwork",
+        "batch-1:admin"
+      ],
+      "weights": [
+        {
+          "object_id": "infant-01",
+          "weight": "1"
+        },
+        {
+          "object_id": "infant-02",
+          "weight": "1"
+        },
+        {
+          "object_id": "infant-03",
+          "weight": "1"
+        }
+      ]
+    },
+    {
+      "id": "pool:batch-2",
+      "source_line_ids": [
+        "batch-2:labwork",
+        "batch-2:admin"
+      ],
+      "weights": [
+        {
+          "object_id": "infant-01",
+          "weight": "1"
+        },
+        {
+          "object_id": "infant-02",
+          "weight": "1"
+        },
+        {
+          "object_id": "infant-03",
+          "weight": "1"
+        }
+      ]
+    }
+  ]
+}
