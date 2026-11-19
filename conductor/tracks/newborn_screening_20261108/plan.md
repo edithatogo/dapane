@@ -1,6 +1,6 @@
 # Implementation plan: Newborn screening pathway composition
 
-Status: in_progress
+Status: completed
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -23,8 +23,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   - Bounded Queensland / Australian NBS labour pack implemented in [fixtures/newborn-qld-nbs](../../../fixtures/newborn-qld-nbs/README.md) composing pinned QLD Health HP3.1 base pay (`qld-health-hp3p1-reference-20261115`, `c351a7c6420a356c4c13d2da3010bc7e7d0341f9`) and manual DNA extraction (`manual-dna-extraction-v1`, `be2451f34a389f90e618cf37a5e8e1fcbb148dea`) with official QLD/AU NBS governance references and 11 explicit source gaps/exclusions (`programme.json`).
 - [x] N3.2 Produce costing outputs through the shared core. If reporting/profile support is selected, first qualify reporting_profiles_20261108 and then its UOGTO exports; otherwise retain that capability as pending. Neither this adapter nor real-programme source acquisition blocks Phases 1–2 synthetic costing. Keep outcomes/eligibility assumptions in the programme or health-economic model.
   - Five prepared Dapane `0.1` requests (`qld-nbs-full-batch-6`, `qld-nbs-partial-batch-3`, `qld-nbs-failed-batch-repeat-3`, `qld-nbs-inadequate-card-recollection-3`, `qld-nbs-unresolved-failed-screen-3`) execute under the health-service `provider` perspective through both the native Rust CLI and installed wheel; family time & downstream care are explicitly excluded and `reporting_profiles_20261108` / UOGTO exports remain `pending` (PR #27 unmerged).
-- [~] N3.3 Compare the programme calculations with independent examples, record unresolved source limitations and document reproduction/rollback before advertising real-programme support.
-  - Independent exact-rational (`1612303/60000` / `26.87`, `1612303/30000` / `53.74`) and denominator references (`expected.json`), 11 source gaps, and reproduction/rollback docs (`README.md`) pass 19 dedicated installed-wheel tests (`215` full Python suite) and CLI parity locally on macOS arm64; broader non-extraction NBS stages, real perinatal epidemiology, empirical validation, and hosted Linux CI execution remain open.
+- [x] N3.3 Compare the programme calculations with independent examples, record unresolved source limitations and document reproduction/rollback before advertising real-programme support.
+  **Executed 2026-11-19:** Independent exact-rational comparisons (`1612303/60000` / `26.87`, `1612303/30000` / `53.74`) and denominator references (`expected.json`) verified against all five QLD NBS cases. 11 source gaps documented in `programme.json#source_gaps`. Reproduction and rollback documented in `fixtures/newborn-qld-nbs/README.md`. Verified: `cargo build --locked --release --no-default-features -p dapane-cli` (passes), `cargo test --locked -p dapane-core` (54 passed), `cargo test --locked -p dapane-cli` (7 passed), `validate_conductor.py` (passes). Broader non-extraction NBS stages, real perinatal epidemiology, empirical validation, and hosted Linux CI execution remain open.
 
 ## Evidence record
 

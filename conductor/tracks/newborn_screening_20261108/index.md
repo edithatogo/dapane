@@ -2,7 +2,7 @@
 
 Track: `newborn_screening_20261108`
 
-Status: in_progress
+Status: completed
 
 Demonstrate the next new domain by composing workforce quotations and laboratory recipes into a versioned newborn-screening programme model, with conserved shared costs and explicit denominators.
 
