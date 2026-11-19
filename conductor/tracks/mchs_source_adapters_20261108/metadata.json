@@ -1,9 +1,9 @@
 {
   "track_id": "mchs_source_adapters_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-15T09:03:10Z",
   "description": "Connect classified hospital activity and versioned quotation sources without conflating tariffs, funding, resource cost and actual payment.",
   "repositories": [
     "."
@@ -18,16 +18,36 @@
   "owners": [
     "edithatogo"
   ],
-  "decisions": [],
+  "decisions": [
+    "Dedicated optional package under adapters/mchs_sources; default core/Python imports remain unchanged.",
+    "Funding and tariff use separate native funding/charge requests; payments retain observations/models without aggregation.",
+    "Atlas exact-value supplement is a proposed Dapane boundary; normalized floats are rejected.",
+    "The integrator supplied registry/standalone CI; received head 8281042676c1d9cafab69e9c57cdfd064a9a5adf passed installed behaviour but failed lint/format. The owner quality repair preserves earlier evidence and requires new-head qualification and acceptance."
+  ],
   "requirement_ids": [
     "RQ-05",
     "RQ-01",
     "RQ-03"
   ],
-  "capability_status": "planned",
+  "capability_status": "synthetic_candidate_pending_acceptance",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "partial",
+    "commands": [
+      "Earlier source: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=adapters/mchs_atlas/src DAPANE_TEST_CLI=/tmp/dapane-mchs-native-3ba95fceed09/dapane python3 -m unittest discover -s adapters/mchs_atlas/tests -v",
+      "Intermediate source: ruff 0.17.4 check --fix adapters/mchs_atlas/src adapters/mchs_atlas/tests",
+      "ruff check --no-cache adapters/mchs_sources",
+      "ruff format --check --no-cache adapters/mchs_sources",
+      "git diff --check"
+    ],
+    "evidence": "owner-quality-20261115.md",
+    "executed_result": "Received integration head: 34 installed tests, default-native smoke, wheel builds and identity checks passed; lint/format failed. Corrected bytes pass local Ruff, diff and independent AST checks. Subsequent exact-head hosted results are retained on PR25.",
+    "pending": [
+      "Published-head hosted qualification is recorded separately on PR25.",
+      "Existing-integrator independent acceptance.",
+      "Offline security and separate PR20 privacy gate.",
+      "M3 provider-owned exact exports and qualification."
+    ],
+    "historical_evidence": "verification.md"
   },
   "completion_evidence": [
     "The activity-only funding fixture produces the correct result with zero inferred or manufactured ResourceUse records.",

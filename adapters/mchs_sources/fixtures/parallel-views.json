@@ -1,0 +1,366 @@
+{
+  "profile": "dapane-mchs-atlas/0.1",
+  "run_id": "synthetic-parallel",
+  "knowledge_cutoff": "2026-06-30",
+  "activities": [
+    {
+      "profile": "mchs-acute-decimal-projection/0.1",
+      "provider_revision": "125933c7770e9a6bed9b62e354a6380d3dac3d47",
+      "method": "calculate_acute_decimal",
+      "id": "episode-synthetic-1",
+      "classification_code": "SYNTHETIC-001",
+      "context": {
+        "stream": "acute",
+        "classification_system": "SYNTHETIC-DRG",
+        "classification_edition": "fixture-v1",
+        "pricing_edition": "synthetic-NEP26"
+      },
+      "unit": "NWAU",
+      "service_date": "2026-06-15",
+      "source": {
+        "id": "synthetic_activity",
+        "version": "fixture-v1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "content_digest": "sha256:d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb",
+        "locator": "synthetic://activity/one",
+        "official_status": "synthetic",
+        "rights": {
+          "status": "permitted",
+          "licence": "SYNTHETIC-RIGHTS-FIXTURE",
+          "evidence_ref": "synthetic-fixture-rights-declaration"
+        },
+        "known_from": "2026-01-01"
+      },
+      "result": {
+        "eligible_icu_hours": "0",
+        "los_icu_removed": "1",
+        "w01": "2.50",
+        "w02": "2.50",
+        "w03": "2.50",
+        "w04": "2.50",
+        "gwau": "2.50",
+        "private_service_deduction": "0",
+        "private_accommodation_deduction": "0",
+        "nwau": "2.50",
+        "total_funding": "999.99",
+        "error_code": 0,
+        "separation_category": 3
+      }
+    }
+  ],
+  "quote_packs": [
+    {
+      "profile": "atlas-exact-supplement/0.1",
+      "provider_revision": "a93516ed416118bc51c1db2b71ab540fa4d0fe52",
+      "source_version": {
+        "id": "synthetic_v1",
+        "source_id": "synthetic_schedule",
+        "version_label": "fixture-v1",
+        "source_url": "https://example.invalid/dapane/synthetic-schedule",
+        "format": "json",
+        "parser_status": "prototype",
+        "effective_from": "2026-01-01",
+        "effective_to": "2027-01-01",
+        "retrieved_at": "2026-01-02T00:00:00Z",
+        "checksum_sha256": "d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb",
+        "notes": "Wholly synthetic transport fixture; no official rate or provider calculation."
+      },
+      "snapshot": {
+        "id": "synthetic_snapshot",
+        "source_id": "synthetic_schedule",
+        "source_version_id": "synthetic_v1",
+        "source_url": "https://example.invalid/dapane/synthetic-schedule",
+        "local_path": null,
+        "retrieved_at": "2026-01-02T00:00:00Z",
+        "content_type": "application/json",
+        "byte_size": 64,
+        "checksum_sha256": "d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb",
+        "licence_gate": "permissive",
+        "cache_scope": "public_derived_only",
+        "notes": "Synthetic quotation fixture source only."
+      },
+      "metadata": {
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "official_status": "synthetic",
+        "known_from": "2026-01-01",
+        "rights": {
+          "status": "permitted",
+          "licence": "SYNTHETIC-RIGHTS-FIXTURE",
+          "evidence_ref": "synthetic-fixture-rights-declaration"
+        },
+        "effective_to_convention": "exclusive"
+      },
+      "quotes": [
+        {
+          "id": "funding-quote",
+          "item": {
+            "source_id": "synthetic_schedule",
+            "jurisdiction": "SYNTHETIC",
+            "domain": "hospital_activity",
+            "code_system": "SYNTHETIC-RATE",
+            "item_code": "funding_rate",
+            "item_label": "Synthetic funding rate",
+            "item_description": null,
+            "payment_amount": null,
+            "currency": "AUD",
+            "payment_unit": "NWAU",
+            "patient_amount": null,
+            "effective_from": "2026-01-01",
+            "effective_to": "2027-01-01",
+            "restriction_text": null,
+            "setting": null,
+            "professional_component": null,
+            "facility_component": null,
+            "provenance": {
+              "source_id": "synthetic_schedule",
+              "source_url": "https://example.invalid/dapane/synthetic-schedule",
+              "retrieved_at": "2026-01-02T00:00:00Z",
+              "effective_date": "2026-01-01",
+              "source_version": "fixture-v1",
+              "licence_class": "permissive",
+              "transformation_notes": "Exact values are carried by the explicit sidecar, not a float conversion."
+            }
+          },
+          "exact": {
+            "amount": "17.00",
+            "per_quantity": "1",
+            "source_field": "funding_rate",
+            "source_locator": "/funding_rate",
+            "snapshot_sha256": "d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb"
+          },
+          "application": {
+            "view": "funding",
+            "context": {
+              "stream": "acute",
+              "classification_system": "SYNTHETIC-DRG",
+              "classification_edition": "fixture-v1",
+              "pricing_edition": "synthetic-NEP26"
+            },
+            "unit": "NWAU",
+            "price_year": 2024,
+            "components": [
+              "funding"
+            ]
+          }
+        },
+        {
+          "id": "tariff-quote",
+          "item": {
+            "source_id": "synthetic_schedule",
+            "jurisdiction": "SYNTHETIC",
+            "domain": "hospital_activity",
+            "code_system": "SYNTHETIC-RATE",
+            "item_code": "tariff_rate",
+            "item_label": "Synthetic tariff rate",
+            "item_description": null,
+            "payment_amount": null,
+            "currency": "AUD",
+            "payment_unit": "NWAU",
+            "patient_amount": null,
+            "effective_from": "2026-01-01",
+            "effective_to": "2027-01-01",
+            "restriction_text": null,
+            "setting": null,
+            "professional_component": null,
+            "facility_component": null,
+            "provenance": {
+              "source_id": "synthetic_schedule",
+              "source_url": "https://example.invalid/dapane/synthetic-schedule",
+              "retrieved_at": "2026-01-02T00:00:00Z",
+              "effective_date": "2026-01-01",
+              "source_version": "fixture-v1",
+              "licence_class": "permissive",
+              "transformation_notes": "Exact values are carried by the explicit sidecar, not a float conversion."
+            }
+          },
+          "exact": {
+            "amount": "20.00",
+            "per_quantity": "1",
+            "source_field": "tariff_rate",
+            "source_locator": "/tariff_rate",
+            "snapshot_sha256": "d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb"
+          },
+          "application": {
+            "view": "tariff",
+            "context": {
+              "stream": "acute",
+              "classification_system": "SYNTHETIC-DRG",
+              "classification_edition": "fixture-v1",
+              "pricing_edition": "synthetic-NEP26"
+            },
+            "unit": "NWAU",
+            "price_year": 2024,
+            "components": [
+              "tariff"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "views": [
+    {
+      "name": "funding",
+      "policy": {
+        "id": "synthetic-funding",
+        "version": "1",
+        "currency": "AUD",
+        "price_year": 2024,
+        "perspective": "provider",
+        "basis": "funding",
+        "rounding": {
+          "scale": 2,
+          "mode": "half_even"
+        }
+      },
+      "selections": [
+        {
+          "line_id": "funding-line",
+          "activity_id": "episode-synthetic-1",
+          "quote_id": "funding-quote"
+        }
+      ]
+    },
+    {
+      "name": "tariff",
+      "policy": {
+        "id": "synthetic-tariff",
+        "version": "1",
+        "currency": "AUD",
+        "price_year": 2024,
+        "perspective": "provider",
+        "basis": "charge",
+        "rounding": {
+          "scale": 2,
+          "mode": "half_even"
+        }
+      },
+      "selections": [
+        {
+          "line_id": "tariff-line",
+          "activity_id": "episode-synthetic-1",
+          "quote_id": "tariff-quote"
+        }
+      ]
+    }
+  ],
+  "resource_cost": {
+    "schema_version": "0.1",
+    "run_id": "synthetic-parallel:resource_cost",
+    "knowledge_cutoff": "2026-06-30",
+    "policy": {
+      "id": "synthetic-resources",
+      "version": "1",
+      "currency": "AUD",
+      "price_year": 2024,
+      "perspective": "provider",
+      "basis": "economic_cost",
+      "rounding": {
+        "scale": 2,
+        "mode": "half_even"
+      }
+    },
+    "usage": [
+      {
+        "id": "labour",
+        "use_id": "labour-1",
+        "kind": "resource_use",
+        "target": "labour",
+        "unit": "hour",
+        "quantity": {
+          "numerator": "3",
+          "denominator": "2"
+        },
+        "service_date": "2026-06-15",
+        "quote_id": "labour-rate",
+        "source": {
+          "id": "synthetic_activity",
+          "version": "fixture-v1",
+          "evidence": "synthetic",
+          "access": "public",
+          "validation": "unvalidated",
+          "content_digest": "sha256:d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb",
+          "locator": "synthetic://activity/one"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "id": "labour-rate",
+        "kind": "resource_use",
+        "target": "labour",
+        "unit": "hour",
+        "amount": "10",
+        "per_quantity": "1",
+        "currency": "AUD",
+        "price_year": 2024,
+        "basis": "economic_cost",
+        "components": [
+          "labour"
+        ],
+        "valid_from": "2026-01-01",
+        "valid_to": "2027-01-01",
+        "known_from": "2026-01-01",
+        "source": {
+          "id": "synthetic_activity",
+          "version": "fixture-v1",
+          "evidence": "synthetic",
+          "access": "public",
+          "validation": "unvalidated",
+          "content_digest": "sha256:d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb",
+          "locator": "synthetic://activity/one"
+        }
+      }
+    ]
+  },
+  "resource_sources": [
+    {
+      "id": "synthetic_activity",
+      "version": "fixture-v1",
+      "evidence": "synthetic",
+      "access": "public",
+      "validation": "unvalidated",
+      "content_digest": "sha256:d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb",
+      "locator": "synthetic://activity/one",
+      "official_status": "synthetic",
+      "rights": {
+        "status": "permitted",
+        "licence": "SYNTHETIC-RIGHTS-FIXTURE",
+        "evidence_ref": "synthetic-fixture-rights-declaration"
+      },
+      "known_from": "2026-01-01"
+    }
+  ],
+  "payments": [
+    {
+      "id": "payment-synthetic-1",
+      "record_kind": "observation",
+      "amount": "40.00",
+      "currency": "AUD",
+      "date": "2026-06-20",
+      "scope_ref": "episode-synthetic-1",
+      "observation_ref": "synthetic-receipt-1",
+      "model": null,
+      "source": {
+        "id": "synthetic_payment",
+        "version": "fixture-v1",
+        "evidence": "synthetic",
+        "access": "public",
+        "validation": "unvalidated",
+        "content_digest": "sha256:d4790d8368b26b16ccb39df0c16f142860bf96c95b7ffa6d54074831d4a368eb",
+        "locator": "synthetic://payment/one",
+        "official_status": "synthetic",
+        "rights": {
+          "status": "permitted",
+          "licence": "SYNTHETIC-RIGHTS-FIXTURE",
+          "evidence_ref": "synthetic-fixture-rights-declaration"
+        },
+        "known_from": "2026-01-01"
+      }
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "format": "dapane-mchs-owner-quality/1",
+  "recorded_at": "2026-11-15 09:03:10 UTC",
+  "received": {
+    "commit": "8281042676c1d9cafab69e9c57cdfd064a9a5adf",
+    "tree": "8a324bed7aec3051a24f81138137477c3cd574ab",
+    "run_id": 43686535494,
+    "qualification_status": "failed",
+    "passed": [
+      "34 installed adapter tests",
+      "default-native smoke",
+      "both wheel builds/installations and identities"
+    ],
+    "failed": [
+      "Ruff I001 in installed_smoke.py",
+      "Ruff formatting in four owned files"
+    ],
+    "receipt_url": "https://github.com/edithatogo/dapane/blob/497cd6472b1eb282ea6bd79271a7c76a881e9cec/conductor/roadmap-evidence-2026-11-15/attempt-2/pr25/qualification.json",
+    "receipt_sha256": "e36f24023daef5e22680bb6e53d80b990d4447b0cf132a08287f0335a6d2f1b8"
+  },
+  "correction": {
+    "commit": "5bf28b093edda7c092ce48d76fedc4d592de9ba5",
+    "tree": "0f27cc40904f2d82af9e7e46c722f2748a826d4b",
+    "files": {
+      "adapters/mchs_sources/README.md": {
+        "before_sha256": "dab30f5efad17dc1e0f290f2d6e4de2dac07884238573280f32c7d8c8629c404",
+        "after_sha256": "52c8ad2a36c1c4a4af34dfe4c0d834afdd92b024d5d11655fdb0b0e159f5ca17",
+        "only_readme_change": "One space removed before the Python example inline comment"
+      },
+      "adapters/mchs_sources/src/dapane_mchs_atlas/adapter.py": {
+        "before_sha256": "35b30c7ee2e9fc69ce1df121c5321cb5973c8bbc51746321734e8a3a1a29f753",
+        "after_sha256": "7adb13a1c4d16ce975ba50a7890ca11e38937dd9d67e8f0690d85b0d126c0f72",
+        "syntax_tree_equal": true
+      },
+      "adapters/mchs_sources/tests/installed_smoke.py": {
+        "before_sha256": "ccdb862a2e43ea36ab3b032b4ce4b3940f846f6ec3c6f6d49c29ce598d5293a5",
+        "after_sha256": "9e5fa5aecca1269cbc30a5845ef91ca5c6a91274fee313eddcb1b09e704b6157",
+        "allowed_import_order_change": [
+          [
+            "dapane",
+            "dapane_mchs_atlas"
+          ],
+          [
+            "dapane_mchs_atlas",
+            "dapane"
+          ]
+        ],
+        "syntax_tree_equal": true
+      },
+      "adapters/mchs_sources/tests/test_adapters.py": {
+        "before_sha256": "fc3267e1185033663a797d5a062205df2b3a32fe0e7c2688a9671a740c495565",
+        "after_sha256": "76f06b34c8955735760a6e51f7ceed15fe727d40fb23d5bf06ca50a112839ea0",
+        "syntax_tree_equal": true
+      }
+    },
+    "tool": "ruff 0.17.4",
+    "source_results": "Local lint, format, diff and AST checks passed on the corrected bytes; later exact-head execution is recorded on PR25."
+  },
+  "local_commands": [
+    {
+      "name": "import-fix",
+      "arguments": [
+        "ruff",
+        "check",
+        "--no-cache",
+        "--select",
+        "I001",
+        "--fix",
+        "adapters/mchs_sources/tests/installed_smoke.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "format-fix",
+      "arguments": [
+        "ruff",
+        "format",
+        "--no-cache",
+        "adapters/mchs_sources"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "repaired-lint",
+      "arguments": [
+        "ruff",
+        "check",
+        "--no-cache",
+        "adapters/mchs_sources"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "repaired-format",
+      "arguments": [
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "adapters/mchs_sources"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "review": {
+    "type": "author_diff_and_independent_mechanical_checks",
+    "separate_reviewer": false,
+    "findings": [],
+    "syntax_tree_comparison": "Identical except the documented top-level dapane/dapane_mchs_atlas import order.",
+    "shared_paths_modified": false,
+    "fixtures_modified": false,
+    "provider_pins_modified": false,
+    "test_count_unchanged": 34
+  },
+  "remaining": [
+    "Fresh published-head qualification; consult the later PR25 receipt.",
+    "Existing-integrator independent acceptance.",
+    "Offline-security gate.",
+    "Separate PR20 privacy findings.",
+    "M3 exact provider exporters and source/rights qualification."
+  ],
+  "historical_evidence_modified": false,
+  "workers_created": 0,
+  "merged": false,
+  "released": false
+}

@@ -1,0 +1,36 @@
+{
+  "mchs": {
+    "repository": "https://github.com/edithatogo/mchs",
+    "default_branch": "master",
+    "revision": "125933c7770e9a6bed9b62e354a6380d3dac3d47",
+    "contracts": {
+      "rust/crates/nwau-core/src/acute.rs": "6d99dbd352db4bf09bb2d72dd3efa2ce1924210f",
+      "rust/crates/nwau-py/src/lib.rs": "30d6f59e7bdd40406d70beb6974c016fba4fe972"
+    },
+    "supported_boundary": "Exact, caller-serialized AcuteEpisodeOutputDecimal projection with explicit classification and pricing context; acute only.",
+    "not_qualified": [
+      "provider execution",
+      "official classification or rate releases",
+      "float-based Python/Polars outputs",
+      "implicit NEP rates"
+    ]
+  },
+  "atlas": {
+    "repository": "https://github.com/edithatogo/reimbursement-atlas",
+    "default_branch": "main",
+    "revision": "a93516ed416118bc51c1db2b71ab540fa4d0fe52",
+    "contracts": {
+      "src/reimburse_atlas/contracts.py": "616f342b41054f6377374a713f58af5a0c2bfe9f",
+      "src/reimburse_atlas/models.py": "f1e5fa25a20d91090727718d1d8995b9d8a80060",
+      "src/reimburse_atlas/parsers/base.py": "f52012807fa5488385d868faabded37b67f2ddaf"
+    },
+    "supported_boundary": "SourceVersionRecord, SourceSnapshotRecord and ScheduleItemRecord metadata plus the Dapane exact-value supplement; normalized float amounts are rejected.",
+    "not_qualified": [
+      "upstream exact-value export",
+      "live parser execution",
+      "official monetary releases",
+      "restricted schedules",
+      "conditional tariffs"
+    ]
+  }
+}

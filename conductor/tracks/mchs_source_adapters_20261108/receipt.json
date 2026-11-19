@@ -1,0 +1,113 @@
+{
+  "format": "dapane-mchs-atlas-handoff/0.1",
+  "repository": "edithatogo/dapane",
+  "branch": "feat/mchs-atlas-m1-m2-20261115",
+  "base": {
+    "commit": "e34f87c9df39a2132fecee142431cdeefb732471",
+    "tree": "c07a6b2589b9d665f619f5d977d66e513180bab4"
+  },
+  "implementation": {
+    "commit": "44b33969ed8254964dc95d3dbc74732d62bc8529",
+    "tree": "8d3e0c62fc0e630bc7bf9dba79a773824bef0935",
+    "readback_files": 22,
+    "all_submitted_files_matched": true,
+    "code_blob_ids": {
+      "adapters/mchs_sources/.gitignore": "4e7a394108191c14d7fa4c39e129155b3e7d5d67",
+      "adapters/mchs_sources/README.md": "72dbbe4ff968b26e8698ac98b0f50da8154b4673",
+      "adapters/mchs_sources/fixtures/expected.json": "60a58c9fae3e616766ab6117bb28997bb88f4e8d",
+      "adapters/mchs_sources/fixtures/parallel-views.json": "9702c73e1da6b8840327d0b922f6900261d3e7c5",
+      "adapters/mchs_sources/fixtures/source-synthetic.json": "bd721bb340f1bc2ba9e25f343ec6bbb2629967bd",
+      "adapters/mchs_sources/pyproject.toml": "3a38e5979698a672f3ef8f6efc9dddfadd629543",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/__init__.py": "8c7b62cccc24c4fdaf543b5909494db533b84742",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/_validation.py": "f2a7a47a855af1fb9253700b77ff3ef8f15bb4d0",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/adapter.py": "5b9a0868b980a591f8db21312e9c59585b40d991",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/provider_pins.json": "8c286e297a54ca960a96e004345f0ab7a1882934",
+      "adapters/mchs_sources/src/dapane_mchs_atlas/py.typed": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "adapters/mchs_sources/tests/installed_smoke.py": "c01399055ac34148002e07b290442e393e8c8a25",
+      "adapters/mchs_sources/tests/test_adapters.py": "7b9aecdba4076f0052cd2e9199b3ae33966d5ed5"
+    }
+  },
+  "providers": {
+    "mchs": {
+      "repository": "https://github.com/edithatogo/mchs",
+      "default_branch": "master",
+      "revision": "125933c7770e9a6bed9b62e354a6380d3dac3d47",
+      "contracts": {
+        "rust/crates/nwau-core/src/acute.rs": "6d99dbd352db4bf09bb2d72dd3efa2ce1924210f",
+        "rust/crates/nwau-py/src/lib.rs": "30d6f59e7bdd40406d70beb6974c016fba4fe972"
+      },
+      "supported_boundary": "Exact, caller-serialized AcuteEpisodeOutputDecimal projection with explicit classification and pricing context; acute only.",
+      "not_qualified": [
+        "provider execution",
+        "official classification or rate releases",
+        "float-based Python/Polars outputs",
+        "implicit NEP rates"
+      ]
+    },
+    "atlas": {
+      "repository": "https://github.com/edithatogo/reimbursement-atlas",
+      "default_branch": "main",
+      "revision": "a93516ed416118bc51c1db2b71ab540fa4d0fe52",
+      "contracts": {
+        "src/reimburse_atlas/contracts.py": "616f342b41054f6377374a713f58af5a0c2bfe9f",
+        "src/reimburse_atlas/models.py": "f1e5fa25a20d91090727718d1d8995b9d8a80060",
+        "src/reimburse_atlas/parsers/base.py": "f52012807fa5488385d868faabded37b67f2ddaf"
+      },
+      "supported_boundary": "SourceVersionRecord, SourceSnapshotRecord and ScheduleItemRecord metadata plus the Dapane exact-value supplement; normalized float amounts are rejected.",
+      "not_qualified": [
+        "upstream exact-value export",
+        "live parser execution",
+        "official monetary releases",
+        "restricted schedules",
+        "conditional tariffs"
+      ]
+    }
+  },
+  "native_artifact": {
+    "source_commit": "a4ddde7ae7a799e37a5d594cde9c195ff057bc5e",
+    "source_tree": "740c1f379e69db746a5d56ec7212e7676924b473",
+    "run_id": 43677159295,
+    "artifact_id": 14146911264,
+    "zip_bytes": 2475629,
+    "zip_sha256": "c00e72422063557250436a76a9bbfe16e42208d5543cdec0f5ac02f6d60c58d7",
+    "cli_sha256": "2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2",
+    "verified_archive_members": 25,
+    "rustc": "1.99.1"
+  },
+  "verification": {
+    "earlier_working_copy_tests": {
+      "passed": 24,
+      "source_commit": null,
+      "source_hashes_captured": false,
+      "python": "3.12.14",
+      "native_cli_tests": 5,
+      "qualification": "historical working-copy evidence only"
+    },
+    "recovered_candidate": {
+      "authored_test_methods": 34,
+      "executed_test_methods": 0,
+      "status": "blocked",
+      "reason": "No usable execution environment is available; final source was recovered after an environment outage."
+    },
+    "installed_adapter": "not_run",
+    "installed_default_native_smoke": "not_run",
+    "final_ruff": "not_run",
+    "conductor": "pending_integrator_registry_reconciliation",
+    "provider_runtime": "not_run",
+    "empirical_validation": false
+  },
+  "shared_change_requests": [
+    "conductor/tracks.md: change only MCHS row to in_progress",
+    "explicit optional package/test/installed-artifact invocation in integrator-owned CI",
+    "review explicit tariff-to-charge mapping and exact-provider exporter requests"
+  ],
+  "boundaries": {
+    "synthetic_only": true,
+    "upstream_read_only": true,
+    "shared_files_edited": false,
+    "merged": false,
+    "release_published": false,
+    "workers_created": 0,
+    "credentials_or_infrastructure_changed": false
+  }
+}
