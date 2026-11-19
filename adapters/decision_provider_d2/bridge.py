@@ -8,23 +8,29 @@ solve Paignia games or convert financial transfers into utilities.
 
 from __future__ import annotations
 
-from fractions import Fraction
-from hashlib import sha256
-from itertools import product
 import json
 import math
 import re
+from fractions import Fraction
+from hashlib import sha256
+from itertools import product
 from typing import Any
 
 SCHEMA = "dapane-d2/0.1"
 KEY_FIELDS = (
-    "scenario_id", "strategy_id", "draw_id", "replication_id", "perspective", "subgroup_id",
+    "scenario_id",
+    "strategy_id",
+    "draw_id",
+    "replication_id",
+    "perspective",
+    "subgroup_id",
 )
 SUPPORTED = {
     "edithatogo/voiage": ("voiage-domain/ValueArray", "evpi"),
     "edithatogo/innovate": ("declared-innovation-trajectory/0.1", "provided_trajectory"),
     "edithatogo/paignia": (
-        "paignia/static-finite-perfect-information-sparse-zero/1.0.0", "static_game_input"
+        "paignia/static-finite-perfect-information-sparse-zero/1.0.0",
+        "static_game_input",
     ),
 }
 _DIGEST = re.compile(r"sha256:[0-9a-f]{64}\Z")
@@ -53,9 +59,15 @@ def _object(value: Any, path: str, required: set[str]) -> dict[str, Any]:
 
 
 def _ident(value: Any, path: str) -> str:
-    if (not isinstance(value, str) or not 1 <= len(value.encode("utf-8")) <= 128
-        or value != value.strip() or any(ord(c) < 32 or ord(c) == 127 for c in value)):
-        _bad("invalid_identity", path, "Nonblank 1..128 UTF-8 bytes, no edge whitespace or controls")
+    if (
+        not isinstance(value, str)
+        or not 1 <= len(value.encode("utf-8")) <= 128
+        or value != value.strip()
+        or any(ord(c) < 32 or ord(c) == 127 for c in value)
+    ):
+        _bad(
+            "invalid_identity", path, "Nonblank 1..128 UTF-8 bytes, no edge whitespace or controls"
+        )
     return value
 
 
@@ -68,9 +80,15 @@ def _sha(value: Any, path: str) -> str:
 def _fraction(value: Any, path: str, *, nonnegative: bool = False) -> Fraction:
     wire = _object(value, path, {"numerator", "denominator"})
     num, den = wire["numerator"], wire["denominator"]
-    if (not isinstance(num, str) or not isinstance(den, str)
-        or _INT.fullmatch(num) is None or _INT.fullmatch(den) is None
-        or den.startswith("-") or len(num.lstrip("-")) > 96 or len(den) > 96):
+    if (
+        not isinstance(num, str)
+        or not isinstance(den, str)
+        or _INT.fullmatch(num) is None
+        or _INT.fullmatch(den) is None
+        or den.startswith("-")
+        or len(num.lstrip("-")) > 96
+        or len(den) > 96
+    ):
         _bad("invalid_exact_number", path, "Canonical bounded integer strings required")
     if int(den) == 0:
         _bad("invalid_exact_number", path, "Denominator must be positive")
@@ -91,13 +109,17 @@ def _f64(value: Fraction, path: str) -> float:
         converted = float(value)
     except OverflowError:
         _bad("precision_loss", path, "Cannot represent value as finite f64")
-    if not math.isfinite(converted) or abs(Fraction.from_float(converted) - value) > Fraction(1, 10**9):
+    if not math.isfinite(converted) or abs(Fraction.from_float(converted) - value) > Fraction(
+        1, 10**9
+    ):
         _bad("precision_loss", path, "f64 conversion exceeds 1e-9 absolute unit tolerance")
     return converted
 
 
 def _canonical(value: Any) -> str:
-    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    return json.dumps(
+        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
+    )
 
 
 def _digest(domain: str, value: Any) -> str:
@@ -127,8 +149,9 @@ def _loads_unique(text: str) -> Any:
         _bad("invalid_json_number", "/", "D1 exact JSON cannot contain floating numbers")
 
     try:
-        return json.loads(text, object_pairs_hook=hook, parse_float=floating,
-                          parse_constant=floating)
+        return json.loads(
+            text, object_pairs_hook=hook, parse_float=floating, parse_constant=floating
+        )
     except (json.JSONDecodeError, UnicodeError, RecursionError) as error:
         _bad("invalid_json", "/", str(error))
 
@@ -146,7 +169,9 @@ def negotiate(pin: Any) -> dict[str, str]:
     p = pin
     repo = p["repository"]
     if not isinstance(repo, str) or repo not in SUPPORTED:
-        _bad("unsupported_provider", "/provider/repository", "No adapter for the requested provider")
+        _bad(
+            "unsupported_provider", "/provider/repository", "No adapter for the requested provider"
+        )
     if not isinstance(p["revision"], str) or _REVISION.fullmatch(p["revision"]) is None:
         _bad("invalid_provider", "/provider/revision", "Pin exact 40-character lowercase commit")
     _sha(p["artifact_digest"], "/provider/artifact_digest")
@@ -155,29 +180,46 @@ def negotiate(pin: Any) -> dict[str, str]:
         _bad("unsupported_contract", "/provider/contract", f"Only {expected_contract} is prepared")
     if p["method"] != expected_method:
         _bad("unsupported_method", "/provider/method", f"Only {expected_method} is prepared")
-    return {"provider": repo, "revision": p["revision"], "artifact_digest": p["artifact_digest"],
-            "contract": expected_contract, "method": expected_method, "state": "prepared_not_executed"}
+    return {
+        "provider": repo,
+        "revision": p["revision"],
+        "artifact_digest": p["artifact_digest"],
+        "contract": expected_contract,
+        "method": expected_method,
+        "state": "prepared_not_executed",
+    }
 
 
-def _d1_rows(raw: str, expected: str) -> tuple[dict[str, Any], dict[tuple[str, ...], dict[str, Any]]]:
+def _d1_rows(
+    raw: str, expected: str
+) -> tuple[dict[str, Any], dict[tuple[str, ...], dict[str, Any]]]:
     _sha(expected, "/expected_d1_digest")
     report = _loads_unique(raw)
     if not isinstance(report, dict):
         _bad("invalid_d1", "/", "D1 report must be an object")
-    if (report.get("schema_version") != "dapane-paired-draws/0.1"
+    if (
+        report.get("schema_version") != "dapane-paired-draws/0.1"
         or report.get("method_version") != "dapane-paired-draws-v0.1.0"
-        or report.get("status") != "complete"):
+        or report.get("status") != "complete"
+    ):
         _bad("unsupported_d1", "/schema_version", "Requires completed D1 0.1 native report")
     provided = report.get("output_digest")
     body = {k: v for k, v in report.items() if k != "output_digest"}
     if provided != expected or _digest("dapane:paired-output:0.1\n", body) != expected:
-        _bad("d1_digest_mismatch", "/output_digest", "D1 bytes differ from independently selected digest")
+        _bad(
+            "d1_digest_mismatch",
+            "/output_digest",
+            "D1 bytes differ from independently selected digest",
+        )
     if not isinstance(report.get("money"), dict) or not isinstance(report.get("design"), dict):
         _bad("invalid_d1", "/", "Missing D1 money/design contexts")
     design, draws = report["design"], report.get("draws")
     if not isinstance(draws, dict) or not isinstance(draws.get("rows"), list):
         _bad("invalid_d1", "/draws", "Missing explicit parameter draws")
-    axes = [design.get(name) for name in ("scenarios", "strategies", "replications", "perspectives", "subgroups")]
+    axes = [
+        design.get(name)
+        for name in ("scenarios", "strategies", "replications", "perspectives", "subgroups")
+    ]
     if any(not isinstance(axis, list) or not axis for axis in axes):
         _bad("invalid_d1", "/design", "Every design axis is required")
     draw_ids = [d.get("draw_id") for d in draws["rows"] if isinstance(d, dict)]
@@ -186,20 +228,29 @@ def _d1_rows(raw: str, expected: str) -> tuple[dict[str, Any], dict[tuple[str, .
     for axis in [*axes, draw_ids]:
         if any(not isinstance(v, str) or not v for v in axis) or len(set(axis)) != len(axis):
             _bad("invalid_d1", "/design", "Duplicate or invalid axis values")
-    expected_keys = {
-        (s, t, d, r, p, g)
-        for s, t, r, p, g, d in product(*axes, draw_ids)
-    }
+    expected_keys = {(s, t, d, r, p, g) for s, t, r, p, g, d in product(*axes, draw_ids)}
     rows = report.get("rows")
     if not isinstance(rows, list) or len(rows) != len(expected_keys):
         _bad("d1_pairing_mismatch", "/rows", "D1 report is not a complete Cartesian panel")
     keyed = {}
     for i, row in enumerate(rows):
-        if not isinstance(row, dict) or not isinstance(row.get("outcome"), dict) or not isinstance(row.get("cost_report"), dict):
+        if (
+            not isinstance(row, dict)
+            or not isinstance(row.get("outcome"), dict)
+            or not isinstance(row.get("cost_report"), dict)
+        ):
             _bad("invalid_d1", f"/rows/{i}", "Missing D1 outcome or native cost report")
         k = _key(row.get("key"), f"/rows/{i}/key")
-        if k in keyed or k not in expected_keys or _key(row["outcome"].get("key"), f"/rows/{i}/outcome/key") != k:
-            _bad("d1_pairing_mismatch", f"/rows/{i}", "Duplicated, missing, or mispaired native/outcome key")
+        if (
+            k in keyed
+            or k not in expected_keys
+            or _key(row["outcome"].get("key"), f"/rows/{i}/outcome/key") != k
+        ):
+            _bad(
+                "d1_pairing_mismatch",
+                f"/rows/{i}",
+                "Duplicated, missing, or mispaired native/outcome key",
+            )
         keyed[k] = row
     return report, keyed
 
@@ -215,27 +266,47 @@ def voiage_packet(d1_json: str, expected_d1_digest: str, payload: Any) -> dict[s
     if pin["provider"] != "edithatogo/voiage":
         _bad("unsupported_provider", "/provider", "Expected Voiage")
     report, rows = _d1_rows(d1_json, expected_d1_digest)
-    group = _object(p["group"], "/group", {"scenario_id", "replication_id", "perspective", "subgroup_id"})
+    group = _object(
+        p["group"], "/group", {"scenario_id", "replication_id", "perspective", "subgroup_id"}
+    )
     for k, v in group.items():
         _ident(v, f"/group/{k}")
     money = report["money"]
-    valuation = _object(p["valuation"], "/valuation", {"currency", "price_year", "basis", "unit", "source"})
+    valuation = _object(
+        p["valuation"], "/valuation", {"currency", "price_year", "basis", "unit", "source"}
+    )
     for name in ("currency", "price_year", "basis"):
         if valuation[name] != money.get(name):
-            _bad("money_context", f"/valuation/{name}", "D1 money context and outcome valuation must agree")
+            _bad(
+                "money_context",
+                f"/valuation/{name}",
+                "D1 money context and outcome valuation must agree",
+            )
     if valuation["unit"] != "currency":
-        _bad("money_context", "/valuation/unit", "ValueArray requires named net-benefit currency units")
+        _bad(
+            "money_context",
+            "/valuation/unit",
+            "ValueArray requires named net-benefit currency units",
+        )
     source = _object(valuation["source"], "/valuation/source", {"id", "version", "digest"})
     _ident(source["id"], "/valuation/source/id")
     _ident(source["version"], "/valuation/source/version")
     _sha(source["digest"], "/valuation/source/digest")
     value_array_id = _ident(p["value_array_id"], "/value_array_id")
-    desired = {k: r for k, r in rows.items() if all(k[KEY_FIELDS.index(field)] == value for field, value in group.items())}
+    desired = {
+        k: r
+        for k, r in rows.items()
+        if all(k[KEY_FIELDS.index(field)] == value for field, value in group.items())
+    }
     if not desired:
         _bad("pairing_mismatch", "/group", "No D1 rows for selected group")
     vals = p["net_benefits"]
     if not isinstance(vals, list) or len(vals) != len(desired):
-        _bad("pairing_mismatch", "/net_benefits", "Net benefits must cover every paired strategy/draw")
+        _bad(
+            "pairing_mismatch",
+            "/net_benefits",
+            "Net benefits must cover every paired strategy/draw",
+        )
     valued: dict[tuple[str, ...], Fraction] = {}
     for i, item in enumerate(vals):
         v = _object(item, f"/net_benefits/{i}", {"key", "value"})
@@ -253,7 +324,14 @@ def voiage_packet(d1_json: str, expected_d1_digest: str, payload: Any) -> dict[s
     for draw in draws:
         matrix_row = []
         for strategy in strategies:
-            key = (group["scenario_id"], strategy, draw, group["replication_id"], group["perspective"], group["subgroup_id"])
+            key = (
+                group["scenario_id"],
+                strategy,
+                draw,
+                group["replication_id"],
+                group["perspective"],
+                group["subgroup_id"],
+            )
             if key not in valued:
                 _bad("pairing_mismatch", "/net_benefits", "Missing explicitly keyed net benefit")
             value = valued[key]
@@ -261,26 +339,57 @@ def voiage_packet(d1_json: str, expected_d1_digest: str, payload: Any) -> dict[s
             keys.append(dict(zip(KEY_FIELDS, key)))
             exact.append(_wire(value))
         matrix.append(matrix_row)
-    return _closed_output("dapane:d2-voiage:0.1\n", {
-        "schema_version": "dapane-d2-voiage/0.1", "provider": pin,
-        "provider_execution": "not_executed", "input_d1_digest": expected_d1_digest,
-        "group": group, "valuation": valuation, "draw_id_order": draws, "pair_keys": keys,
-        "exact_net_benefit": exact,
-        "value_array": {"value_array_id": value_array_id, "sample_count": len(draws),
-                        "strategy_names": strategies, "net_benefit": matrix},
-        "conversion": {"method": "exact_rational_to_f64", "absolute_tolerance": "1e-9", "source": "external_valued_outcome"},
-    })
+    return _closed_output(
+        "dapane:d2-voiage:0.1\n",
+        {
+            "schema_version": "dapane-d2-voiage/0.1",
+            "provider": pin,
+            "provider_execution": "not_executed",
+            "input_d1_digest": expected_d1_digest,
+            "group": group,
+            "valuation": valuation,
+            "draw_id_order": draws,
+            "pair_keys": keys,
+            "exact_net_benefit": exact,
+            "value_array": {
+                "value_array_id": value_array_id,
+                "sample_count": len(draws),
+                "strategy_names": strategies,
+                "net_benefit": matrix,
+            },
+            "conversion": {
+                "method": "exact_rational_to_f64",
+                "absolute_tolerance": "1e-9",
+                "source": "external_valued_outcome",
+            },
+        },
+    )
 
 
-def adoption_capacity(payload: Any, *, expected_previous_digest: str | None = None) -> dict[str, Any]:
+def adoption_capacity(
+    payload: Any, *, expected_previous_digest: str | None = None
+) -> dict[str, Any]:
     """Convert externally supplied Innovate volumes into resource-demand envelopes.
 
     Capacity is a transparent bounded application arithmetic example, not a
     Kairos scheduler or a Dapane monetary valuation. Price feedback must arrive
     as a *new* externally recalculated Innovate output and explicit chain receipt.
     """
-    p = _object(payload, "/", {"schema_version", "provider", "run_id", "iteration",
-                               "previous_evaluation_digest", "key", "resource", "observations", "feedback"})
+    p = _object(
+        payload,
+        "/",
+        {
+            "schema_version",
+            "provider",
+            "run_id",
+            "iteration",
+            "previous_evaluation_digest",
+            "key",
+            "resource",
+            "observations",
+            "feedback",
+        },
+    )
     if p["schema_version"] != "dapane-d2-innovate/0.1":
         _bad("unsupported_schema", "/schema_version", "Only dapane-d2-innovate/0.1")
     pin = negotiate(p["provider"])
@@ -292,27 +401,56 @@ def adoption_capacity(payload: Any, *, expected_previous_digest: str | None = No
     if type(iteration) is not int or not 0 <= iteration <= 16:
         _bad("invalid_iteration", "/iteration", "Expected integer iteration 0..16")
     prev = p["previous_evaluation_digest"]
-    feedback = _object(p["feedback"], "/feedback", {"price_affects_adoption", "mode", "valuation_digest"})
+    feedback = _object(
+        p["feedback"], "/feedback", {"price_affects_adoption", "mode", "valuation_digest"}
+    )
     if type(feedback["price_affects_adoption"]) is not bool:
         _bad("invalid_feedback", "/feedback/price_affects_adoption", "Explicit Boolean required")
     if iteration == 0:
         if prev is not None or expected_previous_digest is not None:
-            _bad("feedback_chain", "/previous_evaluation_digest", "Initial trajectory has no parent")
+            _bad(
+                "feedback_chain", "/previous_evaluation_digest", "Initial trajectory has no parent"
+            )
         if feedback != {"price_affects_adoption": False, "mode": "none", "valuation_digest": None}:
-            _bad("feedback_requires_external_revision", "/feedback", "No implicit price response allowed")
+            _bad(
+                "feedback_requires_external_revision",
+                "/feedback",
+                "No implicit price response allowed",
+            )
     else:
-        if (not isinstance(prev, str) or expected_previous_digest is None or prev != expected_previous_digest):
-            _bad("feedback_chain", "/previous_evaluation_digest", "Independent prior output digest required")
+        if (
+            not isinstance(prev, str)
+            or expected_previous_digest is None
+            or prev != expected_previous_digest
+        ):
+            _bad(
+                "feedback_chain",
+                "/previous_evaluation_digest",
+                "Independent prior output digest required",
+            )
         _sha(prev, "/previous_evaluation_digest")
-        if (feedback["price_affects_adoption"] is not True or feedback["mode"] != "external_recomputed"
-            or not isinstance(feedback["valuation_digest"], str)):
-            _bad("feedback_requires_external_revision", "/feedback", "Supply explicit externally recalculated model and valuation trigger")
+        if (
+            feedback["price_affects_adoption"] is not True
+            or feedback["mode"] != "external_recomputed"
+            or not isinstance(feedback["valuation_digest"], str)
+        ):
+            _bad(
+                "feedback_requires_external_revision",
+                "/feedback",
+                "Supply explicit externally recalculated model and valuation trigger",
+            )
         _sha(feedback["valuation_digest"], "/feedback/valuation_digest")
-    resource = _object(p["resource"], "/resource", {"id", "unit", "quantity_per_adoption", "capacity_per_period"})
+    resource = _object(
+        p["resource"], "/resource", {"id", "unit", "quantity_per_adoption", "capacity_per_period"}
+    )
     for field in ("id", "unit"):
         _ident(resource[field], f"/resource/{field}")
-    per_adoption = _fraction(resource["quantity_per_adoption"], "/resource/quantity_per_adoption", nonnegative=True)
-    capacity = _fraction(resource["capacity_per_period"], "/resource/capacity_per_period", nonnegative=True)
+    per_adoption = _fraction(
+        resource["quantity_per_adoption"], "/resource/quantity_per_adoption", nonnegative=True
+    )
+    capacity = _fraction(
+        resource["capacity_per_period"], "/resource/capacity_per_period", nonnegative=True
+    )
     if capacity == 0 or per_adoption == 0:
         _bad("invalid_capacity", "/resource", "Positive capacity and intensity required")
     observations = p["observations"]
@@ -326,27 +464,57 @@ def adoption_capacity(payload: Any, *, expected_previous_digest: str | None = No
         period = row["period"]
         m = _PERIOD.fullmatch(period) if isinstance(period, str) else None
         if not m or not 1 <= int(m.group(2)) <= 12 or period <= last:
-            _bad("invalid_period_sequence", f"/observations/{i}/period", "Strict ascending YYYY-MM periods required")
+            _bad(
+                "invalid_period_sequence",
+                f"/observations/{i}/period",
+                "Strict ascending YYYY-MM periods required",
+            )
         last = period
         adopted = row["new_adoptions"]
         if type(adopted) is not int or adopted < 0 or adopted > 10**9:
-            _bad("invalid_adoption", f"/observations/{i}/new_adoptions", "Nonnegative integer count required")
+            _bad(
+                "invalid_adoption",
+                f"/observations/{i}/new_adoptions",
+                "Nonnegative integer count required",
+            )
         demand = adopted * per_adoption + backlog
         served = min(demand, capacity)
         backlog = demand - served
-        if any(v.numerator.bit_length() > 4096 or v.denominator.bit_length() > 4096 for v in (demand, served, backlog)):
-            _bad("precision_limit", f"/observations/{i}", "Derived resource total exceeds 4096 bits")
-        steps.append({"period": period, "new_adoptions": adopted,
-                      "new_resource_use": _wire(adopted * per_adoption),
-                      "demand": _wire(demand), "served": _wire(served),
-                      "backlog": _wire(backlog), "capacity_exceeded": demand > capacity})
-    return _closed_output("dapane:d2-adoption:0.1\n", {
-        "schema_version": p["schema_version"], "run_id": p["run_id"], "provider": pin,
-        "provider_execution": "externally_supplied_trajectory", "key": key,
-        "iteration": iteration, "previous_evaluation_digest": prev,
-        "feedback_mode": feedback["mode"], "triggering_valuation_digest": feedback["valuation_digest"],
-        "resource": resource, "periods": steps, "pricing_execution": "not_executed",
-    })
+        if any(
+            v.numerator.bit_length() > 4096 or v.denominator.bit_length() > 4096
+            for v in (demand, served, backlog)
+        ):
+            _bad(
+                "precision_limit", f"/observations/{i}", "Derived resource total exceeds 4096 bits"
+            )
+        steps.append(
+            {
+                "period": period,
+                "new_adoptions": adopted,
+                "new_resource_use": _wire(adopted * per_adoption),
+                "demand": _wire(demand),
+                "served": _wire(served),
+                "backlog": _wire(backlog),
+                "capacity_exceeded": demand > capacity,
+            }
+        )
+    return _closed_output(
+        "dapane:d2-adoption:0.1\n",
+        {
+            "schema_version": p["schema_version"],
+            "run_id": p["run_id"],
+            "provider": pin,
+            "provider_execution": "externally_supplied_trajectory",
+            "key": key,
+            "iteration": iteration,
+            "previous_evaluation_digest": prev,
+            "feedback_mode": feedback["mode"],
+            "triggering_valuation_digest": feedback["valuation_digest"],
+            "resource": resource,
+            "periods": steps,
+            "pricing_execution": "not_executed",
+        },
+    )
 
 
 def paignia_packet(payload: Any) -> dict[str, Any]:
@@ -355,8 +523,11 @@ def paignia_packet(payload: Any) -> dict[str, Any]:
     A Paignia application must construct native GameSpecification/Node types and
     run validate_for_profile. There is no assumed Paignia JSON wire protocol.
     """
-    p = _object(payload, "/", {"schema_version", "provider", "game_id", "player_id",
-                               "key", "payoff_mapping", "actions"})
+    p = _object(
+        payload,
+        "/",
+        {"schema_version", "provider", "game_id", "player_id", "key", "payoff_mapping", "actions"},
+    )
     if p["schema_version"] != "dapane-d2-paignia/0.1":
         _bad("unsupported_schema", "/schema_version", "Only dapane-d2-paignia/0.1")
     pin = negotiate(p["provider"])
@@ -365,14 +536,36 @@ def paignia_packet(payload: Any) -> dict[str, Any]:
     game_id = _ident(p["game_id"], "/game_id")
     player_id = _ident(p["player_id"], "/player_id")
     key = dict(zip(KEY_FIELDS, _key(p["key"], "/key")))
-    m = _object(p["payoff_mapping"], "/payoff_mapping", {"source_digest", "method", "unit",
-                                          "price_basis", "transfer_treatment", "domestic_transfer_balance"})
+    m = _object(
+        p["payoff_mapping"],
+        "/payoff_mapping",
+        {
+            "source_digest",
+            "method",
+            "unit",
+            "price_basis",
+            "transfer_treatment",
+            "domestic_transfer_balance",
+        },
+    )
     _sha(m["source_digest"], "/payoff_mapping/source_digest")
-    if (m["method"] != "explicit_assessed_utility" or m["unit"] != "utility"
-        or m["price_basis"] != "not_applicable" or m["transfer_treatment"] != "excluded"):
-        _bad("payoff_semantics", "/payoff_mapping", "Payoffs must be externally justified utilities; transfers excluded")
+    if (
+        m["method"] != "explicit_assessed_utility"
+        or m["unit"] != "utility"
+        or m["price_basis"] != "not_applicable"
+        or m["transfer_treatment"] != "excluded"
+    ):
+        _bad(
+            "payoff_semantics",
+            "/payoff_mapping",
+            "Payoffs must be externally justified utilities; transfers excluded",
+        )
     if _fraction(m["domestic_transfer_balance"], "/payoff_mapping/domestic_transfer_balance") != 0:
-        _bad("transfer_imbalance", "/payoff_mapping/domestic_transfer_balance", "Domestic transfer cannot create societal net benefit")
+        _bad(
+            "transfer_imbalance",
+            "/payoff_mapping/domestic_transfer_balance",
+            "Domestic transfer cannot create societal net benefit",
+        )
     actions = p["actions"]
     if not isinstance(actions, list) or not 2 <= len(actions) <= 32:
         _bad("invalid_request", "/actions", "Two to 32 explicit actions required")
@@ -390,14 +583,27 @@ def paignia_packet(payload: Any) -> dict[str, Any]:
         if len(terminal.encode("utf-8")) > 128:
             _bad("invalid_identity", f"/actions/{i}/id", "Terminal identity would exceed 128 bytes")
         v = _fraction(a["utility"], f"/actions/{i}/utility")
-        terminals[terminal] = {"kind": "Terminal", "payoffs": {player_id: _f64(v, f"/actions/{i}/utility")}}
+        terminals[terminal] = {
+            "kind": "Terminal",
+            "payoffs": {player_id: _f64(v, f"/actions/{i}/utility")},
+        }
         edges.append({"action": action, "target": terminal})
         exact_payoffs.append({"action": action, "utility": _wire(v)})
-    graph = {"root": "start", "nodes": {"start": {"kind": "Decision", "player": player_id, "edges": edges}, **terminals}}
-    return _closed_output("dapane:d2-paignia:0.1\n", {
-        "schema_version": p["schema_version"], "provider": pin, "provider_execution": "not_executed",
-        "native_wire_supported": False, "key": key,
-        "payoff_mapping": m, "exact_payoffs": exact_payoffs,
-        "game_specification": {"schema_version": "1.0.0", "id": game_id, "game": graph},
-        "application_requirement": "Construct Paignia native structs and validate_for_profile on qualified artifacts",
-    })
+    graph = {
+        "root": "start",
+        "nodes": {"start": {"kind": "Decision", "player": player_id, "edges": edges}, **terminals},
+    }
+    return _closed_output(
+        "dapane:d2-paignia:0.1\n",
+        {
+            "schema_version": p["schema_version"],
+            "provider": pin,
+            "provider_execution": "not_executed",
+            "native_wire_supported": False,
+            "key": key,
+            "payoff_mapping": m,
+            "exact_payoffs": exact_payoffs,
+            "game_specification": {"schema_version": "1.0.0", "id": game_id, "game": graph},
+            "application_requirement": "Construct Paignia native structs and validate_for_profile on qualified artifacts",
+        },
+    )

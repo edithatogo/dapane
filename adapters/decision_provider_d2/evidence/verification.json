@@ -107,5 +107,23 @@
       "failures": 0
     },
     "scope": "existing Dapane root and D1/T1 checks, not the new D2 Python or D3 tests; two offline-security jobs queued"
+  },
+  "lint_format_reconciliation_20261119": {
+    "date": "2026-11-19",
+    "scope": "mechanical_ruff_format_and_lint_cleanup_no_behavior_change",
+    "ruff_version": "0.17.4",
+    "unittest_command": "python3 -m unittest discover -s tests -v",
+    "tests_passed": 78,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "compileall_passed": true,
+    "updated_sources": {
+      "adapters/decision_provider_d2/bridge.py": "235be3c7147f6acecf13e337021ca0e9fc0d9c5a",
+      "adapters/decision_provider_d2/study.py": "d2b07c28ba580f44001a38a1c9f56a94ee5ca654",
+      "adapters/decision_provider_d2/native_voiage.py": "7b3e7f51d33721fea3c1d371de0b930085e9e2fc",
+      "adapters/decision_provider_d2/tests/test_bridge.py": "84f2546ced2a07288dcbbc4414df9e5be610f893",
+      "adapters/decision_provider_d2/tests/test_study.py": "3048a963c214d0d5c8e164f18d3274e566aa3501",
+      "adapters/decision_provider_d2/tests/test_native_runner.py": "662d8b93c8fc71e31d655c54892ceb2070663163"
+    }
   }
 }
