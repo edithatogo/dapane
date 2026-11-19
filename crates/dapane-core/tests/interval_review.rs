@@ -1,8 +1,8 @@
 //! Adversarial regressions from interval-contract review.
 
-use chrono::{Duration, NaiveDate};
 use dapane_core::{evaluate_intervals_json, evaluate_json};
 use serde_json::{Value, json};
+use time::{Date, Duration, Month};
 
 const LIMIT: usize = 4 * 1024 * 1024;
 
@@ -27,7 +27,7 @@ fn reject(input: &Value) -> dapane_core::DapaneError {
 #[test]
 fn modest_interval_input_cannot_expand_past_the_exact_byte_budget() {
     let mut input = base();
-    let first = NaiveDate::from_ymd_opt(2026, 1, 1).unwrap();
+    let first = Date::from_calendar_date(2026, Month::January, 1).unwrap();
     let template = input["request"]["quotes"][0].clone();
     let mut quotes = Vec::new();
     let mut selected = Vec::new();

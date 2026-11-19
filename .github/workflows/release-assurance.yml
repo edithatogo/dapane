@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: ${{ github.event_name == 'pull_request' && 0 || 1 }}
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
@@ -120,7 +120,8 @@ jobs:
         run: |
           set -euo pipefail
           PROFILE="$RUNNER_TEMP/release-candidate-profile.jsonl"
-          export SOURCE_DATE_EPOCH="$(git show -s --format=%ct HEAD)"
+          SOURCE_DATE_EPOCH="$(git show -s --format=%ct HEAD)"
+          export SOURCE_DATE_EPOCH
           export RUSTFLAGS="--remap-path-prefix=$GITHUB_WORKSPACE=/dapane/source --remap-path-prefix=$RUNNER_TEMP/dapane-target-first=/dapane/target --remap-path-prefix=$RUNNER_TEMP/dapane-target-second=/dapane/target"
           for attempt in first second; do
             export CARGO_TARGET_DIR="$RUNNER_TEMP/dapane-target-$attempt"
@@ -150,6 +151,7 @@ jobs:
           consumer="$RUNNER_TEMP/dapane-consumer/bin/python"
           "$consumer" -m pip install --no-deps --no-index "$artifact/"*.whl
           mkdir "$RUNNER_TEMP/dapane-consumer-cwd"
+          cd "$RUNNER_TEMP/dapane-consumer-cwd"
           "$consumer" "$GITHUB_WORKSPACE/scripts/release_assurance.py" collect \
             --cli "$artifact/dapane" --wheel "$artifact/"*.whl \
             --output "$artifact/evidence.json"
@@ -293,7 +295,9 @@ jobs:
           cargo metadata --locked --format-version 1 > "$evidence/cargo-metadata.json"
           cargo tree --locked --duplicates > "$evidence/duplicate-crates.txt"
           cargo deny --version > "$evidence/cargo-deny-version.txt"
-          if python3 scripts/ci_profile.py run --name cargo-deny --profile-file "$PROFILE" -- bash -c 'cargo deny --locked --format json check advisories bans licenses sources > "$1/cargo-deny.jsonl" 2>&1' _ "$evidence"; then
+          if python3 scripts/ci_profile.py run --name cargo-deny --profile-file "$PROFILE" -- \
+            cargo deny --locked --format json check advisories bans licenses sources \
+            > "$evidence/cargo-deny.jsonl" 2>&1; then
             export DAPANE_DENY_EXIT=0
           else
             export DAPANE_DENY_EXIT=$?
@@ -339,7 +343,8 @@ jobs:
         run: |
           set -euo pipefail
           PROFILE="$RUNNER_TEMP/release-supply-profile.jsonl"
-          export SOURCE_DATE_EPOCH="$(git show -s --format=%ct HEAD)"
+          SOURCE_DATE_EPOCH="$(git show -s --format=%ct HEAD)"
+          export SOURCE_DATE_EPOCH
           cargo cyclonedx --version > "$RUNNER_TEMP/dapane-supply-chain/cargo-cyclonedx-version.txt"
           python3 scripts/ci_profile.py run --name cargo-cyclonedx --profile-file "$PROFILE" -- \
             env CARGO_NET_OFFLINE=true cargo cyclonedx --format json --spec-version 1.6 \

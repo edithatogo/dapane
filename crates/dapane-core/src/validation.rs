@@ -1,8 +1,8 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use chrono::{Datelike, NaiveDate};
 use num_rational::BigRational;
 use num_traits::Zero;
+use time::{Date, format_description::well_known::Iso8601};
 
 use crate::{DapaneError, Event, Request, SourceRef, Usage, capacity, numeric};
 
@@ -35,7 +35,7 @@ fn collection(size: usize, path: &str) -> Result<(), DapaneError> {
     Ok(())
 }
 
-pub(crate) fn date(value: &str, path: &str) -> Result<NaiveDate, DapaneError> {
+pub(crate) fn date(value: &str, path: &str) -> Result<Date, DapaneError> {
     let bytes = value.as_bytes();
     let valid_shape = bytes.len() == 10
         && bytes[4] == b'-'
@@ -51,7 +51,7 @@ pub(crate) fn date(value: &str, path: &str) -> Result<NaiveDate, DapaneError> {
             path,
         ));
     }
-    let parsed = NaiveDate::parse_from_str(value, "%Y-%m-%d")
+    let parsed = Date::parse(value, &Iso8601::DATE)
         .map_err(|_| DapaneError::new("invalid_date", "Invalid calendar date", path))?;
     if !(1..=9999).contains(&parsed.year()) {
         return Err(DapaneError::new(

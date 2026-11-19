@@ -27,7 +27,7 @@ pins the exact graph. This baseline makes no promise about older compilers.
 | --- | --- | --- |
 | serde / serde_json | 1.0.229 / 1.0.154 | Typed strict transport and canonical report construction |
 | num-rational / num-bigint / num-traits | 0.4.2 / 0.4.8 / 0.2.19 | Bounded exact rational arithmetic |
-| chrono | 0.4.45, default features disabled, `std` only | Strict calendar dates without clock/timezone lookup |
+| time | 0.3.55, default features disabled, `parsing` only | Strict calendar dates without clock/timezone lookup |
 | sha2 | 0.11.1 | Input and report digests |
 | PyO3 | 0.30.1, separate wrapper crate | Native Python boundary |
 
