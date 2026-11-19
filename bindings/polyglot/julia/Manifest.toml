@@ -1,0 +1,15 @@
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.13.4"
+manifest_format = "2.1"
+project_hash = "0388d4bdfbf3c454e0e7e14afc855008c1154060"
+
+[[deps.Dapane]]
+deps = ["Libdl"]
+path = "."
+uuid = "9e3d4fcd-620e-4e51-aea8-046ee6585854"
+version = "0.1.0"
+
+[[deps.Libdl]]
+uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
+version = "1.11.0"

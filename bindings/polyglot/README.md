@@ -11,7 +11,8 @@ acceptance and added standalone CI. The owner corrected ABI lint precedence and
 Python formatting without changing runtime source or fixture assertions. See the
 [current source-bound evidence](../../conductor/tracks/polyglot_bindings_20261108/owner-quality-20261115.md).
 Total ABI acceptance, optional legal/security/release requirements and other hosts
-remain open. Julia has deliberately not been implemented in this repair.
+remain open. A local Julia caller is in `julia/`. It is not an installed package
+or a JLL artifact.
 
 ## R direct Rust boundary
 
@@ -113,6 +114,28 @@ fixtures and explicit large-integer/rational/interval examples. Complete JSON
 reports captured from the CLI are regression parity oracles. The five capacity
 cases currently use complete CLI parity; this does not create independent
 capacity reference calculations.
+
+## Julia caller
+
+`julia/` calls the C ABI through `Libdl`. It copies the request and the result
+into Julia memory, preserves the request across the foreign call, and frees the
+Rust handle before returning. Amounts are not decoded or recalculated. The
+library path must be the target-native `dapane-abi` filename. On this machine
+that is `libdapane_abi.dylib`.
+
+Build the release library, then run the package tests with a CLI built from the
+same checkout:
+
+```sh
+cargo build --offline --locked --release -p dapane-cli
+cargo build --offline --locked --release --manifest-path bindings/polyglot/abi/Cargo.toml
+julia --project=bindings/polyglot/julia -e 'using Pkg; Pkg.test()'
+```
+
+The 20 November run passed 20 tests on Julia 1.13.4: workforce and interval
+bytes matched the CLI, a foreign-platform library name was rejected, and the
+copied result survived input overwrite plus `GC.gc()`. This does not install a
+packaged library or select BinaryBuilder/JLL.
 
 ## Shared changes and rollback
 

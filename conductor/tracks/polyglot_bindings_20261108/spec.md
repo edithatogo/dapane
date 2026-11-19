@@ -8,7 +8,7 @@ This specification retains the original acceptance criteria. The direct R wrappe
 and C ABI proposal have bounded installed Linux R/native C execution evidence in
 [the current owner record](owner-quality-20261115.md). Total ABI acceptance,
 optional legal/security/release gates and other hosts remain separate. Julia
-requires accepted C-qualified library bytes and stays outside the bounded repair.
+requires a packaged library and installed-artifact evidence. The local caller is not that package.
 
 ## Scope and requirements
 
