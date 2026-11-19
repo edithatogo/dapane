@@ -1,0 +1,857 @@
+{
+  "format": "dapane-uogto-contract-map/0.1",
+  "dapane_source": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "uogto_source": "7e9075b8fd77543fc8853fab20319415cb86597d",
+  "relation": "bounded representation references; never equivalence or redefinition",
+  "rules": {
+    "transport": {
+      "terms": [],
+      "disposition": "unmapped",
+      "reason": "Dapane transport, lifecycle or calculation detail. Retained unchanged in embedded native JSON; no upstream assertion is inferred."
+    },
+    "native_numeric": {
+      "terms": [],
+      "disposition": "unmapped",
+      "reason": "Native exact/rounded value or allocation detail. Per-generated-segment half-even and largest-remainder semantics remain authoritative; no decimal SHACL arithmetic replaces them."
+    },
+    "context": {
+      "terms": [],
+      "disposition": "unmapped",
+      "reason": "Native context or many-to-many identity. A single UOGTO forCostObject/forActivity is not inferred from it."
+    },
+    "quantity": {
+      "terms": [
+        "quantity",
+        "quantityExact"
+      ],
+      "disposition": "reference_only",
+      "reason": "Decimal-string or exact-rational measurement remains native JSON. RDF numeric coercion is outside E2."
+    },
+    "quote_amount": {
+      "terms": [
+        "quoteAmount",
+        "quoteAmountExact"
+      ],
+      "disposition": "reference_only",
+      "reason": "Native amount retains per_quantity; no one-unit quote is inferred."
+    },
+    "basis": {
+      "terms": [
+        "valuationBasis"
+      ],
+      "disposition": "explicit_choice",
+      "reason": "Require a compatible explicit basis. financial_cost does not distinguish expenditure/accounting; funding, tariff and payment stay separate."
+    },
+    "perspective": {
+      "terms": [
+        "hasPerspective"
+      ],
+      "disposition": "emitted",
+      "reason": "Known upstream perspective or explicitly labelled local Perspective; no guessed synonym."
+    },
+    "currency": {
+      "terms": [
+        "currency"
+      ],
+      "disposition": "emitted_for_policy",
+      "reason": "Policy currency without monetary conversion."
+    },
+    "year": {
+      "terms": [
+        "priceYear"
+      ],
+      "disposition": "emitted_for_policy",
+      "reason": "Policy year as xsd:gYear; not source release or service date."
+    },
+    "version": {
+      "terms": [
+        "versionLabel"
+      ],
+      "disposition": "reference_only",
+      "reason": "Original version string without verification claim."
+    },
+    "evidence": {
+      "terms": [
+        "evidenceStatus"
+      ],
+      "disposition": "preserved_declaration",
+      "reason": "Original evidence label remains a caller declaration."
+    },
+    "access": {
+      "terms": [
+        "accessStatus"
+      ],
+      "disposition": "preserved_declaration",
+      "reason": "Original accessibility stays distinct from validation."
+    },
+    "validation": {
+      "terms": [
+        "validationStatus"
+      ],
+      "disposition": "preserved_declaration",
+      "reason": "Source status is never upgraded by SHACL/native replay."
+    },
+    "digest": {
+      "terms": [
+        "sourceDigest"
+      ],
+      "disposition": "reference_only",
+      "reason": "Digest identifies declared bytes or canonical transport domain; not truth or authorship."
+    },
+    "numerator": {
+      "terms": [
+        "exactNumerator"
+      ],
+      "disposition": "reference_only",
+      "reason": "Native integer strings retained; no float conversion."
+    },
+    "denominator": {
+      "terms": [
+        "exactDenominator"
+      ],
+      "disposition": "reference_only",
+      "reason": "Native positive integer strings retained; no float conversion."
+    }
+  },
+  "state_mappings": {
+    "SourceRef.evidence": {
+      "synthetic": "preserved; permitted candidate",
+      "observed": "preserved natively; outside E2 export",
+      "derived": "preserved natively; outside E2 export"
+    },
+    "SourceRef.access": {
+      "public": "preserved; permitted candidate",
+      "restricted": "outside E2 export",
+      "private": "outside E2 export"
+    },
+    "SourceRef.validation": {
+      "unvalidated": "preserved declaration",
+      "source_verified": "preserved declaration; never exporter certification",
+      "empirically_validated": "preserved declaration; never inferred from SHACL"
+    },
+    "ReportingAssertion": "Use applicability and assessmentStatus enumerations from pinned upstream SHACL directly.",
+    "capacity_unknowns": "Native known/unknown and complete/partial states remain JSON; not reporting states.",
+    "excluded_inputs": "excluded/missing/unsupported remain native exclusion states; no conversion to zeros or reporting judgements."
+  },
+  "schemas": {
+    "schemas/0.1/common.schema.json": {
+      "sha256": "f0990c9290ab4606daf725211d0031d38e61e9357d328bc4dabb1bd244da2dee",
+      "records": {
+        "/$defs/exactNumber/oneOf/1": {
+          "record": "exactNumber",
+          "terms": [
+            "RationalValue"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "numerator": "numerator",
+            "denominator": "denominator"
+          }
+        },
+        "/$defs/positiveExactNumber/allOf/1/not/anyOf/1": {
+          "record": "positiveExactNumber",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "numerator": "numerator",
+            "denominator": "denominator"
+          }
+        },
+        "/$defs/rational": {
+          "record": "rational",
+          "terms": [
+            "RationalValue"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "numerator": "numerator",
+            "denominator": "denominator"
+          }
+        },
+        "/$defs/signedRational": {
+          "record": "signedRational",
+          "terms": [
+            "RationalValue"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "numerator": "numerator",
+            "denominator": "denominator"
+          }
+        },
+        "/$defs/policy": {
+          "record": "policy",
+          "terms": [
+            "ValuationPolicy"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "version": "version",
+            "currency": "currency",
+            "price_year": "year",
+            "perspective": "perspective",
+            "basis": "basis",
+            "rounding": "native_numeric"
+          }
+        },
+        "/$defs/policy/properties/rounding": {
+          "record": "policy",
+          "terms": [
+            "ValuationPolicy"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "scale": "native_numeric",
+            "mode": "native_numeric"
+          }
+        },
+        "/$defs/source": {
+          "record": "source",
+          "terms": [
+            "EvidenceArtifact"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "version": "version",
+            "evidence": "evidence",
+            "access": "access",
+            "validation": "validation",
+            "content_digest": "digest",
+            "locator": "transport"
+          }
+        },
+        "/$defs/quote": {
+          "record": "quote",
+          "terms": [
+            "UnitQuote"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "kind": "transport",
+            "target": "transport",
+            "unit": "transport",
+            "amount": "quote_amount",
+            "per_quantity": "transport",
+            "currency": "currency",
+            "price_year": "year",
+            "basis": "basis",
+            "components": "transport",
+            "valid_from": "transport",
+            "valid_to": "transport",
+            "known_from": "transport",
+            "source": "transport"
+          }
+        },
+        "/$defs/usage": {
+          "record": "usage",
+          "terms": [
+            "ResourceUse",
+            "ActivityMeasure"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "use_id": "transport",
+            "kind": "transport",
+            "target": "transport",
+            "unit": "transport",
+            "quantity": "quantity",
+            "service_date": "transport",
+            "quote_id": "transport",
+            "source": "transport",
+            "event_id": "context",
+            "process_id": "context",
+            "activity_id": "context",
+            "object_ids": "context",
+            "attribution_object_id": "context"
+          }
+        },
+        "/$defs/costObject": {
+          "record": "costObject",
+          "terms": [
+            "CostObject"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "kind": "transport"
+          }
+        },
+        "/$defs/process": {
+          "record": "process",
+          "terms": [
+            "ProcessExecution"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "model_id": "transport",
+            "model_version": "transport"
+          }
+        },
+        "/$defs/event": {
+          "record": "event",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "occurred_on": "transport",
+            "process_id": "context",
+            "activity_id": "context",
+            "object_ids": "context"
+          }
+        },
+        "/$defs/relation": {
+          "record": "relation",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "from_object_id": "context",
+            "to_object_id": "context",
+            "relationship": "context"
+          }
+        },
+        "/$defs/allocation": {
+          "record": "allocation",
+          "terms": [
+            "CostPool",
+            "AllocationPolicy"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "source_line_ids": "transport",
+            "weights": "native_numeric"
+          }
+        },
+        "/$defs/allocation/properties/weights/items": {
+          "record": "allocation",
+          "terms": [
+            "CostPool",
+            "AllocationPolicy"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "object_id": "transport",
+            "weight": "native_numeric"
+          }
+        },
+        "/$defs/valuationLine": {
+          "record": "valuationLine",
+          "terms": [
+            "ValuationLine"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "use_id": "transport",
+            "kind": "transport",
+            "target": "transport",
+            "unit": "transport",
+            "quantity": "quantity",
+            "service_date": "transport",
+            "quote_id": "transport",
+            "source": "transport",
+            "components": "transport",
+            "exact": "native_numeric",
+            "rounded": "native_numeric",
+            "rounding_adjustment": "native_numeric",
+            "event_id": "context",
+            "process_id": "context",
+            "activity_id": "context",
+            "object_ids": "context",
+            "attribution_object_id": "context"
+          }
+        },
+        "/$defs/allocationResult": {
+          "record": "allocationResult",
+          "terms": [
+            "CostPool",
+            "Allocation"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "source_line_ids": "transport",
+            "pool_exact": "native_numeric",
+            "pool_rounded": "native_numeric",
+            "shares": "native_numeric",
+            "residual": "native_numeric"
+          }
+        },
+        "/$defs/allocationResult/properties/shares/items": {
+          "record": "allocationResult",
+          "terms": [
+            "CostPool",
+            "Allocation"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "object_id": "transport",
+            "weight": "native_numeric",
+            "exact_share": "native_numeric",
+            "rounded": "native_numeric"
+          }
+        },
+        "/$defs/objectTotal": {
+          "record": "objectTotal",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "object_id": "transport",
+            "direct": "native_numeric",
+            "allocated": "native_numeric",
+            "total": "native_numeric"
+          }
+        }
+      }
+    },
+    "schemas/0.1/error.schema.json": {
+      "sha256": "5b32ee31bc91608857a03bd517d0037b6f2eb4c3575193a595876864fe0aaa1c",
+      "records": {
+        "/": {
+          "record": "error",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "code": "transport",
+            "message": "transport",
+            "path": "transport"
+          }
+        }
+      }
+    },
+    "schemas/0.1/report.schema.json": {
+      "sha256": "f2f6cdad157da625af01a4a53ee4aa4fe44bd374ccda06060dce166cc9b0749f",
+      "records": {
+        "/": {
+          "record": "report",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "schema_version": "transport",
+            "run_id": "transport",
+            "status": "transport",
+            "engine_version": "transport",
+            "method_version": "transport",
+            "input_digest": "digest",
+            "output_digest": "digest",
+            "policy": "transport",
+            "lines": "transport",
+            "quote_snapshots": "transport",
+            "context": "transport",
+            "totals": "transport",
+            "allocations": "transport",
+            "object_totals": "transport"
+          }
+        },
+        "/properties/context": {
+          "record": "report",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "objects": "transport",
+            "processes": "transport",
+            "events": "transport",
+            "object_relations": "transport"
+          }
+        },
+        "/properties/totals": {
+          "record": "report",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "exact": "native_numeric",
+            "rounded": "native_numeric",
+            "rounding_adjustment": "native_numeric",
+            "directly_attributed": "transport",
+            "allocated": "native_numeric",
+            "unattributed": "transport"
+          }
+        }
+      }
+    },
+    "schemas/0.1/request.schema.json": {
+      "sha256": "6d1b1b2e04d83b031ce07e510a5811f8040e1bb247b56a6619200be9dfc92a35",
+      "records": {
+        "/": {
+          "record": "request",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "schema_version": "transport",
+            "run_id": "transport",
+            "knowledge_cutoff": "transport",
+            "policy": "transport",
+            "quotes": "transport",
+            "usage": "transport",
+            "objects": "transport",
+            "processes": "transport",
+            "events": "transport",
+            "object_relations": "transport",
+            "allocations": "transport"
+          }
+        }
+      }
+    },
+    "schemas/0.2/common.schema.json": {
+      "sha256": "12c84f65fe29cb91d90f49795b47cbdb10cc0287b680a2c01f7e504a2a3e75b1",
+      "records": {
+        "/$defs/capacityQuantity/oneOf/0": {
+          "record": "capacityQuantity",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "status": "transport",
+            "quantity": "quantity"
+          }
+        },
+        "/$defs/capacityQuantity/oneOf/1": {
+          "record": "capacityQuantity",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "status": "transport",
+            "reason": "transport"
+          }
+        },
+        "/$defs/availableCapacity/oneOf/0": {
+          "record": "availableCapacity",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "status": "transport",
+            "quantity": "quantity"
+          }
+        },
+        "/$defs/availableCapacity/oneOf/1": {
+          "record": "availableCapacity",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "status": "transport",
+            "reason": "transport"
+          }
+        },
+        "/$defs/capacityUse": {
+          "record": "capacityUse",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "object_id": "transport",
+            "quantity": "quantity"
+          }
+        },
+        "/$defs/capacityAllocation": {
+          "record": "capacityAllocation",
+          "terms": [
+            "CostPool",
+            "AllocationPolicy"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "source_line_ids": "transport",
+            "unit": "transport",
+            "observation_coverage": "transport",
+            "available_capacity": "transport",
+            "use_records": "transport",
+            "source": "transport"
+          }
+        },
+        "/$defs/capacityShare": {
+          "record": "capacityShare",
+          "terms": [
+            "Allocation"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "object_id": "transport",
+            "quantity": "quantity",
+            "exact_share": "native_numeric",
+            "rounded": "native_numeric"
+          }
+        },
+        "/$defs/capacityAllocationResult": {
+          "record": "capacityAllocationResult",
+          "terms": [
+            "CostPool",
+            "Allocation"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "source_line_ids": "transport",
+            "unit": "transport",
+            "observation_coverage": "transport",
+            "available_capacity": "transport",
+            "source": "transport",
+            "pool_exact": "native_numeric",
+            "pool_rounded": "native_numeric",
+            "accounted_quantity": "transport",
+            "unaccounted_quantity": "transport",
+            "shares": "native_numeric",
+            "unallocated_exact": "native_numeric",
+            "unallocated": "native_numeric"
+          }
+        }
+      }
+    },
+    "schemas/0.2/report.schema.json": {
+      "sha256": "b6d5d63805634d8d790bd5b613eafe3836b977b12a2fcea49f5ba84079e8f8e1",
+      "records": {
+        "/": {
+          "record": "report",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "schema_version": "transport",
+            "run_id": "transport",
+            "status": "transport",
+            "engine_version": "transport",
+            "method_version": "transport",
+            "input_digest": "digest",
+            "output_digest": "digest",
+            "policy": "transport",
+            "lines": "transport",
+            "quote_snapshots": "transport",
+            "context": "transport",
+            "totals": "transport",
+            "allocations": "transport",
+            "object_totals": "transport",
+            "capacity_allocations": "transport"
+          }
+        }
+      }
+    },
+    "schemas/0.2/request.schema.json": {
+      "sha256": "164a9c824718bf80b2ef547174dfb3b75cec40fdd08571692b7e15813b3bfeaf",
+      "records": {
+        "/": {
+          "record": "request",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "schema_version": "transport",
+            "run_id": "transport",
+            "knowledge_cutoff": "transport",
+            "policy": "transport",
+            "quotes": "transport",
+            "usage": "transport",
+            "objects": "transport",
+            "processes": "transport",
+            "events": "transport",
+            "object_relations": "transport",
+            "allocations": "transport",
+            "capacity_allocations": "transport"
+          }
+        }
+      }
+    },
+    "schemas/bundles/0.1.schema.json": {
+      "sha256": "85153d7c5b98cc4013acb753675121a368facb2423b8bea63c286b1050e86874",
+      "records": {
+        "/": {
+          "record": "0",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "bundle_version": "transport",
+            "bundle_id": "transport",
+            "series_id": "transport",
+            "recorded_on": "transport",
+            "change": "transport",
+            "previous_digest": "transport",
+            "reason": "transport",
+            "source_revision": "transport",
+            "qualification": "transport",
+            "observation_window": "transport",
+            "rate_releases": "transport",
+            "capital_treatments": "transport",
+            "excluded_inputs": "transport",
+            "request": "transport",
+            "report": "transport",
+            "bundle_digest": "digest"
+          }
+        },
+        "/$defs/window": {
+          "record": "window",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "from": "transport",
+            "to": "transport"
+          }
+        },
+        "/$defs/release": {
+          "record": "release",
+          "terms": [
+            "RateRelease"
+          ],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "source_id": "transport",
+            "version": "version",
+            "quote_ids": "transport",
+            "published_on": "transport",
+            "retrieved_on": "transport"
+          }
+        },
+        "/$defs/capital": {
+          "record": "capital",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "asset_id": "transport",
+            "treatment": "transport",
+            "source_line_ids": "transport",
+            "assumption": "transport"
+          }
+        },
+        "/$defs/exclusion": {
+          "record": "exclusion",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "state": "transport",
+            "reason": "transport"
+          }
+        },
+        "/allOf/0/if": {
+          "record": "0",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "change": "transport"
+          }
+        },
+        "/allOf/0/then": {
+          "record": "0",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "previous_digest": "transport",
+            "reason": "transport"
+          }
+        },
+        "/allOf/0/else": {
+          "record": "0",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "previous_digest": "transport",
+            "reason": "transport"
+          }
+        },
+        "/allOf/1/if": {
+          "record": "0",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "change": "transport"
+          }
+        },
+        "/allOf/1/then": {
+          "record": "0",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "request": "transport",
+            "report": "transport",
+            "observation_window": "transport",
+            "rate_releases": "transport",
+            "capital_treatments": "transport",
+            "excluded_inputs": "transport"
+          }
+        },
+        "/allOf/1/else": {
+          "record": "0",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "request": "transport",
+            "report": "transport",
+            "observation_window": "transport"
+          }
+        }
+      }
+    },
+    "schemas/intervals/report.schema.json": {
+      "sha256": "e9d5ec6f8870277e0801511770e309f9d490965a3404a72c4e383e2dd9d07040",
+      "records": {
+        "/": {
+          "record": "report",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "schema_version": "transport",
+            "method_version": "transport",
+            "input_digest": "digest",
+            "output_digest": "digest",
+            "request_snapshot": "transport",
+            "interval_snapshots": "transport",
+            "segments": "transport",
+            "expanded_request": "transport",
+            "report": "transport"
+          }
+        },
+        "/properties/segments/items": {
+          "record": "report",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "interval_id": "transport",
+            "use_id": "transport",
+            "line_id": "transport",
+            "quote_id": "transport",
+            "start": "transport",
+            "end": "transport",
+            "quantity": "quantity"
+          }
+        }
+      }
+    },
+    "schemas/intervals/request.schema.json": {
+      "sha256": "3e6e3fa31e8b9ced3f5ac43640942842db1b94b8e3319af08dd081f224b495e8",
+      "records": {
+        "/": {
+          "record": "request",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "schema_version": "transport",
+            "request": "transport",
+            "intervals": "transport"
+          }
+        },
+        "/$defs/interval": {
+          "record": "interval",
+          "terms": [],
+          "projection": "Policy and reporting assertions only; other fields retained as native JSON evidence.",
+          "fields": {
+            "id": "transport",
+            "use_id": "transport",
+            "kind": "transport",
+            "target": "transport",
+            "unit": "transport",
+            "quantity": "quantity",
+            "source": "transport",
+            "event_id": "context",
+            "process_id": "context",
+            "activity_id": "context",
+            "object_ids": "context",
+            "attribution_object_id": "context",
+            "start": "transport",
+            "end": "transport",
+            "quote_ids": "transport",
+            "exposure": "transport"
+          }
+        }
+      }
+    }
+  }
+}

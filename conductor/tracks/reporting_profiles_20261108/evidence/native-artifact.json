@@ -1,0 +1,32 @@
+{
+  "format": "dapane-reporting-native-artifact/0.1",
+  "repository": "edithatogo/dapane",
+  "source_commit": "a4ddde7ae7a799e37a5d594cde9c195ff057bc5e",
+  "source_tree": "740c1f379e69db746a5d56ec7212e7676924b473",
+  "workflow_run_id": 43677159295,
+  "artifact_id": 14145769688,
+  "artifact_name": "candidate-python-3.12",
+  "archive_sha256": "6fb1f614edc8d8fba524aadf2f97d4968922cdb54e1cf91fc18abbe9085e9120",
+  "archive_member_checksums_verified": 20,
+  "archive_verification_note": "Observed during recovery; only a leading ./ was normalized in member names. The full archive is not copied into this lane.",
+  "files": {
+    "dapane": {
+      "bytes": 1446888,
+      "sha256": "2d3f3c5b54399a3613d4b6d97e8538cadc3074192fdd076f261118d1a67b03a2"
+    },
+    "dapane-0.1.0-cp312-cp312-manylinux_2_34_x86_64.whl": {
+      "bytes": 722186,
+      "sha256": "17421cb91cd68fde202eaadc361a4f7d5395efb12042d539cf1f82da2033e46c"
+    },
+    "evidence.json": {
+      "bytes": 87081,
+      "sha256": "65c063e9541bcb3bc2aa277d5458c396a2733469ea3cdffb39d0ceee670fd49e"
+    }
+  },
+  "installation": "exact local wheel installed with --no-deps; hash-locked optional dependencies installed separately with --require-hashes --only-binary=:all:",
+  "limits": [
+    "Existing release-owner build, not built by this reporting lane.",
+    "Native source directories and Cargo.lock match the base; packaging and licence/notices differ.",
+    "source_revision in a run bundle remains a declaration; native replay does not certify binary build origin."
+  ]
+}

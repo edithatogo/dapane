@@ -1,9 +1,9 @@
 {
   "track_id": "reporting_profiles_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-15T05:40:39.841549Z",
   "description": "Consume UOGTO costing semantics and the standards_check source catalogue to produce evidence-linked, conditionally applicable reporting coverage from Dapane run bundles.",
   "repositories": [
     "."
@@ -23,10 +23,27 @@
     "RQ-07",
     "RQ-01"
   ],
-  "capability_status": "planned",
+  "capability_status": "bounded_synthetic_candidate",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "partial",
+    "bounded_e1_e2_status": "passed",
+    "implementation_commit": "8f7c5dcbe14287759d62fd41d0804a92b734b75f",
+    "implementation_tree": "7bbc79089737c462460ba3029a901e60f86ff68d",
+    "evidence": "evidence/execution.json",
+    "commands": [
+      "DAPANE_REPORTING_SOURCES=<exact local snapshots> python -m unittest discover -s adapters/reporting_profiles/tests -v — 41 passed on the published implementation",
+      "python scripts/validate_intervals.py --cli <exact retained CLI> — passed; 9 schema-negative, 11 runtime rejection and 15 tampered-report controls",
+      "ruff check adapters/reporting_profiles — passed with Ruff 0.17.4",
+      "ruff format --check adapters/reporting_profiles — passed",
+      "python -m unittest discover -s tests -p test_conductor_validation.py -v — 12 passed",
+      "uv pip check --python <isolated interpreter> — 16 packages compatible",
+      "python scripts/validate_conductor.py — failed: registry marker/status differs from metadata; REP-IR-01 remains open"
+    ],
+    "unexecuted": [
+      "Hosted reporting suite and final integrated-head qualification (REP-IR-02).",
+      "Other Python/platforms, fresh native build in this lane and optional-dependency advisory/licensing qualification.",
+      "E3, independent source/mapping review and empirical validation."
+    ]
   },
   "completion_evidence": [
     "The importer/exporter records exact upstream source versions and checks source content/counts where supported.",

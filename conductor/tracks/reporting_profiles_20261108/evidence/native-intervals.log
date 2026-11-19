@@ -1,0 +1,2 @@
+Validated interval request/report schemas and synthetic reference; 9 negative cases passed.
+Verified independent exact segment/reference values, parent lineage, conservation, immutable digests, scalar replay and ordering; 11 runtime rejection cases and 15 tampered-report controls passed.

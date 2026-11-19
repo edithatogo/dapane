@@ -4,7 +4,7 @@
 
 Consume UOGTO costing semantics and the standards_check source catalogue to produce evidence-linked, conditionally applicable reporting coverage from Dapane run bundles.
 
-This is a planned work specification. Repository setup does not establish the capabilities below.
+This specification defines the complete track. E1–E2 have a bounded synthetic implementation; E3 and integration acceptance remain open. Repository setup or graph conformance alone does not establish the capabilities below.
 
 ## Scope and requirements
 
@@ -51,7 +51,9 @@ Preserve every source/profile version used by a historical report. A new mapping
 
 ## Open implementation decisions
 
-Choose the first evidence export and profile subset from available verified source mappings. Independent content review and remaining detailed item extraction stay upstream tasks.
+The first candidate uses unchanged run-bundle 0.1, a separate reporting-declarations 0.1 record and a separate JSON-LD evidence 0.1 document. UOGTO remains the semantic owner; standards_check remains the source/item owner. Exact local snapshots supply the actual ontology, profiles and SHACL. Identity maps contain references only.
+
+The initial supported records are public synthetic declarations. Original native source states, decimal/rational values, totals, exclusions, digests and methods survive in an opaque JSON literal. Native numerical records without a lossless upstream representation have explicit unmapped reasons; no alternative allocation or rounding method is implemented. Interval-to-bundle conversion and installed SDK/schema registration require separate integrator decisions. Independent content review and remaining detailed item extraction stay upstream tasks.
 
 ## Execution and verification
 

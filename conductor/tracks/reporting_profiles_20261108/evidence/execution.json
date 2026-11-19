@@ -1,0 +1,242 @@
+{
+  "format": "dapane-reporting-execution-evidence/0.1",
+  "implementation_commit": "8f7c5dcbe14287759d62fd41d0804a92b734b75f",
+  "implementation_tree": "7bbc79089737c462460ba3029a901e60f86ff68d",
+  "base_commit": "e34f87c9df39a2132fecee142431cdeefb732471",
+  "adapter_files": {
+    "adapters/reporting_profiles/README.md": {
+      "sha256": "b8b9b0ec7144d8117ff3a7125757c5281648fe40fca4943594961c5145890eca",
+      "bytes": 11730,
+      "git_blob": "515e2c11f6139e771a2153e60f7c77560e78ad12"
+    },
+    "adapters/reporting_profiles/__init__.py": {
+      "sha256": "18d0ee1cff87eec35d7b30bcfbef7d1e353e1bfba76475120abfbb7d160c451a",
+      "bytes": 82,
+      "git_blob": "80ebf857cac1b2820e7d73b59cea90a394f0e73c"
+    },
+    "adapters/reporting_profiles/__main__.py": {
+      "sha256": "31338fdccb620ad7f887851c8163a8dddc012ae1ff374f84e9241d1c6ca90a04",
+      "bytes": 2048,
+      "git_blob": "d85decfe4f040311afe687ed23278ef92ca0d4e0"
+    },
+    "adapters/reporting_profiles/catalogue-map.json": {
+      "sha256": "8676fd96b00b6c0b1dc58ec2912f72f8a43be1be9c893b5ad9fcabb57728715e",
+      "bytes": 12824,
+      "git_blob": "516e40e2600233733f97ba712d9dd556ec9f3847"
+    },
+    "adapters/reporting_profiles/catalogue.py": {
+      "sha256": "845f6200822c9844232c6f8413bc972982925ecbe725a8de1bc24d103966488c",
+      "bytes": 12783,
+      "git_blob": "c9c2e294aee15922589c6f89c666155053636b2c"
+    },
+    "adapters/reporting_profiles/contract-map.json": {
+      "sha256": "ae4a257155d51079c6c45558b9e68a225163834a65c17f5ec3b62981d617a5ff",
+      "bytes": 29925,
+      "git_blob": "0e601ada1067adb8bb422c34c6ad427074a65b0e"
+    },
+    "adapters/reporting_profiles/evidence.py": {
+      "sha256": "bb40e475f652a43401dc14b83ec9e1aedb9b59f46c53aba19664561c5c22d903",
+      "bytes": 22242,
+      "git_blob": "b49504e6eef4f6e98a5d3ff4383ec5aaf7f4ac42"
+    },
+    "adapters/reporting_profiles/fixtures/README.md": {
+      "sha256": "4c9e009014f564c643cbc827b2940bef11589bc2568c7ba5f62a6af489301c1b",
+      "bytes": 1452,
+      "git_blob": "a50be55c4518b7b01676b54af6ca8de33d76cee2"
+    },
+    "adapters/reporting_profiles/fixtures/not-applicable-without-rationale.json": {
+      "sha256": "c7b0b3e1eed80617b139d7639078ec141565fc9a430f5f1cc62cf3958ba2067f",
+      "bytes": 1044,
+      "git_blob": "7e5bbd32a8cdb608cf2a2dad014ce9e03f31f447"
+    },
+    "adapters/reporting_profiles/fixtures/reported-without-evidence.json": {
+      "sha256": "e90daa4635cdce1dd645c09522c1e5f07f5d5783052b6bb1835dd9a50f1ad9b1",
+      "bytes": 1036,
+      "git_blob": "39e022a1a0a72c682ac028a6600bf2ffc2f37e56"
+    },
+    "adapters/reporting_profiles/fixtures/synthetic-declarations.json": {
+      "sha256": "7f83e64e6de01c1b83f2eafe40a7e347cbd499b005b25250b49cb1c7e008df0a",
+      "bytes": 1153,
+      "git_blob": "a8e1bdb245cce3e30be89491f4603def692abac1"
+    },
+    "adapters/reporting_profiles/fixtures/synthetic-history.json": {
+      "sha256": "79711886d6fd2ab380787789579969e4679e204ca7f714407f36160af72ffb38",
+      "bytes": 21784,
+      "git_blob": "8f4043c7d8de623d12ec0098b1e3990638f88956"
+    },
+    "adapters/reporting_profiles/fixtures/wrong-source-version.json": {
+      "sha256": "53d52286ff7f765850a57349197e6af46afdbd4f60c319395f31efc01024d3ff",
+      "bytes": 1153,
+      "git_blob": "49bab37876135065e0e2ca8e207c2aa8eefd6980"
+    },
+    "adapters/reporting_profiles/requirements.in": {
+      "sha256": "5746cd228ebc00cf458148fb2149a6f9a2e55fa6354c18363b30806d74688907",
+      "bytes": 119,
+      "git_blob": "1f773de257afb8b6004326eeb3d1e9d346a1ee8c"
+    },
+    "adapters/reporting_profiles/requirements.lock": {
+      "sha256": "9ddd6dff9014dede3bd30d4f1701d1c5a43611110851e8b4b37e1a9dcc4249a4",
+      "bytes": 16384,
+      "git_blob": "07d89f876a4edd8d1b63ddae2ab58545880f48b8"
+    },
+    "adapters/reporting_profiles/sources.lock.json": {
+      "sha256": "2684b70d543d4bbc705f82cb2cd1973b970fd4cb63180fb8f81f0ab01ca83180",
+      "bytes": 3186,
+      "git_blob": "1cc136da265545c3636f3f0a5abba3c3ccddded2"
+    },
+    "adapters/reporting_profiles/tests/test_reporting.py": {
+      "sha256": "e51644fd0abf98751d12c0433813e9ea24279192436745d2260309ea725eec36",
+      "bytes": 25307,
+      "git_blob": "b2cc002f649b0fdef014e5bf1e18f0c7242ef07a"
+    },
+    "adapters/reporting_profiles/transport.py": {
+      "sha256": "981e62214cc3936d77b6d24b58dfa7e70e0ce3c0d73c2b001f42cf1b1a358377",
+      "bytes": 4252,
+      "git_blob": "6af647658677637c4ef5393af0a3c26158842704"
+    }
+  },
+  "commands": [
+    {
+      "name": "reporting-unittest",
+      "argv": [
+        "/tmp/dapane-reporting-venv-b09fcebc3b9b/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "adapters/reporting_profiles/tests",
+        "-v"
+      ],
+      "cwd": "/tmp/dapane-reporting-b09fcebc3b9b",
+      "environment": {
+        "DAPANE_REPORTING_SOURCES": "/tmp/dapane-reporting-sources-b09fcebc3b9b"
+      },
+      "started_at": "2026-11-15T05:36:12.509341+00:00",
+      "duration_seconds": 27.265,
+      "exit_code": 0,
+      "log_file": "reporting-unittest.log",
+      "log_sha256": "5ccc74299095234d9d9e2b89b7d260425bbd860875ad7a4c3d07287fbe32c6fc"
+    },
+    {
+      "name": "native-intervals",
+      "argv": [
+        "/tmp/dapane-reporting-venv-b09fcebc3b9b/bin/python",
+        "scripts/validate_intervals.py",
+        "--cli",
+        "/tmp/dapane-reporting-artifact-b09fcebc3b9b/dapane"
+      ],
+      "cwd": "/tmp/dapane-reporting-b09fcebc3b9b",
+      "environment": {
+        "DAPANE_REPORTING_SOURCES": "/tmp/dapane-reporting-sources-b09fcebc3b9b"
+      },
+      "started_at": "2026-11-15T05:36:39.775001+00:00",
+      "duration_seconds": 0.33,
+      "exit_code": 0,
+      "log_file": "native-intervals.log",
+      "log_sha256": "2e1aca29548aa561a2fd76f8aa735a3ce51c6f19d2f09204bd4c16ed30b39250"
+    },
+    {
+      "name": "ruff-check",
+      "argv": [
+        "/tmp/dapane-reporting-venv-b09fcebc3b9b/bin/ruff",
+        "check",
+        "adapters/reporting_profiles"
+      ],
+      "cwd": "/tmp/dapane-reporting-b09fcebc3b9b",
+      "environment": {
+        "DAPANE_REPORTING_SOURCES": "/tmp/dapane-reporting-sources-b09fcebc3b9b"
+      },
+      "started_at": "2026-11-15T05:36:40.104770+00:00",
+      "duration_seconds": 0.01,
+      "exit_code": 0,
+      "log_file": "ruff-check.log",
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "ruff-format",
+      "argv": [
+        "/tmp/dapane-reporting-venv-b09fcebc3b9b/bin/ruff",
+        "format",
+        "--check",
+        "adapters/reporting_profiles"
+      ],
+      "cwd": "/tmp/dapane-reporting-b09fcebc3b9b",
+      "environment": {
+        "DAPANE_REPORTING_SOURCES": "/tmp/dapane-reporting-sources-b09fcebc3b9b"
+      },
+      "started_at": "2026-11-15T05:36:40.114835+00:00",
+      "duration_seconds": 0.007,
+      "exit_code": 0,
+      "log_file": "ruff-format.log",
+      "log_sha256": "8e93d18ae56550d4eef2feac77e6630617c7e169246e56e39c75d58b46167985"
+    },
+    {
+      "name": "conductor-lifecycle",
+      "argv": [
+        "/tmp/dapane-reporting-venv-b09fcebc3b9b/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_conductor_validation.py",
+        "-v"
+      ],
+      "cwd": "/tmp/dapane-reporting-b09fcebc3b9b",
+      "environment": {
+        "DAPANE_REPORTING_SOURCES": "/tmp/dapane-reporting-sources-b09fcebc3b9b"
+      },
+      "started_at": "2026-11-15T05:36:40.122382+00:00",
+      "duration_seconds": 0.949,
+      "exit_code": 0,
+      "log_file": "conductor-lifecycle.log",
+      "log_sha256": "ae73a6e55709c265463e37e1f4b7cb2b4035bd9969dbaca9bbb0174590089e16"
+    },
+    {
+      "name": "dependency-check",
+      "argv": [
+        "uv",
+        "pip",
+        "check",
+        "--python",
+        "/tmp/dapane-reporting-venv-b09fcebc3b9b/bin/python"
+      ],
+      "cwd": "/tmp/dapane-reporting-b09fcebc3b9b",
+      "environment": {
+        "DAPANE_REPORTING_SOURCES": "/tmp/dapane-reporting-sources-b09fcebc3b9b"
+      },
+      "started_at": "2026-11-15T05:36:41.071960+00:00",
+      "duration_seconds": 0.009,
+      "exit_code": 0,
+      "log_file": "dependency-check.log",
+      "log_sha256": "f3beddfa6cf8529700f7811959729031d13bb12709a60d196f48d531527f4b8d"
+    },
+    {
+      "name": "native-source-equivalence",
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "--stat",
+        "a4ddde7ae7a799e37a5d594cde9c195ff057bc5e",
+        "e34f87c9df39a2132fecee142431cdeefb732471",
+        "--",
+        "crates/dapane-core/src",
+        "crates/dapane-cli/src",
+        "crates/dapane-python/src",
+        "python/dapane",
+        "Cargo.lock"
+      ],
+      "cwd": "/tmp/dapane-reporting-b09fcebc3b9b",
+      "environment": {
+        "DAPANE_REPORTING_SOURCES": "/tmp/dapane-reporting-sources-b09fcebc3b9b"
+      },
+      "started_at": "2026-11-15T05:36:41.080572+00:00",
+      "duration_seconds": 0.002,
+      "exit_code": 0,
+      "log_file": "native-source-equivalence.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
