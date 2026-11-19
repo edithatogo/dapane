@@ -38,7 +38,7 @@ jobs:
           cargo install --locked --path crates/dapane-cli --root "$RUNNER_TEMP/dapane-installed"
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/dapane-installed/bin/dapane" evaluate "$GITHUB_WORKSPACE/fixtures/newborn-screening.json" > newborn-result.json
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: '3.15'
       - name: Schemas and independent reference cases
@@ -68,7 +68,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: ${{ matrix.python }}
       - name: Install build tools
