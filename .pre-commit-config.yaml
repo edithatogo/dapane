@@ -14,13 +14,13 @@ repos:
         pass_filenames: false
       - id: cargo-fmt
         name: cargo fmt workspace check
-        entry: bash -c 'if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q "^1\\.99\\.1"; then rustup run 1.99.1 cargo fmt --all --check; else cargo fmt --all --check; fi'
+        entry: bash -c 'if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q "^1\\.99\\.1"; then export PATH="$(dirname "$(rustup which rustc --toolchain 1.99.1)")":$PATH; fi; cargo fmt --all --check'
         language: system
         files: ^(Cargo\.toml|Cargo\.lock|crates/.*\.rs)$
         pass_filenames: false
       - id: cargo-clippy
         name: cargo clippy workspace check
-        entry: bash -c 'if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q "^1\\.99\\.1"; then rustup run 1.99.1 cargo clippy --workspace --locked --all-targets -- -D warnings; else cargo clippy --workspace --locked --all-targets -- -D warnings; fi'
+        entry: bash -c 'if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q "^1\\.99\\.1"; then export PATH="$(dirname "$(rustup which rustc --toolchain 1.99.1)")":$PATH; fi; cargo clippy --workspace --locked --all-targets -- -D warnings'
         language: system
         files: ^(Cargo\.toml|Cargo\.lock|crates/.*\.rs)$
         pass_filenames: false

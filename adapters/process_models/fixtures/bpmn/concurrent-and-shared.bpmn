@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="def_concurrent">
+  <process id="proc_concurrent" isExecutable="true">
+    <startEvent id="start_1"/>
+    <parallelGateway id="gw_fork"/>
+    <manualTask id="task_prep_cards" name="Punch Cards and Handover"/>
+    <serviceTask id="task_run_analyzer" name="Shared Batch Analyzer"/>
+    <parallelGateway id="gw_join"/>
+    <userTask id="task_signoff" name="Release Review"/>
+    <endEvent id="end_1"/>
+    <sequenceFlow id="f1" sourceRef="start_1" targetRef="gw_fork"/>
+    <sequenceFlow id="f_b1" sourceRef="gw_fork" targetRef="task_prep_cards"/>
+    <sequenceFlow id="f_b2" sourceRef="gw_fork" targetRef="task_run_analyzer"/>
+    <sequenceFlow id="f_j1" sourceRef="task_prep_cards" targetRef="gw_join"/>
+    <sequenceFlow id="f_j2" sourceRef="task_run_analyzer" targetRef="gw_join"/>
+    <sequenceFlow id="f_post" sourceRef="gw_join" targetRef="task_signoff"/>
+    <sequenceFlow id="f_end" sourceRef="task_signoff" targetRef="end_1"/>
+  </process>
+</definitions>

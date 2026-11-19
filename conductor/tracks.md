@@ -53,7 +53,11 @@ The Python/two-consumer track is completed and archived in place after
 and [review with fixes](tracks/python_two_consumers_20261108/review.md).
 Its selected provider scope retains exact source identities, independent reference
 cases and historical entry points. Newborn and process-context tracks remain in
-progress. Next work addresses their acceptance criteria, broader provider and
+progress. On `main`, the process-model track now incorporates X1 independent contracts
+([`adapters/observed_events/`](../adapters/observed_events/README.md)) and bounded
+X2 PNML/BPMN adapters ([`adapters/process_models/`](../adapters/process_models/README.md)),
+while X1.2 raw XES/OCEL decoding (`edithatogo/mailweft#4`) and X3 Kairos integration
+remain open. Next work addresses their acceptance criteria, broader provider and
 quantity/correction semantics, and release prerequisites. The first release follows contracts → Rust kernel →
 installed Python and two real provider consumers → release assurance.
 Power Platform, R/Julia, process models and decision integrations are independently qualified optional branches.

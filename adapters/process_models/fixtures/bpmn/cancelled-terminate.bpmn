@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+  xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  id="def_cancel">
+  <process id="proc_cancel" isExecutable="true">
+    <startEvent id="start_1"/>
+    <parallelGateway id="gw_fork"/>
+    <userTask id="task_fast_abort" name="Consent Withdrawn Check"/>
+    <endEvent id="end_terminate">
+      <terminateEventDefinition id="term_1"/>
+    </endEvent>
+    <task id="task_early_ok" name="Sample Accession"/>
+    <task id="task_late_aborted" name="Deferred Assay"/>
+    <endEvent id="end_normal"/>
+    <sequenceFlow id="f1" sourceRef="start_1" targetRef="gw_fork"/>
+    <sequenceFlow id="f_abort_branch" sourceRef="gw_fork" targetRef="task_fast_abort"/>
+    <sequenceFlow id="f_to_term" sourceRef="task_fast_abort" targetRef="end_terminate"/>
+    <sequenceFlow id="f_work_branch" sourceRef="gw_fork" targetRef="task_early_ok"/>
+    <sequenceFlow id="f_to_late" sourceRef="task_early_ok" targetRef="task_late_aborted"/>
+    <sequenceFlow id="f_to_end" sourceRef="task_late_aborted" targetRef="end_normal"/>
+  </process>
+  <bpmndi:BPMNDiagram id="diagram_1"/>
+</definitions>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+  <net id="net_shared_batch_parallel" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <page id="p1">
+      <place id="p_start"><initialMarking><text>1</text></initialMarking></place>
+      <place id="p_received"><initialMarking><text>0</text></initialMarking></place>
+      <place id="p_done"><initialMarking><text>0</text></initialMarking></place>
+      <transition id="t_handover"/>
+      <transition id="t_incubate"/>
+      <arc id="arc1" source="p_start" target="t_handover"/>
+      <arc id="arc2" source="t_handover" target="p_received"/>
+      <arc id="arc3" source="p_received" target="t_incubate"/>
+      <arc id="arc4" source="t_incubate" target="p_done"/>
+    </page>
+  </net>
+</pnml>

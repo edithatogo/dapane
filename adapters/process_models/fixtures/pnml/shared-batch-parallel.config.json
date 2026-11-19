@@ -1,0 +1,87 @@
+{
+  "evidence_basis": "assumed",
+  "expected_final_marking": {
+    "p_done": 1,
+    "p_received": 0,
+    "p_start": 0
+  },
+  "max_steps": 16,
+  "model_id": "nbs-pnml-shared-batch",
+  "model_version": "1.0.0",
+  "object_relations": [
+    {
+      "from_object_id": "infant-a",
+      "relationship": "included_in",
+      "to_object_id": "batch-1"
+    },
+    {
+      "from_object_id": "infant-b",
+      "relationship": "included_in",
+      "to_object_id": "batch-1"
+    }
+  ],
+  "objects": [
+    {
+      "id": "batch-1",
+      "kind": "assay_batch"
+    },
+    {
+      "id": "infant-a",
+      "kind": "infant"
+    },
+    {
+      "id": "infant-b",
+      "kind": "infant"
+    }
+  ],
+  "process_id": "proc-pnml-batch-1",
+  "profile": "pnml-bounded-v1",
+  "recipes": {
+    "t_handover": {
+      "activity_id": "specimen_handover",
+      "duration_minutes": "2",
+      "object_ids": ["infant-a", "infant-b"],
+      "resources": [
+        {
+          "batch_mode": "per_firing",
+          "quantity": "1",
+          "resource_kind": "transfer",
+          "target": "specimen_custody",
+          "unit": "handover"
+        }
+      ]
+    },
+    "t_incubate": {
+      "activity_id": "batch_incubation",
+      "duration_minutes": "12.5",
+      "object_ids": ["batch-1", "infant-a", "infant-b"],
+      "resources": [
+        {
+          "batch_mode": "single_shared_batch",
+          "batch_object_id": "batch-1",
+          "quantity": "12.5",
+          "resource_kind": "occupancy",
+          "target": "incubator_time",
+          "unit": "minute"
+        },
+        {
+          "batch_mode": "per_firing",
+          "quantity": "2",
+          "resource_kind": "consumption",
+          "target": "reagent_pack",
+          "unit": "pack"
+        }
+      ]
+    }
+  },
+  "schedule": [
+    {
+      "multiplicity": 1,
+      "transition_id": "t_handover"
+    },
+    {
+      "multiplicity": 1,
+      "transition_id": "t_incubate"
+    }
+  ]
+}
