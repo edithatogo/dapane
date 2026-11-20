@@ -77,3 +77,14 @@ See the shared lane [verification record](../decision_integrations_20261108/VERI
 and [recovery static checks](../decision_integrations_20261108/evidence/recovery-static-checks.json).
 The shared optional crate is in [adapters/decision_draws](../../../adapters/decision_draws/README.md).
 T2/T3 consumer, cohort, equity and oracle-parity work is unexecuted and out of scope.
+
+## Installed policy parity
+
+Producer source `47a870a43e7bd98f30d70b3b4ce0a085b64d41ee` was installed with the locked standalone Cargo manifest. The four integration cases in [policy_parity.py](../../../adapters/decision_draws/verification/policy_parity.py) passed with Tobac 0.2.0 and Voiage 3.1.0 installed under Python 3.15.2 on macOS arm64. The independent Rust suite passed 34 fiscal and 18 paired-draw tests. Clippy passed with warnings denied.
+
+The NZ case compares annual steps with different health and resource discount rates. The AU case compares half-year steps with the equivalent uniform annual rate. The fixtures cross-check end-of-interval transfers, cohort movement, cessation quantities, resource costs, QALYs, NMB and public outlay. The schedule amounts are reported alongside the ledger without double counting. Equity uses two disjoint synthetic groups with unity and non-unit weights. The installed consumers each receive eight Rust-exported cells per jurisdiction, spanning two draws, strategies and perspectives. The standalone oracle and EVPI also run in an environment without the Dapane Python binding. Scientific and production qualification require their own evidence.
+
+```sh
+cargo install --locked --path adapters/decision_draws --root "$install_root"
+DAPANE_FISCAL_BIN="$install_root/bin/dapane-fiscal" "$provider_python" -I adapters/decision_draws/verification/policy_parity.py -v
+```

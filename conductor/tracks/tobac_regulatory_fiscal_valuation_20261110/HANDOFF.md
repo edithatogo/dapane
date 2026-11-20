@@ -1,5 +1,9 @@
 # Tobac fiscal handoff
 
+## Installed policy handoff
+
+The standalone Rust producer at `47a870a43e7bd98f30d70b3b4ce0a085b64d41ee` generated the perspective tables consumed by both installed providers. The synthetic track is complete. [Verification](VERIFICATION.md#installed-policy-parity)
+
 ## Checkpoint follow-up — 20 November 2026
 
 The fiscal source follow-up starts at merged Dapane main `5c035f6` and carries

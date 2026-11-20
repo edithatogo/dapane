@@ -31,12 +31,4 @@ medical and enforcement resource lines and domestic excise and GST transfers.
 
 ## When Dapane is not installed
 
-When the optional adapter is unavailable, the intended fallback is the
-consumer's standalone method. Report Dapane-derived results as unavailable.
-T3.3 still needs to exercise that behaviour in each installed consumer.
-
-The inspected Tobac source at `891f79e07292b7754f78d7193130623bd5f9e243`
-contains related functions in `src/tobac/health.py` and evidence-packet
-handling in `src/tobac/interchange.py`. The originally planned
-`economics.py` and `decision.py` paths are absent. T2.3 still needs to map
-the relevant interface and run the synthetic NZ/AU parity fixtures.
+Run the consumer’s standalone calculation when the optional adapter is unavailable. Report Dapane-derived results as unavailable. The isolated consumer environment exercised Tobac’s exposure-state, transfer, discounting and equity functions and Voiage’s native EVPI without the Dapane Python module installed. The Rust program is needed only for the cross-provider comparison. [Installed policy parity](VERIFICATION.md#installed-policy-parity)

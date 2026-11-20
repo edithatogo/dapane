@@ -2,7 +2,7 @@
 
 Track: `tobac_regulatory_fiscal_valuation_20261110`
 
-Status: in_progress
+Status: completed
 
 Provide versioned public-finance and health-system perspective valuation, excise/GST tax-transfer separation and subgroup equity-weighting interfaces for `tobac` regulatory policy evaluation while keeping tobacco epidemiology, illicit-supply substitution and VOI in `tobac` and `voiage`.
 
@@ -14,9 +14,7 @@ Provide versioned public-finance and health-system perspective valuation, excise
 
 Requirements: RQ-01, RQ-02, RQ-07, RQ-11.
 
-Local native checks passed for the T1 fiscal ledger and T2.1–T2.2 synthetic
-schedules and equity sums. Oracle parity, installed consumers and production
-method qualification remain open.
+The installed producer and both installed consumers passed the NZ and AU synthetic policy cases. The selected fiscal methods and the independent oracle are recorded in [verification](VERIFICATION.md#installed-policy-parity).
 
 - [Adapter and contract](../../../adapters/decision_draws/README.md)
 - [Verification and evidence limits](VERIFICATION.md)
