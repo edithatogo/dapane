@@ -7,7 +7,7 @@ use kairo_ecs_types::SimTime;
 use serde_json::{Value, json};
 use std::num::NonZeroU128;
 
-const REVISION: &str = "fffaa8d9baf13df02433d8d659a9870ecf76ab85";
+const REVISION: &str = "cdda89112575a42aa8c8e67868f61379ea35d05d";
 fn recipe() -> OccupancyRecipe<'static> {
     OccupancyRecipe {
         quantity_unit: "instrument",

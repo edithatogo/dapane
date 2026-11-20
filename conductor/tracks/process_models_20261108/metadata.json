@@ -13,7 +13,7 @@
   ],
   "external_dependencies": [
     "roxmltree 0.21.2 and serde_json 1.0.154 are locked in the separate native adapter.",
-    "Kairos fffaa8d9baf13df02433d8d659a9870ecf76ab85 supplies committed staged occupancy.",
+    "Kairos cdda89112575a42aa8c8e67868f61379ea35d05d supplies committed staged occupancy.",
     "edithatogo/careops-sim: healthcare process models remain provider-owned.",
     "OMG BPMN/PNML and optional PM4Py: supported semantics and licence obligations must be assessed for the selected adapter."
   ],
