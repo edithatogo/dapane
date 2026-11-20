@@ -40,8 +40,7 @@ STANDALONE_CARGO_MANIFESTS: tuple[str, ...] = (
     "bindings/polyglot/r/src/rust/Cargo.toml",
 )
 
-ALL_PYTHON_VERSIONS: list[str] = ["3.12", "3.13", "3.14", "3.15"]
-PR_PYTHON_VERSIONS: list[str] = ["3.12", "3.15"]
+PYTHON_VERSIONS: list[str] = ["3.15.1"]
 
 CORE_EXACT_FILES = frozenset({"Cargo.toml", "Cargo.lock", "rust-toolchain.toml"})
 CORE_PREFIXES = ("crates/dapane-core/", "crates/dapane-cli/", "schemas/")
@@ -177,7 +176,10 @@ class Selection:
 
 
 def normalize_path(raw: str) -> str:
-    return raw.replace("\\", "/").lstrip("./")
+    path = raw.replace("\\", "/").lstrip("/")
+    while path.startswith("./"):
+        path = path[2:]
+    return path
 
 
 def present_lanes(root: Path) -> list[str]:
@@ -229,7 +231,7 @@ def full_selection(
         run_native=True,
         run_python=True,
         full_python_matrix=True,
-        python_versions=list(ALL_PYTHON_VERSIONS),
+        python_versions=list(PYTHON_VERSIONS),
         pytest_targets=["tests/python"],
         run_process_models=True,
         run_decision_provider_d2=True,
@@ -338,6 +340,9 @@ def select_changes(
         path = normalize_path(rec.path)
         if not path:
             continue
+
+        if path == ".python-version" or path.startswith(".github/actions/project-python/"):
+            return full_selection(root, mode=mode, changed_files=files)
 
         if rec.status in {"A", "D", "R", "C"}:
             sel.run_conductor = True
@@ -520,9 +525,7 @@ def select_changes(
     sel.lanes = [lane for lane in LANE_ORDER if lane in (lanes & available)]
     sel.rust_adapters = _present_manifests(root, adapters)
     if sel.run_python:
-        sel.python_versions = (
-            list(ALL_PYTHON_VERSIONS) if sel.full_python_matrix else list(PR_PYTHON_VERSIONS)
-        )
+        sel.python_versions = list(PYTHON_VERSIONS)
         if (
             not broad_python
             and specific_pytest_files

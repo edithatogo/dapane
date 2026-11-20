@@ -32,5 +32,5 @@ The source mapping, field definitions and tested local exchange are recorded in 
 
 ## Evidence record
 
-No runtime acceptance evidence is recorded by this initial plan.
+The [manual exchange](../../../power_platform/README.md) records the executed local baseline, source mapping and remaining tenant acceptance.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.

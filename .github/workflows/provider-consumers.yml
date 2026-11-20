@@ -30,11 +30,11 @@ jobs:
         uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
-      - if: github.event_name == 'pull_request'
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - uses: ./.github/actions/project-python
       - name: Select provider-consumer scope
         id: select
         run: |
@@ -68,11 +68,12 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+      - uses: ./.github/actions/project-python
       - name: Download the release candidate
         if: inputs.use_release_candidate
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          name: candidate-python-3.15
+          name: candidate-python-3.15.1
           path: ${{ runner.temp }}/dapane-release-candidate
       - name: Verify and install the release candidate before provider checkouts
         if: inputs.use_release_candidate

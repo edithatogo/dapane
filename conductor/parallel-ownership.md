@@ -191,7 +191,7 @@ completing a whole track. Root docs and capability promotion follow actual evide
 - **Publication stays disabled.** Dylan's channel/account choices remain open.
   Apache-2.0 is the selected project licence; the release owner retains project
   and dependency notice work. No lane may publish packages, tags or public releases.
-- **Power Platform is deferred.** No tenant, worker, premium connector, app or
+- **Power Platform was deferred from these seven lanes.** No tenant, worker, premium connector, app or
   deployment activation is part of these seven lanes.
 - Preserve existing offline security, privacy, numerical, installed-artifact and
   release gates. Queued/unexecuted results are not passes; the integrator does not
@@ -218,3 +218,9 @@ Following sequential `--no-ff` integration onto `main`, this ownership record in
 - PR #23 (`adapters/decision_draws/` for D1.1–D1.3 and T1.1–T1.3), PR #24 (`benchmarks/static/` for F1/F2.1–F2.2), PR #25 (`adapters/mchs_sources/` for M1–M2), PR #27 (`adapters/reporting_profiles/` for E1–E2), and PR #26 (`bindings/polyglot/` for B1–B2, with raw CI receipt removed from Git to preserve Gitleaks history cleanliness and the polyglot track retained as `blocked` pending ABI/Julia B3 and installed-host gates).
 - PR #29 (retargeted to `main` after mechanical Ruff lint/formatting alignment), admitting `adapters/decision_provider_d2/` as the bounded optional D2/D3 preparation namespace under [decision_integrations_20261108](tracks/decision_integrations_20261108/index.md) with standalone CI in `.github/workflows/decision-provider-d2.yml`, while leaving `D2.1`–`D3.3` and installed provider acceptance open.
 - PR #30 registering [serde_canonicalization_qualification_20261118](tracks/serde_canonicalization_qualification_20261118/index.md) (`new`), PR #28 (StepSecurity `harden-runner`), and PR #31 (pinned `actions/setup-python@v7.1.0`).
+
+## Implementation and integration handoff, 20 November 2026
+
+The integration chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` works in the managed checkout `~/.codex/worktrees/dapane-track-integration/dapane`. It owns the integration branches, shared CI, the release manifest and this registry reconciliation. The existing source-lane assignments above remain with their recorded worktrees.
+
+The integrated source covers the fiscal executable and policy comparisons, installed decision providers, manual CareOps file exchange, native benchmark reruns and binding-host review. The linked [track plans](tracks.md) identify the exact delivered scope and the external acceptance that remains. This checkout operates on synthetic fixtures and local packages. Native CareOps operations, external provider contracts and registry accounts remain with their respective owners. The next release operation is to verify the integrated source and its hosted checks.

@@ -67,10 +67,7 @@ source revision.
 
 | Runner | OS and architecture | Interpreter | ABI |
 | --- | --- | --- | --- |
-| ubuntu-24.04 | Linux x86_64 | CPython 3.12 | Interpreter-specific |
-| ubuntu-24.04 | Linux x86_64 | CPython 3.13 | Interpreter-specific |
-| ubuntu-24.04 | Linux x86_64 | CPython 3.14 | Interpreter-specific |
-| ubuntu-24.04 | Linux x86_64 | CPython 3.15 | Interpreter-specific |
+| ubuntu-24.04 | Linux x86_64 | CPython 3.15.1 | Interpreter-specific |
 
 Receipts record the actual Python patch version, libc, operating-system identity,
 Rust/Cargo versions, source commit/tree and input hashes. Wheel tags alone do not
