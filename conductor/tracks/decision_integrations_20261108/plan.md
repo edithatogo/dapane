@@ -27,8 +27,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Evidence and measurement planning
 
-- [~] D3.1 Use a qualified Voiage capability to evaluate a bounded additional-evidence question such as staff time, repeat rate or utilisation measurement.
-  The analytical staff-time reference is AUD 10 per assay. The available wheel checksums differed from the recorded checksum, so the native result remains unverified.
+- [x] D3.1 Use a qualified Voiage capability to evaluate a bounded additional-evidence question such as staff time, repeat rate or utilisation measurement.  
+  **Executed 2026-11-20:** Installed Voiage 3.1.0 `DecisionAnalysis.evpi` returns 10.0 for the staff-time matrix `[[-60, -80], [-120, -80]]`. The wheel file `voiage-3.1.0-cp315-abi3-macosx_11_0_arm64.whl` hashes to `71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140`, matching its install record. No population scaling was applied. Earlier copies that did not match this digest remain historical.
 - [x] D3.2 Document method maturity, source assumptions, external outcome limitations and alternative-perspective interpretations.
   The [D3 preparation dossier](../../../adapters/decision_provider_d2/D3-EVIDENCE.md) records the evidence assumptions, distinctions across perspectives and limits of the synthetic example.
 - [~] D3.3 Run the selected installed/provider integration cases and confirm that disabling all decision adapters leaves static costing available.

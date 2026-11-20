@@ -75,3 +75,19 @@ class PerspectiveTableTests(unittest.TestCase):
         self.assertEqual(result["cells"][7]["draw_id"], "draw-b")
         self.assertEqual(result["cells"][7]["strategy_id"], "reference")
         self.assertEqual(result["cells"][7]["perspective"], "societal")
+
+    def test_installed_voiage_values_staff_time_at_ten_per_assay(self):
+        # Rows are short then long. Columns are change then current.
+        # Per-draw maxima average -70. The best mean strategy is current at -80.
+        # EVPI is -70 - (-80) = 10 AUD per assay.
+        try:
+            import numpy as np
+            from voiage.analysis import DecisionAnalysis
+            from voiage.schema import ValueArray
+        except ImportError as error:
+            self.skipTest(str(error))
+        values = np.array([[-60.0, -80.0], [-120.0, -80.0]])
+        analysis = DecisionAnalysis(
+            ValueArray.from_numpy(values, strategy_names=["change", "current"])
+        )
+        self.assertEqual(analysis.evpi(), 10.0)
