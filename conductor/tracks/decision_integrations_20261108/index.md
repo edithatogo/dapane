@@ -17,8 +17,9 @@ Requirements: RQ-11, RQ-02, RQ-03.
 The D2/D3 adapter suite passed 78 synthetic contract tests. Native replays
 reproduced the Innovate capacity and Paignia payoff examples, and the standalone
 Dapane CLI reproduced the newborn-screening total. On 20 November the installed
-Voiage 3.1.0 wheel returned the staff-time EVPI of 10 per assay. Innovate and
-Paignia build provenance remain open. See the
+Voiage 3.1.0 wheel returned the staff-time EVPI of 10 per assay. Paignia
+`44bebdae9ca53a113681041e8fe5dcc16f57b918` selected action B at utility 20.
+Innovate build provenance remains open. See the
 [19 November verification](VERIFICATION.md#decision-provider-evidence-review--19-november-2026)
 and the [20 November execution](VERIFICATION.md#installed-voiage-execution--20-november-2026).
 

@@ -5,9 +5,17 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 import unittest
 
-from bridge import D2Error, adoption_capacity, negotiate, paignia_packet, voiage_packet
+from bridge import (
+    D2Error,
+    adoption_capacity,
+    negotiate,
+    paignia_game_solve_native,
+    paignia_packet,
+    voiage_packet,
+)
 
 HEX40 = "a" * 40
 DIGEST = "sha256:" + "b" * 64
@@ -339,6 +347,25 @@ class TestD2Bridge(unittest.TestCase):
         self.assertEqual(g["game"]["nodes"]["start"]["kind"], "Decision")
         self.assertEqual(g["game"]["nodes"]["terminal:adopt"]["payoffs"], {"planner": 1.5})
         self.assertEqual(r["provider_execution"], "not_executed")
+
+    def test_pinned_paignia_selects_the_higher_explicit_utility(self):
+        binary = os.environ.get("DAPANE_PAIGNIA_BIN")
+        if not binary:
+            self.skipTest("DAPANE_PAIGNIA_BIN is not set")
+        payload = d2_paignia()
+        payload["actions"] = [
+            {"id": "A", "utility": {"numerator": "10", "denominator": "1"}},
+            {"id": "B", "utility": {"numerator": "20", "denominator": "1"}},
+        ]
+        result = paignia_game_solve_native(payload, binary)
+        self.assertEqual(result["provider_execution"], "native_invoked")
+        self.assertEqual(result["paignia_solution"]["selected_action"], "B")
+        self.assertEqual(result["paignia_solution"]["expected_payoff"], 20.0)
+        self.assertEqual(
+            result["paignia_solution"]["profile"],
+            "paignia/static-finite-perfect-information-sparse-zero/1.0.0",
+        )
+        self.assertEqual(result["key"]["draw_id"], "draw-a")
 
     def test_paignia_rejects_monetary_payoff_without_explicit_transformation(self):
         p = d2_paignia()

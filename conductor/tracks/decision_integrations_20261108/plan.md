@@ -20,10 +20,10 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   The adapter prepares the six-key panel. Execution with the selected Voiage wheel remains open.
 - [~] D2.2 Implement one Innovate utilisation/adoption-to-resource scenario with explicit capacity thresholds and feedback orchestration.
   The native example carried one hour of backlog into the next period. Build provenance and the provider's price-feedback case remain open.
-- [~] D2.3 Implement one optional Paignia input adapter with an explicit supported-game and payoff transformation contract.
-  The native example selected B at a utility of 20. Build provenance and application validation against the selected profile remain open.
+- [x] D2.3 Implement one optional Paignia input adapter with an explicit supported-game and payoff transformation contract.  
+  **Executed 2026-11-20:** Paignia `44bebdae9ca53a113681041e8fe5dcc16f57b918` admitted the static profile `paignia/static-finite-perfect-information-sparse-zero/1.0.0` and selected action B with utility 20 over action A with utility 10. The draw key `draw-a` stayed on the packet. Paignia publishes no solver command, so the call used a local harness linked to `paignia-core` and `paignia-solve` from that commit. The harness digest is `sha256:d793ab5174c4bf2f725480e10850fd8db2f2d5c9e50c066511e4a7fb3e4b641f`.
 - [~] D2.4 Verify provider version negotiation, unsupported-method diagnostics, transfer accounting and independently derived decision examples.
-  Tests cover declared compatibility, rejected inputs and synthetic transfer accounting. Voiage 3.1.0 at `0978497b5047de9459ed2fca9b349a4e2a9c45d3` was verified through its installed wheel. Innovate and Paignia are not installed.
+  Tests cover declared compatibility, rejected inputs and synthetic transfer accounting. Voiage 3.1.0 at `0978497b5047de9459ed2fca9b349a4e2a9c45d3` was verified through its installed wheel. Paignia `44bebdae9ca53a113681041e8fe5dcc16f57b918` selected action B. Innovate is not installed.
 
 ## Phase 3 — Evidence and measurement planning
 
