@@ -30,57 +30,19 @@ A completed planning task does not change a runtime capability from planned to q
 
 ## Next executable work
 
-The [parallel ownership map](parallel-ownership.md) records Dylan's seven bounded
-roadmap lanes and the sole integration/release owner. Lane assignments do not
-change the lifecycle states above. Workers update their own tracks and request
-matching registry/shared-file changes through the integrator. Publication remains
-disabled and Power Platform is deferred.
+Ten of the fifteen tracks have met their recorded scope. Four are archived and six are completed. Three are in progress and two are blocked. The [ownership map](parallel-ownership.md) records the integrator and lane assignments.
 
-The setup track is complete and archived in place. The core-contract/reference track is completed and
-archived in place after PR #9 integration; its
-[acceptance evidence](tracks/core_contracts_20261108/verification.md) and
-[archive entry](archive/README.md) retain the exact qualified scope.
-The Rust kernel is archived in place after
-[bounded acceptance and independent review](tracks/rust_kernel_20261108/verification.md),
-including declared calendar-day interval splitting and the minimal dependency
-boundary.
+The [installed core and two-provider qualification](../docs/python-provider-verification.md), [fiscal handoff](tracks/tobac_regulatory_fiscal_valuation_20261110/plan.md), [decision-provider runs](tracks/decision_integrations_20261108/plan.md) and [canonicalization qualification](tracks/serde_canonicalization_qualification_20261118/plan.md) record the delivered numerical and integration scopes. The latest fiscal comparisons cover New Zealand and Australian synthetic policy cases. The decision runs include an installed adoption model.
 
-A bounded exact Rust/CLI kernel, Python binding and five synthetic consumers have
-[runtime evidence](../docs/runtime-verification.md). The
-[capacity increment](../docs/genomics-capacity-verification.md) adds five synthetic
-genomics comparisons and explicit 0.2 semantics while retaining 0.1 compatibility.
-The Python/two-consumer track is completed and archived in place after
-[installed workforce and manual-extraction qualification](../docs/python-provider-verification.md)
-and [review with fixes](tracks/python_two_consumers_20261108/review.md).
-Its selected provider scope retains exact source identities, independent reference
-cases and historical entry points. Across the 15 registered tracks (4 archived, 7
-`in_progress`, 2 `blocked`, 2 `new`), all seven standalone roadmap lanes
-(`bindings`, `decisions`, `mchs`, `newborn`, `observed`, `reporting`, `static`) are
-now integrated on `main` alongside X2 PNML/BPMN adapters (`adapters/process_models/`),
-bounded D2/D3 preparation contracts (`adapters/decision_provider_d2/`), and the new
-`serde_canonicalization_qualification_20261118` specification track. On `main`,
-the process-model track incorporates X1 independent contracts
-([`adapters/observed_events/`](../adapters/observed_events/README.md)) and bounded
-X2 PNML/BPMN adapters ([`adapters/process_models/`](../adapters/process_models/README.md)),
-while X1.2 raw XES/OCEL decoding (`edithatogo/mailweft#4`) and X3 Kairos integration
-remain open. Likewise, `polyglot_bindings_20261108` (`[!]` `blocked`) awaits C ABI/Julia
-B3 and installed R/C host qualification, `release_consolidation_20261108` (`[!]` `blocked`)
-retains upstream advisory (`RUSTSEC-2026-0543`) and offline-security gates, and D2/D3
-installed provider execution (`D2.1`–`D3.3`) remains open. Next work addresses their
-acceptance criteria, broader provider and quantity/correction semantics, and release
-prerequisites. The first release follows contracts → Rust kernel → installed Python
-and two real provider consumers → release assurance. Power Platform, R/Julia, process
-models and decision integrations are independently qualified optional branches.
+| Open track | Implemented | What remains |
+| --- | --- | --- |
+| [Power Platform](tracks/power_platform_20261108/plan.md) | Reproducible manual export, native valuation, result import and archived replacements | Exercise the exchange on the selected CareOps tenant. Worker and interactive routes require a deployment choice. |
+| [Process models](tracks/process_models_20261108/plan.md) | Observed-event contracts and bounded PNML/BPMN execution | Qualify the raw XES/OCEL dependency and the Kairos resource-usage and replay contract. |
+| [Frontier benchmarks](tracks/frontier_benchmarks_20261108/plan.md) | Independent static cases, six native pathway comparisons and installed decision-provider experiments | Assess transportability with authorised external or multisite data. Publication requires the appropriate evidence and authority. |
+| [R and Julia](tracks/polyglot_bindings_20261108/plan.md) | Installed R and Julia candidates, C ABI review and instrumented native parity | Select and qualify the intended distribution surfaces. |
+| [Release assurance](tracks/release_consolidation_20261108/plan.md) | Repeatable candidate builds, installed consumers, provenance and dependency checks | Confirm publication channel and account, and obtain a completed central offline-security run for the candidate source. |
 
-The [release handoff](../docs/release-handoff-2026-11-15.md) consumes all four
-incorporated archives and the existing provider qualification, and
-[post-merge `main` qualification](../docs/release-qualification-2026-11-19.md)
-records the `0658d94` matrix, exact-artifact provider check and signed
-trusted-main provenance. Release work completes distribution notices and verifies
-the exact candidate artifacts. Publication remains disabled pending
-channel/account choices; final qualification also retains the separate centrally
-managed offline-security execution gate (`43769725442` auto-cancelled after
-24h queue timeout with no runner).
+The [first release handoff](../docs/release-handoff-2026-11-15.md) and [trusted-main qualification](../docs/release-qualification-2026-11-19.md) retain the source and artifact identities for earlier candidates.
 
 ## Synchronisation
 

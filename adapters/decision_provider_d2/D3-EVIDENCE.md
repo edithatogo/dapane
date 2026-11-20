@@ -113,7 +113,7 @@ unexpected method or binary digest fail closed. **Only a fake-CLI synthetic
 subprocess test is locally executed so far**; a real pinned binary must be run
 and its output independently checked by the receiving owner.
 
-To reproduce local synthetic/negative tests (Python 3.12–3.15 standard library):
+To reproduce the local synthetic and negative tests, activate the project CPython 3.15.1 environment and run
 
 ```sh
 cd adapters/decision_provider_d2

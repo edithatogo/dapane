@@ -147,8 +147,7 @@ selects the prior provider release or historical entry point, original source
 artifact and recorded policy. It does not silently relabel historical outputs
 under a corrected rate or method.
 
-The broader native matrix remains Linux x86_64 CPython 3.12–3.15, with actual
-runs in [runtime verification](runtime-verification.md) and the CI evidence below.
+The historical Linux x86_64 CPython 3.12–3.15 runs are recorded in [runtime verification](runtime-verification.md) and the CI evidence below. The current [release matrix](release-assurance.md) selects CPython 3.15.1.
 No new macOS, Windows, ARM, PyPy, free-threaded or stable-ABI support is inferred.
 The packages remain unpublished candidates; licence and release-assurance work
 retain their separate prerequisites.

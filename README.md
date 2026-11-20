@@ -6,7 +6,7 @@ Dapane turns explicit resource use and classified activity into reproducible
 valuations. Its first working candidate contains an exact Rust kernel, a JSON
 CLI, thin Python bindings, versioned schemas and independent synthetic fixtures.
 Workforce, genomics, hospital funding and newborn-screening packages retain their
-specialist rules and source data. R and Julia remain planned bindings.
+specialist rules and source data. Installed R and Julia candidates exercise the same Rust boundary. Their host coverage is recorded in the [binding verification](conductor/tracks/polyglot_bindings_20261108/verification.md).
 
 ## Current status
 
@@ -43,10 +43,7 @@ records verified `0658d94` candidate artifacts and signed trusted-main provenanc
 Release qualification consumes their existing records and checks the exact candidate
 artifacts; publication remains disabled.
 
-Broader provider coverage, richer exposure and economic methods, R/Julia,
-reporting exports, Power Apps and process execution remain separate work. See the [implemented contract](docs/contract-v0.1.md),
-[compatibility policy](docs/compatibility.md) and
-[runtime verification](docs/runtime-verification.md) for exact limits and evidence.
+Optional adapters now cover bounded process models, reporting exports, fiscal decision tables and adoption forecasts. The manual CareOps file exchange replays the installed CLI and wheel. Its target-tenant round trip and public package distribution remain open. The [track registry](conductor/tracks.md) lists the evidence and remaining work.
 
 ## Kairos and the three contexts
 
@@ -138,7 +135,7 @@ Read [AGENTS.md](AGENTS.md) and the [workflow](conductor/workflow.md), then sele
 ready task from its track. The current dependency-free documentation check is:
 
 ```sh
-python3 scripts/validate_conductor.py
+.venv/bin/python scripts/validate_conductor.py
 ```
 
 This command checks Conductor structure, local links, requirement coverage, track

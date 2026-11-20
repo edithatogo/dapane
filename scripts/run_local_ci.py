@@ -66,7 +66,7 @@ def find_docker_socket() -> str | None:
             proc = subprocess.run(["docker", "info"], capture_output=True, timeout=3)
             if proc.returncode == 0:
                 return "default"
-        except (OSError, subprocess.SubprocessError):
+        except OSError, subprocess.SubprocessError:
             pass
     return None
 

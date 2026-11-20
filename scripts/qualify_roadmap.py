@@ -1201,7 +1201,7 @@ def execute(root: Path, lane: str, output: Path, expected: str, sources: Path | 
     )
     try:
         require(lane in discover(root), "Requested lane is absent from this source")
-        require(sys.version_info[:2] == (3, 12), "Standalone host must be CPython 3.12")
+        require(sys.version_info[:3] == (3, 15, 1), "Standalone host must be CPython 3.15.1")
         install_tools(
             run, native=lane in {"newborn", "mchs", "reporting"}, setuptools=lane == "mchs"
         )

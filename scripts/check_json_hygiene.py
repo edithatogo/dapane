@@ -75,7 +75,7 @@ def _allows_duplicate_keys(path_label: str, repo_root: Path | None = None) -> bo
     if repo_root is not None:
         try:
             rel = Path(path_label).resolve().relative_to(repo_root.resolve()).as_posix()
-        except (ValueError, OSError):
+        except ValueError, OSError:
             rel = ""
         if rel in INTENTIONAL_DUPLICATE_KEY_FIXTURES:
             return True

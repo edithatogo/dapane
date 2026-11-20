@@ -18,6 +18,26 @@ SPEC.loader.exec_module(ci_select)
 
 
 class CiSelectTests(unittest.TestCase):
+    def test_project_interpreter_changes_select_all_consumers(self) -> None:
+        for path in (".python-version", ".github/actions/project-python/action.yml"):
+            with self.subTest(path=path):
+                selected = ci_select.select_changes(
+                    ROOT, [ci_select.ChangeRecord(path, "M")], mode="pr"
+                )
+                self.assertTrue(selected.run_release_heavy)
+                self.assertTrue(selected.run_provider_consumers)
+                self.assertEqual(selected.lanes, ci_select.present_lanes(ROOT))
+                self.assertEqual(
+                    selected.python_versions, [(ROOT / ".python-version").read_text().strip()]
+                )
+
+    def test_dot_prefixed_workflow_path_selects_its_checks(self) -> None:
+        change = ci_select.ChangeRecord("./.github/workflows/runtime.yml")
+        selected = ci_select.select_changes(ROOT, [change])
+        self.assertTrue(selected.run_native)
+        self.assertTrue(selected.run_python)
+        self.assertEqual(selected.changed_files, [".github/workflows/runtime.yml"])
+
     def test_docs_only_change_only_runs_conductor(self) -> None:
         for path in ("conductor/tracks.md", "docs/quickstart.md"):
             with self.subTest(path=path):
@@ -59,7 +79,7 @@ class CiSelectTests(unittest.TestCase):
         )
         self.assertTrue(sel.run_native)
         self.assertTrue(sel.run_python)
-        self.assertEqual(sel.python_versions, ["3.12", "3.15"])
+        self.assertEqual(sel.python_versions, ["3.15.1"])
         self.assertEqual(sel.pytest_targets, ["tests/python"])
         self.assertTrue(sel.run_process_models)
         self.assertTrue(sel.run_provider_consumers)
@@ -74,7 +94,7 @@ class CiSelectTests(unittest.TestCase):
         )
         self.assertTrue(sel.run_python)
         self.assertTrue(sel.full_python_matrix)
-        self.assertEqual(sel.python_versions, ["3.12", "3.13", "3.14", "3.15"])
+        self.assertEqual(sel.python_versions, ["3.15.1"])
         self.assertEqual(sel.lanes, ["newborn", "mchs", "reporting"])
         self.assertTrue(sel.run_release_validate)
         self.assertTrue(sel.run_release_heavy)
@@ -84,7 +104,7 @@ class CiSelectTests(unittest.TestCase):
             ROOT, [ci_select.ChangeRecord("tests/python/test_errors.py", "M")], mode="pr"
         )
         self.assertTrue(sel.run_python)
-        self.assertEqual(sel.python_versions, ["3.12", "3.15"])
+        self.assertEqual(sel.python_versions, ["3.15.1"])
         self.assertEqual(sel.pytest_targets, ["tests/python/test_errors.py"])
         self.assertTrue(sel.run_provider_consumers)
 
@@ -108,7 +128,7 @@ class CiSelectTests(unittest.TestCase):
         )
         self.assertTrue(sel.run_native)
         self.assertTrue(sel.run_python)
-        self.assertEqual(sel.python_versions, ["3.12", "3.13", "3.14", "3.15"])
+        self.assertEqual(sel.python_versions, ["3.15.1"])
         self.assertEqual(sel.lanes, ci_select.present_lanes(ROOT))
         self.assertTrue(sel.run_release_heavy)
 
@@ -122,7 +142,5 @@ class CiSelectTests(unittest.TestCase):
             content = dict(line.split("=", 1) for line in out.read_text().splitlines())
             self.assertEqual(content["run_native"], "true")
             self.assertEqual(content["run_release_heavy"], "true")
-            self.assertEqual(
-                json.loads(content["python_versions"]), ["3.12", "3.13", "3.14", "3.15"]
-            )
+            self.assertEqual(json.loads(content["python_versions"]), ["3.15.1"])
             self.assertEqual(json.loads(content["lanes"]), ci_select.present_lanes(ROOT))

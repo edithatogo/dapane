@@ -76,7 +76,7 @@ CAPABILITIES = {
     "installed-workforce-quotation-consumer",
     "installed-manual-extraction-consumer",
 }
-PYTHONS = {"3.12", "3.13", "3.14", "3.15"}
+PYTHONS = {"3.15.1"}
 
 
 class AssuranceError(ValueError):
@@ -147,6 +147,8 @@ def input_hashes(root=ROOT):
         "requirements-dev.txt",
         "requirements-release.txt",
         "deny.toml",
+        ".python-version",
+        ".github/actions/project-python/action.yml",
         ".github/workflows/release-assurance.yml",
         "release/capabilities.json",
         "scripts/release_assurance.py",
@@ -215,8 +217,12 @@ def validate_manifest(manifest, root=ROOT):
         len(capabilities) == len(CAPABILITIES) and set(capabilities) == CAPABILITIES,
         "candidate capabilities need explicit implementation and reference coverage",
     )
+    require(
+        (root / ".python-version").read_text().strip() in PYTHONS,
+        "project interpreter differs from the release target",
+    )
     targets = manifest["targets"]
-    require(len(targets) == 4, "all four interpreter targets are required")
+    require(len(targets) == len(PYTHONS), "unexpected number of interpreter targets")
     require(
         {target_key(t) for t in targets} == {("Linux", "x86_64", "CPython", p) for p in PYTHONS},
         "missing, duplicate or unsupported platform/interpreter target",
@@ -723,7 +729,7 @@ def runtime_target(runtime):
         runtime["system"],
         runtime["machine"],
         runtime["implementation"],
-        ".".join(runtime["python"].split(".")[:2]),
+        runtime["python"],
     )
 
 

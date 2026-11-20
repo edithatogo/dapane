@@ -33,10 +33,10 @@ Each Linux x86_64 job:
 6. Retains the source archive, source commit/tree, Cargo lockfile, toolchain,
    build package versions, artifact digests, replay results and comparison report.
 
-The CPython matrix is **3.12, 3.13, 3.14 and 3.15 on ubuntu-24.04 x86_64**.
+The CPython matrix is **3.15.1 on ubuntu-24.04 x86_64**.
 Actual patch versions and host details are captured by each receipt. A successful
 receipt for one interpreter does not qualify another. The aggregation job requires
-all four receipts for the same checked source and rejects missing or duplicate
+a receipt for every declared target on the same checked source and rejects missing or duplicate
 targets. Wheel tags alone do not establish manylinux, other Linux distributions,
 Windows, macOS, ARM, ABI3, PyPy or free-threaded support.
 

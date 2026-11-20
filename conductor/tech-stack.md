@@ -38,8 +38,8 @@ because the first five reference consumers use exact JSON directly.
 
 Maturin 1.16.0 builds interpreter-specific wheels. Development requirements pin
 Maturin, Pytest 9.2.0, jsonschema 4.26.0 and Ruff 0.17.4. The Python package itself
-has no runtime Python-package dependencies. Its declared CPython range is
-3.12–3.15, with actual interpreter/platform checks recorded in
+has no runtime Python-package dependencies. Dapane development and CI select CPython 3.15.1. Provider environments retain their
+qualified patch versions. Earlier interpreter/platform checks are recorded in
 [runtime verification](../docs/runtime-verification.md); no ABI3 or other-platform
 support follows from the range alone.
 

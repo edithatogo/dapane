@@ -44,9 +44,9 @@ Check live ownership and exact heads, and preserve release/security gates.
 - Dependency policy: [conductor/tech-stack.md](conductor/tech-stack.md).
 - Domain/provider boundaries: [conductor/ecosystem.md](conductor/ecosystem.md).
 - Style guides: [conductor/code_styleguides/index.md](conductor/code_styleguides/index.md).
-- Context check: `python3 scripts/validate_conductor.py`.
+- Context check: `.venv/bin/python scripts/validate_conductor.py`.
 - Native checks: `cargo fmt --all --check`, `cargo clippy --locked --all-targets -- -D warnings`, `cargo test --locked`.
-- Public-contract check: `python scripts/validate_contract.py --cli target/release/dapane`.
+- Public-contract check: `.venv/bin/python scripts/validate_contract.py --cli target/release/dapane`.
 - Python: build/install a native wheel and run `tests/python` from outside the checkout, as in [the quickstart](docs/quickstart.md).
 
 Keep the installed-artifact matrix and independent synthetic references current.

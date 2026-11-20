@@ -32,7 +32,12 @@ class ManifestTests(unittest.TestCase):
         self.assertTrue(release.publication_blockers(self.manifest))
 
     def test_duplicate_target_does_not_cover_missing_interpreter(self):
-        self.manifest["targets"][3] = copy.deepcopy(self.manifest["targets"][0])
+        self.manifest["targets"].append(copy.deepcopy(self.manifest["targets"][0]))
+        with self.assertRaisesRegex(release.AssuranceError, "target"):
+            release.validate_manifest(self.manifest)
+
+    def test_release_requires_the_qualified_python_patch(self):
+        self.manifest["targets"][0]["python"] = "3.15"
         with self.assertRaisesRegex(release.AssuranceError, "target"):
             release.validate_manifest(self.manifest)
 

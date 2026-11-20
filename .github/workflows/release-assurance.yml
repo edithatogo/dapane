@@ -30,9 +30,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      - uses: ./.github/actions/project-python
         with:
-          python-version: '3.15'
           cache: 'pip'
           cache-dependency-path: 'requirements-dev.txt'
       - name: Select heavy release assurance scope
@@ -73,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.12', '3.13', '3.14', '3.15']
+        python: ['3.15.1']
     env:
       CARGO_INCREMENTAL: '0'
       CARGO_PROFILE_RELEASE_STRIP: symbols
@@ -91,9 +90,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      - uses: ./.github/actions/project-python
         with:
-          python-version: ${{ matrix.python }}
           cache: 'pip'
           cache-dependency-path: 'requirements-dev.txt'
       - name: Cache read-only Cargo registry and git crates (clean target dirs preserved)
@@ -167,7 +165,7 @@ jobs:
             "$consumer" "$GITHUB_WORKSPACE/scripts/validate_intervals.py" --cli "$artifact/dapane" \
             | tee "$artifact/installed-intervals.log"
       - name: Record bounded throughput and memory on CPython 3.15
-        if: matrix.python == '3.15'
+        if: matrix.python == '3.15.1'
         run: |
           PROFILE="$RUNNER_TEMP/release-candidate-profile.jsonl"
           python3 scripts/ci_profile.py run --name benchmark-cli --profile-file "$PROFILE" -- \
@@ -176,7 +174,7 @@ jobs:
             --counts 10 1000 5000 --repeats 3 \
             --output "$RUNNER_TEMP/dapane-candidate/benchmark.json"
       - name: Verify source package licence and notice inclusion
-        if: matrix.python == '3.15'
+        if: matrix.python == '3.15.1'
         shell: bash
         run: |
           set -euo pipefail
@@ -260,9 +258,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      - uses: ./.github/actions/project-python
         with:
-          python-version: '3.15'
           cache: 'pip'
           cache-dependency-path: 'requirements-release.txt'
       - name: Cache pinned supply-chain tools and Cargo registry
@@ -397,9 +394,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with:
-          python-version: '3.15'
+      - uses: ./.github/actions/project-python
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: candidate-*

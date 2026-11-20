@@ -174,7 +174,7 @@ def snapshot(value: Any) -> dict[str, Any]:
     visit(value, 0, "")
     try:
         encoded = json.dumps(value, allow_nan=False, ensure_ascii=False).encode("utf-8")
-    except (ValueError, TypeError, UnicodeError, RecursionError):
+    except ValueError, TypeError, UnicodeError, RecursionError:
         fail("invalid_transport", "Input cannot be represented as finite UTF-8 JSON.", "/")
     if len(encoded) > MAX_BYTES:
         fail("input_limit", "Input exceeds 4 MiB.", "/")

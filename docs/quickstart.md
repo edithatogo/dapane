@@ -40,7 +40,8 @@ separate virtual environment. This is a local source build; no PyPI release is
 assumed.
 
 ```sh
-python -m venv .venv
+uv venv --seed --python 3.15.1 .venv
+.venv/bin/python -c 'import platform; assert platform.python_version() == "3.15.1"'
 .venv/bin/python -m pip install -r requirements-dev.txt
 .venv/bin/maturin build --locked --release --interpreter .venv/bin/python --out dist
 .venv/bin/python -m pip install --no-deps --no-index --find-links dist dapane==0.1.0
