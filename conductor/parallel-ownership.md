@@ -226,3 +226,10 @@ The integration chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` works in the managed
 The integrated source covers the fiscal executable and policy comparisons, installed decision providers, manual CareOps file exchange, native benchmark reruns and binding-host review. The linked [track plans](tracks.md) identify the exact delivered scope and the external acceptance that remains. This checkout operates on synthetic fixtures and local packages. Native CareOps operations, external provider contracts and registry accounts remain with their respective owners. The next release operation is to verify the integrated source and its hosted checks.
 
 The same integration checkout owns the Power Platform source closeout in `power_platform/` and `conductor/tracks/power_platform_20261108/`, including the registry and archive entry. The owner deferred all live Power Platform work. The source handoff uses synthetic files and the existing SharePoint design.
+
+On 21 November 2026 the same integration chat recorded the release channel
+decision from the isolated CLI clone at
+`/Volumes/PortableSSD/dapane-prerelease-20261121.x5LbfG/dapane` after the managed
+checkout's Git volume filled. This work owns the release track records and the
+`edithatogo/dapane` prerelease for exact candidate `d02095d`. Its next native
+operation is the central offline-security run for the selected candidate.

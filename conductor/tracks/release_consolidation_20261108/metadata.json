@@ -3,7 +3,7 @@
   "type": "chore",
   "status": "blocked",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-19T06:38:37Z",
+  "updated_at": "2026-11-20T23:14:23Z",
   "description": "Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.",
   "repositories": [
     "."
@@ -20,8 +20,21 @@
     "edithatogo"
   ],
   "decisions": [
-    "Apache-2.0 for Dapane project material, explicitly selected by the owner on 15 November 2026; ADR-014."
+    "Apache-2.0 for Dapane project material, explicitly selected by the owner on 15 November 2026; ADR-014.",
+    "GitHub Releases under edithatogo/dapane for the v0.1.0 prerelease. PyPI and crates.io are deferred."
   ],
+  "release_selection": {
+    "channel": "github-releases",
+    "repository": "edithatogo/dapane",
+    "authenticated_administrator": "edithatogo",
+    "tag": "v0.1.0",
+    "prerelease": true,
+    "candidate_source": "d02095d9bf7e89c6fc00805c4bc484a3ead3e33b",
+    "candidate_run": 44748104482,
+    "offline_security_run": 44748104889,
+    "pypi": "deferred",
+    "crates_io": "deferred"
+  },
   "requirement_ids": [
     "RQ-12",
     "RQ-04"
@@ -100,8 +113,7 @@
   "archive_requested": true,
   "archive_performed": false,
   "blockers": [
-    "Centrally managed offline AI security run 43769725442 (job 132982710619) timed out after 24h in queue and was cancelled with no runner assigned and 0 steps executed; its existing gate is retained before treating release_consolidation_20261108 as fully qualified.",
-    "First publication channels and controlling registry accounts/organisations remain unspecified; publication stays disabled."
+    "GitHub prerelease publication and track archival require a successful central offline-security scan for the selected candidate d02095d. Run 44748104889 was queued with no assigned runner and zero steps at decision readback."
   ],
   "review": {
     "status": "completed_with_fixes",

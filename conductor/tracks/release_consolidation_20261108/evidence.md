@@ -7,6 +7,25 @@ The [current handoff receipt](../../../docs/release-handoff-2026-11-15.md) recor
 the completed provider/setup merges, incorporated archives, fresh live baseline,
 notice implementation and remaining security/publication blockers.
 
+## GitHub prerelease selection (21 November 2026)
+
+The owner selected GitHub Releases under `edithatogo/dapane` for the
+`v0.1.0` prerelease and deferred publication to PyPI and crates.io.
+GitHub returned the authenticated login `edithatogo` and admin permission
+on the repository. The releases and matching tag lookups returned empty lists.
+
+The selected candidate is `d02095d9bf7e89c6fc00805c4bc484a3ead3e33b`.
+The successful hosted release run contains five verified provenance subjects.
+Local `verify-matrix` accepted the downloaded Linux x86_64 CPython 3.15.1 target
+for this source. The candidate passed 215 installed tests and ten independent
+reference cases. [Release artifacts](https://github.com/edithatogo/dapane/actions/runs/44748104482)
+
+The central offline-security job for this exact commit was queued with
+`runner_id: 0` and zero steps at decision readback. The public prerelease
+requires an executed scan with a successful conclusion on this revision.
+The release tag will reference this commit and carry the verified files.
+[Exact-source scan](https://github.com/edithatogo/dapane/actions/runs/44748104889)
+
 ## Publication control review — 20 November 2026
 
 The manifest and generated candidate receipts now carry the requirement for
