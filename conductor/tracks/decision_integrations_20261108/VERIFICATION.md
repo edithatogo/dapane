@@ -28,8 +28,22 @@ The total was AUD 150.00, and all six object totals matched the
 report output digest was `sha256:a38641e5373cb775f84fec290cb48e7e030a344bf86e44c0d1f76e1b44cd0d9c`.
 
 D3.3's standalone costing check is verified. The selected installed-provider
-integration cases remain pending. Provider qualification and the Conductor
-track remain in progress.
+integration cases remain pending in this 19 November record. The 20 November
+execution below supersedes the Voiage row's remaining-evidence cell.
+
+## Installed Voiage execution — 20 November 2026
+
+The wheel file
+`voiage-3.1.0-cp315-abi3-macosx_11_0_arm64.whl` hashes to
+`71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140`, matching
+its install `direct_url.json`. Its shipped `_runtime.py`, `analysis.py` and
+`methods/basic.py` match source revision
+`0978497b5047de9459ed2fca9b349a4e2a9c45d3`.
+`native_voiage.run_evpi` called `voiage._runtime.compute_evpi` and returned
+10.0 per assay for `[[-60, -80], [-120, -80]]`. The native extension digest is
+`sha256:abc8048bde189318db3bb9d83e5966029fce6b71e0909a3d05d9076339b8ebf7`.
+The 19 November observation that available copies differed from this digest
+remains historical. Innovate and Paignia are not installed.
 
 ## D1/T1 owner follow-up — 15 November 2026
 
