@@ -32,7 +32,7 @@
     "RQ-09",
     "RQ-02"
   ],
-  "capability_status": "Bounded installed Linux R/native C execution evidenced; owner quality corrected; local Julia caller and one-host staged install exercised; total ABI acceptance, JLL, optional dependency/legal gates, other hosts and release remain open",
+  "capability_status": "Installed Linux and macOS R/C and staged macOS Julia verified; ABI v1 source review passed; distribution selection remains open",
   "verification": {
     "status": "partial",
     "commands": [
@@ -49,7 +49,22 @@
     "handoff": "handoff.md",
     "hosted_correction_receipt": "omitted_from_git_due_to_gitleaks_workflow_sha_pattern_see_owner_quality_20261115_json",
     "hosted_correction_run": 43693257570,
-    "total_abi_qualified": false
+    "total_abi_qualified": false,
+    "macos_qualification": {
+      "source_revision": "593013d7dc2f44a91ff4ee63f60feed3436e347c",
+      "abi_source_review": "passed_for_v1_documented_caller_contract",
+      "abi_tests": 5,
+      "c_cases": 24,
+      "concurrent_c_calls": 400,
+      "c_instrumentation": [
+        "ASan",
+        "UBSan"
+      ],
+      "r_version": "4.6.2",
+      "r_cases": 24,
+      "r_interpreters": 2,
+      "release_selection": "pending"
+    }
   },
   "completion_evidence": [
     "The R wrapper calls the core directly and can be completed without the C ABI, Julia or Python bindings.",

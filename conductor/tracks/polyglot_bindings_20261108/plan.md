@@ -18,8 +18,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — C ABI and Julia branch
 
-- [!] B3.1 Specify and implement the versioned ABI, owned-buffer/handle lifecycle, error transport and panic boundary.  
-  **Blocked 2026-11-20:** The versioned ABI, handle lifecycle, error transport and panic boundary are implemented and covered by the C consumer and the Julia caller. Completion still needs a separate unsafe-boundary acceptance. The owner record says the same-author review is not that sign-off, and no core unsafe restriction was relaxed.
+- [x] B3.1 Specify and implement the versioned ABI, owned-buffer/handle lifecycle, error transport and panic boundary.
+  The integration reviewer examined the Rust FFI, registry lifecycle and C header independently of the implementation lane. The source review and instrumented C host checks passed for ABI v1. [Review and host evidence](verification.md#macos-host-and-abi-review)
 - [x] B3.2 Exercise a minimal C consumer with allocation/free, malformed input and version-mismatch cases before binding Julia.
 - [x] B3.3 Implement Julia direct calls, GC preservation and target-native artifact resolution; use BinaryBuilder/JLL packaging when selected for release.  
   **Executed 2026-11-20:** `julia --project=bindings/polyglot/julia -e 'using Pkg; Pkg.test()'` passed 20 tests on Julia 1.13.4 against the release `libdapane_abi.dylib` built from this checkout. Workforce and interval JSON match the same-checkout CLI bytes. The caller preserves the request across the foreign call, copies the result, frees the handle, and rejects a library name for another platform. `GC.gc()` ran after the input buffer was overwritten. BinaryBuilder/JLL packaging is not selected.
@@ -30,7 +30,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [x] B4.1 Record separate R, ABI and Julia compatibility/maturity states, reproduction commands and deprecation/rollback rules.
 - [!] B4.2 Verify each selected release surface independently; do not delay a qualified R capability for unrelated Julia/C ABI work.  
-  **Blocked 2026-11-20:** No release surface is selected. `L1.2` still has publication disabled pending channel and account choices. Local `Rscript` is 4.3.0 at `/usr/local/bin/Rscript`, while `bindings/polyglot/r/DESCRIPTION` requires R >= 4.5.0, so this host cannot repeat the packaged R install. The Julia package has no BinaryBuilder/JLL artifact. The earlier hosted R qualification remains the B2.3 record and is not revoked by this host gap.
+  The installed R 4.6.2 candidate passed 24 parity cases on macOS arm64. The Julia candidate also has installed parity. Registry channels, release accounts and any JLL distribution remain unselected under L1.2.
 
 ## Evidence record
 
@@ -46,7 +46,7 @@ Python formatting. Local exact-source quality checks and ordinary native C
 acceptance passed; the local sanitizer attempt failed under traced execution.
 The correction source then passed all 41 hosted binding commands, including
 installed R and ASan/UBSan C acceptance. Final-head execution remains separately
-source-bound. B3.1 is blocked on separate unsafe-boundary acceptance. B4.2 is blocked on release selection and this host's R 4.3.0.
+source-bound. B3.1 passed the separate integration review. B4.2 is blocked on release selection.
 
 The integrator accepted `bindings/polyglot/`, reconciled the blocked registry and
 added standalone CI. Those shared requests are no longer blockers. Original

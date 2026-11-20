@@ -79,7 +79,7 @@ pub extern "C" fn dapane_abi_version() -> u32 {
 /// # Safety
 /// out_handle must be aligned, initialized, writable, and disjoint from input.
 /// Input must be readable for length bytes when within the core limit, or null
-/// when empty. No concurrent writer may access the input/output during the call.
+/// when empty. Input must remain immutable and the output slot exclusively held until return.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn dapane_v1_evaluate(
     requested_abi: u32,
@@ -140,7 +140,7 @@ pub unsafe extern "C" fn dapane_v1_evaluate(
 /// Read a retained result's byte length without lending Rust memory to the host.
 ///
 /// # Safety
-/// out_length must point to an aligned writable usize, with no concurrent writer.
+/// out_length must point to an aligned writable usize exclusively held during the call.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn dapane_v1_result_length(handle: u64, out_length: *mut usize) -> u32 {
     guard(|| {
@@ -167,7 +167,7 @@ pub unsafe extern "C" fn dapane_v1_result_length(handle: u64, out_length: *mut u
 /// # Safety
 /// out_written must be an aligned writable usize, disjoint from output. If
 /// capacity is sufficient, output must point to capacity writable bytes. Neither
-/// pointer may be concurrently accessed by another writer during this call.
+/// pointer may be accessed concurrently by another thread during this call.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn dapane_v1_result_copy(
     handle: u64,

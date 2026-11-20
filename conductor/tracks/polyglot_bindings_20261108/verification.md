@@ -168,3 +168,13 @@ also inspects fenced text. The latter two were lane-owned documentation defects;
 the handoff now gives a column-by-column row edit without those context-dependent
 links. This correction does not change binding source or waive the remaining
 registry mismatch. Its own exact-head hosted outcome is recorded in the PR.
+
+## macOS host and ABI review
+
+On 20 November 2026 the Dapane integration reviewer examined the Rust ABI and C header at Dapane `593013d7dc2f44a91ff4ee63f60feed3436e347c` (ABI tree `3fcc47cf1e58cd6dc4df859cfeff262886c05370`). The implementation was received from the earlier bindings lane at `9904252`. This is a separate source review of ABI v1 for callers that satisfy the documented pointer and library-lifetime contract.
+
+The review followed all five exported functions. The version query touches no caller memory. Evaluation checks the operation and length bound before borrowing input, keeps the borrow within the call and publishes the integer handle only after successful insertion. Both success and kernel errors use the same owned result lifecycle. Length and copy initialize the return count and hold the registry lock through access. A short buffer receives the required length without a partial copy. Free removes the entry under that lock. Checked, monotonic identifiers and bounded total retained bytes prevent reuse and wraparound. Each path that can panic is guarded, and the build requires unwinding support. Callers must provide valid, disjoint, exclusively writable outputs. The header and Rust safety comments now state this for concurrent callers.
+
+Warnings-denied Clippy and all five ABI tests passed. The macOS arm64 C consumer, compiled with AddressSanitizer and UBSan, passed 24 parity cases, lifecycle checks and 400 concurrent native calls. Sanitizers instrumented the C caller. The release dynamic library SHA-256 was `230792ee8c18098252cf60550b686385e124b9343d393c492b5bdb9d46d4bd40`.
+
+The separately installed Homebrew R 4.6.2 met the package requirement. The staged locked source built and installed into an empty R library. The 24 shared cases, host rejection, garbage collection and two separate R interpreters passed. Source package SHA-256 was `a83579d18244cab088f25b2b6a2c21528c44040a3f8830d60348c1d372398299`. The system-default R 4.3.0 remains outside the package's supported range.

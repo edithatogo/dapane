@@ -24,6 +24,5 @@ is not claimed. A local Julia caller exercises the C ABI, and a staged install o
 
 Requirements: RQ-09, RQ-02.
 
-Capability status: bounded Linux R/C execution evidence; unsafe-boundary acceptance,
-optional dependency/legal/release gates, other hosts and Julia remain open.
+The [macOS qualification](verification.md#macos-host-and-abi-review) covers R 4.6.2, instrumented C and ABI v1 source review. The Julia staged package and existing Linux checks retain their own scope. Selection of public release surfaces remains open.
 Publication is disabled. Shared changes remain with the sole integrator.
