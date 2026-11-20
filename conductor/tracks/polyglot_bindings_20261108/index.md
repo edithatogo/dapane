@@ -9,7 +9,7 @@ The integrator has executed installed R and native C acceptance and accepted thi
 namespace, registry state and standalone CI. The bounded owner quality correction
 preserves strict lint gates and Python behavior. Its exact source, actual checks
 and remaining requirements are recorded below; total ABI or release qualification
-is not claimed. Julia remains outside this repair.
+is not claimed. A local Julia caller now exercises the C ABI on this host. Installed-package, JLL and release qualification remain open.
 
 - [Specification](spec.md)
 - [Implementation plan](plan.md)
