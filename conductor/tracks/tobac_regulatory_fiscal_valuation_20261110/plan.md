@@ -20,13 +20,15 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   The synthetic 0.2 profile reproduced the exact schedule amounts and retained the packet key and row perspectives. Schedule values are reported separately from the incremental ledger.
 - [x] T2.2 Implement subgroup equity-weight and distributional cost-effectiveness aggregation rules with exact unweighted-sum conservation checks when weights are unity.
   The synthetic equity profile conserved cost, QALYs and NMB at unit weights. Tests also checked non-unit weights, exact precision and rejection of repeated subgroups or incompatible valuation contexts.
-- [ ] T2.3 Verify parity against `tobac`'s standalone reference oracle on synthetic NZ/AU policy fixtures.
-  Tobac main at `891f79e07292b7754f78d7193130623bd5f9e243` has related functions in `src/tobac/health.py`. Mapping that interface to the fiscal packets and running the parity fixtures remain open.
+- [!] T2.3 Verify parity against `tobac`'s standalone reference oracle on synthetic NZ/AU policy fixtures.
+  **Blocked 2026-11-20:** Tobac main `891f79e07292b7754f78d7193130623bd5f9e243` still has no `src/tobac/economics.py` or `src/tobac/decision.py`. Related functions are in `src/tobac/health.py`. Next action: map that interface, then run the synthetic fixtures. This inspection is not parity.
 
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 
-- [ ] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.
-- [ ] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.
+- [~] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.  
+  **In progress 2026-11-20:** `export_perspective_table` emits `dapane-fiscal-perspective-table/0.1` rows with the six-part key and the selected cost, QALY and NMB fields. Tobac and Voiage have not imported the table.
+- [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.
+  The record describes the three perspective rules, the domestic transfer boundary and the intended fallback when the optional adapter is unavailable. [Fallback](FALLBACK.md)
 - [ ] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.
 
 ## Bounded owner quality pass — 15 November 2026
@@ -46,6 +48,7 @@ limitations and failed formatting outcomes remain historical evidence; they are
 not relabelled as current passes.
 
 The track remains `in_progress`. The 20 November checkpoint verification covers
-T1 and the bounded synthetic T2.1–T2.2 implementation. T2.3 parity, T3 consumer
-handoff and production method qualification remain open.
+T1 and the bounded synthetic T2.1–T2.2 implementation. T2.3 stays blocked on
+the missing Tobac oracle paths. T3.2 is recorded in [FALLBACK.md](FALLBACK.md).
+T3.1, T3.3 and production method qualification remain open.
 [Verification](VERIFICATION.md) · [Metadata](metadata.json) · [Handoff](HANDOFF.md)

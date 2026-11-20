@@ -1055,3 +1055,163 @@ pub fn evaluate_equity_json(input: &str) -> Result<String, DapaneError> {
     common::encoded_size(&report, common::OUTPUT_BYTES)?;
     common::canonical(&report)
 }
+
+/// Tabular handoff of one fiscal report or one equity report.
+///
+/// Every row keeps the six-part joint key. This does not call Tobac or Voiage.
+pub const PERSPECTIVE_TABLE_SCHEMA: &str = "dapane-fiscal-perspective-table/0.1";
+const KEY_FIELDS: [&str; 6] = [
+    "scenario_id",
+    "strategy_id",
+    "draw_id",
+    "replication_id",
+    "perspective",
+    "subgroup_id",
+];
+
+fn key_text(value: &Value, name: &str, path: &str) -> Result<String, DapaneError> {
+    value
+        .get(name)
+        .and_then(Value::as_str)
+        .filter(|text| !text.is_empty())
+        .map(str::to_owned)
+        .ok_or_else(|| {
+            error(
+                "invalid_identifier",
+                "A perspective-table row requires the full joint key",
+                path,
+            )
+        })
+}
+
+fn put_key(
+    row: &mut serde_json::Map<String, Value>,
+    name: &str,
+    value: &Value,
+    path: &str,
+) -> Result<(), DapaneError> {
+    let text = key_text(value, name, path)?;
+    if let Some(existing) = row.get(name) {
+        if existing.as_str() != Some(text.as_str()) {
+            return Err(error(
+                "subgroup_axis",
+                "Subgroup row disagrees with the shared equity axis",
+                path,
+            ));
+        }
+    } else {
+        row.insert(name.to_owned(), Value::String(text));
+    }
+    Ok(())
+}
+
+fn copy_measures(
+    row: &mut serde_json::Map<String, Value>,
+    source: &Value,
+    path: &str,
+) -> Result<(), DapaneError> {
+    for name in [
+        "selected_resource_cost",
+        "discounted_qalys",
+        "net_monetary_benefit",
+    ] {
+        let field = format!("{path}/{name}");
+        let value = source
+            .get(name)
+            .ok_or_else(|| error("invalid_report", "Missing report measure", &field))?;
+        if name == "selected_resource_cost" || !value.is_null() {
+            let amount: Rational = serde_json::from_value(value.clone()).map_err(|_| {
+                error(
+                    "invalid_report",
+                    "Expected an exact rational measure",
+                    &field,
+                )
+            })?;
+            common::exact_result(&amount, &field)?;
+        }
+        row.insert(name.to_owned(), value.clone());
+    }
+    Ok(())
+}
+
+fn finish_row(row: serde_json::Map<String, Value>, path: &str) -> Result<Value, DapaneError> {
+    for name in KEY_FIELDS {
+        key_text(&Value::Object(row.clone()), name, path)?;
+    }
+    Ok(Value::Object(row))
+}
+
+/// Export valued rows without dropping scenario, strategy, draw, replication, perspective or subgroup.
+pub fn export_perspective_table(report: &str) -> Result<String, DapaneError> {
+    let value: Value = common::parse_bounded(report, common::OUTPUT_BYTES)?;
+    let schema = value
+        .get("schema_version")
+        .and_then(Value::as_str)
+        .unwrap_or("");
+    let rows = if schema == SCHEMA_VERSION || schema == SCHEDULE_SCHEMA_VERSION {
+        let mut row = serde_json::Map::new();
+        let key = value.get("key").ok_or_else(|| {
+            error(
+                "invalid_identifier",
+                "Fiscal report is missing its pair key",
+                "/key",
+            )
+        })?;
+        for name in KEY_FIELDS {
+            put_key(&mut row, name, key, "/key")?;
+        }
+        copy_measures(&mut row, &value, "")?;
+        vec![finish_row(row, "/rows/0")?]
+    } else if schema == EQUITY_SCHEMA_VERSION {
+        let axis = value.get("axis").ok_or_else(|| {
+            error(
+                "invalid_identifier",
+                "Equity report is missing its shared axis",
+                "/axis",
+            )
+        })?;
+        let subgroups = value
+            .get("subgroups")
+            .and_then(Value::as_array)
+            .ok_or_else(|| {
+                error(
+                    "invalid_request",
+                    "Equity report is missing subgroup rows",
+                    "/subgroups",
+                )
+            })?;
+        let mut rows = Vec::with_capacity(subgroups.len());
+        for (index, subgroup) in subgroups.iter().enumerate() {
+            let path = format!("/subgroups/{index}");
+            let mut row = serde_json::Map::new();
+            for name in KEY_FIELDS {
+                if axis.get(name).is_some() {
+                    put_key(&mut row, name, axis, "/axis")?;
+                }
+                if subgroup.get(name).is_some() {
+                    put_key(&mut row, name, subgroup, &path)?;
+                }
+            }
+            copy_measures(&mut row, subgroup, &path)?;
+            rows.push(finish_row(row, &path)?);
+        }
+        rows
+    } else {
+        return Err(error(
+            "unsupported_schema",
+            "Perspective tables accept a fiscal report or an equity report",
+            "/schema_version",
+        ));
+    };
+    let mut table = serde_json::json!({
+        "schema_version": PERSPECTIVE_TABLE_SCHEMA,
+        "source_schema_version": schema,
+        "rows": rows,
+    });
+    table["output_digest"] = Value::String(common::digest(
+        "dapane:fiscal-perspective-table:0.1\n",
+        &table,
+    )?);
+    common::encoded_size(&table, common::OUTPUT_BYTES)?;
+    common::canonical(&table)
+}

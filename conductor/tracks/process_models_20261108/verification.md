@@ -1,5 +1,18 @@
 # X1 verification and recovery record
 
+## Typed contract rerun on 20 November 2026
+
+The observed-event adapter at Dapane main `9163368` passed all 37 Rust
+contract tests on macOS arm64 with Rust and Cargo 1.99.1. Formatting and Clippy
+with warnings denied also passed. Twelve fixture audits passed on Python 3.15.2.
+These cover the typed-contract and fixture-audit portions of X1.3. Native X1.3
+verification remains pending the XES and OCEL decoder qualification in X1.2.
+
+```sh
+cargo test --locked --offline --manifest-path adapters/observed_events/Cargo.toml --all-targets
+python -m unittest discover -s adapters/observed_events/tests -p 'test_fixtures.py' -v
+```
+
 ## Current source verification
 
 The coordinator replayed the recovered source at
