@@ -11,10 +11,13 @@ using Libdl
 export ABI_VERSION, CORE_ERROR, DapaneError, OK, evaluate_bytes, evaluate_json, resolve_library
 
 const _loaded = Dict{String, Ptr{Cvoid}}()
+const _load_lock = ReentrantLock()
 
 function _symbol(library::AbstractString, name::Symbol)
-    handle = get!(_loaded, library) do
-        dlopen(library)
+    handle = lock(_load_lock) do
+        get!(_loaded, library) do
+            dlopen(library)
+        end
     end
     dlsym(handle, name)
 end
@@ -86,7 +89,8 @@ function _copy_result(library::AbstractString, handle::UInt64)
         Csize_t(length(buffer)),
         written,
     )
-    status == OK && written[] == length(buffer) || return status, UInt8[]
+    status == OK || return status, UInt8[]
+    written[] == length(buffer) || error("Dapane returned an incomplete result buffer")
     OK, buffer
 end
 
@@ -109,15 +113,17 @@ function evaluate_bytes(
     library = resolve_library(library)
     opcode = _operation(operation)
     handle = Ref{UInt64}(0)
-    request_ptr = isempty(request) ? Ptr{UInt8}(C_NULL) : pointer(request)
-    status = GC.@preserve request ccall(
+    # The C function consumes contiguous bytes, including when the caller supplies a view.
+    input = request isa Vector{UInt8} ? request : collect(request)
+    request_ptr = isempty(input) ? Ptr{UInt8}(C_NULL) : pointer(input)
+    status = GC.@preserve input ccall(
         _symbol(library, :dapane_v1_evaluate),
         UInt32,
         (UInt32, UInt32, Ptr{UInt8}, Csize_t, Ptr{UInt64}),
         requested_abi,
         opcode,
         request_ptr,
-        Csize_t(length(request)),
+        Csize_t(length(input)),
         handle,
     )
     if status != OK && status != CORE_ERROR
