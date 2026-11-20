@@ -27,6 +27,7 @@ into a second authoritative location.
 | [Optional Power Platform delivery](../tracks/power_platform_20261108/index.md) | Synthetic manual file exchange and versioned SharePoint library and list contract. The live pilot is deferred. | 2026-11-20 | [Review and installed-artifact verification](../tracks/power_platform_20261108/review.md) |
 | [Observed events, Petri nets and BPMN adapters](../tracks/process_models_20261108/index.md) | Bounded raw XES and OCEL, PNML and BPMN, and qualified Kairos staged occupancy | 2026-11-20 | [Native and provider review](../tracks/process_models_20261108/native-and-kairos-review.md) |
 | [Frontier research and comparative benchmarks](../tracks/frontier_benchmarks_20261108/index.md) | Synthetic comparisons and independent public CMS aggregate funding replay and transfer benchmark | 2026-11-20 | [External benchmark review](../tracks/frontier_benchmarks_20261108/external-review.md) |
+| [R and Julia bindings](../tracks/polyglot_bindings_20261108/index.md) | Independently installed local R source and macOS arm64 Julia packages with qualified native calls | 2026-11-20 | [Distribution review](../tracks/polyglot_bindings_20261108/distribution-review.md) |
 
 The core-contract archive closes synthetic contract/reference acceptance.
 Kernel qualification retains its separately recorded scope and evidence.

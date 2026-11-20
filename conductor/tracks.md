@@ -20,7 +20,7 @@ A completed planning task does not change a runtime capability from planned to q
 | [x] | [Reporting profiles and evidence exports](./tracks/reporting_profiles_20261108/index.md) | completed | RQ-07, RQ-01 |
 | [x] | [Newborn screening pathway composition](./tracks/newborn_screening_20261108/index.md) | completed | RQ-06, RQ-03, RQ-07 |
 | [-] | [Optional Power Platform delivery](./tracks/power_platform_20261108/index.md) | archived | RQ-08, RQ-03 |
-| [!] | [R and Julia bindings](./tracks/polyglot_bindings_20261108/index.md) | blocked | RQ-09, RQ-02 |
+| [-] | [R and Julia bindings](./tracks/polyglot_bindings_20261108/index.md) | archived | RQ-09, RQ-02 |
 | [-] | [Observed events, Petri nets and BPMN adapters](./tracks/process_models_20261108/index.md) | archived | RQ-10, RQ-01, RQ-03 |
 | [x] | [Uncertainty and decision-library integration](./tracks/decision_integrations_20261108/index.md) | completed | RQ-11, RQ-02, RQ-03 |
 | [!] | [Release assurance and conditional consolidation](./tracks/release_consolidation_20261108/index.md) | blocked | RQ-12, RQ-04 |
@@ -30,13 +30,12 @@ A completed planning task does not change a runtime capability from planned to q
 
 ## Next executable work
 
-Thirteen of the fifteen tracks have met their recorded scope. Seven are archived and six are completed. Two are blocked. The [ownership map](parallel-ownership.md) records the integrator and lane assignments.
+Fourteen of the fifteen tracks have met their recorded scope. Eight are archived and six are completed. Release assurance is blocked. The [ownership map](parallel-ownership.md) records the integrator and lane assignments.
 
 The [installed core and two-provider qualification](../docs/python-provider-verification.md), [fiscal handoff](tracks/tobac_regulatory_fiscal_valuation_20261110/plan.md), [decision-provider runs](tracks/decision_integrations_20261108/plan.md) and [canonicalization qualification](tracks/serde_canonicalization_qualification_20261118/plan.md) record the delivered numerical and integration scopes. The latest fiscal comparisons cover New Zealand and Australian synthetic policy cases. The decision runs include an installed adoption model.
 
 | Open track | Implemented | What remains |
 | --- | --- | --- |
-| [R and Julia](tracks/polyglot_bindings_20261108/plan.md) | Installed R and Julia candidates, C ABI review and instrumented native parity | Select and qualify the intended distribution surfaces. |
 | [Release assurance](tracks/release_consolidation_20261108/plan.md) | Repeatable candidate builds, installed consumers, provenance and dependency checks | Confirm publication channel and account, and obtain a completed central offline-security run for the candidate source. |
 
 The [first release handoff](../docs/release-handoff-2026-11-15.md) and [trusted-main qualification](../docs/release-qualification-2026-11-19.md) retain the source and artifact identities for earlier candidates.
