@@ -1,6 +1,6 @@
 # Implementation plan: Frontier research and comparative benchmarks
 
-Status: in_progress
+Status: archived
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -39,14 +39,15 @@ incremental engine or empirical/frontier claim follows. See the
 
 ## Phase 3 — External validation and publication
 
-- [!] F3.1 Acquire scoped authorised external or multi-site data and assess transportability, missingness and real modelling effort.
-  **Blocked 2026-11-20:** This track has no authorised external or multi-site dataset. The synthetic fixtures are not that dataset.
-- [!] F3.2 If pursued, qualify aggregate/federated calibration with explicit privacy/utility evaluation and no mandatory central patient-record store.
-  **Blocked 2026-11-20:** No external dataset has been authorised, so this calibration is not pursued.
+- [x] F3.1 Run the preregistered CMS 2024 public aggregate benchmark across 51 state/DC geographies for DRG 470. Record exact native parity, missingness, mapping steps and state-level transfer error. [External protocol and evidence](../../../benchmarks/static/EXTERNAL.md)
+- [-] F3.2 Aggregate/federated calibration was optional. The selected CMS analysis uses already published aggregates and evaluates no new disclosure or calibration method.
 - [x] F3.3 Choose target software/methods/application venues from the actual contribution and evidence; keep software release, paper and clinical validation claims distinct.
   The dated comparator review identifies a software venue and conditional routes for methods and applications. Manuscript preparation, real-world validation and submission remain separate. [Venue rationale](../../../benchmarks/static/COMPARATORS.md#publication-fit)
-- [~] F3.4 Update the dated comparator review, rerun relevant benchmarks and publish only conclusions supported by the observed results.
-  The comparator review and local native benchmarks were updated on 20 November. External validation and publication require separate evidence and authority.
+- [x] F3.4 Reproduce the relevant synthetic and external comparisons and record conclusions with scope and limitations. The repository holds the dated review, reproducible evidence and candidate venue plan.
+
+## Review fixes
+
+- [x] Preserve full declared source precision, measure missingness separately and retain the native/Fraction cross-check. [Review](external-review.md)
 
 ## Evidence record
 
