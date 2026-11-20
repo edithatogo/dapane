@@ -82,7 +82,9 @@ def _sha(value: Any, path: str) -> str:
     return value
 
 
-def _fraction(value: Any, path: str, *, nonnegative: bool = False) -> Fraction:
+def _fraction(
+    value: Any, path: str, *, nonnegative: bool = False, max_digits: int = 96
+) -> Fraction:
     wire = _object(value, path, {"numerator", "denominator"})
     num, den = wire["numerator"], wire["denominator"]
     if (
@@ -91,8 +93,8 @@ def _fraction(value: Any, path: str, *, nonnegative: bool = False) -> Fraction:
         or _INT.fullmatch(num) is None
         or _INT.fullmatch(den) is None
         or den.startswith("-")
-        or len(num.lstrip("-")) > 96
-        or len(den) > 96
+        or len(num.lstrip("-")) > max_digits
+        or len(den) > max_digits
     ):
         _bad("invalid_exact_number", path, "Canonical bounded integer strings required")
     if int(den) == 0:
