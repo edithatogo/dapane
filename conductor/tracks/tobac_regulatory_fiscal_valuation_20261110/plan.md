@@ -29,7 +29,9 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   **In progress 2026-11-20:** `export_perspective_table` emits `dapane-fiscal-perspective-table/0.1` rows with the six-part key and the selected cost, QALY and NMB fields. Tobac and Voiage have not imported the table.
 - [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.
   The record describes the three perspective rules, the domestic transfer boundary and the intended fallback when the optional adapter is unavailable. [Fallback](FALLBACK.md)
-- [ ] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.
+- [~] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.
+
+The integration environment has Voiage 3.1.0 and Tobac 0.2.0 installed. The provider calls and exact revision checks are pending.
 
 ## Bounded owner quality pass — 15 November 2026
 
