@@ -29,13 +29,16 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Provider integration
 
-- [ ] X3.1 Consume Kairos resource-execution events after its provider contract is qualified; keep healthcare recipes in their domain owner.
-- [ ] X3.2 Attach recipes to executed activities and apply quotations in a separate step; retain model and execution version identities.
-- [ ] X3.3 Verify that price-only revaluation changes monetary results without rerunning execution; document rollback to observed/static recipes.
+- [!] X3.1 Consume Kairos resource-execution events after its provider contract is qualified; keep healthcare recipes in their domain owner.  
+  **Blocked 2026-11-20:** Kairos `a1f6283575ad26918230adc122a99b5c08fc4da3` track `114-dependency-and-consumer-contracts` still says every implementation item is pending, including the public resource-usage contract `114.1.7`.
+- [!] X3.2 Attach recipes to executed activities and apply quotations in a separate step; retain model and execution version identities.  
+  **Blocked 2026-11-20:** This step needs the resource-execution events from X3.1. That Kairos contract is not qualified.
+- [!] X3.3 Verify that price-only revaluation changes monetary results without rerunning execution; document rollback to observed/static recipes.  
+  **Blocked 2026-11-20:** Price-only revaluation cannot be checked until an executed Kairos activity identity exists.
 
 ## Evidence record
 
-The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. That historical checkpoint left X1.1 partial. The 15 November contract specifies explicit timestamps, basis, correction rejection and censoring. X1.2 remains blocked. X1.3's typed duplicate, reorder, incomplete and censored cases passed again on 2026-11-20. On 19 November 2026, [`dapane-process-models`](../../../adapters/process_models/README.md) delivered the bounded X2 PNML (`pnml-bounded-v1`) and BPMN 2.0 (`bpmn-core-acyclic-v1` and `bpmn-extended-rework-subprocess-v1`) adapters with `X2.1`–`X2.4` verified across 31 Rust tests and independent CLI/wheel oracle fixtures; see the [X2 verification record](x2-verification.md) and [X2 machine receipt](x2-verification.json). X3.1–X3.3 remain pending upstream Kairos Track 114 qualification (`edithatogo/kairos` `a1f6283575ad26918230adc122a99b5c08fc4da3`).
+The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. That historical checkpoint left X1.1 partial. The 15 November contract specifies explicit timestamps, basis, correction rejection and censoring. X1.2 remains blocked. X1.3's typed duplicate, reorder, incomplete and censored cases passed again on 2026-11-20. On 19 November 2026, [`dapane-process-models`](../../../adapters/process_models/README.md) delivered the bounded X2 PNML (`pnml-bounded-v1`) and BPMN 2.0 (`bpmn-core-acyclic-v1` and `bpmn-extended-rework-subprocess-v1`) adapters with `X2.1`–`X2.4` verified across 31 Rust tests and independent CLI/wheel oracle fixtures; see the [X2 verification record](x2-verification.md) and [X2 machine receipt](x2-verification.json). X3.1–X3.3 are blocked on Kairos track 114 at `a1f6283575ad26918230adc122a99b5c08fc4da3`, whose plan still marks every implementation item pending.
 
 Historical core-context scope and commands remain in [runtime verification](../../../docs/runtime-verification.md). The [verification record](verification.md) retains the recovery history; the [owner follow-up](owner-quality-20261115.md) records the later exact-source execution. This track remains in progress.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.

@@ -29,7 +29,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   **In progress 2026-11-20:** `export_perspective_table` emits `dapane-fiscal-perspective-table/0.1` rows with the six-part key and the selected cost, QALY and NMB fields. Tobac and Voiage have not imported the table.
 - [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.  
   **Executed 2026-11-20:** [FALLBACK.md](FALLBACK.md) records the three perspective boundaries, the refusal to treat excise or GST as deadweight loss, and the requirement that a missing adapter leave `tobac` and `voiage` on their own code.
-- [ ] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.
+- [!] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.  
+  **Blocked 2026-11-20:** Tobac is not installed. Voiage 3.1.0 is present at `/opt/homebrew/lib/python3.15/site-packages`, but `import voiage` fails because `polars` is missing and `pyarrow` is missing as well. Its `value_of_perspective` expects a float array shaped `(samples, strategies, perspectives)`, not the six-key fiscal table. No consumer revision was executed, and this does not check the previously mismatched wheel checksum.
 
 ## Bounded owner quality pass — 15 November 2026
 
