@@ -76,6 +76,5 @@ to the sole integrator.
 Read-only inspection at Tobac `891f79e07292b7754f78d7193130623bd5f9e243`
 found that the planned `src/tobac/economics.py` and `src/tobac/decision.py`
 paths above are absent. Related functions are in `src/tobac/health.py`;
-`src/tobac/interchange.py` handles evidence packets. This is a deferred
-T2/T3 reconciliation requirement, not evidence of oracle/consumer parity.
+`src/tobac/interchange.py` handles evidence packets. The installed policy comparison uses the published health functions for its independent reference. [Qualification](VERIFICATION.md#installed-policy-parity)
 No upstream source-adjudication work or source admission is duplicated.
