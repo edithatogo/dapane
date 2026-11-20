@@ -1105,17 +1105,33 @@ fn put_key(
     Ok(())
 }
 
-fn copy_measures(row: &mut serde_json::Map<String, Value>, source: &Value) {
+fn copy_measures(
+    row: &mut serde_json::Map<String, Value>,
+    source: &Value,
+    path: &str,
+) -> Result<(), DapaneError> {
     for name in [
         "selected_resource_cost",
         "discounted_qalys",
         "net_monetary_benefit",
     ] {
-        row.insert(
-            name.to_owned(),
-            source.get(name).cloned().unwrap_or(Value::Null),
-        );
+        let field = format!("{path}/{name}");
+        let value = source
+            .get(name)
+            .ok_or_else(|| error("invalid_report", "Missing report measure", &field))?;
+        if name == "selected_resource_cost" || !value.is_null() {
+            let amount: Rational = serde_json::from_value(value.clone()).map_err(|_| {
+                error(
+                    "invalid_report",
+                    "Expected an exact rational measure",
+                    &field,
+                )
+            })?;
+            common::exact_result(&amount, &field)?;
+        }
+        row.insert(name.to_owned(), value.clone());
     }
+    Ok(())
 }
 
 fn finish_row(row: serde_json::Map<String, Value>, path: &str) -> Result<Value, DapaneError> {
@@ -1127,7 +1143,7 @@ fn finish_row(row: serde_json::Map<String, Value>, path: &str) -> Result<Value, 
 
 /// Export valued rows without dropping scenario, strategy, draw, replication, perspective or subgroup.
 pub fn export_perspective_table(report: &str) -> Result<String, DapaneError> {
-    let value: Value = common::parse(report)?;
+    let value: Value = common::parse_bounded(report, common::OUTPUT_BYTES)?;
     let schema = value
         .get("schema_version")
         .and_then(Value::as_str)
@@ -1144,7 +1160,7 @@ pub fn export_perspective_table(report: &str) -> Result<String, DapaneError> {
         for name in KEY_FIELDS {
             put_key(&mut row, name, key, "/key")?;
         }
-        copy_measures(&mut row, &value);
+        copy_measures(&mut row, &value, "")?;
         vec![finish_row(row, "/rows/0")?]
     } else if schema == EQUITY_SCHEMA_VERSION {
         let axis = value.get("axis").ok_or_else(|| {
@@ -1176,7 +1192,7 @@ pub fn export_perspective_table(report: &str) -> Result<String, DapaneError> {
                     put_key(&mut row, name, subgroup, &path)?;
                 }
             }
-            copy_measures(&mut row, subgroup);
+            copy_measures(&mut row, subgroup, &path)?;
             rows.push(finish_row(row, &path)?);
         }
         rows

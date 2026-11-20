@@ -79,8 +79,15 @@ impl<'de> Deserialize<'de> for UniqueJson {
 }
 
 pub(crate) fn parse<T: DeserializeOwned>(input: &str) -> Result<T, DapaneError> {
-    if input.len() > INPUT_BYTES {
-        return Err(error("input_limit", "Input exceeds 4 MiB", "/"));
+    parse_bounded(input, INPUT_BYTES)
+}
+
+pub(crate) fn parse_bounded<T: DeserializeOwned>(
+    input: &str,
+    limit: usize,
+) -> Result<T, DapaneError> {
+    if input.len() > limit {
+        return Err(error("input_limit", "JSON exceeds the byte limit", "/"));
     }
     let raw: UniqueJson =
         serde_json::from_str(input).map_err(|e| error("invalid_json", &e.to_string(), "/"))?;
@@ -213,7 +220,25 @@ impl Identity {
 }
 
 pub(crate) fn exact(v: &Rational, path: &str) -> Result<BigRational, DapaneError> {
-    fn integer(s: &str, signed: bool, path: &str) -> Result<BigInt, DapaneError> {
+    exact_with_digits(v, path, 96)
+}
+
+// Computed results can use the full 4096-bit intermediate width (1234 decimal digits).
+pub(crate) fn exact_result(v: &Rational, path: &str) -> Result<BigRational, DapaneError> {
+    exact_with_digits(v, path, 1234)
+}
+
+fn exact_with_digits(
+    v: &Rational,
+    path: &str,
+    max_digits: usize,
+) -> Result<BigRational, DapaneError> {
+    fn integer(
+        s: &str,
+        signed: bool,
+        path: &str,
+        max_digits: usize,
+    ) -> Result<BigInt, DapaneError> {
         let digits = if signed {
             s.strip_prefix('-').unwrap_or(s)
         } else {
@@ -230,18 +255,18 @@ pub(crate) fn exact(v: &Rational, path: &str) -> Result<BigRational, DapaneError
                 path,
             ));
         }
-        if digits.len() > 96 {
+        if digits.len() > max_digits {
             return Err(error(
                 "precision_limit",
-                "Exact input exceeds 96 digits",
+                "Exact number exceeds its digit limit",
                 path,
             ));
         }
         BigInt::parse_bytes(s.as_bytes(), 10)
             .ok_or_else(|| error("invalid_number", "Invalid integer", path))
     }
-    let numerator = integer(&v.numerator, true, path)?;
-    let denominator = integer(&v.denominator, false, path)?;
+    let numerator = integer(&v.numerator, true, path, max_digits)?;
+    let denominator = integer(&v.denominator, false, path, max_digits)?;
     if denominator <= BigInt::from(0) {
         return Err(error(
             "zero_denominator",

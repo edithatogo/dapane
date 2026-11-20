@@ -897,6 +897,47 @@ fn equity_sums_retain_the_fiscal_precision_bound() {
 }
 
 #[test]
+fn perspective_table_requires_valued_measures() {
+    assert_eq!(
+        export_perspective_table(&fixture().to_string())
+            .unwrap_err()
+            .code,
+        "invalid_report"
+    );
+    let fiscal = result(&fixture());
+    for field in [
+        "selected_resource_cost",
+        "discounted_qalys",
+        "net_monetary_benefit",
+    ] {
+        let mut incomplete = fiscal.clone();
+        incomplete.as_object_mut().unwrap().remove(field);
+        assert_eq!(
+            export_perspective_table(&incomplete.to_string())
+                .unwrap_err()
+                .code,
+            "invalid_report"
+        );
+    }
+    let mut malformed = fiscal;
+    malformed["selected_resource_cost"] = Value::Null;
+    assert_eq!(
+        export_perspective_table(&malformed.to_string())
+            .unwrap_err()
+            .code,
+        "invalid_report"
+    );
+    let mut equity = equity_report(&[("1", fixture())]);
+    equity["subgroups"][0]["selected_resource_cost"] = r("1", "0");
+    assert_eq!(
+        export_perspective_table(&equity.to_string())
+            .unwrap_err()
+            .code,
+        "zero_denominator"
+    );
+}
+
+#[test]
 fn perspective_table_keeps_the_joint_draw_key() {
     let fiscal = evaluate_fiscal_json(&fixture().to_string()).unwrap();
     let table: Value = serde_json::from_str(&export_perspective_table(&fiscal).unwrap()).unwrap();
