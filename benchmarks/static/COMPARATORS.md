@@ -29,3 +29,15 @@ The Python documentation was retrieved on this date; versioned documentation URL
 are not immutable package pins. Actual interpreter/source digests belong in each
 executed result bundle. No third-party comparator installation, spreadsheet
 analyst experiment, provider performance comparison or external-data study was run.
+
+## Native comparisons on 20 November 2026
+
+The new comparison charges each declared pool once in the object-centric case and copies its total consumption to each joined recipient in the flattened case. Five synthetic newborn requests and one executed PNML trace were evaluated in both forms by the same Rust CLI. Flattening the two-recipient primary pathway raised AUD 150 to 250. Repeat assay work added AUD 20 in both forms. Above capacity, three recipients sharing two instrument blocks cost AUD 230 with a residual of 50. Charging each recipient the full blocks gave AUD 630 and concealed that residual. This experiment demonstrates the consequences of the specified duplicating join. A correctly allocated case-centric representation could preserve the same totals.
+
+A paired measurement experiment ran the installed Voiage EVPI method for two explicitly per-assay synthetic payoff matrices. Staff time had an EVPI of AUD 10 per assay and the comparison AUD 1. An independent adoption scenario ran Innovate's Bass predictor before and after an assumed response to a fiscal valuation. It exceeded capacity in two initial months and zero revised months. The original benchmarks' zero detections for false source assertions remain in the record. [Full results and archive digest](evidence/native-experiments.json)
+
+## Publication fit
+
+The software target is the *Journal of Open Source Software*. The reproducible software contribution fits its scope. A submission would also need evidence of actual research use and substantial, sustained development. These computational comparisons establish behavior on declared inputs. [JOSS submission criteria](https://joss.readthedocs.io/en/latest/submitting.html)
+
+A separate methods article would target *Medical Decision Making* if a study compares the proposed approach against a strong, correctly allocated alternative and establishes a decision-relevant methodological result. For an applied study using an authorised programme dataset and an actual policy decision, the target is *MDM Policy & Practice*. The current experiments support a software benchmark report. Neither submission nor clinical effectiveness has been established. [Medical Decision Making scope](https://smdm.org/medical-decision-making-journal/) · [MDM Policy & Practice scope](https://smdm.org/about-mdm-policy-practice/)

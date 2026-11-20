@@ -20,13 +20,12 @@ comparison or frontier literature review.
 
 - [x] F2.1 Construct controlled mutations of sourced or synthetic costing cases: missing components, duplicate batches, wrong denominator/unit/date and unsupported assumptions.
 - [x] F2.2 Implement and compare incremental revaluation with full recomputation on identical inputs and policies.
-- [~] F2.3 Compare object-centric and flattened pathway representations using shared-batch, repeat and capacity cases after the relevant newborn screening and process capabilities are qualified.
-  A bounded comparison uses the synthetic static point fixture. One shared batch costing 5.05 gives a total of 38.05, and copying the batch onto both recipients gives 43.10. With an extra 30.00 of repeat labour, the totals are 68.05 and 73.10. In a separate arithmetic illustration, one instrument half-hour at 90 per hour costs 45, and counting it twice costs 90. The point oracle rejects populated `capacity_allocations`. The full newborn and process-adapter experiment, including native capacity evaluation, remains open. [Pathway tests](../../../benchmarks/static/tests/test_pathway.py)
-  All three pathway cases passed locally on Python 3.15.2 on 20 November 2026 with `python -m unittest benchmarks.static.tests.test_pathway`.
-- [~] F2.4 After the required decision_integrations capabilities are qualified, run measurement-priority and adoption/capacity experiments; retain this experiment as pending without blocking independent static benchmarks.
-  The synthetic preparation experiment reproduces EVPI of 1 and 10 on its two example matrices. Only the first adoption period exceeds capacity, with three hours carried into the second. Provider execution and feedback remain open.
+- [x] F2.3 Compare object-centric and flattened pathway representations using shared-batch, repeat and capacity cases after the relevant newborn screening and process capabilities are qualified.
+  Five newborn cases and one executed PNML case compare full native reports against pre-specified totals and residuals. A full-per-recipient join doubled the batch from AUD 80 to 160 in the PNML trace. Unknown capacity left AUD 100 unattributed in the object-centric case. [Native results](../../../benchmarks/static/evidence/native-experiments.json)
+- [x] F2.4 After the required decision_integrations capabilities are qualified, run measurement-priority and adoption/capacity experiments; retain this experiment as pending without blocking independent static benchmarks.
+  Installed Voiage ranked staff time above the synthetic comparison at AUD 10 versus 1 per assay. Installed Innovate exceeded monthly capacity in both baseline months and neither revised month. [Inputs and results](../../../benchmarks/static/evidence/native-experiments.json)
 - [x] F2.5 Verify independent expected outcomes and retain all negative/null results, environment details and complete result bundles.   
-  **Executed 2026-11-19:** Static slice independent expected outcomes verified: 23 tests pass, 24 mutation expectations, 24 comparisons across 8/32 independent requests, bundle verification of 144 pairs, source-truth detection 0/5 (documented limitation — evaluator lacks source truth). Negative/null results, environment details and complete result bundles retained in benchmarks/static/evidence/local-observations.json. Broader experiment set (F2.3–F2.4 dependent) remains open pending external provider qualification.
+  **Executed 2026-11-19:** Static slice independent expected outcomes verified: 23 tests pass, 24 mutation expectations, 24 comparisons across 8/32 independent requests, bundle verification of 144 pairs, source-truth detection 0/5 (documented limitation — evaluator lacks source truth). Negative/null results, environment details and complete result bundles retained in benchmarks/static/evidence/local-observations.json. The native results below extend this evidence to F2.3 and F2.4.
 
 F2.1/F2.2 are complete for the authorised synthetic static slice at
 `7137bb5e87b7e79e8c780e9c0576434606072065`: local and hosted runs passed 23 tests,
@@ -36,7 +35,7 @@ retained as an identified artifact with an explicit expiry; durable retention is
 handed to the integrator. Source-truth detection remains 0/5. No within-request
 incremental engine or empirical/frontier claim follows. See the
 [quality follow-up](quality-followup-20261115.md), [handoff](HANDOFF.md) and
-[review](review.md). F2.5 remains open for the broader planned experiment set.
+[review](review.md). The [native experiment archive](../../../benchmarks/static/evidence/native-experiments.json.gz) retains both representations, full reports, the executed trace, provider requests, valuation and feedback results.
 
 ## Phase 3 — External validation and publication
 
@@ -44,10 +43,10 @@ incremental engine or empirical/frontier claim follows. See the
   **Blocked 2026-11-20:** This track has no authorised external or multi-site dataset. The synthetic fixtures are not that dataset.
 - [!] F3.2 If pursued, qualify aggregate/federated calibration with explicit privacy/utility evaluation and no mandatory central patient-record store.
   **Blocked 2026-11-20:** No external dataset has been authorised, so this calibration is not pursued.
-- [!] F3.3 Choose target software/methods/application venues from the actual contribution and evidence; keep software release, paper and clinical validation claims distinct.
-  **Blocked 2026-11-20:** Venue selection waits on the external evidence and on the still-disabled publication channel in L1.2.
-- [!] F3.4 Update the dated comparator review, rerun relevant benchmarks and publish only conclusions supported by the observed results.
-  **Blocked 2026-11-20:** Publication remains disabled, and there is no authorised external result to add to the comparator review.
+- [x] F3.3 Choose target software/methods/application venues from the actual contribution and evidence; keep software release, paper and clinical validation claims distinct.
+  The dated comparator review identifies a software venue and conditional routes for methods and applications. Manuscript preparation, real-world validation and submission remain separate. [Venue rationale](../../../benchmarks/static/COMPARATORS.md#publication-fit)
+- [~] F3.4 Update the dated comparator review, rerun relevant benchmarks and publish only conclusions supported by the observed results.
+  The comparator review and local native benchmarks were updated on 20 November. External validation and publication require separate evidence and authority.
 
 ## Evidence record
 

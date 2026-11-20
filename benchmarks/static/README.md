@@ -89,3 +89,11 @@ No gate is waived and no frontier, empirical, clinical, cross-platform or
 release-readiness claim is made. The frozen protocol's publication-status text
 describes its original registration state; later qualification is recorded in
 separate exact-source receipts without altering that protocol.
+
+## Native pathway and decision experiments
+
+The [results](evidence/native-experiments.json) identify the runtime and the digest of the [full compressed JSON bundle](evidence/native-experiments.json.gz). The installed provider environment uses the revisions in the decision track. Run from the repository root with paths to the qualified native executables and wheel.
+
+```sh
+python -m benchmarks.static.native_experiments --cli "$DAPANE_CLI" --process-cli "$DAPANE_PROCESS_CLI" --fiscal "$DAPANE_FISCAL_BIN" --innovate "$DAPANE_INNOVATE_BIN" --wheel "$DAPANE_VOIAGE_WHEEL" --out "$output"
+```

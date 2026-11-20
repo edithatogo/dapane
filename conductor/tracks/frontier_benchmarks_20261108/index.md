@@ -30,3 +30,5 @@ Implementation: `benchmarks/static/`, matching the integrator's ownership map.
 
 The sole release integrator owns shared files, registry/CI changes and merge decisions.
 No production evaluator or shared numerical fixture was changed.
+
+The [20 November native experiments](../../../benchmarks/static/evidence/native-experiments.json) cover actual newborn, process and installed decision-provider examples. Authorised external data and empirical transportability remain open.
