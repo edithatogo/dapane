@@ -51,5 +51,5 @@ not relabelled as current passes.
 The track remains `in_progress`. The 20 November checkpoint verification covers
 T1 and the bounded synthetic T2.1–T2.2 implementation. T2.3 stays blocked on
 the missing Tobac oracle paths. T3.2 is recorded in [FALLBACK.md](FALLBACK.md).
-T3.1, T3.3 and production method qualification remain open.
+T3.1 now calls both installed consumers. T3.3 and production method qualification remain open because the Dapane producer is not an installed package.
 [Verification](VERIFICATION.md) · [Metadata](metadata.json) · [Handoff](HANDOFF.md)
