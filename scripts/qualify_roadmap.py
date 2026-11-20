@@ -137,6 +137,7 @@ def required_checks(lane: str) -> set[str]:
             "static-fetch",
             "static-build",
             "static-cli",
+            "static-process-build",
             "static-tests",
             "static-protocol",
             "static-verify",
@@ -945,10 +946,28 @@ def static_lane(run: Runner) -> None:
         needs=("static-build",),
     )
     run.step(
+        "static-process-build",
+        [
+            "cargo",
+            "build",
+            "--release",
+            "--locked",
+            "--manifest-path",
+            "adapters/process_models/Cargo.toml",
+            "--target-dir",
+            str(target),
+        ],
+        needs=("rust-version",),
+    )
+    run.step(
         "static-tests",
         [sys.executable, "-m", "unittest", "discover", "-s", "benchmarks/static/tests", "-v"],
-        env={"DAPANE_BENCH_CLI": str(cli)},
-        needs=("static-build",),
+        env={
+            "DAPANE_BENCH_CLI": str(cli),
+            "DAPANE_CLI": str(cli),
+            "DAPANE_PROCESS_CLI": str(target / "release/dapane-process-models"),
+        },
+        needs=("static-build", "static-process-build"),
         coverage="unittest",
         minimum=23,
     )

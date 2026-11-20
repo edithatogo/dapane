@@ -1,0 +1,94 @@
+{
+  "qualification": "synthetic",
+  "python": "3.15.2",
+  "system": "Darwin",
+  "architecture": "arm64",
+  "rust": "rustc 1.100.0 (0ef1bc386 2026-11-09) (Homebrew)",
+  "binary_sha256": {
+    "cli": "sha256:6c1d3f0faaf0b0d951eabc76afbd2e856b389fce21c1501eae80cfd09a3a4a3f",
+    "process_cli": "sha256:1f2d70ccb2ee4a73d947c463ba6439cbaedda16b5e481f3264c88c607fe4c814",
+    "fiscal": "sha256:cc42c2c227c921aaae631b485f18fee7cc4f11c210be50b44219d19e4f5d7e66",
+    "innovate": "sha256:8b6775e3b53c83adb352c1e2260a6f0bb31baa3bce46531562cab251b2ae3a9b",
+    "wheel": "sha256:71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140"
+  },
+  "bundle": "native-experiments.json.gz",
+  "bundle_sha256": "ad3c6d619320b579c71f8157c2c352287c9ed5ac8627f34daad3646e93d080dc",
+  "pathway": {
+    "composed-two-infant": {
+      "object_total": "150.00",
+      "flat_total": "250.00",
+      "object_unattributed": "0.00",
+      "flat_unattributed": "0.00",
+      "object_lines": 12,
+      "flat_lines": 18,
+      "object_digest": "sha256:05e4b6861e76a37d682d84d221f8449c0e525090d2cf7dab2373db2a15cc3d55",
+      "flat_digest": "sha256:ba02394755d4b1b96bf3e8c76aa85a357d14679987ebfa6c705ddd1246927cae"
+    },
+    "failed-assay-repeat": {
+      "object_total": "170.00",
+      "flat_total": "270.00",
+      "object_unattributed": "0.00",
+      "flat_unattributed": "0.00",
+      "object_lines": 13,
+      "flat_lines": 19,
+      "object_digest": "sha256:e47d95c069408ab58135d855e67f48101ece74084652ddf65875440a6ff6b623",
+      "flat_digest": "sha256:e985cbd1f7ccaa88712ebda23f2b7909d7f8e09b4c78842618418422e0699260"
+    },
+    "capacity-at": {
+      "object_total": "120.00",
+      "flat_total": "220.00",
+      "object_unattributed": "0.00",
+      "flat_unattributed": "0.00",
+      "object_lines": 5,
+      "flat_lines": 6,
+      "object_digest": "sha256:d61dc5925a1fbda8bf4b7a755d086a9c1cff19c7fe21d6ff4139380e270f6dd0",
+      "flat_digest": "sha256:4ec79893b35feca1685595ce9446d95f3867572bbefd0d526e6918be69112351"
+    },
+    "capacity-above": {
+      "object_total": "230.00",
+      "flat_total": "630.00",
+      "object_unattributed": "50.00",
+      "flat_unattributed": "0.00",
+      "object_lines": 7,
+      "flat_lines": 9,
+      "object_digest": "sha256:153628189218975d5332b6bfc89a07ac3fe58f1b4e280a386122c5218b025080",
+      "flat_digest": "sha256:bbde1751ebd196a3ea8fa53a3d3c53cce87476eb9e3c6e88f0cc6e34d7bdeaf9"
+    },
+    "capacity-unknown": {
+      "object_total": "120.00",
+      "flat_total": "220.00",
+      "object_unattributed": "100.00",
+      "flat_unattributed": "0.00",
+      "object_lines": 5,
+      "flat_lines": 6,
+      "object_digest": "sha256:731fcb6c15bfc58a02fa06552296ba2cd75ff671e4fafc902fffb9b2c46e1617",
+      "flat_digest": "sha256:954d319f36992b71bf45f18b1f94fa070f4f86fac15970855e664e611edafc65"
+    },
+    "process-shared-batch": {
+      "object_total": "80.00",
+      "flat_total": "160.00",
+      "object_unattributed": "0.00",
+      "flat_unattributed": "0.00",
+      "object_lines": 2,
+      "flat_lines": 4,
+      "object_digest": "sha256:f36c3c7821dd8b5e43a077e8a2f2d9c9554a154667878263b7790802f9ed8275",
+      "flat_digest": "sha256:75962c53a6453b58046c70066d98697f4125bf24bae66ad0e4f5157c94dac6f9",
+      "model_sha256": "sha256:125707a6d65e338554d3298b5d003ef88c950fc1424b8591cba95215a1314845",
+      "trace_uses": 3,
+      "valued_uses": 2
+    }
+  },
+  "decision": {
+    "unit": "AUD per synthetic assay at 2026 prices",
+    "staff_time_evpi": 10.0,
+    "control_evpi": 1.0,
+    "measurement_priority": "staff_time_per_assay",
+    "capacity_exceeded": [
+      [
+        "2026-01",
+        "2026-02"
+      ],
+      []
+    ]
+  }
+}
