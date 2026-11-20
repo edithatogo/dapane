@@ -26,11 +26,11 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 
 - [~] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.  
-  **In progress 2026-11-20:** `export_perspective_table` emits `dapane-fiscal-perspective-table/0.1` rows with the six-part key and the selected cost, QALY and NMB fields. Tobac and Voiage have not imported the table.
+  **In progress 2026-11-20:** `export_perspective_table` emits the six-part key. `arrange` keeps all eight cells of the synthetic two-draw table, and the installed Voiage 3.1.0 `value_of_perspective` returns `alternative` for both perspectives without changing strategy or perspective order. Tobac is not installed and has not imported the table.
 - [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.  
   **Executed 2026-11-20:** [FALLBACK.md](FALLBACK.md) records the three perspective boundaries, the refusal to treat excise or GST as deadweight loss, and the requirement that a missing adapter leave `tobac` and `voiage` on their own code.
-- [!] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.  
-  **Blocked 2026-11-20:** Tobac is not installed. Voiage 3.1.0 is present at `/opt/homebrew/lib/python3.15/site-packages`, but `import voiage` fails because `polars` is missing and `pyarrow` is missing as well. Its `value_of_perspective` expects a float array shaped `(samples, strategies, perspectives)`, not the six-key fiscal table. No consumer revision was executed, and this does not check the previously mismatched wheel checksum.
+- [~] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.  
+  **In progress 2026-11-20:** The wheel file `voiage-3.1.0-cp315-abi3-macosx_11_0_arm64.whl` hashes to `71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140`, the same digest recorded in its install `direct_url.json`. With `polars` and `pyarrow` available, the perspective-table test called that install and kept the eight joint keys. Tobac is not installed, and the Dapane producer itself is not an installed package, so the consumer revision record is incomplete.
 
 ## Bounded owner quality pass — 15 November 2026
 
