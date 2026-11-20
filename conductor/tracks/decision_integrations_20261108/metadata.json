@@ -1,9 +1,9 @@
 {
   "track_id": "decision_integrations_20261108",
   "type": "feature",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-19T11:46:24Z",
+  "updated_at": "2026-11-20T11:31:20Z",
   "description": "Connect correctly paired cost outputs to Voiage, Innovate and Paignia while retaining their existing ownership of decision methods, adoption mechanisms and strategic models.",
   "repositories": [
     "."
@@ -28,9 +28,9 @@
     "RQ-02",
     "RQ-03"
   ],
-  "capability_status": "synthetic_checks_and_native_replays_passed_provider_qualification_open",
+  "capability_status": "bounded_synthetic_decision_provider_examples_verified",
   "verification": {
-    "status": "partial",
+    "status": "passed",
     "commands": [
       "rustc --version",
       "cargo --version",
@@ -46,7 +46,7 @@
     "validated_source_sha": "9c177166899e588dc3dacadb13e4a0a3750bbce2",
     "current_source_execution": "passed_bounded_native_scope",
     "native_quality_status": "passed",
-    "reason": "All named bounded synthetic checks pass; production signed-fiscal profile, later provider phases and security/release gates remain open.",
+    "reason": "Paired valuation, installed Voiage, native Paignia and installed Innovate feedback passed on the synthetic decision contracts.",
     "owner_quality_record": "owner-quality-20261115.md",
     "execution_receipt": "evidence/owner-quality-20261115.json",
     "exact_sha_handoff": "HANDOFF.md",
@@ -62,6 +62,13 @@
       "reviewed_at": "2026-11-19",
       "validated_source_sha": "7c2f23dd337341366c65faf79e7c271991d7bc3f",
       "record": "VERIFICATION.md"
+    },
+    "installed_innovate": {
+      "source_revision": "fd7e259bb9a685d620f80907c6815d4837da3e53",
+      "binary_sha256": "8b6775e3b53c83adb352c1e2260a6f0bb31baa3bce46531562cab251b2ae3a9b",
+      "operation": "predict_model",
+      "model": "bass",
+      "provider_suite_passed": 92
     }
   },
   "completion_evidence": [
@@ -84,7 +91,7 @@
     "provider_methods_qualified": [],
     "integration_owner_chat": "6af8e445-ffd4-83ec-8e51-ff6b596f11b1",
     "base_sha": "e34f87c9df39a2132fecee142431cdeefb732471",
-    "later_phases": "pending_out_of_scope",
+    "later_phases": "D2 and D3 synthetic installed provider checks completed.",
     "pull_request": "https://github.com/edithatogo/dapane/pull/23"
   }
 }
