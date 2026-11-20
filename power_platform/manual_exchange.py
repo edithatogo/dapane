@@ -6,16 +6,19 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from urllib.parse import quote, unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import verify_run_bundle as bundles  # noqa: E402
 
 VERSION = "dapane-file-exchange/0.1"
+SHAREPOINT_VERSION = "dapane-sharepoint-exchange/1.0"
 IDENTITY = ("ProjectKey", "ScenarioId", "InputRevision")
 FILES = {"report.json", "bundle.json", "receipt.json"}
 
@@ -25,11 +28,22 @@ def sha(raw):
 
 
 def read_bytes(path, limit):
+    if path.is_symlink() or not path.is_file():
+        raise ValueError(f"{path.name} must be a regular file")
     with path.open("rb") as stream:
         raw = stream.read(limit + 1)
     if len(raw) > limit:
         raise ValueError("file exceeds the exchange byte limit")
     return raw
+
+
+def matches_bytes(path, expected):
+    return (
+        not path.is_symlink()
+        and path.is_file()
+        and path.stat().st_size == len(expected)
+        and read_bytes(path, len(expected)) == expected
+    )
 
 
 def decode(raw):
@@ -71,6 +85,7 @@ def input_file(path):
         or len(packet["history"]) >= bundles.MAX_REVISIONS
     ):
         raise ValueError("invalid request or history")
+    bundles._date(template.get("recorded_on"), "/bundle/recorded_on")
     return raw, packet
 
 
@@ -85,16 +100,28 @@ def publish_file(path, raw):
             try:
                 os.link(temp, path)
             except FileExistsError:
-                if path.is_symlink() or not path.is_file() or read_bytes(path, len(raw)) != raw:
+                if not matches_bytes(path, raw):
                     raise ValueError("destination already holds a different revision") from None
         finally:
             temp.unlink(missing_ok=True)
 
 
-def export_file(source, output):
-    raw, _ = input_file(source)
+def sharepoint_plan(raw, packet):
+    identity = {key: packet[key] for key in IDENTITY}
+    revision = hashlib.sha256(encode(identity)).hexdigest()
+    return {
+        "ExchangeVersion": SHAREPOINT_VERSION,
+        "ExchangeKey": revision,
+        "InputContentHash": sha(raw),
+        "InputPath": f"{revision}/input.json",
+        "ResultFolder": f"{revision}/result",
+    }
+
+
+def export_file(source, output, *, sharepoint=False):
+    raw, packet = input_file(source)
     publish_file(output, raw)
-    return sha(raw)
+    return sharepoint_plan(raw, packet) if sharepoint else sha(raw)
 
 
 def assemble(packet, report):
@@ -122,6 +149,15 @@ def receipt(raw, packet, report, archive):
         "report_sha256": sha(report),
         "bundle_sha256": sha(archive),
     }
+
+
+def archive_files(directory):
+    if directory.is_symlink() or not directory.is_dir():
+        raise ValueError("expected a regular result directory")
+    files = {path.name: path for path in directory.iterdir()}
+    if files.keys() != FILES:
+        raise ValueError("result directory must contain report.json, bundle.json and receipt.json")
+    return files
 
 
 def execute(source, cli, directory):
@@ -154,25 +190,69 @@ def execute(source, cli, directory):
                 raise FileExistsError
             fresh.rename(directory)
         except OSError:
-            if (
-                directory.is_symlink()
-                or not directory.is_dir()
-                or {p.name for p in directory.iterdir()} != FILES
-            ):
+            if not directory.exists() and not directory.is_symlink():
                 raise
-            if any(
-                (directory / name).is_symlink() or read_bytes(directory / name, len(data)) != data
-                for name, data in content.items()
-            ):
+            saved = archive_files(directory)
+            if any(not matches_bytes(saved[name], data) for name, data in content.items()):
                 raise ValueError("archive location already holds different bytes") from None
     return resolved["bundle_digest"]
 
 
-def import_result(source, directory, output):
+def archive_link(library, folder):
+    url = urlsplit(library)
+    parts = [unquote(part, errors="strict") for part in url.path.strip("/").split("/")]
+    if (
+        not library.isprintable()
+        or library.strip() != library
+        or url.scheme != "https"
+        or re.fullmatch(r"[a-z0-9-]+\.sharepoint\.com", url.hostname or "") is None
+        or url.netloc.casefold() != url.hostname
+        or url.query
+        or url.fragment
+        or parts[-1].casefold().endswith(".aspx")
+        or any(
+            part in {"", ".", ".."}
+            or not part.isprintable()
+            or any(char in '/\\:*?"<>|' for char in part)
+            for part in parts
+        )
+    ):
+        raise ValueError("supply a direct HTTPS SharePoint Online library URL")
+    path = "/".join(quote(part, safe="") for part in parts)
+    link = f"https://{url.hostname}/{path}/{folder}/bundle.json"
+    if len(link) > 255:
+        raise ValueError("use a shorter library URL for the result hyperlink")
+    return link
+
+
+def sharepoint_summary(raw, packet, row, policy, library):
+    plan = sharepoint_plan(raw, packet)
+    return {
+        "Title": row["ScenarioId"],
+        **{key: plan[key] for key in ("ExchangeVersion", "ExchangeKey", "InputContentHash")},
+        **{key: row[key] for key in IDENTITY},
+        "BundleDigest": row["BundleDigest"],
+        "OutputContentHash": row["OutputContentHash"],
+        "CalculationContractVersion": row["CalculationContractVersion"],
+        "JobState": row["JobState"],
+        "NativeStatus": row["NativeStatus"],
+        "ExcludedInputCount": len(row["ExcludedInputs"]),
+        "IncompleteCapacityPoolCount": len(row["IncompleteCapacityPools"]),
+        "OutputLink": archive_link(library, plan["ResultFolder"]),
+        "Total": row["Total"],
+        "Currency": row["Currency"],
+        "PriceYear": policy["price_year"],
+        "Perspective": policy["perspective"],
+        "ValuationBasis": policy["basis"],
+    }
+
+
+def import_result(source, directory, output, *, sharepoint_library=None):
     raw, packet = input_file(source)
-    report = read_bytes(directory / "report.json", bundles.MAX_BUNDLE_BYTES)
-    archive = read_bytes(directory / "bundle.json", bundles.MAX_BUNDLE_BYTES + 1)
-    manifest = decode(read_bytes(directory / "receipt.json", 4096))
+    files = archive_files(directory)
+    report = read_bytes(files["report.json"], bundles.MAX_BUNDLE_BYTES)
+    archive = read_bytes(files["bundle.json"], bundles.MAX_BUNDLE_BYTES + 1)
+    manifest = decode(read_bytes(files["receipt.json"], 4096))
     if manifest != receipt(raw, packet, report, archive):
         raise ValueError("receipt does not match the submitted source and downloaded files")
     result = decode(report)
@@ -204,7 +284,12 @@ def import_result(source, directory, output):
         "Total": None if incomplete else result["totals"]["rounded"],
         "Currency": result["policy"]["currency"],
     }
-    publish_file(output, encode(row))
+    fields = (
+        row
+        if sharepoint_library is None
+        else sharepoint_summary(raw, packet, row, result["policy"], sharepoint_library)
+    )
+    publish_file(output, encode(fields))
     return row["JobState"]
 
 
@@ -220,17 +305,26 @@ def main():
             sub.add_argument("--out", type=Path, required=True)
         if command == "run":
             sub.add_argument("--cli", type=Path, required=True)
+        if command == "export":
+            sub.add_argument("--sharepoint-plan", action="store_true", help="print upload paths")
+        if command == "import":
+            sub.add_argument("--sharepoint-library", help="produce SharePoint list fields")
     args = parser.parse_args()
     try:
         if args.command == "export":
-            outcome = export_file(args.input, args.out)
+            outcome = export_file(args.input, args.out, sharepoint=args.sharepoint_plan)
         elif args.command == "run":
             outcome = execute(args.input, args.cli, args.archive)
         else:
-            outcome = import_result(args.input, args.archive, args.out)
+            outcome = import_result(
+                args.input, args.archive, args.out, sharepoint_library=args.sharepoint_library
+            )
     except (ValueError, OSError, subprocess.TimeoutExpired) as exc:
         parser.exit(1, f"{exc}\n")
-    print(outcome)
+    if isinstance(outcome, dict):
+        print(json.dumps(outcome, ensure_ascii=False))
+    else:
+        print(outcome)
 
 
 if __name__ == "__main__":

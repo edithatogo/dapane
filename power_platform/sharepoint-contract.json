@@ -1,0 +1,36 @@
+{
+  "version": "dapane-sharepoint-exchange/1.0",
+  "request_version": "dapane-file-exchange/0.1",
+  "library": {
+    "exchange_key": "Lowercase SHA-256 hex of the compact, sorted-key UTF-8 JSON object containing ProjectKey, ScenarioId and InputRevision, followed by LF.",
+    "versioning": true,
+    "input_path": "{ExchangeKey}/input.json",
+    "result_folder": "{ExchangeKey}/result",
+    "result_files": ["report.json", "bundle.json", "receipt.json"]
+  },
+  "results_list": {
+    "versioning": true,
+    "columns": {
+      "Title": {"type": "Text", "required": true},
+      "ExchangeVersion": {"type": "Text", "required": true},
+      "ExchangeKey": {"type": "Text", "required": true, "indexed": true, "unique": true},
+      "InputContentHash": {"type": "Text", "required": true},
+      "ProjectKey": {"type": "Text", "required": true},
+      "ScenarioId": {"type": "Text", "required": true},
+      "InputRevision": {"type": "Text", "required": true},
+      "BundleDigest": {"type": "Text", "required": true},
+      "OutputContentHash": {"type": "Text", "required": true},
+      "CalculationContractVersion": {"type": "Text", "required": true},
+      "JobState": {"type": "Choice", "required": true, "choices": ["completed", "incomplete"]},
+      "NativeStatus": {"type": "Text", "required": true},
+      "ExcludedInputCount": {"type": "Number", "required": true, "decimals": 0},
+      "IncompleteCapacityPoolCount": {"type": "Number", "required": true, "decimals": 0},
+      "OutputLink": {"type": "Hyperlink", "required": true},
+      "Total": {"type": "Text", "required": false},
+      "Currency": {"type": "Text", "required": true},
+      "PriceYear": {"type": "Number", "required": true, "decimals": 0},
+      "Perspective": {"type": "Text", "required": true},
+      "ValuationBasis": {"type": "Text", "required": true}
+    }
+  }
+}
