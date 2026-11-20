@@ -23,7 +23,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [~] D2.3 Implement one optional Paignia input adapter with an explicit supported-game and payoff transformation contract.
   The native example selected B at a utility of 20. Build provenance and application validation against the selected profile remain open.
 - [~] D2.4 Verify provider version negotiation, unsupported-method diagnostics, transfer accounting and independently derived decision examples.
-  Tests cover declared compatibility, rejected inputs and synthetic transfer accounting. Installed provider version and artifact verification remain open.
+  Tests cover declared compatibility, rejected inputs and synthetic transfer accounting. Voiage 3.1.0 at `0978497b5047de9459ed2fca9b349a4e2a9c45d3` was verified through its installed wheel. Innovate and Paignia are not installed.
 
 ## Phase 3 — Evidence and measurement planning
 
@@ -31,8 +31,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   **Executed 2026-11-20:** Installed Voiage 3.1.0 `DecisionAnalysis.evpi` returns 10.0 for the staff-time matrix `[[-60, -80], [-120, -80]]`. The wheel file `voiage-3.1.0-cp315-abi3-macosx_11_0_arm64.whl` hashes to `71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140`, matching its install record. No population scaling was applied. Earlier copies that did not match this digest remain historical.
 - [x] D3.2 Document method maturity, source assumptions, external outcome limitations and alternative-perspective interpretations.
   The [D3 preparation dossier](../../../adapters/decision_provider_d2/D3-EVIDENCE.md) records the evidence assumptions, distinctions across perspectives and limits of the synthetic example.
-- [~] D3.3 Run the selected installed/provider integration cases and confirm that disabling all decision adapters leaves static costing available.
-  The standalone native CLI returned AUD 150.00 with the expected object totals and all optional decision providers disabled. The installed-provider integration cases remain open.
+- [x] D3.3 Run the selected installed/provider integration cases and confirm that disabling all decision adapters leaves static costing available.  
+  **Executed 2026-11-20:** `native_voiage.run_evpi` called `voiage._runtime.compute_evpi` on the installed 3.1.0 wheel `sha256:71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140` at source revision `0978497b5047de9459ed2fca9b349a4e2a9c45d3`. The staff-time result is 10.0 per assay, and the native extension digest is `sha256:abc8048bde189318db3bb9d83e5966029fce6b71e0909a3d05d9076339b8ebf7`. The shipped `_runtime.py`, `analysis.py` and `methods/basic.py` match that revision. The earlier standalone native CLI returned AUD 150.00 with decision providers disabled.
 
 The [19 November verification](VERIFICATION.md#decision-provider-evidence-review--19-november-2026)
 records the replays, artifact identities and remaining evidence for D2 and D3.
