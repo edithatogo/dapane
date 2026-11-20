@@ -239,6 +239,11 @@ def validate_manifest(manifest, root=ROOT):
     require(not (set(manifest["optional_tracks"]) & TRACKS), "required track marked optional")
     require(manifest["publication"]["enabled"] is False, "this workflow cannot enable publication")
     require(
+        manifest["publication"].get("central_offline_security")
+        == "exact-source-scan-evidence-required",
+        "publication requires central offline-security evidence for the exact source",
+    )
+    require(
         manifest["source_rights"]["external_provider_assets"] == "excluded",
         "provider data needs a separate rights and inclusion review",
     )
@@ -821,6 +826,10 @@ def verify_evidence(evidence, artifact_dir, root=ROOT):
     )
     require(
         evidence["inputs"] == input_hashes(root), "evidence input/lock/reference hashes changed"
+    )
+    require(
+        evidence.get("publication_blockers") == publication_blockers(manifest, root),
+        "publication blockers differ from the candidate source requirements",
     )
     require(
         runtime_target(evidence["runtime"]) in {target_key(t) for t in manifest["targets"]},

@@ -49,6 +49,7 @@
   ],
   "publication": {
     "enabled": false,
+    "central_offline_security": "exact-source-scan-evidence-required",
     "project_license": "Apache-2.0",
     "registry_identity": "unverified",
     "source_redistribution": "project-source-Apache-2.0-external-assets-excluded",

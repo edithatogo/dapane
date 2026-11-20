@@ -41,3 +41,7 @@ offline security timed out unexecuted and public release remains disabled. The
 user requested archival after review and fixes. Retain this track until its
 required acceptance evidence is complete; no external repository archive has been
 selected.
+
+The [latest control review](evidence.md#publication-control-review--20-november-2026)
+records the exact-source security requirement in candidate receipts and the
+current runner evidence.

@@ -61,6 +61,17 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(release.AssuranceError, "publication"):
             release.validate_manifest(self.manifest)
 
+    def test_central_offline_security_requires_exact_source_evidence(self):
+        publication = self.manifest["publication"]
+        field = "central_offline_security"
+        self.assertIn(f"{field}: {publication[field]}", release.publication_blockers(self.manifest))
+        publication.pop(field)
+        with self.assertRaisesRegex(release.AssuranceError, "central offline-security"):
+            release.validate_manifest(self.manifest)
+        publication[field] = "passed"
+        with self.assertRaisesRegex(release.AssuranceError, "central offline-security"):
+            release.validate_manifest(self.manifest)
+
     def test_optional_research_does_not_gate_candidate_validation(self):
         self.manifest["optional_tracks"].append("future_optional_experiment")
         release.validate_manifest(self.manifest)
@@ -370,6 +381,27 @@ class SourceTests(unittest.TestCase):
             patch.object(release, "input_hashes", return_value={"Cargo.lock": "1" * 64}),
         ):
             with self.assertRaisesRegex(release.AssuranceError, "input/lock/reference"):
+                release.verify_evidence(receipt, ROOT)
+
+    def test_receipt_cannot_drop_a_publication_blocker(self):
+        manifest = release.read_json(ROOT / "release/capabilities.json")
+        receipt = {
+            "format": release.FORMAT,
+            "purpose": "unpublished-candidate-verification",
+            "publication_ready": False,
+            "source": {"commit": "2" * 40},
+            "inputs": {"Cargo.lock": "1" * 64},
+            "publication_blockers": [
+                blocker
+                for blocker in release.publication_blockers(manifest)
+                if not blocker.startswith("central_offline_security:")
+            ],
+        }
+        with (
+            patch.object(release, "source_identity", return_value=receipt["source"]),
+            patch.object(release, "input_hashes", return_value=receipt["inputs"]),
+        ):
+            with self.assertRaisesRegex(release.AssuranceError, "publication blockers"):
                 release.verify_evidence(receipt, ROOT)
 
 
