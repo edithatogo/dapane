@@ -43,7 +43,8 @@ transport statuses, bounded retained storage and panic containment. A native C
 consumer and complete local reproduction command are supplied.
 
 R is independent of C ABI, Julia and Python. Julia is absent because actual C
-consumer qualification did not complete. No original core/CLI/Python/provider
+consumer qualification did not complete. That absence describes this handoff,
+not the 20 November caller and staged install. No original core/CLI/Python/provider
 manifest, schema, common fixture, root Cargo/lock/CI or root documentation file
 is changed. Upstream repositories were read-only.
 
@@ -139,7 +140,10 @@ B1 preparation and B2 wrapper implementation are delivered. B2.3 remains blocked
 for the final installed candidate. B3.1 remains a proposed ABI implementation;
 B3.2 is blocked until the native C consumer runs. B3.3/B3.4 (Julia) are pending.
 B4.1 records independent maturity and rollback rules; publication readiness is
-not complete.
+not complete. Those task states are the handoff's original claim. On 20 November
+the plan records B3.2 complete, local Julia calls and a staged one-host install
+complete, and B4.2 blocked because no release surface is selected and this
+machine's R is 4.3.0.
 
 The accepted numerical method remains unchanged, including the 150/60/90 newborn
 reference and half-even rounding per generated interval segment. No empirical,

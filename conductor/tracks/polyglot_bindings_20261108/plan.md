@@ -28,7 +28,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 ## Phase 4 — Independent publication readiness
 
 - [x] B4.1 Record separate R, ABI and Julia compatibility/maturity states, reproduction commands and deprecation/rollback rules.
-- [ ] B4.2 Verify each selected release surface independently; do not delay a qualified R capability for unrelated Julia/C ABI work.
+- [!] B4.2 Verify each selected release surface independently; do not delay a qualified R capability for unrelated Julia/C ABI work.  
+  **Blocked 2026-11-20:** No release surface is selected. `L1.2` still has publication disabled pending channel and account choices. Local `Rscript` is 4.3.0 at `/usr/local/bin/Rscript`, while `bindings/polyglot/r/DESCRIPTION` requires R >= 4.5.0, so this host cannot repeat the packaged R install. The Julia package has no BinaryBuilder/JLL artifact. The earlier hosted R qualification remains the B2.3 record and is not revoked by this host gap.
 
 ## Evidence record
 
@@ -45,7 +46,7 @@ acceptance passed; the local sanitizer attempt failed under traced execution.
 The correction source then passed all 41 hosted binding commands, including
 installed R and ASan/UBSan C acceptance. Final-head execution remains separately
 source-bound. B3.1 stays partial pending
-unsafe-boundary acceptance. B4.2 remains open.
+unsafe-boundary acceptance. B4.2 is blocked on release selection and this host's R 4.3.0.
 
 The integrator accepted `bindings/polyglot/`, reconciled the blocked registry and
 added standalone CI. Those shared requests are no longer blockers. Original
