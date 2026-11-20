@@ -353,6 +353,11 @@ class TestD2Bridge(unittest.TestCase):
         if not binary:
             self.skipTest("DAPANE_PAIGNIA_BIN is not set")
         payload = d2_paignia()
+        payload["provider"]["revision"] = "44bebdae9ca53a113681041e8fe5dcc16f57b918"
+        with open(binary, "rb") as stream:
+            payload["provider"]["artifact_digest"] = (
+                "sha256:" + hashlib.file_digest(stream, "sha256").hexdigest()
+            )
         payload["actions"] = [
             {"id": "A", "utility": {"numerator": "10", "denominator": "1"}},
             {"id": "B", "utility": {"numerator": "20", "denominator": "1"}},
@@ -366,6 +371,12 @@ class TestD2Bridge(unittest.TestCase):
             "paignia/static-finite-perfect-information-sparse-zero/1.0.0",
         )
         self.assertEqual(result["key"]["draw_id"], "draw-a")
+
+    def test_native_paignia_checks_transfer_before_invocation(self):
+        payload = d2_paignia()
+        payload["payoff_mapping"]["domestic_transfer_balance"]["numerator"] = "1"
+        with self.assertRaisesRegex(D2Error, "transfer_imbalance"):
+            paignia_game_solve_native(payload, "unused")
 
     def test_paignia_rejects_monetary_payoff_without_explicit_transformation(self):
         p = d2_paignia()
