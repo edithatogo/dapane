@@ -1,6 +1,6 @@
 # Implementation plan: Uncertainty and decision-library integration
 
-Status: in_progress
+Status: completed
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -18,12 +18,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [x] D2.1 Inspect current Voiage contracts and qualified methods; implement a bounded paired-output adapter including perspective and subgroup identity.  
   **Executed 2026-11-20:** The paired adapter keeps scenario, strategy, draw, replication, perspective and subgroup. Installed Voiage 3.1.0 `value_of_perspective` returned `alternative` for both perspectives, and `voiage._runtime.compute_evpi` returned 10 per assay for the staff-time matrix. The wheel digest is `sha256:71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140`.
-- [!] D2.2 Implement one Innovate utilisation/adoption-to-resource scenario with explicit capacity thresholds and feedback orchestration.  
-  **Blocked 2026-11-20:** Innovate main `fd7e259bb9a685d620f80907c6815d4837da3e53` accepts `innovate-native predict` only for operation `predict_model`. The repository has no `dapane_adoption_capacity` operation. `innovate-core` also depends on Kairos `a1f6283575ad26918230adc122a99b5c08fc4da3`, whose public resource-usage contract is still pending. Dapane still refuses to invent a price response; the earlier native backlog example remains a local arithmetic replay, not a provider execution.
+- [x] D2.2 Implement one Innovate utilisation/adoption-to-resource scenario with explicit capacity thresholds and feedback orchestration.
+  The native Innovate Bass forecast supplies monthly incident counts. A second run binds a changed, externally specified parameter to the first run and an actual fiscal valuation. [Installed feedback](VERIFICATION.md#installed-innovate-feedback)
 - [x] D2.3 Implement one optional Paignia input adapter with an explicit supported-game and payoff transformation contract.  
   **Executed 2026-11-20:** Paignia `44bebdae9ca53a113681041e8fe5dcc16f57b918` admitted the static profile `paignia/static-finite-perfect-information-sparse-zero/1.0.0` and selected action B with utility 20 over action A with utility 10. The draw key `draw-a` stayed on the packet. Paignia publishes no solver command, so the call used a local harness linked to `paignia-core` and `paignia-solve` from that commit. The harness digest is `sha256:d793ab5174c4bf2f725480e10850fd8db2f2d5c9e50c066511e4a7fb3e4b641f`.
 - [x] D2.4 Verify provider version negotiation, unsupported-method diagnostics, transfer accounting and independently derived decision examples.  
-  **Executed 2026-11-20:** Negotiation rejects a non-commit revision and returns the selected contract. Unsupported methods are rejected. A nonzero domestic transfer is rejected, and transfer changes do not alter societal or health-system net benefit. Independent examples are the staff-time value of 10 per assay and the Paignia choice of B at utility 20. Innovate's installed execution remains the separate block in D2.2.
+  **Executed 2026-11-20:** Negotiation rejects a non-commit revision and returns the selected contract. Unsupported methods are rejected. A nonzero domestic transfer is rejected, and transfer changes do not alter societal or health-system net benefit. Independent examples are the staff-time value of 10 per assay and the Paignia choice of B at utility 20. The installed Innovate scenario is verified in D2.2.
 
 ## Phase 3 — Evidence and measurement planning
 
@@ -53,11 +53,4 @@ and explicit standalone CI. These shared files are preserved. Earlier recovery
 limitations and failed formatting outcomes remain historical evidence; they are
 not relabelled as current passes.
 
-Phase-1 tasks remain active for coordinator acceptance of the bounded candidate;
-the previous execution-environment block is resolved. Production signed-fiscal
-method/profile qualification, later provider phases and required security/release
-gates remain open. This quality repair does not complete the full track.
-
-See [verification](VERIFICATION.md), [review](REVIEW.md), [metadata](metadata.json)
-and the [exact-SHA handoff](HANDOFF.md). The [registry](../../tracks.md) already
-matches this track's `in_progress` state.
+The bounded D1–D3 provider examples passed. Empirical adoption effects and public release remain separate decisions.

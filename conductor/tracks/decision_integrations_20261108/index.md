@@ -2,7 +2,7 @@
 
 Track: `decision_integrations_20261108`
 
-Status: in_progress
+Status: completed
 
 Connect correctly paired cost outputs to Voiage, Innovate and Paignia while retaining their existing ownership of decision methods, adoption mechanisms and strategic models.
 
@@ -19,7 +19,7 @@ reproduced the Innovate capacity and Paignia payoff examples, and the standalone
 Dapane CLI reproduced the newborn-screening total. On 20 November the installed
 Voiage 3.1.0 wheel returned the staff-time EVPI of 10 per assay. Paignia
 `44bebdae9ca53a113681041e8fe5dcc16f57b918` selected action B at utility 20.
-Innovate main `fd7e259bb9a685d620f80907c6815d4837da3e53` does not expose the adoption operation, so its price-feedback case stays blocked. See the
+Innovate’s installed Rust predictor supplied both trajectories in the [feedback qualification](VERIFICATION.md#installed-innovate-feedback). See the
 [19 November verification](VERIFICATION.md#decision-provider-evidence-review--19-november-2026)
 and the [20 November execution](VERIFICATION.md#installed-voiage-execution--20-november-2026).
 

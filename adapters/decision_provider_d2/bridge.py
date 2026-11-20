@@ -39,6 +39,7 @@ SUPPORTED = {
         "static_game_input",
     ),
 }
+INNOVATE_PREDICTION = ("innovate-native/2.0", "predict_model:bass")
 _DIGEST = re.compile(r"sha256:[0-9a-f]{64}\Z")
 _REVISION = re.compile(r"[0-9a-f]{40}\Z")
 _PERIOD = re.compile(r"(\d{4})-(\d{2})\Z")
@@ -184,6 +185,8 @@ def negotiate(pin: Any) -> dict[str, str]:
         _bad("invalid_provider", "/provider/revision", "Pin exact 40-character lowercase commit")
     _sha(p["artifact_digest"], "/provider/artifact_digest")
     expected_contract, expected_method = SUPPORTED[repo]
+    if repo == "edithatogo/innovate" and p["contract"] == INNOVATE_PREDICTION[0]:
+        expected_contract, expected_method = INNOVATE_PREDICTION
     if p["contract"] != expected_contract:
         _bad("unsupported_contract", "/provider/contract", f"Only {expected_contract} is prepared")
     if p["method"] != expected_method:
@@ -401,7 +404,7 @@ def adoption_capacity(
     if p["schema_version"] != "dapane-d2-innovate/0.1":
         _bad("unsupported_schema", "/schema_version", "Only dapane-d2-innovate/0.1")
     pin = negotiate(p["provider"])
-    if pin["provider"] != "edithatogo/innovate":
+    if pin["provider"] != "edithatogo/innovate" or pin["method"] != "provided_trajectory":
         _bad("unsupported_provider", "/provider", "Expected Innovate")
     _ident(p["run_id"], "/run_id")
     key = dict(zip(KEY_FIELDS, _key(p["key"], "/key")))
@@ -617,112 +620,13 @@ def paignia_packet(payload: Any) -> dict[str, Any]:
     )
 
 
-def innovate_adoption_capacity_native(payload: Any, innovate_binary: str) -> dict[str, Any]:
-    """Call Innovate's native execute_json for adoption-capacity evaluation.
+def innovate_adoption_capacity_native(
+    payload: Any, innovate_binary: str, *, previous_evaluation=None, valuation=None
+) -> dict[str, Any]:
+    """Run a pinned Innovate Bass prediction and hand its incident counts to the capacity adapter."""
+    from innovate_prediction import predict_capacity
 
-    Converts Dapane's d2-innovate input to Innovate's execute_json format,
-    calls the innovate-native binary via subprocess, and returns the result
-    wrapped in Dapane's d2-innovate output envelope.
-    """
-    p = _object(
-        payload,
-        "/",
-        {
-            "schema_version",
-            "provider",
-            "run_id",
-            "iteration",
-            "previous_evaluation_digest",
-            "key",
-            "resource",
-            "observations",
-            "feedback",
-        },
-    )
-    if p["schema_version"] != "dapane-d2-innovate/0.1":
-        _bad("unsupported_schema", "/schema_version", "Only dapane-d2-innovate/0.1")
-    pin = negotiate(p["provider"])
-    if pin["provider"] != "edithatogo/innovate":
-        _bad("unsupported_provider", "/provider", "Expected Innovate")
-
-    run_id = _ident(p["run_id"], "/run_id")
-    iteration = p["iteration"]
-    if type(iteration) is not int or not 0 <= iteration <= 16:
-        _bad("invalid_iteration", "/iteration", "Expected integer iteration 0..16")
-
-    key = dict(zip(KEY_FIELDS, _key(p["key"], "/key")))
-
-    # Build Innovate execute_json request
-    innovate_request = {
-        "schema_version": "2.0",
-        "operation": "dapane_adoption_capacity",
-        "model_key": "dapane-adoption-capacity",
-        "payload": {
-            "run_id": run_id,
-            "iteration": iteration,
-            "previous_evaluation_digest": p["previous_evaluation_digest"],
-            "key": key,
-            "resource": p["resource"],
-            "observations": p["observations"],
-            "feedback": p["feedback"],
-        },
-    }
-
-    # Write request to temp file and call innovate-native
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as req_file:
-        req_file.write(json.dumps(innovate_request))
-        req_path = req_file.name
-    out_path = req_path + ".out"
-    try:
-        result = subprocess.run(
-            [innovate_binary, "predict", "--request", req_path, "--output", out_path],
-            capture_output=True,
-            text=True,
-            timeout=60,
-        )
-        if result.returncode != 0:
-            _bad(
-                "native_provider_failed",
-                "/",
-                f"Innovate native exited {result.returncode}: {result.stderr.strip()}",
-            )
-        with open(out_path, encoding="utf-8") as f:
-            innovate_response = json.loads(f.read())
-    finally:
-        for path in (req_path, out_path):
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
-
-    if innovate_response.get("error") is not None:
-        err = innovate_response["error"]
-        _bad(
-            "native_provider_error",
-            "/",
-            f"Innovate error: {err.get('code', 'unknown')}: {err.get('message', 'unknown')}",
-        )
-
-    result_data = innovate_response.get("result", {})
-
-    return _closed_output(
-        "dapane:d2-adoption:0.1\n",
-        {
-            "schema_version": p["schema_version"],
-            "run_id": run_id,
-            "provider": pin,
-            "provider_execution": "native_invoked",
-            "key": key,
-            "iteration": iteration,
-            "previous_evaluation_digest": p["previous_evaluation_digest"],
-            "feedback_mode": p["feedback"].get("mode", "none"),
-            "triggering_valuation_digest": p["feedback"].get("valuation_digest"),
-            "resource": result_data.get("resource", p["resource"]),
-            "periods": result_data.get("periods", []),
-            "pricing_execution": "native_invoked",
-            "innovate_response": innovate_response,
-        },
-    )
+    return predict_capacity(payload, innovate_binary, previous_evaluation, valuation)
 
 
 def _provider_executable(binary: str, expected: str) -> str:

@@ -183,3 +183,9 @@ root regression suite, installed CLI/Python adapters, OS matrix, provider
 consumer tests, independent-agent review, source admission, release/security
 qualification or publication. Hosted root checks, if available, do not exercise
 this isolated manifest. No additional workers were created.
+
+## Installed Innovate feedback
+
+The locked build of upstream Innovate `fd7e259bb9a685d620f80907c6815d4837da3e53` produced the macOS arm64 executable `sha256:8b6775e3b53c83adb352c1e2260a6f0bb31baa3bce46531562cab251b2ae3a9b`. The adapter invokes the public `predict_model` operation for the monthly Bass model. A starting market of 100 and parameters p=0.03, q=0.38 produce cumulative counts of 0, 3.575816 and 8.505628. Flooring the cumulative series before differencing gives 3 and 5 incident adopters. At two staff-hours per adopter and five hours of monthly capacity, the backlogs are 1 and 6 hours.
+
+The external scenario supplies p=0.01 after a Rust fiscal valuation of the same decision cell. Both the prior forecast digest and fiscal report digest must match. The second native forecast gives 1 and 1 incident adopters, with zero backlog. This hypothetical response states the price assumption explicitly. The provider does not estimate a causal price effect. All 92 decision integration tests passed with the selected Voiage, Tobac, Paignia, Innovate and fiscal producer installed. [Executable checks](../../../adapters/decision_provider_d2/tests/test_innovate_prediction.py)

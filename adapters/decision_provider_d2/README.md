@@ -123,3 +123,7 @@ execution and D3.3 installed-provider acceptance remain open. This continuation
 does not alter the root dependency graph, shared CI, D1/T1 source or Conductor
 registry; the sole integrator must adopt those changes and approve this
 previously unreserved namespace.
+
+## Native monthly adoption scenario
+
+Pass `dapane-d2-innovate-prediction/0.1` to `innovate_adoption_capacity_native`. Supply the exact Innovate executable digest and source revision, contract `innovate-native/2.0`, method `predict_model:bass`, contiguous monthly labels and an explicit market and monthly innovation/imitation parameters. Select `floor_cumulative` for discrete whole-person capacity. The first period follows a zero-adopter origin. A feedback iteration takes the complete prior forecast and same-cell fiscal valuation together with caller-supplied revised parameters. Forecast, count policy, incident demand, service and backlog remain available in the resulting report. For observed incident counts, use `adoption_capacity`. [Complete request and checks](tests/test_innovate_prediction.py)
