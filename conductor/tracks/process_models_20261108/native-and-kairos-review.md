@@ -11,7 +11,8 @@ beyond the native nanosecond DTO. XES interval anchors must match lifecycle
 roles, trace and activity. Original bytes remain available for audit.
 
 The separate [Kairos provider PR](https://github.com/edithatogo/kairos/pull/400)
-adds scheduler-backed occupancy and binds its physical unit. Independent review
+merged at `cdda891`. Its tree is identical to the checked PR head. It adds
+scheduler-backed occupancy and binds its physical unit. Independent review
 required explicit units and observation-window bounds in slice identity. The
 upstream fixes preserve strict FIFO, checked atomic quantity acquisition, causal
 events and sealed observation windows. The adapter rejects unclosed occupancy
