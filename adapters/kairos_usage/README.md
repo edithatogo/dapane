@@ -1,7 +1,7 @@
 # Dapane consumer of Kairos committed occupancy
 
 The optional adapter consumes the staged DES usage contract at
-[Kairos fffaa8d9](https://github.com/edithatogo/kairos/commit/fffaa8d9baf13df02433d8d659a9870ecf76ab85).
+[Kairos cdda8919](https://github.com/edithatogo/kairos/commit/cdda89112575a42aa8c8e67868f61379ea35d05d).
 The manifest and lock select the exact source and crate versions outside Dapane's
 default workspace. The provider binds physical quantity units, time scale and
 model/run/replay identity. The downstream recipe supplies the resource class,
