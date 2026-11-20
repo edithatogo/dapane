@@ -14,10 +14,11 @@ import json
 import math
 import os
 import re
+import shutil
 import subprocess
 import tempfile
 from fractions import Fraction
-from hashlib import sha256
+from hashlib import file_digest, sha256
 from itertools import product
 from typing import Any
 
@@ -724,130 +725,64 @@ def innovate_adoption_capacity_native(payload: Any, innovate_binary: str) -> dic
     )
 
 
+def _provider_executable(binary: str, expected: str) -> str:
+    path = shutil.which(binary)
+    if not path:
+        _bad("provider_unavailable", "/provider", "Cannot locate the selected provider executable")
+    with open(path, "rb") as stream:
+        actual = "sha256:" + file_digest(stream, "sha256").hexdigest()
+    if actual != expected:
+        _bad("provider_digest_mismatch", "/provider/artifact_digest", "Executable digest differs")
+    return path
+
+
 def paignia_game_solve_native(payload: Any, paignia_binary: str) -> dict[str, Any]:
-    """Call Paignia's native solve for static game evaluation.
-
-    Converts Dapane's d2-paignia input to Paignia's GameSpecification JSON
-    format, calls the paignia-native binary via subprocess, and returns the
-    solution wrapped in Dapane's d2-paignia output envelope.
-    """
-    p = _object(
-        payload,
-        "/",
-        {
-            "schema_version",
-            "provider",
-            "game_id",
-            "player_id",
-            "key",
-            "payoff_mapping",
-            "actions",
-        },
-    )
-    if p["schema_version"] != "dapane-d2-paignia/0.1":
-        _bad("unsupported_schema", "/schema_version", "Only dapane-d2-paignia/0.1")
-    pin = negotiate(p["provider"])
-    if pin["provider"] != "edithatogo/paignia":
-        _bad("unsupported_provider", "/provider", "Expected Paignia")
-
-    game_id = _ident(p["game_id"], "/game_id")
-    player_id = _ident(p["player_id"], "/player_id")
-    key = dict(zip(KEY_FIELDS, _key(p["key"], "/key")))
-
-    # Build Paignia GameSpecification JSON
-    actions = p["actions"]
-    if not isinstance(actions, list) or not 2 <= len(actions) <= 32:
-        _bad("invalid_request", "/actions", "Two to 32 explicit actions required")
-
-    edges = []
-    terminals = {}
-    action_ids = set()
-    exact_payoffs = []
-    for i, row in enumerate(actions):
-        a = _object(row, f"/actions/{i}", {"id", "utility"})
-        action = _ident(a["id"], f"/actions/{i}/id")
-        if action in action_ids:
-            _bad("duplicate_action", f"/actions/{i}/id", "Each decision action must be unique")
-        action_ids.add(action)
-        terminal = f"terminal:{action}"
-        if len(terminal.encode("utf-8")) > 128:
-            _bad(
-                "invalid_identity",
-                f"/actions/{i}/id",
-                "Terminal identity would exceed 128 bytes",
-            )
-        v = _fraction(a["utility"], f"/actions/{i}/utility")
-        terminals[terminal] = {
-            "kind": "Terminal",
-            "payoffs": {player_id: _f64(v, f"/actions/{i}/utility")},
-        }
-        edges.append({"action": action, "target": terminal})
-        exact_payoffs.append({"action": action, "utility": _wire(v)})
-
-    game_spec = {
-        "schema_version": "1.0.0",
-        "id": game_id,
-        "game": {
-            "root": "start",
-            "nodes": {
-                "start": {
-                    "kind": "Decision",
-                    "player": player_id,
-                    "edges": edges,
-                },
-                **terminals,
-            },
-        },
-    }
-
-    # Write request to temp file and call paignia-native
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as req_file:
-        json.dump(game_spec, req_file)
-        req_path = req_file.name
-    out_path = req_path + ".out"
-    try:
+    """Run a profile-qualified caller on the same validated game used for preparation."""
+    packet = paignia_packet(payload)
+    graph = packet["game_specification"]
+    paignia_binary = _provider_executable(paignia_binary, packet["provider"]["artifact_digest"])
+    with tempfile.TemporaryDirectory() as directory:
+        request = os.path.join(directory, "game.json")
+        response = os.path.join(directory, "solution.json")
+        with open(request, "w", encoding="utf-8") as stream:
+            json.dump(graph, stream)
         result = subprocess.run(
-            [paignia_binary, "solve", "--request", req_path, "--output", out_path],
+            [paignia_binary, "solve", "--request", request, "--output", response],
             capture_output=True,
             text=True,
             timeout=60,
         )
-        if result.returncode != 0:
-            _bad(
-                "native_provider_failed",
-                "/",
-                f"Paignia native exited {result.returncode}: {result.stderr.strip()}",
-            )
-        with open(out_path, encoding="utf-8") as f:
-            paignia_response = json.loads(f.read())
-    finally:
-        for path in (req_path, out_path):
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
-
-    if "solution" not in paignia_response:
-        _bad(
-            "native_provider_error",
-            "/",
-            "Paignia native did not return a solution",
-        )
-
-    sol = paignia_response["solution"]
-
-    return _closed_output(
-        "dapane:d2-paignia:0.1\n",
-        {
-            "schema_version": p["schema_version"],
-            "provider": pin,
-            "provider_execution": "native_invoked",
-            "native_wire_supported": True,
-            "key": key,
-            "payoff_mapping": p["payoff_mapping"],
-            "exact_payoffs": exact_payoffs,
-            "game_specification": game_spec,
-            "paignia_solution": sol,
-            "application_requirement": None,
-        },
+        if result.returncode:
+            _bad("native_provider_failed", "/", f"Paignia native exited {result.returncode}")
+        with open(response, encoding="utf-8") as stream:
+            envelope = json.load(stream)
+            solution = envelope.get("solution") if isinstance(envelope, dict) else None
+    if not isinstance(solution, dict):
+        _bad("native_provider_error", "/", "Paignia returned no solution")
+    provider = packet["provider"]
+    root = graph["game"]["root"]
+    node = graph["game"]["nodes"][root]
+    payoffs = {
+        edge["action"]: graph["game"]["nodes"][edge["target"]]["payoffs"][node["player"]]
+        for edge in node["edges"]
+    }
+    action = solution.get("selected_action")
+    payoff = solution.get("expected_payoff")
+    if (
+        solution.get("profile") != provider["contract"]
+        or solution.get("source_revision") != provider["revision"]
+        or solution.get("root") != root
+        or not isinstance(action, str)
+        or action not in payoffs
+        or type(payoff) not in (float, int)
+        or payoff != payoffs[action]
+    ):
+        _bad("native_provider_error", "/", "Paignia returned an inconsistent solution or source")
+    del packet["output_digest"]
+    packet.update(
+        provider_execution="native_invoked",
+        native_wire_supported=True,
+        paignia_solution=solution,
+        application_requirement=None,
     )
+    return _closed_output("dapane:d2-paignia:0.1\n", packet)
