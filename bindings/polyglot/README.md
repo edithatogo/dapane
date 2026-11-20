@@ -1,4 +1,4 @@
-# Optional R and C ABI candidates
+# Optional R and Julia packages
 
 This namespace belongs to `polyglot_bindings_20261108`. R calls the existing
 Rust kernel directly. The proposed C ABI calls the same functions. Numerical
@@ -6,13 +6,12 @@ validation, exact arithmetic, method identities, digests and per-generated-segme
 half-even rounding stay in `dapane-core`. No Python/provider runtime is required.
 All cases are synthetic.
 
-**Current status:** the integrator replayed installed Linux R and native C
-acceptance and added standalone CI. The owner corrected ABI lint precedence and
-Python formatting without changing runtime source or fixture assertions. See the
-[current source-bound evidence](../../conductor/tracks/polyglot_bindings_20261108/owner-quality-20261115.md).
-Total ABI acceptance, optional legal/security/release requirements and other hosts
-remain open. A local Julia caller is in `julia/`. It is not an installed package
-or a JLL artifact.
+The selected local packages are a vendored R source tarball and a macOS arm64
+Julia archive with its native library. Both passed a fresh install and the same
+24 shared cases on macOS arm64. Hosted Linux x86_64 R and C evidence has its own
+documented scope. See the
+[distribution review](../../conductor/tracks/polyglot_bindings_20261108/distribution-review.md)
+for exact artifact hashes and the release boundaries.
 
 ## R direct Rust boundary
 
@@ -37,17 +36,18 @@ it does not attempt forbidden calls to R from foreign worker threads.
 The registration pattern is adapted from rextendr at
 `d7383605ebdc766ddc46e9b73ff2b34bf6c19565`, with the MIT notice retained in
 `r/inst/REXTENDR-LICENSE.txt`. rextendr 0.5.0 is the documented development
-convention, not a runtime dependency; its scaffolding command was not executed.
-The small Makevars is limited to the intended Linux linker set.
+convention. The source package contains the Rust sources and compiles on the
+qualified host at install time.
 
 ## Self-contained R source package
 
-With R 4.5.0, Rust 1.99.1, a C compiler and Python 3.11+ available, use a new
-staging directory outside the checkout:
+Select the repo-local CPython 3.15.1. Use R 4.6.2 for the macOS arm64
+qualification, with Rust and a C compiler available. Build in a new staging
+directory outside the checkout.
 
 ```sh
 cargo fetch --locked --manifest-path bindings/polyglot/r/src/rust/Cargo.toml
-python3 bindings/polyglot/stage_r.py --output /absolute/new-stage/dapaneR
+.venv/bin/python bindings/polyglot/stage_r.py --output /absolute/new-stage/dapaneR
 cd /absolute/artifacts
 R CMD build --no-build-vignettes --no-manual /absolute/new-stage/dapaneR
 R CMD INSTALL --preclean --library=/absolute/isolated-r-library dapaneR_0.1.0.tar.gz
@@ -57,8 +57,8 @@ Staging copies the existing core source bytes, resolves workspace manifest
 inheritance only in that generated copy, compares source hashes and vendors the
 locked Cargo graph. Installation then builds offline. The installed package
 retains source/lock provenance; the original core and root workspace are untouched.
-Local source packages are acceptance inputs, not published registry artifacts.
-Full notices and release rights remain the integrator's qualification work.
+The offline local install uses the built source archive and its vendored
+dependencies. Public distribution remains part of the release track.
 
 ## C ABI proposal
 
@@ -130,29 +130,46 @@ same checkout:
 cargo build --offline --locked --release -p dapane-cli
 cargo build --offline --locked --release --manifest-path bindings/polyglot/abi/Cargo.toml
 julia --project=bindings/polyglot/julia -e 'using Pkg; Pkg.test()'
-python3 bindings/polyglot/tests/prepare_cases.py --cli target/release/dapane --output /absolute/new-cases
-julia --startup-file=no bindings/polyglot/julia/test/installed.jl /absolute/new-stage /absolute/new-depot /absolute/new-cases bindings/polyglot/abi/target/release/libdapane_abi.dylib
+.venv/bin/python bindings/polyglot/tests/prepare_cases.py --cli target/release/dapane --output /absolute/new-cases
 ```
 
-The 20 November source run passed 20 tests on Julia 1.13.4. A separate staged
-install, outside the checkout, copied `libdapane_abi.dylib` into that package's
-`artifacts/` directory. With no explicit library path, the installed package
-matched all 24 prepared cases, and the first success survived input overwrite
-plus `GC.gc()`. BinaryBuilder/JLL packaging is not selected.
+On macOS arm64, build and verify the local archive with Julia 1.13.4 and the
+qualified ABI library. Use new install paths outside the checkout.
+
+```sh
+.venv/bin/python bindings/polyglot/package_julia.py \
+  --library bindings/polyglot/abi/target/release/libdapane_abi.dylib \
+  --out /absolute/artifacts/dapane-julia-macos-arm64.tar
+JULIA_PKG_OFFLINE=true julia --startup-file=no bindings/polyglot/julia/test/installed.jl \
+  --archive /absolute/new-stage /absolute/new-depot /absolute/new-cases \
+  /absolute/artifacts/dapane-julia-macos-arm64.tar
+```
+
+For local use, verify the archive digest, extract it into the package directory
+that will hold the library, and add that directory to a Julia environment.
+
+```sh
+mkdir /absolute/dapane-julia
+tar -xf /absolute/artifacts/dapane-julia-macos-arm64.tar -C /absolute/dapane-julia
+JULIA_PKG_OFFLINE=true julia --startup-file=no --project=/absolute/julia-env -e \
+  'using Pkg; Pkg.develop(path=ARGS[1]); using Dapane; println(Dapane.resolve_library())' \
+  /absolute/dapane-julia
+```
+
+Julia loads `artifacts/libdapane_abi.dylib` from the package directory.
+Call `Dapane.evaluate_json(request)` with a UTF-8 JSON string. BinaryBuilder/JLL
+and registry distribution remain outside the selected local package.
 
 ## Shared changes and rollback
 
-This lane changes only `bindings/polyglot/` and its own track. Each optional
-Rust crate has a standalone workspace/lockfile. No root Cargo/CI, existing crate,
-schema, provider manifest or root document changes are needed to inspect the
-candidate. The integrator has accepted the path, synchronized the blocked registry
-and added installed-host/native CI. Optional dependency/advisory, notice and
-staged legal-payload accounting remain integrator requirements.
+Each optional Rust crate has a standalone workspace and lockfile. The
+[distribution review](../../conductor/tracks/polyglot_bindings_20261108/distribution-review.md)
+and standalone host workflow record their respective installed and native checks.
 
 Preserve ABI major 1 only after qualification. An incompatible ownership or wire
 change needs a new major/symbol prefix; numerical changes need their own core
 method/contract decision. Until release qualification exists, rollback consists
 of retaining the existing Rust/CLI/Python surfaces and omitting this namespace.
-Only the exact Linux x86_64 combinations and artifacts in the evidence are tested.
+Use the platform and artifact combinations in the distribution and hosted records.
 Julia must consume accepted C-qualified library bytes; rebuilding the same source
 does not establish binary identity or transfer acceptance to another host.

@@ -2,6 +2,9 @@
 
 ## Current owner follow-up
 
+The [distribution review](distribution-review.md) records the completed macOS
+arm64 R source package and Julia archive reinstallation.
+
 The [current quality/acceptance handoff](owner-quality-20261115.md) and
 [structured evidence](owner-quality-20261115.json) supersede the original pending
 replay, namespace, registry and standalone-CI requests below. The integrator

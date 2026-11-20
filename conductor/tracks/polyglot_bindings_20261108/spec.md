@@ -7,8 +7,9 @@ Expose the same Rust numerical implementation to R and Julia with explicit owner
 This specification retains the original acceptance criteria. The direct R wrapper
 and C ABI proposal have bounded installed Linux R/native C execution evidence in
 [the current owner record](owner-quality-20261115.md). Total ABI acceptance,
-optional legal/security/release gates and other hosts remain separate. Julia
-requires a packaged library and installed-artifact evidence. The local caller is not that package.
+optional legal/security/release gates and other hosts remain separate. The
+[distribution review](distribution-review.md) records the installed R tarball
+and Julia package with its bundled native library.
 
 ## Scope and requirements
 
@@ -53,9 +54,11 @@ Floating-point coercion, foreign allocation mismatches and host GC/thread errors
 
 Version the ABI and host packages independently with explicit compatibility ranges. Keep prior native artifacts installable and preserve shared reference fixtures.
 
-## Open implementation decisions
+## Selected distribution
 
-Select initial R/Julia versions and native targets based on installed-artifact evidence. A common C ABI is not a prerequisite for the R design.
+Select R 4.6.2 and Julia 1.13.4 on macOS arm64 for the local package handoff.
+R calls Rust directly. Julia uses the C ABI dylib in the package archive.
+Any public registry or JLL selection requires release qualification.
 
 ## Execution and verification
 

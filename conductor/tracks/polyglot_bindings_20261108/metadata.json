@@ -1,9 +1,9 @@
 {
   "track_id": "polyglot_bindings_20261108",
   "type": "feature",
-  "status": "blocked",
+  "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-20T06:59:00Z",
+  "updated_at": "2026-11-20T13:28:00Z",
   "description": "Expose the same Rust numerical implementation to R and Julia with explicit ownership, exact transport and installed-artifact parity. R and Julia are independent delivery branches.",
   "repositories": [
     "."
@@ -26,20 +26,23 @@
     "Do not implement Julia until the native C consumer qualifies the ABI.",
     "The 20 November local Julia caller follows the recorded B3.2 C consumer. The staged install copies one host library beside the package. It is not a JLL artifact or a release qualification.",
     "Original recovery evidence remains historical; the integrator replayed exact received source and each later head requires its own source-bound qualification.",
-    "Shared namespace/registry/standalone CI requests accepted in PR20; this owner repair preserves those objects and does not implement Julia."
+    "Shared namespace/registry/standalone CI requests accepted in PR20; this owner repair preserves those objects and does not implement Julia.",
+    "Select the vendored R source archive and macOS arm64 Julia package archive for local distribution. Keep registry publication and JLL selection under release assurance."
   ],
   "requirement_ids": [
     "RQ-09",
     "RQ-02"
   ],
-  "capability_status": "Installed Linux and macOS R/C and staged macOS Julia verified; ABI v1 source review passed; distribution selection remains open",
+  "capability_status": "Local macOS arm64 R source and Julia archives independently installed; ABI v1 source and instrumented C checks passed in their recorded scope",
   "verification": {
-    "status": "partial",
+    "status": "passed",
     "commands": [
       "RECEIVED hosted source 8716c423f15c6449940df902fbabfab870d38f4d: installed R/native C acceptance passed; ABI Clippy and Python formatting failed.",
       "CORRECTION source 988e41158a17d6613006b9bffe59cd59a3aa9cca: Ruff checks, R/ABI formatting, ABI Clippy -D warnings, 5 ABI tests, 4 packaging tests, locked/offline builds, 24 cases/400 ordinary native calls, Conductor and 12 regressions passed.",
       "FAILED local sanitizer execution: LeakSanitizer cannot run under ptrace; no pass inferred.",
-      "HOSTED CORRECTION 988e41158a17d6613006b9bffe59cd59a3aa9cca: all 41 binding commands passed, including R installation/host acceptance and C ASan/UBSan with leak detection; 228 source files and 103 retained entries verified. Final documentation head replay remains separate."
+      "HOSTED CORRECTION 988e41158a17d6613006b9bffe59cd59a3aa9cca: all 41 binding commands passed, including R installation/host acceptance and C ASan/UBSan with leak detection; 228 source files and 103 retained entries verified. Final documentation head replay remains separate.",
+      "Fresh macOS arm64 R 4.6.2 source-tarball install, 24 shared cases, host rejection, GC and two interpreters passed.",
+      "Julia 1.13.4 archive installation in a fresh depot with JULIA_PKG_OFFLINE=true passed 4 artifact checks and 44 assertions over 24 shared cases. Extracted legal and native library bytes matched."
     ],
     "evidence": "owner-quality-20261115.md",
     "receipt": "owner-quality-20261115.json",
@@ -63,8 +66,9 @@
       "r_version": "4.6.2",
       "r_cases": 24,
       "r_interpreters": 2,
-      "release_selection": "pending"
-    }
+      "release_selection": "R source tarball and Julia macOS arm64 archive selected and installed for local distribution"
+    },
+    "distribution_evidence": "distribution-review.md"
   },
   "completion_evidence": [
     "The R wrapper calls the core directly and can be completed without the C ABI, Julia or Python bindings.",

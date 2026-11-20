@@ -1,10 +1,12 @@
-# Install a staged copy of the package, with the host library beside it, and
-# compare every prepared case to the CLI bytes. This file is not part of Pkg.test.
+# Install the archive or stage the package beside its host library, then compare
+# every prepared case to the CLI bytes. This file is outside Pkg.test.
 
 const isolated = !isempty(ARGS) && first(ARGS) == "--isolated"
 isolated && popfirst!(ARGS)
-length(ARGS) == 4 || error("Usage: installed.jl STAGE DEPOT CASES LIBRARY")
-const stage, depot, cases, library = abspath.(ARGS)
+const from_archive = !isempty(ARGS) && first(ARGS) == "--archive"
+from_archive && popfirst!(ARGS)
+length(ARGS) == 4 || error("Usage: installed.jl [--archive] STAGE DEPOT CASES LIBRARY_OR_ARCHIVE")
+const stage, depot, cases, source = abspath.(ARGS)
 const repo = normpath(joinpath(@__DIR__, "..", "..", "..", ".."))
 if !isolated
     for path in (stage, depot)
@@ -13,21 +15,35 @@ if !isolated
         ispath(path) && error("Refusing to reuse $path")
     end
     separator = Sys.iswindows() ? ";" : ":"
-    cmd = `$(Base.julia_cmd()) --startup-file=no $(@__FILE__) --isolated $stage $depot $cases $library`
+    mode = from_archive ? ["--archive"] : String[]
+    cmd = `$(Base.julia_cmd()) --startup-file=no $(@__FILE__) --isolated $mode $stage $depot $cases $source`
     run(addenv(cmd, "JULIA_DEPOT_PATH" => depot * separator, "JULIA_LOAD_PATH" => "@" * separator * "@stdlib"))
     exit()
 end
 first(DEPOT_PATH) == depot || error("Julia did not initialize the requested depot")
-isfile(library) || error("Missing library $library")
+isfile(source) || error("Missing library or archive $source")
 isfile(joinpath(cases, "cases.tsv")) || error("Missing prepared cases in $cases")
 
 using Pkg
+using Tar
 
-mkpath(joinpath(stage, "src"))
-mkpath(joinpath(stage, "artifacts"))
-cp(joinpath(@__DIR__, "..", "Project.toml"), joinpath(stage, "Project.toml"))
-cp(joinpath(@__DIR__, "..", "src", "Dapane.jl"), joinpath(stage, "src", "Dapane.jl"))
-cp(library, joinpath(stage, "artifacts", basename(library)))
+if from_archive
+    Sys.isapple() && Sys.ARCH == :aarch64 || error("Archive qualification is for macOS arm64")
+    expected = [
+        "LICENSE", "NOTICE", "Project.toml", "THIRD_PARTY_NOTICES.txt",
+        "artifacts/libdapane_abi.dylib", "src/Dapane.jl",
+    ]
+    members = Tar.list(source)
+    all(entry -> entry.type == :file, members) || error("Archive must contain regular files")
+    sort([entry.path for entry in members]) == expected || error("Unexpected package members")
+    Tar.extract(source, stage)
+else
+    mkpath(joinpath(stage, "src"))
+    mkpath(joinpath(stage, "artifacts"))
+    cp(joinpath(@__DIR__, "..", "Project.toml"), joinpath(stage, "Project.toml"))
+    cp(joinpath(@__DIR__, "..", "src", "Dapane.jl"), joinpath(stage, "src", "Dapane.jl"))
+    cp(source, joinpath(stage, "artifacts", basename(source)))
+end
 
 Pkg.activate(joinpath(depot, "env"); io = devnull)
 Pkg.develop(path = stage; io = devnull)
@@ -40,7 +56,7 @@ using Test
     @test realpath(pathof(Dapane)) == realpath(joinpath(stage, "src", "Dapane.jl"))
     @test Base.active_project() == joinpath(depot, "env", "Project.toml")
     @test resolved == abspath(joinpath(stage, "artifacts", Dapane.expected_library_name()))
-    @test basename(resolved) == basename(library)
+    @test basename(resolved) == Dapane.expected_library_name()
 end
 
 rows = readlines(joinpath(cases, "cases.tsv"))

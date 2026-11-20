@@ -1,6 +1,6 @@
 # Implementation plan: R and Julia bindings
 
-Status: blocked
+Status: archived
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -29,8 +29,11 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 ## Phase 4 — Independent publication readiness
 
 - [x] B4.1 Record separate R, ABI and Julia compatibility/maturity states, reproduction commands and deprecation/rollback rules.
-- [!] B4.2 Verify each selected release surface independently; do not delay a qualified R capability for unrelated Julia/C ABI work.  
-  The installed R 4.6.2 candidate passed 24 parity cases on macOS arm64. The Julia candidate also has installed parity. Registry channels, release accounts and any JLL distribution remain unselected under L1.2.
+- [x] B4.2 Verify each selected release surface independently; do not delay a qualified R capability for unrelated Julia/C ABI work.
+  Selected the vendored R source package and the Julia package archive with a
+  macOS arm64 dylib for local distribution. Each installed in a fresh environment
+  and passed 24 shared cases. The [distribution review](distribution-review.md)
+  records exact package hashes and checks. Registry publication remains under L1.2.
 
 ## Evidence record
 
@@ -46,7 +49,8 @@ Python formatting. Local exact-source quality checks and ordinary native C
 acceptance passed; the local sanitizer attempt failed under traced execution.
 The correction source then passed all 41 hosted binding commands, including
 installed R and ASan/UBSan C acceptance. Final-head execution remains separately
-source-bound. B3.1 passed the separate integration review. B4.2 is blocked on release selection.
+source-bound. B3.1 passed the separate integration review. B4.2 covers the
+selected local distribution surfaces.
 
 The integrator accepted `bindings/polyglot/`, reconciled the blocked registry and
 added standalone CI. Those shared requests are no longer blockers. Original
