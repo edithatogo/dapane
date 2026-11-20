@@ -2,7 +2,7 @@
 
 Track: `frontier_benchmarks_20261108`
 
-Status: in_progress
+Status: archived
 
 Test whether evidence-linked, object-centric costing provides measurable advantages over strong current alternatives. Treat novelty and frontier claims as empirical questions.
 
@@ -32,3 +32,5 @@ The sole release integrator owns shared files, registry/CI changes and merge dec
 No production evaluator or shared numerical fixture was changed.
 
 The [20 November native experiments](../../../benchmarks/static/evidence/native-experiments.json) cover actual newborn, process and installed decision-provider examples. Authorised external data and empirical transportability remain open.
+
+The archived scope includes [the external CMS benchmark](../../../benchmarks/static/EXTERNAL.md) and its [review](external-review.md).

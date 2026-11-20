@@ -1,0 +1,24 @@
+{
+  "protocol": "cms-funding-transport-v1",
+  "source_url": "https://data.cms.gov/data-api/v1/dataset/2941ab09-8cee-49d8-9703-f3c5b854e388/data?size=200&filter%5BDRG_Cd%5D=470",
+  "source_sha256": "73019bb07a322643b09859d1239f038a777c525a9953d91e0931f24e7138b8a7",
+  "retrieved_on": "2026-11-20",
+  "cli_sha256": "6c1d3f0faaf0b0d951eabc76afbd2e856b389fce21c1501eae80cfd09a3a4a3f",
+  "eligible_geographies": 51,
+  "tested_geographies": 51,
+  "absent_geographies": [],
+  "excluded_fields": {},
+  "discharges": 64419,
+  "local_payment_cents": 92258657800,
+  "national_rate_payment_cents": 92258657798,
+  "sum_absolute_state_error_cents": 14961664966,
+  "negative_state_differences": 16,
+  "positive_state_differences": 35,
+  "zero_state_differences": 0,
+  "sum_absolute_relative_error": {
+    "numerator": 14961664966,
+    "denominator": 92258657800
+  },
+  "local_report_sha256": "a6e551523cc7660ed6151860d38174e89d7f5ae7a9c368502e176a11033ebbb3",
+  "national_rate_report_sha256": "a195a797a68b634d5aacd6c8e1ffd1a67f6ff81b2d65921dc8f66ac923fa9249"
+}
