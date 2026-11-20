@@ -38,6 +38,9 @@ end
 @testset "errors, lifetime and collection" begin
     request = Vector{UInt8}(codeunits(read(joinpath(ROOT, "fixtures/workforce.json"), String)))
     status, body = Dapane.evaluate_bytes(request; library = LIBRARY)
+    interleaved = zeros(UInt8, 2 * length(request))
+    interleaved[1:2:end] .= request
+    @test Dapane.evaluate_bytes(@view(interleaved[1:2:end]); library = LIBRARY) == (status, body)
     fill!(request, 0xff)
     GC.gc()
     @test status == Dapane.OK
