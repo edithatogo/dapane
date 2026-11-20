@@ -2,7 +2,12 @@
 
 import unittest
 
-from perspective_table import PerspectiveTableError, arrange, value_of_perspective
+from perspective_table import (
+    PerspectiveTableError,
+    arrange,
+    credal_dominance,
+    value_of_perspective,
+)
 
 
 def _row(strategy, perspective, draw, amount):
@@ -91,3 +96,18 @@ class PerspectiveTableTests(unittest.TestCase):
             ValueArray.from_numpy(values, strategy_names=["change", "current"])
         )
         self.assertEqual(analysis.evpi(), 10.0)
+
+    def test_pinned_tobac_keeps_draw_identity_under_credal_dominance(self):
+        try:
+            result = credal_dominance(table())
+        except PerspectiveTableError as error:
+            if error.code == "provider_unavailable":
+                self.skipTest(str(error))
+            raise
+        self.assertEqual(len(result["cells"]), 8)
+        self.assertEqual(
+            [item["common_optimal_actions"] for item in result["perspectives"]],
+            [["alternative"], ["alternative"]],
+        )
+        self.assertEqual(result["perspectives"][0]["states"][1]["draw_id"], "draw-b")
+        self.assertEqual(result["perspectives"][0]["states"][1]["subgroup_id"], "Māori / NZDep-1")

@@ -25,12 +25,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 
-- [~] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.  
-  **In progress 2026-11-20:** `export_perspective_table` emits the six-part key. `arrange` keeps all eight cells of the synthetic two-draw table, and the installed Voiage 3.1.0 `value_of_perspective` returns `alternative` for both perspectives without changing strategy or perspective order. Tobac is not installed and has not imported the table.
+- [x] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.  
+  **Executed 2026-11-20:** The synthetic eight-cell table keeps every joint key. Installed Voiage 3.1.0 `value_of_perspective` selects `alternative` for both perspectives. Tobac `891f79e07292b7754f78d7193130623bd5f9e243` (`tobac-regulatory-research` 0.2.0, module `__version__` 0.1.0) `credal.assess_decision` identifies `alternative` as commonly optimal for each perspective, with `draw-b` and subgroup `Māori / NZDep-1` still on the second state.
 - [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.  
   **Executed 2026-11-20:** [FALLBACK.md](FALLBACK.md) records the three perspective boundaries, the refusal to treat excise or GST as deadweight loss, and the requirement that a missing adapter leave `tobac` and `voiage` on their own code.
 - [~] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.  
-  **In progress 2026-11-20:** The wheel file `voiage-3.1.0-cp315-abi3-macosx_11_0_arm64.whl` hashes to `71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140`, the same digest recorded in its install `direct_url.json`. With `polars` and `pyarrow` available, the perspective-table test called that install and kept the eight joint keys. Tobac is not installed, and the Dapane producer itself is not an installed package, so the consumer revision record is incomplete.
+  **In progress 2026-11-20:** Voiage 3.1.0 wheel `71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140` and Tobac commit `891f79e07292b7754f78d7193130623bd5f9e243` both consumed the table. The Dapane producer itself is not an installed package, so the producer revision record is incomplete.
 
 ## Bounded owner quality pass — 15 November 2026
 

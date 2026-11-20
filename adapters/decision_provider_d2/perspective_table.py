@@ -7,6 +7,7 @@ and subgroup on every cell, in the same order as the array.
 
 from __future__ import annotations
 
+import json
 from fractions import Fraction
 from typing import Any, NoReturn
 
@@ -145,5 +146,67 @@ def value_of_perspective(table: dict[str, Any]) -> dict[str, Any]:
         "samples": arranged["samples"],
         "strategy_ids": arranged["strategy_ids"],
         "perspective_ids": arranged["perspective_ids"],
+        "cells": arranged["cells"],
+    }
+
+
+def credal_dominance(table: dict[str, Any]) -> dict[str, Any]:
+    """Ask Tobac which strategies dominate, one perspective at a time.
+
+    Each state keeps the scenario, draw, replication and subgroup that produced
+    its net benefit. The numeric matrix carries no identity of its own.
+    """
+    arranged = arrange(table)
+    try:
+        from tobac._core import DecisionProblem
+        from tobac.credal import assess_decision
+        from tobac.evidence import Belief, Scope
+    except ImportError as error:
+        _bad("provider_unavailable", str(error))
+    scope = Scope(
+        geography="synthetic",
+        population="synthetic",
+        start="2026-01-01",
+        end="2026-12-31",
+        unit="net_monetary_benefit",
+    )
+    perspectives = []
+    for index, perspective in enumerate(arranged["perspective_ids"]):
+        state_ids = tuple(
+            json.dumps(list(sample), ensure_ascii=False, separators=(",", ":"))
+            for sample in (
+                tuple(row[name] for name in SAMPLE_FIELDS) for row in arranged["samples"]
+            )
+        )
+        matrix = [
+            [float(Fraction(row[index])) for row in strategies]
+            for strategies in arranged["net_monetary_benefit"]
+        ]
+        belief = Belief(
+            DecisionProblem(matrix, arranged["strategy_ids"], "net_monetary_benefit"),
+            state_ids,
+            scope,
+        )
+        if tuple(belief.state_ids) != state_ids:
+            _bad("identity_lost", "Tobac changed the state order")
+        if tuple(belief.problem.action_names) != tuple(arranged["strategy_ids"]):
+            _bad("identity_lost", "Tobac changed the strategy order")
+        result = assess_decision(belief)
+        if set(result["action_status"]) != set(arranged["strategy_ids"]):
+            _bad("identity_lost", "Tobac dropped or renamed a strategy")
+        perspectives.append(
+            {
+                "perspective": perspective,
+                "states": arranged["samples"],
+                "strategy_ids": arranged["strategy_ids"],
+                "status": result["status"],
+                "common_optimal_actions": list(result["common_optimal_actions"]),
+                "action_status": dict(result["action_status"]),
+            }
+        )
+    return {
+        "provider": "tobac",
+        "provider_function": "tobac.credal.assess_decision",
+        "perspectives": perspectives,
         "cells": arranged["cells"],
     }
