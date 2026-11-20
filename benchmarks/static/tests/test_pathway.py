@@ -27,4 +27,4 @@ class PathwayTests(unittest.TestCase):
         self.assertEqual(report["flattened_hours"], Fraction(1))
         self.assertEqual(report["object_centric_cost"], Fraction(45))
         self.assertEqual(report["flattened_cost"], Fraction(90))
-        self.assertIn("capacity_allocations", report["oracle"])
+        self.assertEqual(report["oracle"], "Unqualified oracle scope: capacity_allocations")
