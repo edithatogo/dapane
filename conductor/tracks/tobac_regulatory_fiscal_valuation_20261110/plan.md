@@ -26,7 +26,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 
 - [ ] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.
-- [ ] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.
+- [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.
+  The record describes the three perspective rules, the domestic transfer boundary and the intended fallback when the optional adapter is unavailable. [Fallback](FALLBACK.md)
 - [ ] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.
 
 ## Bounded owner quality pass — 15 November 2026
@@ -46,6 +47,7 @@ limitations and failed formatting outcomes remain historical evidence; they are
 not relabelled as current passes.
 
 The track remains `in_progress`. The 20 November checkpoint verification covers
-T1 and the bounded synthetic T2.1–T2.2 implementation. T2.3 parity, T3 consumer
-handoff and production method qualification remain open.
+T1 and the bounded synthetic T2.1–T2.2 implementation. T2.3 parity, T3.1 table
+handoff, T3.3 installed consumer execution and production method qualification
+remain open.
 [Verification](VERIFICATION.md) · [Metadata](metadata.json) · [Handoff](HANDOFF.md)
