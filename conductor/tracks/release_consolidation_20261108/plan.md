@@ -9,8 +9,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [x] L1.1 Select the exact first capability set: qualified Rust core, CLI and Python with workforce/genomics evidence; list all other tracks as optional or planned.
   - The manifest selects core/CLI/Python, profiles 0.1/0.2, Rust/CLI intervals 0.1, run-bundles 0.1, independent synthetic cases and the selected QLD HP3.1/manual-extraction provider subset. Existing owners' durable records and exact pins are consumed; all four prerequisite archives are incorporated. Broader providers and optional tracks remain separate.
-- [!] L1.2 Resolve repository/package licensing, registry identities, supported matrix and source redistribution terms before public package publication.
-  - Apache-2.0 project licensing is resolved. Complete locked dependency and Rust standard-library notices are generated with authenticated provenance and package-byte checks. The optional Python aggregate licence expression is omitted under the documented metadata boundary. Channel/account choices remain open; publication stays disabled and external provider assets are excluded.
+- [x] L1.2 Resolve repository/package licensing, registry identities, supported matrix and source redistribution terms before public package publication.
+  - The owner selected GitHub Releases under `edithatogo/dapane` for the `v0.1.0` prerelease and deferred PyPI and crates.io. The authenticated GitHub account has admin permission on that repository. The release uses the exact `d02095d` candidate for Linux x86_64, with its Python wheel qualified on CPython 3.15.1. Dapane project material is Apache-2.0. The verified distribution retains project and dependency notices and excludes external provider assets. [Decision and evidence](evidence.md#github-prerelease-selection-21-november-2026)
 - [x] L1.3 Configure reproducible artifacts, dependency/advisory/licence checks, scoped CI permissions and provenance/SBOM generation using maintained tooling.
   - Historical PR #17 source `5f03f28` and post-merge `main` source `0658d94` both passed all four hosted dual builds, advisory/licence checks, three SBOMs and the aggregate matrix. On `main` (`0658d94`, run `43769725207`), trusted-main signed provenance (`attest` job `132994080532`, artifact `14184669447`) passed and all 20 subject files (14 distinct digests) verified offline with `gh attestation verify --bundle`. Central offline security remains a separate unexecuted gate.
 - [x] L1.4 Verify a clean build and installed-consumer reference runs for every advertised target; retain exact commands and artifact identities.
@@ -45,7 +45,7 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
     and verifier now enforce its inclusion. The 67 control tests and Ruff passed.
     [Control review and runner evidence](evidence.md#publication-control-review--20-november-2026).
 - [!] L4.2 Archive this track after all mandatory acceptance criteria have evidence.
-  - Archival is already authorised. Trusted-main signed provenance (`attest` job `132994080532`, artifact `14184669447`) and ordinary exact-source `main` checks are now verified on `0658d94`. Channel/account choices (`L1.2`) and central `Offline AI security` execution (run `43769725442` auto-cancelled after 24h queue timeout with `runner_id: 0` and 0 steps executed) remain outstanding. Do not weaken the remaining criteria to obtain an archive marker.
+  - The selected candidate `d02095d` passed release assurance and signed provenance verification. The central scan for this revision is queued with no runner assigned. Publish the `v0.1.0` prerelease after the exact-source scan passes, then verify its tag and assets before archival. [Offline security run](https://github.com/edithatogo/dapane/actions/runs/44748104889)
 
 ## Evidence record
 

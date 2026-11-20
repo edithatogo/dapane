@@ -36,7 +36,7 @@ The [installed core and two-provider qualification](../docs/python-provider-veri
 
 | Open track | Implemented | What remains |
 | --- | --- | --- |
-| [Release assurance](tracks/release_consolidation_20261108/plan.md) | Repeatable candidate builds, installed consumers, provenance and dependency checks | Confirm publication channel and account, and obtain a completed central offline-security run for the candidate source. |
+| [Release assurance](tracks/release_consolidation_20261108/plan.md) | Repeatable candidate builds, installed consumers, provenance and dependency checks. GitHub prerelease channel and account selected. | Pass the central offline-security scan on `d02095d`, publish and verify `v0.1.0`, then archive the track. |
 
 The [first release handoff](../docs/release-handoff-2026-11-15.md) and [trusted-main qualification](../docs/release-qualification-2026-11-19.md) retain the source and artifact identities for earlier candidates.
 

@@ -48,10 +48,12 @@ The canonical LICENSE, NOTICE and THIRD_PARTY_NOTICES.txt are checked in source,
 installed wheels and candidate CLI bundles. The dependency and standard-library
 texts retain their source identities; the optional Python aggregate licence
 expression is omitted as explained in [release controls](release-controls.md).
-External provider assets remain excluded. Registry/channel choices and final
-source qualification remain open. Workspace Cargo
-publication stays disabled; this workflow has no registry publisher, release-tag
-action or repository archive operation.
+External provider assets remain excluded. GitHub Releases under
+`edithatogo/dapane` is the selected channel for the `v0.1.0` prerelease.
+Publication requires a successful central offline-security scan on the selected
+candidate. PyPI and crates.io identities are deferred. The workflow verifies and
+attests candidate artifacts for release through the selected channel.
+[Release decision](../conductor/tracks/release_consolidation_20261108/evidence.md#github-prerelease-selection-21-november-2026)
 The publication check intentionally returns exit code 2 with those blockers:
 
 ~~~sh

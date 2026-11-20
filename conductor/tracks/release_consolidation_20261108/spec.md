@@ -50,12 +50,13 @@ A broad all-tracks gate would unnecessarily block a useful first release. Conver
 
 Retain old artifacts, source packs and consumer adapters; use a new corrective release for defects. Preserve repository history and reproducible scholarly versions during any later consolidation.
 
-## Open implementation decisions
+## Release channel
 
 Project licensing is resolved as Apache-2.0 by the owner's explicit instruction.
-Choose release channels and the corresponding registry accounts before publishing.
-Retain a small capability manifest rather than requiring an additional approval
-board or duplicated evidence store.
+The owner selected GitHub Releases under `edithatogo/dapane` for the first
+prerelease, `v0.1.0`. PyPI and crates.io are deferred. The distribution uses the
+verified files for the selected candidate after the central offline-security scan
+passes on that revision. [Decision and evidence](evidence.md#github-prerelease-selection-21-november-2026)
 
 ## Execution and verification
 
