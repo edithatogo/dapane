@@ -34,7 +34,8 @@ uint32_t dapane_abi_version(void);
  * It must not overlap request. Existing nonzero handles are never overwritten.
  * request may be NULL only when length is zero. Otherwise it must identify
  * length readable bytes (unless length exceeds the limit, checked before read).
- * Borrowed input is read synchronously, never retained. No NUL is required.
+ * Borrowed input must remain immutable and readable until return. No NUL is required.
+ * Writable output slots and buffers are exclusive to the call until it returns.
  * OK and CORE_ERROR return a nonzero owned handle, including error JSON for the
  * latter. With a valid initially-zero slot, other statuses leave zero and no
  * partial report. Rejected nonzero slots retain their original handle.
