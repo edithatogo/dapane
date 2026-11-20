@@ -9,7 +9,6 @@ import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-
 REQUIRED_FILES = (
     "README.md",
     "AGENTS.md",
@@ -232,7 +231,8 @@ def validate(root: Path) -> tuple[list[str], dict[str, int]]:
         if metadata["track_id"] != track_id:
             errors.append(f"{track_id}: metadata track_id does not match its directory")
         invalid_lists = [
-            field for field in LIST_FIELDS
+            field
+            for field in LIST_FIELDS
             if not isinstance(metadata[field], list)
             or not all(isinstance(item, str) for item in metadata[field])
         ]
@@ -252,18 +252,16 @@ def validate(root: Path) -> tuple[list[str], dict[str, int]]:
         if registered_ids.count(track_id) != 1:
             errors.append(f"{track_id}: expected exactly one track registry entry")
         else:
-            row = next(line for line in registry.splitlines() if f"tracks/{track_id}/index.md" in line)
+            row = next(
+                line for line in registry.splitlines() if f"tracks/{track_id}/index.md" in line
+            )
             if STATE_MARKERS[state] not in row or not re.search(rf"\b{re.escape(state)}\b", row):
                 errors.append(f"{track_id}: registry marker/status differs from metadata")
         for document in ("index", "plan"):
             contents = track_contents[f"{document}.md"]
             status_lines = re.findall(r"^Status:(.*)$", contents, re.MULTILINE)
-            expected_status = (
-                rf"[ \t]*(?:{re.escape(state)}|`{re.escape(state)}`)[ \t]*"
-            )
-            if len(status_lines) != 1 or not re.fullmatch(
-                expected_status, status_lines[0]
-            ):
+            expected_status = rf"[ \t]*(?:{re.escape(state)}|`{re.escape(state)}`)[ \t]*"
+            if len(status_lines) != 1 or not re.fullmatch(expected_status, status_lines[0]):
                 errors.append(
                     f"{track_id}: {document} Status differs from metadata "
                     "(expected exactly one well-formed Status line)"
@@ -274,7 +272,9 @@ def validate(root: Path) -> tuple[list[str], dict[str, int]]:
             errors.append(f"{track_id}: no actionable plan tasks")
         if state == "new" and any(marker != " " for marker, _ in tasks):
             errors.append(f"{track_id}: new track contains started/completed/blocked tasks")
-        if state in {"completed", "archived"} and any(marker not in {"x", "-"} for marker, _ in tasks):
+        if state in {"completed", "archived"} and any(
+            marker not in {"x", "-"} for marker, _ in tasks
+        ):
             errors.append(f"{track_id}: {state} track contains unfinished tasks")
         verification = metadata["verification"]
         if not isinstance(verification, dict) or not isinstance(verification.get("commands"), list):

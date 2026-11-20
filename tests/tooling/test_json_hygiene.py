@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 import subprocess
 import tempfile
 import unittest
+from contextlib import contextmanager
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location(
@@ -17,7 +20,36 @@ assert SPEC.loader is not None
 SPEC.loader.exec_module(hygiene)
 
 
+@contextmanager
+def staged_repository():
+    with tempfile.TemporaryDirectory(prefix="json-hygiene-") as directory, patch.dict(os.environ):
+        # A hook exports paths to its own checkout and index. Git lists each one.
+        names = subprocess.check_output(["git", "rev-parse", "--local-env-vars"], text=True)
+        for name in names.splitlines():
+            os.environ.pop(name, None)
+        root = Path(directory)
+        subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+        yield root
+
+
 class JsonHygieneTests(unittest.TestCase):
+    def test_fixture_keeps_the_calling_repository_and_index_intact(self) -> None:
+        with staged_repository() as parent:
+            settings = {
+                "GIT_DIR": str(parent / ".git"),
+                "GIT_INDEX_FILE": str(parent / ".git/index"),
+            }
+            with patch.dict(os.environ, settings), staged_repository() as child:
+                (child / "sample.json").write_text("{}")
+                subprocess.run(["git", "add", "sample.json"], cwd=child, check=True)
+                self.assertEqual(
+                    subprocess.check_output(["git", "show", ":sample.json"], cwd=child), b"{}"
+                )
+            files = subprocess.check_output(["git", "ls-files"], cwd=parent)
+            self.assertEqual(files, b"")
+            bare = subprocess.check_output(["git", "rev-parse", "--is-bare-repository"], cwd=parent)
+            self.assertEqual(bare.strip(), b"false")
+
     def test_accepts_valid_sha256_under_neutral_key(self) -> None:
         payload = b'{"model_sha256": "' + b"a" * 64 + b'", "status": "ok"}\n'
         hygiene.validate_json_bytes(payload, label="valid.json")
@@ -72,9 +104,7 @@ class JsonHygieneTests(unittest.TestCase):
             hygiene.validate_json_bytes(b"\xff\xfe", label="bad-utf8.json")
 
     def test_staged_mode_reads_index_blob_instead_of_working_tree(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="json-hygiene-git-") as tmp:
-            repo = Path(tmp)
-            subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+        with staged_repository() as repo:
             target = repo / "sample.json"
             bad_digest = "a" * 64
             target.write_text(f'{{"api_key": "{bad_digest}"}}\n', encoding="utf-8")
@@ -88,9 +118,7 @@ class JsonHygieneTests(unittest.TestCase):
             self.assertEqual(hygiene.main(["--staged", "--root", str(repo)]), 0)
 
     def test_staged_mode_duplicate_key_allowlist_and_secret_scan(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="json-hygiene-dup-") as tmp:
-            repo = Path(tmp)
-            subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+        with staged_repository() as repo:
             allowed = repo / "benchmarks/static/fixtures/cases/duplicate-json-key.json"
             allowed.parent.mkdir(parents=True, exist_ok=True)
             allowed.write_text('{"run_id": "a", "run_id": "b"}\n', encoding="utf-8")

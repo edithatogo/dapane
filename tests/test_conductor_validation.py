@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
-
+from pathlib import Path
 
 VALIDATOR = Path(__file__).resolve().parents[1] / "scripts/validate_conductor.py"
 CONTEXT_FILES = (
@@ -88,13 +87,11 @@ class ConductorValidationTests(unittest.TestCase):
             "[Metadata](metadata.json)\n[Registry](../../tracks.md)\n",
         )
         dependency_links = "".join(
-            f"- [{dependency}](../{dependency}/index.md)\n"
-            for dependency in dependencies
+            f"- [{dependency}](../{dependency}/index.md)\n" for dependency in dependencies
         )
         self.write(
             f"{prefix}/spec.md",
-            "# Specification\n\nPreserve setup records and their evidence.\n\n"
-            + dependency_links,
+            "# Specification\n\nPreserve setup records and their evidence.\n\n" + dependency_links,
         )
         self.write(
             f"{prefix}/plan.md",
@@ -109,8 +106,7 @@ class ConductorValidationTests(unittest.TestCase):
             "archived": "[-]",
         }[status]
         self.registry_rows.append(
-            f"| {marker} | [{track_id}](./tracks/{track_id}/index.md) "
-            f"| {status} | RQ-01 |\n"
+            f"| {marker} | [{track_id}](./tracks/{track_id}/index.md) | {status} | RQ-01 |\n"
         )
         self.write(
             "conductor/tracks.md",
@@ -146,9 +142,7 @@ class ConductorValidationTests(unittest.TestCase):
             for form in forms:
                 with self.subTest(document=document, status_form=form):
                     self.write(relative, original.replace("Status: archived", form))
-                    self.validate(
-                        None if valid else f"{document} Status differs from metadata"
-                    )
+                    self.validate(None if valid else f"{document} Status differs from metadata")
             self.write(relative, original)
 
     def test_valid_completed_track_passes(self) -> None:
