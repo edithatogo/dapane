@@ -1,35 +1,42 @@
 # Perspective, transfer boundary and missing-adapter fallback
 
-Dated 2026-11-20. This is the T3.2 record for the synthetic fiscal adapter. It
-does not show that `tobac` or `voiage` imported a table.
+Dated 20 November 2026. This T3.2 record documents the synthetic fiscal adapter
+and the expected consumer fallback. Installed consumer verification remains in
+T3.3. [Fiscal contract](../../../adapters/decision_draws/CONTRACT.md)
 
 ## Perspectives
 
 | Perspective | What enters the selected result | What stays out |
 | --- | --- | --- |
-| `health_system` | Discounted `health_system_direct_cost` lines, then health NMB when a health contract is present | Enforcement resource lines and excise/GST transfers. They are reported and listed as excluded. |
-| `public_finance` | Medical plus enforcement resource cost, minus government receipts | Health NMB. `health` must be null. The result is net public outlay. |
-| `societal` | Medical plus enforcement resource cost. Domestic excise and GST cancel inside the boundary. | Adding a transfer to societal resource cost. The adapter rejects an unlabelled addition. |
+| `health_system` | The required health contract supplies QALY flows and a threshold. NMB is the threshold times discounted QALYs, less discounted direct medical cost. | Enforcement and excise/GST lines are reported and listed as excluded from the selected result. |
+| `public_finance` | Net public outlay is medical plus enforcement expenditure minus government tax receipts. | Omit `health` or set it to null. QALYs and NMB are null. |
+| `societal` | NMB uses the required health contract and subtracts declared medical and enforcement economic costs. Domestic excise and GST net to zero. | Excise and GST are reported as transfers outside the selected resource cost. |
 
-A schedule row may name its own perspective. That tag does not replace the
-packet key. Equity aggregation refuses to mix scenario, strategy, draw,
-replication or perspective, and it keeps each `subgroup_id` on its own row.
+Schedules retain their row perspective and the report retains the full packet
+key. Equity aggregation requires compatible packets for the same scenario,
+comparison, draw, replication, perspective and valuation context. Each
+`subgroup_id` has its own result row.
 
 ## Excise, GST and deadweight loss
 
-Excise and GST are `discounted_tax_transfer` lines. A positive amount is a
-government receipt and an equal household payer outflow. Their sum inside the
-domestic boundary is zero. The adapter does not calculate excess burden,
-deadweight loss, illicit-market substitution or a compliance-cost wedge. Those
-effects need an explicit resource line from `tobac`. Omitting a known-zero
-excise or GST line is not a zero.
+Excise and GST are `discounted_tax_transfer` lines. A positive transfer gives
+a positive government receipt and an equal negative household payer flow.
+Negative transfers reverse those signs. The two legs use the same timing and
+discount rate and sum to zero within the domestic boundary. Each tax type
+requires an explicit line, including a labelled zero when known.
+
+Deadweight loss, illicit-market substitution and broader compliance costs
+belong in a separately specified economic model. The synthetic ledger admits
+medical and enforcement resource lines and domestic excise and GST transfers.
 
 ## When Dapane is not installed
 
-`tobac` keeps its own valuation code. At `891f79e07292b7754f78d7193130623bd5f9e243`
-that code is not in `src/tobac/economics.py` or `src/tobac/decision.py`. The
-related functions are in `src/tobac/health.py`, and `src/tobac/interchange.py`
-handles evidence packets. Absence of this adapter must not be filled with zeros
-or with a copied formula. `voiage` likewise keeps its own value-of-perspective
-and credal calculations until a later installed-consumer check joins the
-six-key table.
+When the optional adapter is unavailable, the intended fallback is the
+consumer's standalone method. Report Dapane-derived results as unavailable.
+T3.3 still needs to exercise that behaviour in each installed consumer.
+
+The inspected Tobac source at `891f79e07292b7754f78d7193130623bd5f9e243`
+contains related functions in `src/tobac/health.py` and evidence-packet
+handling in `src/tobac/interchange.py`. The originally planned
+`economics.py` and `decision.py` paths are absent. T2.3 still needs to map
+the relevant interface and run the synthetic NZ/AU parity fixtures.

@@ -27,8 +27,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [~] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.  
   **In progress 2026-11-20:** `export_perspective_table` emits `dapane-fiscal-perspective-table/0.1` rows with the six-part key and the selected cost, QALY and NMB fields. Tobac and Voiage have not imported the table.
-- [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.  
-  **Executed 2026-11-20:** [FALLBACK.md](FALLBACK.md) records the three perspective boundaries, the refusal to treat excise or GST as deadweight loss, and the requirement that a missing adapter leave `tobac` and `voiage` on their own code.
+- [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.
+  The record describes the three perspective rules, the domestic transfer boundary and the intended fallback when the optional adapter is unavailable. [Fallback](FALLBACK.md)
 - [ ] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.
 
 ## Bounded owner quality pass — 15 November 2026
