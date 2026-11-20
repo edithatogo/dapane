@@ -3,6 +3,7 @@ set -euo pipefail
 
 repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
+source .githooks/project-python
 
 if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.99\.1'; then
   toolchain_bin="$(dirname "$(rustup which rustc --toolchain 1.99.1)")"

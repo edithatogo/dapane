@@ -2,12 +2,14 @@
 
 import importlib.util
 import json
+import os
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location(
@@ -19,6 +21,11 @@ SPEC.loader.exec_module(guard)
 
 class RoadmapControls(unittest.TestCase):
     def setUp(self):
+        # Hook callers can supply an index and Git directory belonging to another checkout.
+        self.enterContext(patch.dict(os.environ))
+        names = subprocess.check_output(["git", "rev-parse", "--local-env-vars"], text=True)
+        for name in names.splitlines():
+            os.environ.pop(name, None)
         self.temporary = tempfile.TemporaryDirectory(prefix="roadmap-controls-")
         self.addCleanup(self.temporary.cleanup)
         self.directory = Path(self.temporary.name)

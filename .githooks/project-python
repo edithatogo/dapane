@@ -1,0 +1,8 @@
+# Both hooks run from the worktree root before invoking repository tools.
+expected_python="$(<.python-version)"
+export VIRTUAL_ENV="$repo_root/.venv"
+if [[ ! -x "$VIRTUAL_ENV/bin/python" ]] || [[ "$("$VIRTUAL_ENV/bin/python" -c 'import platform; print(platform.python_implementation(), platform.python_version())')" != "CPython $expected_python" ]]; then
+  echo "Create the project environment with CPython $expected_python as described in docs/quickstart.md." >&2
+  exit 1
+fi
+export PATH="$VIRTUAL_ENV/bin:$PATH"
