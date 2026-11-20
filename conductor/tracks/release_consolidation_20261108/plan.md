@@ -40,6 +40,10 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 - [x] L4.1 Review the implementation against the original acceptance criteria, apply concrete fixes and retain exact-source verification.
   - The earlier five findings and integration null-state fix remain covered. All 64 release-control tests and Ruff pass. Independent notice, integration and documentation reviews found no material defect. The original acceptance section is unchanged; completed source-specific native/artifact checks are recorded under L1.3/L1.4.
+  - The 20 November review found that candidate receipts omitted the central
+    offline scan from their publication blockers. The manifest, receipt writer
+    and verifier now enforce its inclusion. The 67 control tests and Ruff passed.
+    [Control review and runner evidence](evidence.md#publication-control-review--20-november-2026).
 - [!] L4.2 Archive this track after all mandatory acceptance criteria have evidence.
   - Archival is already authorised. Trusted-main signed provenance (`attest` job `132994080532`, artifact `14184669447`) and ordinary exact-source `main` checks are now verified on `0658d94`. Channel/account choices (`L1.2`) and central `Offline AI security` execution (run `43769725442` auto-cancelled after 24h queue timeout with `runner_id: 0` and 0 steps executed) remain outstanding. Do not weaken the remaining criteria to obtain an archive marker.
 

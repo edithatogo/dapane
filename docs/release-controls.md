@@ -154,10 +154,12 @@ and pushes to main; their reusable call cannot restore a manual branch-trigger
 path into provider execution or its default-branch caches.
 
 The separate, centrally managed [offline security caller](../.github/workflows/offline-ai-security.yml)
-retains its existing pinned reusable workflow and policy. It requires the
-`self-hosted`, `linux`, `x64`, `ai-security-offline` runner labels. Its queued,
-unexecuted result is a remaining qualification blocker recorded in the handoff;
-the hosted release workflow neither provisions that infrastructure nor bypasses it.
+retains its existing pinned reusable workflow and policy. Main requires a
+`self-hosted`, `linux`, `x64` runner with the `ai-security-offline` label.
+Pull requests select the dedicated `ai-security-offline-dapane-pr-<number>`
+label. The capability manifest and candidate receipts identify the requirement
+for executed scan evidence on the exact release source. The hosted release
+workflow verifies that the requirement appears in each receipt.
 
 A signed build statement binds bytes to a build. It is not a statement that the
 provider has migrated, an economic method has been validated or

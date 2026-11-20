@@ -7,6 +7,28 @@ The [current handoff receipt](../../../docs/release-handoff-2026-11-15.md) recor
 the completed provider/setup merges, incorporated archives, fresh live baseline,
 notice implementation and remaining security/publication blockers.
 
+## Publication control review — 20 November 2026
+
+The manifest and generated candidate receipts now carry the requirement for
+central offline-security evidence on the exact source. Matrix verification
+rejects a receipt with missing or altered publication blockers. The 67 release
+control tests passed, including regressions for an omitted gate, an unsupported
+pass claim and a receipt that drops the blocker. The publication command
+returned exit 2 and continued to report the unresolved registry identity.
+
+The hosted release verification for main `c3b499e` passed on attempt 2 after
+the transparency log returned a transient 404 in the signing step. The archived
+CPython 3.15.1 package passed 215 installed tests and ten independent reference
+cases. Local matrix verification passed for the downloaded artifact, and
+`gh attestation verify` checked all five signed subjects against the exact main
+revision and workflow. [Release run and artifacts](https://github.com/edithatogo/dapane/actions/runs/44737207139).
+
+At review start, the central scan for main `c3b499e` had no runner assigned
+and zero executed steps. The repository runner list returned zero registered
+runners. Release assurance remains blocked on an executed scan for the release
+source and verification of the intended registry identity.
+[Offline security run](https://github.com/edithatogo/dapane/actions/runs/44737207951).
+
 ## Reconciliation and scope
 
 The branch began at Dapane main
