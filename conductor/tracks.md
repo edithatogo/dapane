@@ -19,7 +19,7 @@ A completed planning task does not change a runtime capability from planned to q
 | [x] | [MCHS activity and quotation-source adapters](./tracks/mchs_source_adapters_20261108/index.md) | completed | RQ-05, RQ-01, RQ-03 |
 | [x] | [Reporting profiles and evidence exports](./tracks/reporting_profiles_20261108/index.md) | completed | RQ-07, RQ-01 |
 | [x] | [Newborn screening pathway composition](./tracks/newborn_screening_20261108/index.md) | completed | RQ-06, RQ-03, RQ-07 |
-| [ ] | [Optional Power Platform delivery](./tracks/power_platform_20261108/index.md) | new | RQ-08, RQ-03 |
+| [~] | [Optional Power Platform delivery](./tracks/power_platform_20261108/index.md) | in_progress | RQ-08, RQ-03 |
 | [!] | [R and Julia bindings](./tracks/polyglot_bindings_20261108/index.md) | blocked | RQ-09, RQ-02 |
 | [~] | [Observed events, Petri nets and BPMN adapters](./tracks/process_models_20261108/index.md) | in_progress | RQ-10, RQ-01, RQ-03 |
 | [x] | [Uncertainty and decision-library integration](./tracks/decision_integrations_20261108/index.md) | completed | RQ-11, RQ-02, RQ-03 |

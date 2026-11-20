@@ -413,6 +413,10 @@ def select_changes(
                     sel.run_decision_provider_d2 = True
             continue
 
+        if path.startswith("power_platform/"):
+            sel.run_python = True
+            continue
+
         if path.startswith("adapters/observed_events/"):
             lanes.add("observed")
             adapters.add("adapters/observed_events/Cargo.toml")

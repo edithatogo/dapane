@@ -1,15 +1,17 @@
 # Implementation plan: Optional Power Platform delivery
 
-Status: new
+Status: in_progress
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
 
 ## Phase 1 — Manual standard-connector baseline
 
-- [ ] A1.1 Define list fields, bundle locations, schema/version references, job states and result summary contracts with the CareOps consumer.
-- [ ] A1.2 Provide reproducible list/library setup and permitted synthetic input/output examples; keep full result bundles as the archive of record.
-- [ ] A1.3 Exercise manual export, CLI execution and result import; verify exact transport, identity and incomplete-output presentation.
+- [~] A1.1 Define list fields, bundle locations, schema/version references, job states and result summary contracts with the CareOps consumer.
+- [x] A1.2 Provide reproducible list/library setup and permitted synthetic input/output examples; keep full result bundles as the archive of record.
+- [~] A1.3 Exercise manual export, CLI execution and result import; verify exact transport, identity and incomplete-output presentation.
+
+The source mapping, field definitions and tested local exchange are recorded in the [manual baseline](../../../power_platform/README.md). A1.1 and A1.3 retain the CareOps tenant round trip. Four installed CLI/wheel regressions cover complete, incomplete, altered, repeated and replacement records.
 
 ## Phase 2 — Operational worker option
 
@@ -25,8 +27,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 4 — Handoff
 
-- [ ] A4.1 Document deployment/rollback, data-boundary requirements and per-route capability evidence without claiming a universal standard-app entitlement.
-- [ ] A4.2 Verify that no app/report formula duplicates the core and that the optional surface can be removed without changing numerical results.
+- [x] A4.1 Document deployment/rollback, data-boundary requirements and per-route capability evidence without claiming a universal standard-app entitlement.
+- [x] A4.2 Verify that no app/report formula duplicates the core and that the optional surface can be removed without changing numerical results.
 
 ## Evidence record
 
