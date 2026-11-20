@@ -1,9 +1,9 @@
 {
   "track_id": "power_platform_20261108",
   "type": "feature",
-  "status": "new",
+  "status": "in_progress",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-08T03:52:45Z",
+  "updated_at": "2026-11-20T11:36:00Z",
   "description": "Surface the shared engine through an operational Power App while keeping the calculation implementation independent and the standard-connector/file path usable.",
   "repositories": [
     "."
@@ -23,10 +23,14 @@
     "RQ-08",
     "RQ-03"
   ],
-  "capability_status": "planned",
+  "capability_status": "manual_file_exchange_verified_locally",
   "verification": {
-    "status": "not_run",
-    "commands": []
+    "status": "partial",
+    "commands": [
+      "DAPANE_CLI=target/release/dapane python -m pytest -q power_platform/test_manual_exchange.py"
+    ],
+    "local_tests_passed": 4,
+    "scope": "Installed Rust CLI and wheel, complete and incomplete exchange, immutable retry, replacement ancestry and direct native byte comparison. Hosted site and entitlement acceptance remain open."
   },
   "completion_evidence": [
     "The baseline demonstrates input export, CLI execution and result import without a hidden premium connector, HTTP action, gateway, Dataverse or Copilot requirement.",

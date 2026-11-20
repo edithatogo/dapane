@@ -2,7 +2,7 @@
 
 Track: `power_platform_20261108`
 
-Status: new
+Status: in_progress
 
 Surface the shared engine through an operational Power App while keeping the calculation implementation independent and the standard-connector/file path usable.
 
@@ -14,4 +14,4 @@ Surface the shared engine through an operational Power App while keeping the cal
 
 Requirements: RQ-08, RQ-03.
 
-Capability status: planned. A documented plan is not implementation or release evidence.
+The [manual file exchange](../../../power_platform/README.md) is implemented and verified locally. A selected tenant/site and native readback are still needed for hosted acceptance.

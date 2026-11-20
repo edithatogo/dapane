@@ -165,6 +165,11 @@ jobs:
             targets+=("$GITHUB_WORKSPACE/$target")
           done
           python3 scripts/ci_profile.py run --name pytest-installed --cwd "$RUNNER_TEMP" --profile-file "$PROFILE" -- python -m pytest --import-mode=importlib --durations=10 --durations-min=0.05 "${targets[@]}" -q
+      - name: Replay the manual file exchange through the installed wheel and CLI
+        if: startsWith(matrix.python, '3.15')
+        run: |
+          cargo build --locked --release -p dapane-cli
+          DAPANE_CLI="$GITHUB_WORKSPACE/target/release/dapane" python -m pytest -q power_platform/test_manual_exchange.py
       - name: Publish Python step timing profile
         if: always()
         run: |
