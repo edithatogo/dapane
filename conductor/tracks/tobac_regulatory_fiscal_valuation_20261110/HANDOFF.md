@@ -1,6 +1,16 @@
-# T1 exact-SHA handoff
+# Tobac fiscal handoff
 
-## Current owner follow-up — 15 November 2026
+## Checkpoint follow-up — 20 November 2026
+
+The fiscal source follow-up starts at merged Dapane main `5c035f6` and carries
+the Tobac checkpoint through `21dce9a`. The verified implementation is
+`4d567f366c93103870f15c16a1a4918f77e46898`. Its changes are in
+`adapters/decision_draws/` and this track. The existing standalone CI covers
+the adapter crate. The next track task is T2.3, which requires a mapped
+Tobac interface and an executed parity comparison.
+[Verification](VERIFICATION.md)
+
+## T1 owner follow-up — 15 November 2026
 
 The [bounded quality repair](../decision_integrations_20261108/owner-quality-20261115.md) records clean-source execution at
 `9c177166899e588dc3dacadb13e4a0a3750bbce2` (tree `db6e32d39ae8960da9d30a24ed37eb965caea36d`). Rustfmt, Clippy with `-D warnings`,

@@ -1,6 +1,8 @@
-//! T1 independent exact accounting references; every amount and rate is invented.
+//! Independent exact fiscal accounting references; every amount and rate is invented.
 
-use dapane_decision_fiscal::fiscal::evaluate_fiscal_json;
+use dapane_decision_fiscal::fiscal::{
+    SCHEDULE_SCHEMA_VERSION, evaluate_equity_json, evaluate_fiscal_json,
+};
 use serde_json::{Value, json};
 
 fn r(n: &str, d: &str) -> Value {
@@ -453,4 +455,443 @@ fn absent_accounting_categories_do_not_become_zero() {
         line["undiscounted_amount"]["amount"] = r("0", "1");
     }
     assert_eq!(result(&input)["net_monetary_benefit"], r("100", "1"));
+}
+
+#[test]
+fn fiscal_v01_fixture_retains_its_wire_identity() {
+    // Digests produced by the fiscal 0.1 evaluator at 5c035f6.
+    let mut input = fixture();
+    let report = result(&input);
+    assert_eq!(
+        report["input_digest"],
+        "sha256:528f554e98f2cde96331f4710b7179eb37e00d5024a972693eb2830d8dd88751"
+    );
+    assert_eq!(
+        report["output_digest"],
+        "sha256:de7f7fffcbc683655249d3a488af6e24fef6d1a36a995ce161259c72bc709628"
+    );
+    assert!(report.get("valued_cohort_states").is_none());
+    assert!(report.get("valued_cessation_resources").is_none());
+    input["cohort_states"] = json!([]);
+    let error = evaluate_fiscal_json(&input.to_string()).unwrap_err();
+    assert_eq!(error.code, "invalid_request");
+    assert_eq!(error.path, "/cohort_states");
+}
+
+fn schedule_fixture() -> Value {
+    let mut input = fixture();
+    input["schema_version"] = json!(SCHEDULE_SCHEMA_VERSION);
+    input
+}
+
+#[test]
+fn cohort_state_occupancy_entries_are_evaluated_with_draw_identity_preserved() {
+    let mut input = schedule_fixture();
+    input["cohort_states"] = json!([
+        {
+            "id": "smoker_to_quit",
+            "time_step": 1,
+            "from_state": "smoker",
+            "to_state": "quit",
+            "population_count": {"numerator": "100", "denominator": "1"},
+            "perspective": "health_system",
+            "basis": "economic_cost",
+            "undiscounted_amount": {
+                "amount": {"numerator": "500", "denominator": "1"},
+                "currency": "NZD",
+                "price_year": 2026,
+                "unit": "currency"
+            },
+            "source": {
+                "id": "invented-cohort-data",
+                "version": "1",
+                "evidence": "synthetic",
+                "content_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        }
+    ]);
+    input["cessation_resources"] = json!([]);
+    let report = result(&input);
+    let row = &report["valued_cohort_states"][0];
+    assert_eq!(row["id"], "smoker_to_quit");
+    assert_eq!(row["from_state"], "smoker");
+    assert_eq!(row["to_state"], "quit");
+    assert_eq!(row["population_count"], r("100", "1"));
+    // 500 * 1/(1+1/4) = 400. The schedule is reported separately from the ledger.
+    assert_eq!(row["discounted_amount"], r("400", "1"));
+    assert_eq!(row["draw_id"], "draw-a");
+    assert_eq!(row["strategy_id"], "alternative");
+    assert_eq!(row["subgroup_id"], "Māori / NZDep-1");
+    assert_eq!(row["perspective"], "health_system");
+    assert_eq!(report["key"]["strategy_id"], "alternative");
+    assert_eq!(report["key"]["perspective"], "health_system");
+    assert_eq!(report["key"]["subgroup_id"], "Māori / NZDep-1");
+    // Discounted amount: 500 * (4/5)^1 = 400
+    assert_eq!(
+        report["valued_cohort_states"][0]["time_step_years"]["numerator"],
+        "1"
+    );
+    assert_eq!(
+        report["valued_cohort_states"][0]["time_step_years"]["denominator"],
+        "1"
+    );
+    // Draw identity preserved
+    assert_eq!(report["key"]["draw_id"], "draw-a");
+    assert_eq!(report["key"], input["key"]);
+    assert_eq!(result(&report["input_snapshot"]), report);
+}
+
+#[test]
+fn cessation_resource_entries_are_evaluated_with_draw_identity_preserved() {
+    let mut input = schedule_fixture();
+    input["cohort_states"] = json!([]);
+    input["cessation_resources"] = json!([
+        {
+            "id": "cessation_counseling",
+            "time_step": 1,
+            "resource_type": "counseling",
+            "quantity": {"numerator": "5", "denominator": "1"},
+            "perspective": "public_finance",
+            "basis": "public_expenditure",
+            "undiscounted_amount": {
+                "amount": {"numerator": "250", "denominator": "1"},
+                "currency": "NZD",
+                "price_year": 2026,
+                "unit": "currency"
+            },
+            "source": {
+                "id": "invented-cessation-data",
+                "version": "1",
+                "evidence": "synthetic",
+                "content_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        }
+    ]);
+    let report = result(&input);
+    let row = &report["valued_cessation_resources"][0];
+    assert_eq!(row["id"], "cessation_counseling");
+    assert_eq!(row["resource_type"], "counseling");
+    assert_eq!(row["quantity"], r("5", "1"));
+    assert_eq!(row["perspective"], "public_finance");
+    assert_eq!(row["draw_id"], "draw-a");
+    assert_eq!(row["strategy_id"], "alternative");
+    assert_eq!(row["subgroup_id"], "Māori / NZDep-1");
+    // The packet key stays the valuation perspective; the row keeps its own tag.
+    assert_eq!(report["key"]["perspective"], "health_system");
+    assert_eq!(report["key"]["draw_id"], "draw-a");
+    assert_eq!(report["key"]["strategy_id"], "alternative");
+    assert_eq!(report["key"]["subgroup_id"], "Māori / NZDep-1");
+    // 250 * 1/(1+1/4) = 200.
+    assert_eq!(row["discounted_amount"], r("200", "1"));
+    assert_eq!(
+        report["resources"]["health_system_direct_cost"],
+        r("80", "1")
+    );
+}
+
+#[test]
+fn cohort_state_entries_must_have_unique_ids() {
+    let mut input = schedule_fixture();
+    input["cohort_states"] = json!([
+        {
+            "id": "smoker_to_quit",
+            "time_step": 1,
+            "from_state": "smoker",
+            "to_state": "quit",
+            "population_count": {"numerator": "100", "denominator": "1"},
+            "perspective": "health_system",
+            "basis": "economic_cost",
+            "undiscounted_amount": {
+                "amount": {"numerator": "500", "denominator": "1"},
+                "currency": "NZD",
+                "price_year": 2026,
+                "unit": "currency"
+            },
+            "source": {
+                "id": "invented-cohort-data",
+                "version": "1",
+                "evidence": "synthetic",
+                "content_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "id": "smoker_to_quit",
+            "time_step": 2,
+            "from_state": "smoker",
+            "to_state": "quit",
+            "population_count": {"numerator": "50", "denominator": "1"},
+            "perspective": "health_system",
+            "basis": "economic_cost",
+            "undiscounted_amount": {
+                "amount": {"numerator": "250", "denominator": "1"},
+                "currency": "NZD",
+                "price_year": 2026,
+                "unit": "currency"
+            },
+            "source": {
+                "id": "invented-cohort-data",
+                "version": "1",
+                "evidence": "synthetic",
+                "content_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        }
+    ]);
+    input["cessation_resources"] = json!([]);
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "duplicate_identity"
+    );
+}
+
+#[test]
+fn cohort_state_entries_validate_entry_and_exit_states() {
+    // from_state must be a valid state, to_state must be a valid state
+    let mut input = schedule_fixture();
+    input["cohort_states"] = json!([
+        {
+            "id": "smoker_to_quit",
+            "time_step": 1,
+            "from_state": "",
+            "to_state": "quit",
+            "population_count": {"numerator": "100", "denominator": "1"},
+            "perspective": "health_system",
+            "basis": "economic_cost",
+            "undiscounted_amount": {
+                "amount": {"numerator": "500", "denominator": "1"},
+                "currency": "NZD",
+                "price_year": 2026,
+                "unit": "currency"
+            },
+            "source": {
+                "id": "invented-cohort-data",
+                "version": "1",
+                "evidence": "synthetic",
+                "content_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        }
+    ]);
+    input["cessation_resources"] = json!([]);
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "invalid_identity"
+    );
+}
+
+#[test]
+fn cessation_resource_entries_validate_resource_type() {
+    let mut input = schedule_fixture();
+    input["cohort_states"] = json!([]);
+    input["cessation_resources"] = json!([
+        {
+            "id": "cessation_counseling",
+            "time_step": 1,
+            "resource_type": "",
+            "quantity": {"numerator": "5", "denominator": "1"},
+            "perspective": "public_finance",
+            "basis": "public_expenditure",
+            "undiscounted_amount": {
+                "amount": {"numerator": "250", "denominator": "1"},
+                "currency": "NZD",
+                "price_year": 2026,
+                "unit": "currency"
+            },
+            "source": {
+                "id": "invented-cessation-data",
+                "version": "1",
+                "evidence": "synthetic",
+                "content_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        }
+    ]);
+    assert_eq!(
+        evaluate_fiscal_json(&input.to_string()).unwrap_err().code,
+        "invalid_identity"
+    );
+    input["cessation_resources"][0]["resource_type"] = json!("counseling");
+    input["cessation_resources"][0]["basis"] = json!("fiscal_transfer");
+    let error = evaluate_fiscal_json(&input.to_string()).unwrap_err();
+    assert_eq!(error.code, "resource_basis");
+    assert_eq!(error.path, "/cessation_resources/0/basis");
+}
+
+fn equity_input(weights: &[(&str, Value)]) -> Value {
+    let packets: Vec<_> = weights
+        .iter()
+        .map(|(weight, fiscal)| {
+            json!({
+                "weight": r(weight, "1"),
+                "fiscal": fiscal,
+            })
+        })
+        .collect();
+    json!({
+        "schema_version": "dapane-fiscal-equity/0.1",
+        "packets": packets,
+    })
+}
+
+fn equity_report(weights: &[(&str, Value)]) -> Value {
+    let input = equity_input(weights);
+    serde_json::from_str(&evaluate_equity_json(&input.to_string()).unwrap()).unwrap()
+}
+
+#[test]
+fn unity_equity_weights_conserve_the_unweighted_subgroup_sum() {
+    // Each invented packet has cost 80, one undiscounted QALY and NMB 100*1-80=20.
+    let maori = fixture();
+    let mut other = fixture();
+    other["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+    let report = equity_report(&[("1", maori), ("1", other)]);
+    assert_eq!(report["subgroups"][0]["subgroup_id"], "Māori / NZDep-1");
+    assert_eq!(report["subgroups"][1]["subgroup_id"], "non-Māori / NZDep-1");
+    assert_eq!(
+        report["unweighted_sum"]["selected_resource_cost"],
+        r("160", "1")
+    );
+    assert_eq!(
+        report["weighted_sum"]["selected_resource_cost"],
+        r("160", "1")
+    );
+    assert_eq!(report["unweighted_sum"]["discounted_qalys"], r("2", "1"));
+    assert_eq!(report["weighted_sum"]["discounted_qalys"], r("2", "1"));
+    assert_eq!(
+        report["unweighted_sum"]["net_monetary_benefit"],
+        r("40", "1")
+    );
+    assert_eq!(report["weighted_sum"]["net_monetary_benefit"], r("40", "1"));
+    assert_eq!(report["subgroups"][0]["draw_id"], "draw-a");
+    assert_eq!(report["subgroups"][1]["strategy_id"], "alternative");
+}
+
+#[test]
+fn non_unit_equity_weights_scale_each_subgroup_before_summing() {
+    let maori = schedule_fixture();
+    let mut other = schedule_fixture();
+    other["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+    other["lines"][0]["undiscounted_amount"]["amount"] = r("50", "1");
+    other["health"]["flows"][0]["value"] = r("2", "1");
+    let other_digest = result(&other)["output_digest"].clone();
+    let report = equity_report(&[("1", maori), ("3", other)]);
+    // Subgroup values are (80, 1, 20) and (40, 2, 160) for cost, QALYs and NMB.
+    assert_eq!(
+        report["unweighted_sum"]["selected_resource_cost"],
+        r("120", "1")
+    );
+    assert_eq!(report["unweighted_sum"]["discounted_qalys"], r("3", "1"));
+    assert_eq!(
+        report["unweighted_sum"]["net_monetary_benefit"],
+        r("180", "1")
+    );
+    assert_eq!(
+        report["weighted_sum"]["selected_resource_cost"],
+        r("200", "1")
+    );
+    assert_eq!(report["weighted_sum"]["discounted_qalys"], r("7", "1"));
+    assert_eq!(
+        report["weighted_sum"]["net_monetary_benefit"],
+        r("500", "1")
+    );
+    assert_eq!(report["subgroups"][1]["fiscal_output_digest"], other_digest);
+}
+
+#[test]
+fn equity_aggregation_rejects_a_repeated_subgroup_or_a_different_draw() {
+    let packet = fixture();
+    let mut repeated = fixture();
+    repeated["run_id"] = json!("synthetic-nz-repeated-subgroup");
+    let input = json!({
+        "schema_version": "dapane-fiscal-equity/0.1",
+        "packets": [
+            {"weight": r("1", "1"), "fiscal": packet},
+            {"weight": r("1", "1"), "fiscal": repeated},
+        ],
+    });
+    assert_eq!(
+        evaluate_equity_json(&input.to_string()).unwrap_err().code,
+        "duplicate_identity"
+    );
+
+    let mut other_draw = fixture();
+    other_draw["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+    other_draw["key"]["draw_id"] = json!("draw-b");
+    let input = json!({
+        "schema_version": "dapane-fiscal-equity/0.1",
+        "packets": [
+            {"weight": r("1", "1"), "fiscal": fixture()},
+            {"weight": r("1", "1"), "fiscal": other_draw},
+        ],
+    });
+    assert_eq!(
+        evaluate_equity_json(&input.to_string()).unwrap_err().code,
+        "subgroup_axis"
+    );
+}
+
+#[test]
+fn equity_weights_must_be_strictly_positive() {
+    let input = json!({
+        "schema_version": "dapane-fiscal-equity/0.1",
+        "packets": [{"weight": r("0", "1"), "fiscal": fixture()}],
+    });
+    assert_eq!(
+        evaluate_equity_json(&input.to_string()).unwrap_err().code,
+        "invalid_weight"
+    );
+}
+
+#[test]
+fn equity_aggregation_rejects_incompatible_valuation_contexts() {
+    let baseline = fixture();
+    let mut economic = baseline.clone();
+    economic["resource_basis"] = json!("economic_cost");
+    for line in &mut economic["lines"].as_array_mut().unwrap()[..2] {
+        line["basis"] = json!("economic_cost");
+    }
+    let mut cases = vec![("resource basis", economic)];
+    for (pointer, value) in [
+        ("/comparator_strategy_id", json!("different-comparator")),
+        (
+            "/draw_set_digest",
+            json!(format!("sha256:{}", "7".repeat(64))),
+        ),
+        ("/discount/resource_rate", r("0", "1")),
+        ("/health/threshold/amount", r("101", "1")),
+        ("/schema_version", json!(SCHEDULE_SCHEMA_VERSION)),
+    ] {
+        let mut changed = baseline.clone();
+        *changed.pointer_mut(pointer).unwrap() = value;
+        cases.push((pointer, changed));
+    }
+    for (field, mut changed) in cases {
+        changed["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+        result(&changed); // Each alternative must be valid when evaluated on its own.
+        let input = equity_input(&[("1", baseline.clone()), ("1", changed)]);
+        assert_eq!(
+            evaluate_equity_json(&input.to_string()).unwrap_err().code,
+            "subgroup_axis",
+            "{field}"
+        );
+    }
+}
+
+#[test]
+fn equity_sums_retain_the_fiscal_precision_bound() {
+    let mut packet = fixture();
+    set_view(&mut packet, "public_finance", "public_finance_net_outlay");
+    packet["discount"]["resource_rate"] = r("1", "1");
+    packet["lines"][0]["time_step"] = json!(400);
+    packet["lines"][0]["undiscounted_amount"]["amount"] = r("1", "1");
+    packet["lines"][1]["undiscounted_amount"]["amount"] = r("0", "1");
+    let mut other = packet.clone();
+    other["key"]["subgroup_id"] = json!("non-Māori / NZDep-1");
+    let report = equity_report(&[("1", packet), ("1", other)]);
+    // Two costs of 2^-400 sum exactly to 2^-399, beyond the input digit limit.
+    let denominator = num_bigint::BigInt::from(2u8).pow(399).to_string();
+    assert_eq!(
+        report["unweighted_sum"]["selected_resource_cost"],
+        r("1", &denominator)
+    );
+    assert_eq!(report["weighted_sum"], report["unweighted_sum"]);
+    assert_eq!(report["weighted_sum"]["discounted_qalys"], Value::Null);
+    assert_eq!(report["weighted_sum"]["net_monetary_benefit"], Value::Null);
 }

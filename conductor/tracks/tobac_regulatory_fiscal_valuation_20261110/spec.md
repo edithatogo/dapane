@@ -4,11 +4,10 @@
 
 Provide versioned public-finance and health-system perspective valuation, excise/GST tax-transfer separation and subgroup equity-weighting interfaces for `tobac` (`edithatogo/tobac`) while retaining `tobac`'s ownership of tobacco/vaping cohort dynamics, customs/wastewater partial identification and regulatory decision models.
 
-This specification retains the full track scope. The bounded phase-1 candidate
-is implemented in an isolated synthetic adapter; later phases remain planned.
-Bounded native quality/tests are now evidenced at an exact corrected source.
-Production/provider and security/release qualification remains separate. See
-[verification](VERIFICATION.md) and [handoff](HANDOFF.md).
+The standalone adapter implements the synthetic fiscal ledger, cohort and
+cessation schedules, and weighted subgroup sums. Tobac oracle parity and
+installed consumer acceptance remain open.
+[Verification](VERIFICATION.md) · [Handoff](HANDOFF.md)
 
 ## Scope and requirements
 

@@ -14,9 +14,9 @@ Provide versioned public-finance and health-system perspective valuation, excise
 
 Requirements: RQ-01, RQ-02, RQ-07, RQ-11.
 
-Capability status: bounded synthetic native checks pass at the exact corrected
-source recorded below. Production/provider qualification and security/release
-gates remain separate; the whole track is not complete.
+Local native checks passed for the T1 fiscal ledger and T2.1–T2.2 synthetic
+schedules and equity sums. Oracle parity, installed consumers and production
+method qualification remain open.
 
 - [Adapter and contract](../../../adapters/decision_draws/README.md)
 - [Verification and evidence limits](VERIFICATION.md)
@@ -25,5 +25,4 @@ gates remain separate; the whole track is not complete.
 
 - [Owner quality repair and executed evidence](../decision_integrations_20261108/owner-quality-20261115.md)
 
-The integrator has reconciled the central registry and added standalone CI. Later
-phases remain open; this lane does not claim production/provider qualification.
+The integrator has reconciled the central registry and added standalone CI.
