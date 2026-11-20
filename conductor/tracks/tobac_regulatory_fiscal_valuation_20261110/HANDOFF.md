@@ -7,8 +7,8 @@ the Tobac checkpoint through `21dce9a`. The verified implementation is
 `4d567f366c93103870f15c16a1a4918f77e46898`. Its changes are in
 `adapters/decision_draws/` and this track. The existing standalone CI covers
 the adapter crate. T2.3 is blocked: Tobac main `891f79e` still has no `economics.py` or
-`decision.py`. T3.2 is recorded in [FALLBACK.md](FALLBACK.md). The next open
-tasks are T3.1 and T3.3, which need an installed consumer.
+`decision.py`. T3.2 is recorded in [FALLBACK.md](FALLBACK.md). T3.1 and T3.3 now record the installed Voiage and pinned Tobac calls. T2.3
+remains the open oracle block.
 [Verification](VERIFICATION.md)
 
 ## T1 owner follow-up — 15 November 2026

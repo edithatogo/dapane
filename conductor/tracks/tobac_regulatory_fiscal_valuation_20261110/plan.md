@@ -29,8 +29,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   **Executed 2026-11-20:** The synthetic eight-cell table keeps every joint key. Installed Voiage 3.1.0 `value_of_perspective` selects `alternative` for both perspectives. Tobac `891f79e07292b7754f78d7193130623bd5f9e243` (`tobac-regulatory-research` 0.2.0, module `__version__` 0.1.0) `credal.assess_decision` identifies `alternative` as commonly optimal for each perspective, with `draw-b` and subgroup `Māori / NZDep-1` still on the second state.
 - [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.  
   **Executed 2026-11-20:** [FALLBACK.md](FALLBACK.md) records the three perspective boundaries, the refusal to treat excise or GST as deadweight loss, and the requirement that a missing adapter leave `tobac` and `voiage` on their own code.
-- [~] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.  
-  **In progress 2026-11-20:** Voiage 3.1.0 wheel `71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140` and Tobac commit `891f79e07292b7754f78d7193130623bd5f9e243` both consumed the table. The Dapane producer itself is not an installed package, so the producer revision record is incomplete.
+- [x] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.  
+  **Executed 2026-11-20:** [metadata.json](metadata.json) records producer source `e3f7e79d11700bce0e4c9794323da6be7074ba51`, Voiage 3.1.0 at `0978497b5047de9459ed2fca9b349a4e2a9c45d3` with wheel `71d3c657b876e5fd7b207f473c6b41583a451d51361919b0d6e766d604baa140`, and Tobac `891f79e07292b7754f78d7193130623bd5f9e243` (`tobac-regulatory-research` 0.2.0, module 0.1.0). Dapane is not a published package.
 
 ## Bounded owner quality pass — 15 November 2026
 
@@ -51,5 +51,5 @@ not relabelled as current passes.
 The track remains `in_progress`. The 20 November checkpoint verification covers
 T1 and the bounded synthetic T2.1–T2.2 implementation. T2.3 stays blocked on
 the missing Tobac oracle paths. T3.2 is recorded in [FALLBACK.md](FALLBACK.md).
-T3.1 now calls both installed consumers. T3.3 and production method qualification remain open because the Dapane producer is not an installed package.
+T3.1 and T3.3 record the installed consumer calls. Production method qualification remains open, and Dapane is not a published package.
 [Verification](VERIFICATION.md) · [Metadata](metadata.json) · [Handoff](HANDOFF.md)
