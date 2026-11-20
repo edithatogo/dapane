@@ -40,10 +40,14 @@ incremental engine or empirical/frontier claim follows. See the
 
 ## Phase 3 — External validation and publication
 
-- [ ] F3.1 Acquire scoped authorised external or multi-site data and assess transportability, missingness and real modelling effort.
-- [ ] F3.2 If pursued, qualify aggregate/federated calibration with explicit privacy/utility evaluation and no mandatory central patient-record store.
-- [ ] F3.3 Choose target software/methods/application venues from the actual contribution and evidence; keep software release, paper and clinical validation claims distinct.
-- [ ] F3.4 Update the dated comparator review, rerun relevant benchmarks and publish only conclusions supported by the observed results.
+- [!] F3.1 Acquire scoped authorised external or multi-site data and assess transportability, missingness and real modelling effort.
+  **Blocked 2026-11-20:** This track has no authorised external or multi-site dataset. The synthetic fixtures are not that dataset.
+- [!] F3.2 If pursued, qualify aggregate/federated calibration with explicit privacy/utility evaluation and no mandatory central patient-record store.
+  **Blocked 2026-11-20:** No external dataset has been authorised, so this calibration is not pursued.
+- [!] F3.3 Choose target software/methods/application venues from the actual contribution and evidence; keep software release, paper and clinical validation claims distinct.
+  **Blocked 2026-11-20:** Venue selection waits on the external evidence and on the still-disabled publication channel in L1.2.
+- [!] F3.4 Update the dated comparator review, rerun relevant benchmarks and publish only conclusions supported by the observed results.
+  **Blocked 2026-11-20:** Publication remains disabled, and there is no authorised external result to add to the comparator review.
 
 ## Evidence record
 

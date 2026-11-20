@@ -29,9 +29,12 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Provider integration
 
-- [ ] X3.1 Consume Kairos resource-execution events after its provider contract is qualified; keep healthcare recipes in their domain owner.
-- [ ] X3.2 Attach recipes to executed activities and apply quotations in a separate step; retain model and execution version identities.
-- [ ] X3.3 Verify that price-only revaluation changes monetary results without rerunning execution; document rollback to observed/static recipes.
+- [!] X3.1 Consume Kairos resource-execution events after its provider contract is qualified; keep healthcare recipes in their domain owner.
+  **Blocked 2026-11-20:** Kairos `a1f6283575ad26918230adc122a99b5c08fc4da3` track `114-dependency-and-consumer-contracts` still says every implementation item is pending, including the public resource-usage contract `114.1.7`.
+- [!] X3.2 Attach recipes to executed activities and apply quotations in a separate step; retain model and execution version identities.
+  **Blocked 2026-11-20:** This step needs the resource-execution events from X3.1. That Kairos contract is not qualified.
+- [!] X3.3 Verify that price-only revaluation changes monetary results without rerunning execution; document rollback to observed/static recipes.
+  **Blocked 2026-11-20:** Price-only revaluation cannot be checked until an executed Kairos activity identity exists.
 
 ## Evidence record
 
