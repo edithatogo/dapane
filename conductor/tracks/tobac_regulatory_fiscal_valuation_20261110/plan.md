@@ -25,8 +25,8 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Paired-draw handoff to tobac and voiage
 
-- [~] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.  
-  **In progress 2026-11-20:** `export_perspective_table` emits `dapane-fiscal-perspective-table/0.1` rows with the six-part key and the selected cost, QALY and NMB fields. Installed Voiage selects the alternative on the synthetic eight-cell grid. The handoff evaluates each scenario and subgroup separately and rejects ambiguous float conversions.
+- [x] T3.1 Export valued strategy/draw/perspective tables to `tobac` and `voiage` value-of-perspective / credal dominance workflows without losing joint draw identity.
+  **Executed 2026-11-20:** The synthetic eight-cell table keeps every joint key. Installed Voiage 3.1.0 `value_of_perspective` selects `alternative` for both perspectives. Tobac `891f79e07292b7754f78d7193130623bd5f9e243` (`tobac-regulatory-research` 0.2.0, module `__version__` 0.1.0) `credal.assess_decision` identifies `alternative` as commonly optimal for each perspective, with `draw-b` and subgroup `Māori / NZDep-1` still on the second state.
 - [x] T3.2 Document perspective assumptions, excise deadweight-loss / transfer boundaries and fallback behaviour when `dapane` is not installed.
   The record describes the three perspective rules, the domestic transfer boundary and the intended fallback when the optional adapter is unavailable. [Fallback](FALLBACK.md)
 - [~] T3.3 Run installed-package consumer checks and record exact producer/consumer revisions in the track metadata.

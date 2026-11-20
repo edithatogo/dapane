@@ -2,7 +2,12 @@
 
 import unittest
 
-from perspective_table import PerspectiveTableError, arrange, value_of_perspective
+from perspective_table import (
+    PerspectiveTableError,
+    arrange,
+    credal_dominance,
+    value_of_perspective,
+)
 
 
 def _row(strategy, perspective, draw, amount):
@@ -90,6 +95,13 @@ class PerspectiveTableTests(unittest.TestCase):
         )
         self.assertEqual(len(result["cells"]), 16)
 
+    def test_tobac_rejects_indistinguishable_floats(self):
+        payload = table()
+        payload["rows"][0]["net_monetary_benefit"]["numerator"] = "9007199254740993"
+        with self.assertRaises(PerspectiveTableError) as error:
+            credal_dominance(payload)
+        self.assertEqual(error.exception.code, "precision_loss")
+
     def test_installed_voiage_receives_the_same_labels(self):
         try:
             result = value_of_perspective(table())
@@ -118,3 +130,18 @@ class PerspectiveTableTests(unittest.TestCase):
             ValueArray.from_numpy(values, strategy_names=["change", "current"])
         )
         self.assertEqual(analysis.evpi(), 10.0)
+
+    def test_pinned_tobac_keeps_draw_identity_under_credal_dominance(self):
+        try:
+            result = credal_dominance(table())
+        except PerspectiveTableError as error:
+            if error.code == "provider_unavailable":
+                self.skipTest(str(error))
+            raise
+        self.assertEqual(len(result["cells"]), 8)
+        self.assertEqual(
+            [item["common_optimal_actions"] for item in result["perspectives"]],
+            [["alternative"], ["alternative"]],
+        )
+        self.assertEqual(result["perspectives"][0]["states"][1]["draw_id"], "draw-b")
+        self.assertEqual(result["perspectives"][0]["states"][1]["subgroup_id"], "Māori / NZDep-1")
