@@ -1,9 +1,9 @@
 {
   "track_id": "process_models_20261108",
   "type": "feature",
-  "status": "in_progress",
+  "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-19T08:38:00Z",
+  "updated_at": "2026-11-20T13:13:46Z",
   "description": "Produce resource-use records from observed or explicitly executed process models while keeping resource execution, discovery and monetary valuation independently owned.",
   "repositories": [
     "."
@@ -12,8 +12,8 @@
     "rust_kernel_20261108"
   ],
   "external_dependencies": [
-    "edithatogo/rust4pm: pin and qualify actual XES/OCEL/PNML support and licence terms.",
-    "edithatogo/kairos: Track 114 or its successor must supply a qualified neutral resource-execution contract.",
+    "roxmltree 0.21.2 and serde_json 1.0.154 are locked in the separate native adapter.",
+    "Kairos cdda89112575a42aa8c8e67868f61379ea35d05d supplies committed staged occupancy.",
     "edithatogo/careops-sim: healthcare process models remain provider-owned.",
     "OMG BPMN/PNML and optional PM4Py: supported semantics and licence obligations must be assessed for the selected adapter."
   ],
@@ -28,38 +28,20 @@
     "RQ-01",
     "RQ-03"
   ],
-  "capability_status": "x1_contracts_and_x2_bounded_models_verified_native_imports_and_kairos_open",
+  "capability_status": "bounded_xes_ocel_pnml_bpmn_and_kairos_staged_occupancy",
   "verification": {
-    "status": "x1_contracts_and_x2_bounded_models_passed_native_imports_and_kairos_open",
-    "scope": "X1 standalone typed contracts/fixtures qualified at 0621fecedd41bc99957d0042e32338e780f42dd2 (PR #21 merged at 96d0984), plus X2 bounded PNML/BPMN adapters (`adapters/process_models/`) verified across 31 Rust tests and CLI/wheel oracle fixtures. Native XES/OCEL decoding (X1.2) remains blocked on mailweft#4 and Kairos execution (X3) remains pending.",
+    "status": "passed",
+    "scope": "Bounded raw import and same-window Kairos quote replay plus retained X2 evidence",
     "commands": [
-      "cargo fmt --manifest-path adapters/observed_events/Cargo.toml --all --check",
-      "cargo clippy --manifest-path adapters/observed_events/Cargo.toml --locked --offline --all-targets -- -D warnings",
       "cargo test --manifest-path adapters/observed_events/Cargo.toml --locked --offline --all-targets",
-      "python3 -m unittest discover -s adapters/observed_events/tests -p 'test_fixtures.py' -v",
-      "cargo fmt --manifest-path adapters/process_models/Cargo.toml --all --check",
-      "cargo clippy --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets -- -D warnings",
-      "cargo test --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets",
-      "python3 -m unittest discover -s adapters/process_models/tests -p 'test_process_models.py' -v",
-      "python3 scripts/validate_conductor.py"
+      "cargo test --manifest-path adapters/kairos_usage/Cargo.toml --locked --offline --all-targets",
+      "cargo deny --manifest-path adapters/observed_events/Cargo.toml --locked --config deny.toml check",
+      "cargo deny --manifest-path adapters/kairos_usage/Cargo.toml --locked --config adapters/kairos_usage/deny.toml check"
     ],
-    "commands_status": "x1_passed_at_0621fecedd41bc99957d0042e32338e780f42dd2_and_x2_passed_on_darwin_arm64_2026-11-19",
     "evidence": [
-      "conductor/tracks/process_models_20261108/verification.md",
-      "conductor/tracks/process_models_20261108/review.md",
-      "conductor/tracks/process_models_20261108/dependency-inspection.json",
-      "conductor/tracks/process_models_20261108/integration-requests.md",
-      "adapters/observed_events/fixtures/expected.json",
-      "conductor/tracks/process_models_20261108/handoff.md",
-      "conductor/tracks/process_models_20261108/handoff.json",
-      "conductor/tracks/process_models_20261108/owner-quality-20261115.md",
-      "conductor/tracks/process_models_20261108/owner-quality-20261115.json",
-      "conductor/tracks/process_models_20261108/x2-verification.md",
-      "conductor/tracks/process_models_20261108/x2-verification.json",
-      "adapters/process_models/fixtures/expected.json"
-    ],
-    "source_commit": "0621fecedd41bc99957d0042e32338e780f42dd2",
-    "source_tree": "19e0fb8c86d7ef1daf079aa3f377a204458b49f3"
+      "conductor/tracks/process_models_20261108/native-and-kairos-review.md",
+      "conductor/tracks/process_models_20261108/x2-verification.md"
+    ]
   },
   "completion_evidence": [
     "Infant/specimen/assay/batch object relationships survive observed-event import without forcing one flat independent case per event.",
@@ -79,7 +61,39 @@
     "evidence": [
       "docs/runtime-verification.md",
       "docs/contract-v0.1.md"
-    ]
+    ],
+    "typed_x1_and_x2_before_native_import": {
+      "status": "x1_contracts_and_x2_bounded_models_passed_native_imports_and_kairos_open",
+      "scope": "X1 standalone typed contracts/fixtures qualified at 0621fecedd41bc99957d0042e32338e780f42dd2 (PR #21 merged at 96d0984), plus X2 bounded PNML/BPMN adapters (`adapters/process_models/`) verified across 31 Rust tests and CLI/wheel oracle fixtures. Native XES/OCEL decoding (X1.2) remains blocked on mailweft#4 and Kairos execution (X3) remains pending.",
+      "commands": [
+        "cargo fmt --manifest-path adapters/observed_events/Cargo.toml --all --check",
+        "cargo clippy --manifest-path adapters/observed_events/Cargo.toml --locked --offline --all-targets -- -D warnings",
+        "cargo test --manifest-path adapters/observed_events/Cargo.toml --locked --offline --all-targets",
+        "python3 -m unittest discover -s adapters/observed_events/tests -p 'test_fixtures.py' -v",
+        "cargo fmt --manifest-path adapters/process_models/Cargo.toml --all --check",
+        "cargo clippy --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets -- -D warnings",
+        "cargo test --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets",
+        "python3 -m unittest discover -s adapters/process_models/tests -p 'test_process_models.py' -v",
+        "python3 scripts/validate_conductor.py"
+      ],
+      "commands_status": "x1_passed_at_0621fecedd41bc99957d0042e32338e780f42dd2_and_x2_passed_on_darwin_arm64_2026-11-19",
+      "evidence": [
+        "conductor/tracks/process_models_20261108/verification.md",
+        "conductor/tracks/process_models_20261108/review.md",
+        "conductor/tracks/process_models_20261108/dependency-inspection.json",
+        "conductor/tracks/process_models_20261108/integration-requests.md",
+        "adapters/observed_events/fixtures/expected.json",
+        "conductor/tracks/process_models_20261108/handoff.md",
+        "conductor/tracks/process_models_20261108/handoff.json",
+        "conductor/tracks/process_models_20261108/owner-quality-20261115.md",
+        "conductor/tracks/process_models_20261108/owner-quality-20261115.json",
+        "conductor/tracks/process_models_20261108/x2-verification.md",
+        "conductor/tracks/process_models_20261108/x2-verification.json",
+        "adapters/process_models/fixtures/expected.json"
+      ],
+      "source_commit": "0621fecedd41bc99957d0042e32338e780f42dd2",
+      "source_tree": "19e0fb8c86d7ef1daf079aa3f377a204458b49f3"
+    }
   },
   "x1_lane": {
     "owner": "Dapane — Observed XES and OCEL imports",

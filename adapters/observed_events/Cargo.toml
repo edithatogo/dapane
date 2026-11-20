@@ -5,11 +5,17 @@ edition = "2024"
 rust-version = "1.99.1"
 license = "Apache-2.0"
 publish = false
-description = "Independent X1 observation contracts; raw import qualification is blocked"
+description = "Independent observed-event contracts and bounded XES and OCEL 2.0 import"
 repository = "https://github.com/edithatogo/dapane"
 
-# The integration owner controls the root workspace. This bounded contract
-# package has no external dependencies and is checked separately until adoption.
+[dependencies]
+roxmltree = { version = "=0.21.2", default-features = false, features = ["std"] }
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.154"
+sha2 = "=0.11.1"
+time = { version = "=0.3.55", features = ["parsing"] }
+
+# Optional adapter checked separately from the valuation workspace.
 [workspace]
 resolver = "3"
 

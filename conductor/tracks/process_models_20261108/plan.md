@@ -1,6 +1,6 @@
 # Implementation plan: Observed events, Petri nets and BPMN adapters
 
-Status: in_progress
+Status: archived
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -11,14 +11,13 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   at `63e3f8368510641513b5fd84ae3074bb80e79c6f`. All standalone checks and author
   review passed at `0621fecedd41bc99957d0042e32338e780f42dd2`; see the
   [exact-source receipt and handoff](owner-quality-20261115.md). Coordinator
-  commits and shared files are preserved; native import remains blocked.
+  commits and shared files were preserved. This checkpoint predated native import.
 
 ## Phase 1 — Observed records
 
 - [x] X1.1 Specify event/object identity, timestamps, correction rules and mapping of observed/assumed/simulated usage.
-- [!] X1.2 Qualify XES and OCEL 2.0 import using a pinned rust4pm/provider revision; preserve many-to-many batch relationships.
-- [~] X1.3 Verify duplicate, incomplete, reordered and censored event cases against independent resource-use expectations.
-  The typed synthetic contract rejects duplicate identities and incomplete intervals labelled complete. All 24 orders of the four events and rotations of the collections preserve the normalised snapshot, including three uses and one shared half-hour batch. Left-, right- and both-censored uses are retained in the snapshot and block the whole costing-ready result. Native-input verification still needs the qualified decoder from X1.2. [Verification](verification.md) · [Rust contract tests](../../../adapters/observed_events/tests/contracts.rs)
+- [x] X1.2 Qualify the supported raw XES 2.0 XML and OCEL 2.0 JSON profiles. The separate adapter locks maintained parser versions, retains original bytes and projects the same many-to-many links.
+- [x] X1.3 Execute duplicate, incomplete, reordered, equivalent-offset and censored input cases. The same fixture preserves three explicit uses and the shared half-hour batch.
 
 ## Phase 2 — Bounded process models
 
@@ -29,16 +28,17 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 
 ## Phase 3 — Provider integration
 
-- [!] X3.1 Consume Kairos resource-execution events after its provider contract is qualified; keep healthcare recipes in their domain owner.
-  **Blocked 2026-11-20:** Kairos `a1f6283575ad26918230adc122a99b5c08fc4da3` track `114-dependency-and-consumer-contracts` still says every implementation item is pending, including the public resource-usage contract `114.1.7`.
-- [!] X3.2 Attach recipes to executed activities and apply quotations in a separate step; retain model and execution version identities.
-  **Blocked 2026-11-20:** This step needs the resource-execution events from X3.1. That Kairos contract is not qualified.
-- [!] X3.3 Verify that price-only revaluation changes monetary results without rerunning execution; document rollback to observed/static recipes.
-  **Blocked 2026-11-20:** Price-only revaluation cannot be checked until an executed Kairos activity identity exists.
+- [x] X3.1 Consume the immutable Kairos staged usage revision through the public DES runtime. The release contract covers committed staged occupancy.
+- [x] X3.2 Bind the explicit domain recipe and carry engine, model, window, lease and causal event identity into the downstream valuation request.
+- [x] X3.3 Revalue the same executed use under two quote releases. The replay fixture yields NZD 18.00 and 30.00 with identical usage. The observed and static paths remain available for rollback.
+
+## Review fixes
+
+- [x] Keep native file identity, reject ambiguous JSON record shapes and unknown time offsets, and preserve distinct bounded window IDs and physical units. [Review and executed evidence](native-and-kairos-review.md)
 
 ## Evidence record
 
-The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. That historical checkpoint left X1.1 partial. The 15 November contract specifies explicit timestamps, basis, correction rejection and censoring. Native XES/OCEL decoding remains blocked in X1.2. On 19 November 2026, [`dapane-process-models`](../../../adapters/process_models/README.md) delivered the bounded X2 PNML (`pnml-bounded-v1`) and BPMN 2.0 (`bpmn-core-acyclic-v1` and `bpmn-extended-rework-subprocess-v1`) adapters with `X2.1`–`X2.4` verified across 31 Rust tests and independent CLI/wheel oracle fixtures; see the [X2 verification record](x2-verification.md) and [X2 machine receipt](x2-verification.json). X3.1–X3.3 remain pending upstream Kairos Track 114 qualification (`edithatogo/kairos` `a1f6283575ad26918230adc122a99b5c08fc4da3`).
+The [event/process/object model](../../../docs/event-process-object-model.md) and [provider review](../../../docs/provider-boundaries.md) establish the independent-core boundary. Contract0.1 validates context without executing processes or deriving resource duration. That historical checkpoint left X1.1 partial. The 15 November contract specifies explicit timestamps, basis, correction rejection and censoring. The original X1 fallback predated the qualified bounded raw import. On 19 November 2026, [`dapane-process-models`](../../../adapters/process_models/README.md) delivered the bounded X2 PNML (`pnml-bounded-v1`) and BPMN 2.0 (`bpmn-core-acyclic-v1` and `bpmn-extended-rework-subprocess-v1`) adapters with `X2.1`–`X2.4` verified across 31 Rust tests and independent CLI/wheel oracle fixtures; see the [X2 verification record](x2-verification.md) and [X2 machine receipt](x2-verification.json). The [native/Kairos review](native-and-kairos-review.md) records the new pinned source and executed checks.
 
 Historical core-context scope and commands remain in [runtime verification](../../../docs/runtime-verification.md). The [verification record](verification.md) retains the recovery history; the [owner follow-up](owner-quality-20261115.md) records the later exact-source execution. This track remains in progress.
 Update [metadata](metadata.json), [track index](index.md) and [registry](../../tracks.md) together when the status changes.
