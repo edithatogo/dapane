@@ -1,27 +1,35 @@
 # Manual costing file exchange
 
-An operator can transfer a synthetic CareOps costing request and its result using files. Dapane's CLI performs the valuation. The installed Python wheel replays it when the result is imported. The local example produces AUD 150.00. Hosted tenant acceptance is open.
+This repository baseline prepares and checks a synthetic CareOps costing exchange. The Rust CLI values the request and the installed Python wheel replays the downloaded result. The complete example produces AUD 150.00. The SharePoint pilot is deferred.
 
-## Run the example
+## Run the local example
 
-Use the installed wheel, schema dependencies and matching CLI from the [quickstart](../docs/quickstart.md). Pick an empty exchange directory for the example.
+Install the wheel, schema dependencies and matching CLI from the [quickstart](../docs/quickstart.md). These commands use a fictional SharePoint address to prepare list fields. All exchange files stay local.
 
 ```sh
-python power_platform/manual_exchange.py export --input power_platform/fixtures/manual-input.json --out exchange/input.json
-python power_platform/manual_exchange.py run --input exchange/input.json --cli target/release/dapane --archive exchange/result
-python power_platform/manual_exchange.py import --input exchange/input.json --archive exchange/result --out exchange/list-row.json
+exchange_dir="$(mktemp -d)"
+.venv/bin/python power_platform/manual_exchange.py export \
+  --input power_platform/fixtures/manual-input.json --out "$exchange_dir/input.json" \
+  --sharepoint-plan > "$exchange_dir/upload-plan.json"
+.venv/bin/python power_platform/manual_exchange.py run \
+  --input "$exchange_dir/input.json" --cli target/release/dapane \
+  --archive "$exchange_dir/result"
+.venv/bin/python power_platform/manual_exchange.py import \
+  --input "$exchange_dir/input.json" --archive "$exchange_dir/result" \
+  --sharepoint-library 'https://example.sharepoint.com/sites/synthetic-costing/Run%20Bundles' \
+  --out "$exchange_dir/list-fields.json"
 ```
 
-The export preserves the submitted UTF-8 bytes. The result directory contains the exact CLI stdout in `report.json`, a replayable [run bundle](../docs/run-bundle-v0.1.md) in `bundle.json`, and SHA-256 file identities in `receipt.json`. The run and import verify the full history, source revision, rate releases and numerical result. Supply existing envelopes in `history` for a replacement. A retry accepts identical bytes. A changed revision needs a distinct destination.
+The export preserves the submitted UTF-8 bytes. The result directory contains the exact CLI stdout in `report.json`, a replayable [run bundle](../docs/run-bundle-v0.1.md) in `bundle.json`, and SHA-256 file identities in `receipt.json`. The import verifies all three downloaded files against the retained original export and replays the full bundle history with the installed wheel. For a correction, use a new `InputRevision` and supply the existing native envelopes in `history`.
 
-## Configure the manual SharePoint surface
+The `--sharepoint-plan` and `--sharepoint-library` options produce upload paths and manual List form values. The default export digest and import JSON remain available to existing callers.
 
-1. At the selected site create a versioned document library for synthetic costing exchanges. Give the submitter access to the input folder and the importing operator access to result folders. Use the site's existing access controls. Preserve earlier file versions.
-2. Create a list for run summaries. Use unique single-line text `BundleDigest` for the result revision. Add single-line text columns for `ProjectKey`, `ScenarioId`, `InputRevision`, `RunId`, `SeriesId`, `BundleId`, `OutputContentHash`, `CalculationContractVersion`, `NativeStatus`, `Total` and `Currency`. Keep the rounded amount as text for exact transport. Add a `JobState` choice with submitted, running, completed, incomplete, failed and cancelled. Store `ExcludedInputs` and `IncompleteCapacityPools` in multiline text and add a hyperlink for the archived file.
-3. Upload the exported input into a revision-specific folder. Download that file to the CLI host and run the example with the downloaded file. Upload the three result files together to a new result revision. Download them and import with the original input. Enter the resulting row, and resolve its `OutputFile` relative to the uploaded result directory. Use the library link in the list.
-4. Use `incomplete` for excluded inputs or incomplete capacity observations. The row names the gaps and leaves the total blank. A rejected evaluation or import produces an error. Record the failure against the submitted job and retain the input for correction. An operator can cancel an unprocessed job before running it.
-5. To roll back the optional surface, suspend new submissions and retain files, links and list history. The archived request still evaluates with the standalone CLI. A separately selected worker, connector or PCF control would need its own deployment and entitlement evidence.
+## Set up a future SharePoint pilot
 
-CareOps' source mapping identifies projects by `ProjectCode` and scenarios by `ScenarioId`. Carry the project code in the output library's `ProjectKey`, along with the scenario and input revision. Its document-generation form is separate from the calculation exchange. The inspected mapping is at CareOps revision `40a34712350ff563c7aca95d77c98b5e60a72127`. [CareOps source mapping](https://github.com/edithatogo/careops/blob/40a34712350ff563c7aca95d77c98b5e60a72127/modules/careops-costing/contracts/sharepoint-project-scenario.mapping.json)
+1. Use a versioned document library and results list in the authorised pilot site. The [SharePoint exchange contract](sharepoint-contract.json) specifies the library layout, internal column names, field types and required settings. Use the list's built-in `Title` column and enforce uniqueness on `ExchangeKey`. Confirm the chosen operators can perform their assigned uploads, downloads and list operations under the site's access controls. [Microsoft list column guidance](https://support.microsoft.com/en-us/sharepoint/lists/data-and-lists/list-and-library-column-types-and-options)
+2. Retain the original export and upload a byte-identical copy at `InputPath` from the upload plan. Download that copy to the CLI host. Run the CLI and upload all three files to the plan's `ResultFolder`. Each `ExchangeKey` identifies the exact project, scenario and input revision. On a retry, reuse matching files and list values. A conflict requires a new input revision and preservation of the earlier files and item.
+3. Download the result folder and import it against the retained original input. Use the direct library root URL for `--sharepoint-library`. Copy the generated field values into the list form and confirm that the `OutputLink` opens the replayed bundle for an authorised reader. Keep `Total` as text to preserve the exact rounded amount. Leave it blank when the result is incomplete. Counts in the list identify exclusions or incomplete capacity pools, with the full details in the archive.
+4. Read back the exact native paths, downloaded hashes, list fields and item version. Verify a complete case, an incomplete case and an identical retry. Use the existing job record for submitted, running, failed or cancelled jobs. The results list records successful replay with a `completed` or `incomplete` state.
+5. To roll back, suspend new submissions and retain the archived files, links and list history. The original request can still run through the CLI. The manual handoff uses files and list fields without a flow, custom connector or Canvas calculation. A future app or worker would require separate entitlement and host checks. [SharePoint connector reference](https://learn.microsoft.com/en-us/connectors/sharepoint/)
 
-The synthetic local round trip verifies software and file identities. Site permissions, live list entry, downloaded files and operator visibility require a selected tenant, site and permitted-data scope. Publication and tenant activation have separate owners.
+CareOps identifies projects by `ProjectCode` and scenarios by `ScenarioId`. Carry the project code as `ProjectKey` and record the exact input revision as text for this exchange. CareOps' maintained document-generation outputs have their own column contract and issued history. [CareOps source mapping](https://github.com/edithatogo/careops/blob/9872cad0e7d20bfb4ea764e4748cb76843b1ba45/modules/careops-costing/contracts/sharepoint-project-scenario.mapping.json)

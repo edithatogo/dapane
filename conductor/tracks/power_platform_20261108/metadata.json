@@ -1,10 +1,10 @@
 {
   "track_id": "power_platform_20261108",
   "type": "feature",
-  "status": "in_progress",
+  "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-20T11:36:00Z",
-  "description": "Surface the shared engine through an operational Power App while keeping the calculation implementation independent and the standard-connector/file path usable.",
+  "updated_at": "2026-11-20T12:31:42Z",
+  "description": "Prepare and verify the manual CareOps costing file exchange and versioned SharePoint setup contract.",
   "repositories": [
     "."
   ],
@@ -12,8 +12,8 @@
     "python_two_consumers_20261108"
   ],
   "external_dependencies": [
-    "edithatogo/careops: maintained costing module and non-premium SharePoint-oriented delivery patterns.",
-    "Target Microsoft tenant/environment and authorised host owner: actual entitlements, identity, configuration and permitted-data scope."
+    "edithatogo/careops: maintained costing module and SharePoint project and scenario mapping.",
+    "Deferred live pilot: target tenant, permitted scope, operator rights and native site readback."
   ],
   "owners": [
     "edithatogo"
@@ -23,21 +23,26 @@
     "RQ-08",
     "RQ-03"
   ],
-  "capability_status": "manual_file_exchange_verified_locally",
+  "capability_status": "manual_sharepoint_handoff_verified_locally",
   "verification": {
-    "status": "partial",
+    "status": "passed",
     "commands": [
-      "DAPANE_CLI=target/release/dapane python -m pytest -q power_platform/test_manual_exchange.py"
+      "cargo build --locked --release -p dapane-cli",
+      ".venv/bin/maturin build --locked --release --interpreter .venv/bin/python",
+      "DAPANE_CLI=<installed CLI> .venv/bin/python -m pytest -q power_platform/test_manual_exchange.py",
+      ".venv/bin/ruff check power_platform",
+      ".venv/bin/ruff format --check power_platform"
     ],
-    "local_tests_passed": 4,
-    "scope": "Installed Rust CLI and wheel, complete and incomplete exchange, immutable retry, replacement ancestry and direct native byte comparison. Hosted site and entitlement acceptance remain open."
+    "fix_commit": "ad6edcdbe10090a28773ace58199adf0f3fc9bf9",
+    "python": "3.15.1",
+    "local_tests_passed": 11,
+    "scope": "Synthetic file copies, installed CLI and wheel replay, immutable retries and replacements, SharePoint List field types, complete and incomplete cases, and rejection of altered or incomplete result files.",
+    "live_pilot": "deferred_by_owner",
+    "evidence": "review.md"
   },
   "completion_evidence": [
-    "The baseline demonstrates input export, CLI execution and result import without a hidden premium connector, HTTP action, gateway, Dataverse or Copilot requirement.",
-    "Actual user/environment rights and target-host behaviour are recorded before deployment; a Standard badge is not treated as an entitlement decision.",
-    "Large payloads/results use immutable files; Lists hold identities, state and summaries, and incomplete results are visibly incomplete.",
-    "A worker handles idempotency, claiming, retry/cancellation and scoped access without bypassing service or licensing obligations.",
-    "An API or browser component uses the same qualified numerical implementation and does not duplicate Power Fx calculation rules.",
-    "Optional routes have separate capability status; their absence does not block the CLI or core release."
+    "Reproducible versioned library layout and List field contract, with a unique project, scenario and input revision key.",
+    "Archived request and native results verified against the original export and full replay. The incomplete summary has a blank total and reports gap counts.",
+    "Live tenant pilot, worker, custom connector and PCF routes deferred."
   ]
 }

@@ -43,7 +43,7 @@ records verified `0658d94` candidate artifacts and signed trusted-main provenanc
 Release qualification consumes their existing records and checks the exact candidate
 artifacts; publication remains disabled.
 
-Optional adapters now cover bounded process models, reporting exports, fiscal decision tables and adoption forecasts. The manual CareOps file exchange replays the installed CLI and wheel. Its target-tenant round trip and public package distribution remain open. The [track registry](conductor/tracks.md) lists the evidence and remaining work.
+Optional adapters now cover bounded process models, reporting exports, fiscal decision tables and adoption forecasts. The archived CareOps baseline verifies manual file exchange through the installed CLI and wheel and defines the SharePoint list and library contract. The live tenant pilot is deferred. Public package distribution remains open. The [track registry](conductor/tracks.md) lists the evidence and remaining work.
 
 ## Kairos and the three contexts
 
