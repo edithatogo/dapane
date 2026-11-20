@@ -2,16 +2,17 @@
 
 Track: `power_platform_20261108`
 
-Status: in_progress
+Status: archived
 
-Surface the shared engine through an operational Power App while keeping the calculation implementation independent and the standard-connector/file path usable.
+Prepare, run and verify a manual CareOps costing exchange through immutable files. The SharePoint contract describes the list and library setup for a future pilot.
 
 - [Specification](spec.md)
 - [Implementation plan](plan.md)
 - [Metadata](metadata.json)
+- [Review and verification](review.md)
 - [Track registry](../../tracks.md)
 - [Roadmap](../../roadmap.md)
 
 Requirements: RQ-08, RQ-03.
 
-The [manual file exchange](../../../power_platform/README.md) is implemented and verified locally. A selected tenant/site and native readback are still needed for hosted acceptance.
+The [manual file exchange](../../../power_platform/README.md) passed repository acceptance with synthetic files. The owner deferred live SharePoint work on 20 November 2026. Any later pilot needs a selected site, entitlement checks and native readback.

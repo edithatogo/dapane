@@ -2,16 +2,14 @@
 
 ## Outcome and users
 
-Surface the shared engine through an operational Power App while keeping the calculation implementation independent and the standard-connector/file path usable.
-
-This is a planned work specification. Repository setup does not establish the capabilities below.
+Deliver the manual file exchange and the versioned SharePoint setup contract for CareOps. Use synthetic requests for repository verification. On 20 November 2026 the owner deferred the live SharePoint pilot.
 
 ## Scope and requirements
 
 Owning requirements: **RQ-08, RQ-03** in [requirements](../../requirements.md).
 The [design](../../design.md) and [decisions](../../decisions.md) define the common boundary.
 
-- Start with Canvas/SharePoint request metadata, immutable bundles and manual CLI exchange.
+- Use SharePoint List form values, immutable bundles and manual CLI exchange for the repository baseline.
 - Treat an authorised asynchronous worker, premium API/custom connector and local WASM/PCF component as separate optional delivery capabilities.
 - Keep Power Fx, flows and reports as contract consumers rather than independent formula implementations.
 
@@ -32,14 +30,17 @@ External readiness, checked separately from the local dependency graph:
 - edithatogo/careops: maintained costing module and non-premium SharePoint-oriented delivery patterns.
 - Target Microsoft tenant/environment and authorised host owner: actual entitlements, identity, configuration and permitted-data scope.
 
-## Acceptance criteria
+## Repository acceptance
 
-1. The baseline demonstrates input export, CLI execution and result import without a hidden premium connector, HTTP action, gateway, Dataverse or Copilot requirement.
-2. Actual user/environment rights and target-host behaviour are recorded before deployment; a Standard badge is not treated as an entitlement decision.
-3. Large payloads/results use immutable files; Lists hold identities, state and summaries, and incomplete results are visibly incomplete.
-4. A worker handles idempotency, claiming, retry/cancellation and scoped access without bypassing service or licensing obligations.
-5. An API or browser component uses the same qualified numerical implementation and does not duplicate Power Fx calculation rules.
-6. Optional routes have separate capability status; their absence does not block the CLI or core release.
+1. A synthetic request passes export, CLI execution and result import. The verified files replay through the installed wheel and need no external service.
+2. The versioned contract specifies the library paths, unique revision key and native List field types. Full payloads remain files. Incomplete results show the gaps and leave the total blank.
+3. An identical retry reproduces the same files and fields. A changed revision keeps the predecessor, and altered or incomplete results fail before publication of the summary.
+
+## Deferred deployment acceptance
+
+- For a later pilot, identify the permitted site, users and data, then verify list and library configuration, actual rights, exact download bytes and operator access. Connector classification alone cannot establish user or environment rights.
+- If a worker is selected, verify idempotency, claiming, retry, cancellation and scoped access.
+- If an API or browser component is selected, verify the qualified numerical implementation, host behaviour and entitlements. The application uses the shared engine for arithmetic.
 
 ## Risks and constraints
 
@@ -51,7 +52,7 @@ Retain the CLI/file path and versioned request/result bundles. Disable or roll b
 
 ## Open implementation decisions
 
-Choose a target permitted-data pilot and actual tenant constraints during delivery. Premium API and browser-local options remain separately selected and qualified; neither is required for initial Dapane.
+Choose the target and constraints if a permitted-data pilot is commissioned. The worker, API and browser-local routes remain optional.
 
 ## Execution and verification
 
