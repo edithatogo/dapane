@@ -306,25 +306,40 @@ def main():
         if command == "run":
             sub.add_argument("--cli", type=Path, required=True)
         if command == "export":
-            sub.add_argument("--sharepoint-plan", action="store_true", help="print upload paths")
+            metadata = sub.add_mutually_exclusive_group()
+            metadata.add_argument("--sharepoint-plan", type=Path, help="save upload paths as JSON")
+            metadata.add_argument("--digest-out", type=Path, help="save the input SHA-256 digest")
         if command == "import":
             sub.add_argument("--sharepoint-library", help="produce SharePoint list fields")
     args = parser.parse_args()
     try:
         if args.command == "export":
-            outcome = export_file(args.input, args.out, sharepoint=args.sharepoint_plan)
+            if args.sharepoint_plan is not None:
+                plan = export_file(args.input, args.out, sharepoint=True)
+                publish_file(args.sharepoint_plan, encode(plan))
+            else:
+                digest = export_file(args.input, args.out)
+                if args.digest_out is not None:
+                    publish_file(args.digest_out, (digest + "\n").encode("ascii"))
+            print("exported")
         elif args.command == "run":
-            outcome = execute(args.input, args.cli, args.archive)
+            execute(args.input, args.cli, args.archive)
+            print("archived")
         else:
-            outcome = import_result(
+            status = import_result(
                 args.input, args.archive, args.out, sharepoint_library=args.sharepoint_library
             )
-    except (ValueError, OSError, subprocess.TimeoutExpired) as exc:
-        parser.exit(1, f"{exc}\n")
-    if isinstance(outcome, dict):
-        print(json.dumps(outcome, ensure_ascii=False))
-    else:
-        print(outcome)
+            if status == "incomplete":
+                print("incomplete")
+            else:
+                print("completed")
+    except ValueError:
+        # Parser and replay errors can include values from the input or native stderr.
+        parser.exit(1, "Exchange rejected. Check the input, replay, and destination revision.\n")
+    except OSError:
+        parser.exit(1, "Exchange could not access the requested files or CLI.\n")
+    except subprocess.TimeoutExpired:
+        parser.exit(1, "Native evaluation timed out.\n")
 
 
 if __name__ == "__main__":

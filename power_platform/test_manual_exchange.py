@@ -154,26 +154,44 @@ def test_sharepoint_handoff_from_downloaded_files(tmp_path, cli):
     source = tmp_path / "export.json"
     library = tmp_path / "document-library"
     out = tmp_path / "list-fields.json"
-    plan = json.loads(
-        subprocess.check_output(
-            [
-                *script,
-                "export",
-                "--input",
-                str(FIXTURE),
-                "--out",
-                str(source),
-                "--sharepoint-plan",
-            ]
-        )
-    )
+    plan_file = tmp_path / "upload-plan.json"
+    export = [
+        *script,
+        "export",
+        "--input",
+        str(FIXTURE),
+        "--out",
+        str(source),
+        "--sharepoint-plan",
+        str(plan_file),
+    ]
+    assert subprocess.check_output(export) == b"exported\n"
+    plan_bytes = plan_file.read_bytes()
+    assert subprocess.check_output(export) == b"exported\n"
+    assert plan_file.read_bytes() == plan_bytes
+    plan = json.loads(plan_bytes)
     in_library = library / plan["InputPath"]
     in_library.parent.mkdir(parents=True)
     shutil.copyfile(source, in_library)
     downloaded = tmp_path / "download.json"
     shutil.copyfile(in_library, downloaded)
     prepared = tmp_path / "prepared"
-    installed_bundle = exchange.execute(downloaded, cli, prepared)
+    assert (
+        subprocess.check_output(
+            [
+                *script,
+                "run",
+                "--input",
+                str(downloaded),
+                "--cli",
+                str(cli),
+                "--archive",
+                str(prepared),
+            ]
+        )
+        == b"archived\n"
+    )
+    installed_bundle = json.loads((prepared / "bundle.json").read_bytes())["bundle_digest"]
     uploaded = library / plan["ResultFolder"]
     shutil.copytree(prepared, uploaded)
     retrieved = tmp_path / "retrieved"
@@ -219,6 +237,40 @@ def test_sharepoint_handoff_from_downloaded_files(tmp_path, cli):
     assert fields["BundleDigest"] == installed_bundle
     assert fields["OutputLink"] == f"{LIBRARY}/{plan['ResultFolder']}/bundle.json"
     assert (fields["Total"], fields["Currency"], fields["PriceYear"]) == ("150.00", "AUD", 2026)
+
+
+def test_export_digest_and_rejected_input_stay_out_of_console(tmp_path):
+    source = tmp_path / "source.json"
+    out = tmp_path / "export.json"
+    digest = tmp_path / "digest.txt"
+    command = [
+        sys.executable,
+        exchange.__file__,
+        "export",
+        "--input",
+        str(source),
+        "--out",
+        str(out),
+        "--digest-out",
+        str(digest),
+    ]
+    source.write_bytes(b'{"synthetic-marker":null,"synthetic-marker":null}')
+    rejected = subprocess.run(command, capture_output=True, check=False)
+    assert rejected.returncode == 1
+    assert rejected.stdout == b""
+    assert rejected.stderr.startswith(b"Exchange rejected.")
+    assert b"synthetic-marker" not in rejected.stderr
+    assert not out.exists() and not digest.exists()
+
+    source.write_bytes(FIXTURE.read_bytes())
+    assert subprocess.check_output(command) == b"exported\n"
+    assert out.read_bytes() == FIXTURE.read_bytes()
+    assert digest.read_text(encoding="ascii") == exchange.sha(FIXTURE.read_bytes()) + "\n"
+    digest.write_text("different revision\n", encoding="ascii")
+    conflict = subprocess.run(command, capture_output=True, check=False)
+    assert conflict.returncode == 1
+    assert conflict.stdout == b""
+    assert digest.read_text(encoding="ascii") == "different revision\n"
 
 
 def test_sharepoint_key_tracks_project_scenario_revision(tmp_path):
