@@ -12,7 +12,7 @@ Owning requirements: **RQ-10, RQ-01, RQ-03** in [requirements](../../requirement
 The [design](../../design.md) and [decisions](../../decisions.md) define the common boundary.
 
 - Qualify observed events, XES and object-centric OCEL 2.0 before bounded PNML/Petri-net and BPMN integration.
-- Reuse rust4pm and existing process tools through optional adapters.
+- Reuse maintained parsing and process tools through optional adapters. The raw XES and OCEL profiles use separate audited XML and JSON readers.
 - Consume Kairos usage events when its provider contract is qualified; leave healthcare process definitions in CareOps-Sim or domain packages.
 
 ## Deliverables
@@ -29,7 +29,7 @@ Local track dependencies:
 
 External readiness, checked separately from the local dependency graph:
 
-- edithatogo/rust4pm: pin and qualify actual XES/OCEL/PNML support and licence terms.
+- Qualified parsing dependencies: pin and audit the selected format support and licence terms. Rust4PM remains an optional future provider.
 - edithatogo/kairos: Track 114 or its successor must supply a qualified neutral resource-execution contract.
 - edithatogo/careops-sim: healthcare process models remain provider-owned.
 - OMG BPMN/PNML and optional PM4Py: supported semantics and licence obligations must be assessed for the selected adapter.
@@ -86,3 +86,7 @@ source identities. This does not qualify native parsing or projection.
 Shared schema/core/CLI/Python and root Cargo/CI/registry changes are
 [integrator requests](integration-requests.md). Accepted per-generated-segment
 half-even monetary semantics remain unchanged.
+
+## Qualified profiles
+
+The [native/Kairos review](native-and-kairos-review.md) records the bounded native import and committed Kairos occupancy contract. The 15 November fallback above remains a historical checkpoint.

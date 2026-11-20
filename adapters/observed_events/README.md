@@ -1,22 +1,29 @@
-# X1 independent observation contracts
+# Observed-event imports and contracts
 
-**Raw XES/OCEL import remains blocked by dependency qualification.** This package
-implements the independent contracts/fixtures fallback authorised for Dapane's
-[process track](../../conductor/tracks/process_models_20261108/index.md). It is
-not a raw-file decoder, a substitute native OCEL model or a process execution
-engine. There is no XES/OCEL file input API.
+This optional package decodes a bounded XES 2.0 XML and OCEL 2.0 JSON profile
+into validated observation contracts. Original bytes remain the authority for
+native attributes, object history and evidence. The adapter computes no prices.
 
-**Verification:** the coordinator executed the recovered source in dedicated
-hosted CI. Its two formatting failures are corrected in
-`0621fecedd41bc99957d0042e32338e780f42dd2`, where all 37 Rust contract tests,
-12 fixture audits, formatting and lint checks passed. The
-[owner follow-up](../../conductor/tracks/process_models_20261108/owner-quality-20261115.md)
-retains exact commands, outputs and review evidence. These checks qualify the
-typed contracts and synthetic fixture audit; native import remains blocked.
+- XES uses UTF-8, the XES namespace, explicit trace and event identity, offset
+  timestamps and scalar event attributes. Interval anchors must have the
+  appropriate start and complete labels on the same activity and trace. Supply
+  a separately versioned sidecar with object identities, qualified links and
+  explicit pairings. The trace structure supplies none of those associations.
+- OCEL permits declared string, time, signed 64-bit integer, floating and Boolean
+  attributes. It checks typed declarations, history instants, relationships and
+  identifier uniqueness, with source order and offsets preserved in original bytes.
+- Both paths accept up to 8 MiB of uncompressed UTF-8. Timestamps require a known
+  offset and at most nine fractional digits. XES disables DTDs and external
+  resolution and caps XML nodes. The JSON decoder requires object records and
+  rejects duplicate or unknown fields. The typed validation bounds collections.
+- The import returns a retained source slice and source-digest-bound typed
+  projection. Preserve the separate mapping revision with the source snapshot.
+  The adapter supplies no default quantities, calendar dates or attribution.
 
-The crate has no external dependencies, monetary arithmetic or default
-workspace/CLI/Python integration. Its separate Cargo workspace preserves the
-integrator-owned root manifest and lock. Package publication is disabled.
+The XES provider is MIT/Apache-2.0 roxmltree 0.21.2, with serde_json 1.0.154 for
+OCEL and time 0.3.55 for offsets. Their immutable crate versions and transitive
+closure are recorded in Cargo.lock. The provider is isolated from the core.
+[Raw import and Kairos review](../../conductor/tracks/process_models_20261108/native-and-kairos-review.md)
 
 ## Implemented contract
 
@@ -120,55 +127,20 @@ and a per-collection limit of 10,000. Tokens are trimmed, control-free UTF-8 of
 at most 128 bytes; empty relationship qualifiers are allowed. References must
 resolve before normalization.
 
-Valid set-like collections are sorted after checking. Typed enums exclude
-unknown labels. There is no JSON transport for this projection. Duplicate raw
-JSON members, unknown native fields, full schema validation, XML entities,
-external resolution, byte/decompression budgets and native malformed-input
-handling require the actual qualified decoder. The prepared negative inputs
-are not claims of implemented raw-parser guards.
+The original no-dependency X1 contract was qualified in PR #21. The historical
+[fixture expectations](fixtures/expected.json) retain their unexecuted-at-the-time
+status. The Rust integration tests now exercise their native inputs directly
+through the supported profiles. OCEL XML, SQLite, 2.1, compressed input, nested XES
+event attributes and general schema conformance remain outside the profiles.
 
-## Proposed native mapping and actual status
-
-| Source feature | Required mapping | Status here |
-| --- | --- | --- |
-| XES identity | Explicit source event/trace IDs; names and positions cannot invent identity | Synthetic input and contract only |
-| XES time/lifecycle | Explicit timestamp and declared start/complete pairing; no implied quantity | Synthetic input and contract only |
-| XES object graph | Explicit source mapping/sidecar; trace membership cannot reconstruct the OCEL graph | Sidecar expectation only |
-| OCEL 2.0 JSON | Retain native IDs, types, typed attributes/history and qualified E2O/O2O | Raw fixtures retained; native import blocked |
-| Unprojected native content | Retain the source/native model; reject unsupported meaningful data rather than silently discard it | Native fidelity and round-trip blocked |
-| OCEL XML/SQLite/2.1, PNML/BPMN | Separate qualification | Outside X1 |
-| Kairos | Qualified provider contract and execution evidence | No integration/execution claim |
-
-[expected.json](fixtures/expected.json) pins all 13 raw fixtures by SHA-256 and
-marks their native decoder cases unexecuted. The Rust cases exercise a typed
-contract. The Python auditor reads only the fixed synthetic XML/JSON fixtures
-and checks content against explicit expectations. It does not connect a raw
-decoder to the Rust contract or implement a runtime alternative to Rust4PM.
-Full XES XSD/OCEL schema conformance and native round-trips are unexecuted.
-
-## Dependency gate and integration
-
-Read-only inspection pinned Mailweft main at
-[`14b3de557a7654708f6066f70f4d8bc1e3d1e564`](https://github.com/edithatogo/mailweft/commit/14b3de557a7654708f6066f70f4d8bc1e3d1e564).
-Its lock has `process_mining 0.6.2` and `quick-xml 0.37.5`. The Rust4PM
-dependency is optional in that main's core manifest; optionality does not
-qualify XES/OCEL imports. [Issue #4](https://github.com/edithatogo/mailweft/issues/4)
-remains open. The old draft [PR #3](https://github.com/edithatogo/mailweft/pull/3)
-head, `520d545951e9c722fff857674081608427ca2ec5`, is recorded separately.
-
-This lane adds no dependency patch, replacement XML/OCEL runtime, advisory
-suppression or upstream edit. `RAW_IMPORT_STATUS` remains
-`blocked_dependency_qualification`; no flag enables a raw decoder.
-
-The [integration requests](../../conductor/tracks/process_models_20261108/integration-requests.md)
-cover qualified dependency adoption, explicit CI coverage, native mapping and
-shared schema/API decisions. The existing core's per-generated-segment half-even
-method is unchanged. This crate has no quotations and performs no money or
-segment arithmetic.
+Mailweft issue #4 tracks its separate Rust4PM qualification. The new adapter
+uses maintained XML and JSON libraries under the existing validation boundary.
+The alternative keeps the vulnerable graph out of Dapane and leaves the upstream
+dependency work with its owner.
 
 ## Verification commands
 
-With Rust 1.99.1, Python 3.12+ and the repository's Ruff version available:
+Use Rust 1.99.1, the repository's CPython 3.15.1 environment and Ruff.
 
 ```sh
 cargo fmt --manifest-path adapters/observed_events/Cargo.toml --check
@@ -184,7 +156,7 @@ python3 -m unittest discover -s tests -p 'test_conductor_validation.py' -v
 Root `cargo test` does not discover this separate package. The coordinator has
 added explicit standalone CI using the package manifest and fixture-audit path
 (X1-IR-01). Shared CI aggregation remains coordinator-owned. Repeat the checks
-for each proposed head; standalone success does not qualify raw imports.
+for each proposed head with the locked adapter dependencies.
 
 ## Primary specification references
 

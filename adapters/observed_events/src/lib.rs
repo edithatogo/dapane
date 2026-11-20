@@ -1,17 +1,18 @@
-//! Independent, typed X1 observation contracts. This crate does **not** decode
-//! XES or OCEL, execute a process, measure elapsed use, or calculate money.
+//! Typed observed-event contracts and bounded raw import.
 //!
-//! A future qualified Rust4PM adapter must preserve its native source model and
-//! submit explicitly mapped assertions to this boundary. Contract validation is
-//! not native-format qualification, source verification, or a valuation report.
+//! Resource quantities and pairing come from explicit assertions. Native
+//! metadata stays with the retained source. The adapter computes no prices.
+
+mod native;
+pub use native::*;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
 /// Contract identity; separate from all Dapane monetary method identities.
 pub const CONTRACT_VERSION: &str = "dapane-observed-contracts-v0.1.0";
-/// No raw decoder is enabled by this contract-only package.
-pub const RAW_IMPORT_STATUS: &str = "blocked_dependency_qualification";
+/// Capability identifier for the supported native adapters.
+pub const RAW_IMPORT_STATUS: &str = "bounded_xes_and_ocel2_json_v1";
 /// Maximum records in any one top-level collection.
 pub const MAX_COLLECTION: usize = 10_000;
 /// Maximum top-level records and, separately, nested references.
@@ -20,7 +21,7 @@ pub const MAX_AGGREGATE: usize = 20_000;
 /// Raw format for which the retained source is declared; not a parser selector.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SourceFormat {
-    /// IEEE XES XML, restricted further by the future qualified mapping profile.
+    /// IEEE XES XML, restricted to the supported mapping profile.
     Xes,
     /// OCEL 2.0 JSON; OCEL XML/SQLite/2.1 are outside X1's proposed subset.
     Ocel2Json,

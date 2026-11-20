@@ -71,7 +71,8 @@ jobs:
             ~/.cargo/git/db
             target
             adapters/process_models/target
-          key: ${{ runner.os }}-process-models-1.99.1-${{ hashFiles('Cargo.lock', 'adapters/process_models/Cargo.toml', 'rust-toolchain.toml') }}
+            adapters/kairos_usage/target
+          key: ${{ runner.os }}-process-models-1.99.1-${{ hashFiles('Cargo.lock', 'adapters/process_models/Cargo.toml', 'adapters/kairos_usage/Cargo.lock', 'rust-toolchain.toml') }}
           restore-keys: |
             ${{ runner.os }}-process-models-1.99.1-
       - name: Install pinned Rust toolchain
@@ -84,6 +85,13 @@ jobs:
           python3 scripts/ci_profile.py run --name pm-rust-tests --profile-file "$PROFILE" -- cargo test --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets
           python3 scripts/ci_profile.py run --name pm-build-release --profile-file "$PROFILE" -- cargo build --manifest-path adapters/process_models/Cargo.toml --locked --offline --release
           python3 scripts/ci_profile.py run --name dapane-cli-release --profile-file "$PROFILE" -- cargo build --locked --release --no-default-features -p dapane-core -p dapane-cli
+      - name: Qualify the pinned Kairos occupancy provider
+        run: |
+          PROFILE="$RUNNER_TEMP/process-models-profile.jsonl"
+          python3 scripts/ci_profile.py run --name kairos-fetch --profile-file "$PROFILE" -- cargo fetch --manifest-path adapters/kairos_usage/Cargo.toml --locked
+          python3 scripts/ci_profile.py run --name kairos-fmt --profile-file "$PROFILE" -- cargo fmt --manifest-path adapters/kairos_usage/Cargo.toml --all --check
+          python3 scripts/ci_profile.py run --name kairos-clippy --profile-file "$PROFILE" -- cargo clippy --manifest-path adapters/kairos_usage/Cargo.toml --locked --offline --all-targets -- -D warnings
+          python3 scripts/ci_profile.py run --name kairos-replay --profile-file "$PROFILE" -- cargo test --manifest-path adapters/kairos_usage/Cargo.toml --locked --offline --all-targets
       - name: Build and install native wheel and verify X2 fixtures outside checkout
         run: |
           PROFILE="$RUNNER_TEMP/process-models-profile.jsonl"

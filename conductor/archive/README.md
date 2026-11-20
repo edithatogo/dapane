@@ -25,6 +25,7 @@ into a second authoritative location.
 | [Rust kernel](../tracks/rust_kernel_20261108/index.md) | Bounded Rust valuation kernel and CLI | 2026-11-15 | [Qualification](../tracks/rust_kernel_20261108/verification.md) and [independent review](../tracks/rust_kernel_20261108/review.md); original specification, plan, metadata, logs and dependency links retained. |
 | [Python delivery with workforce and genomics consumers](../tracks/python_two_consumers_20261108/index.md) | Installed workforce quotation and manual-extraction labour consumers | 2026-11-15 | [Qualification](../../docs/python-provider-verification.md) and [review with fixes](../tracks/python_two_consumers_20261108/review.md); original specification, completed plan, metadata, source/artifact identities and dependency links retained. |
 | [Optional Power Platform delivery](../tracks/power_platform_20261108/index.md) | Synthetic manual file exchange and versioned SharePoint library and list contract. The live pilot is deferred. | 2026-11-20 | [Review and installed-artifact verification](../tracks/power_platform_20261108/review.md) |
+| [Observed events, Petri nets and BPMN adapters](../tracks/process_models_20261108/index.md) | Bounded raw XES and OCEL, PNML and BPMN, and qualified Kairos staged occupancy | 2026-11-20 | [Native and provider review](../tracks/process_models_20261108/native-and-kairos-review.md) |
 
 The core-contract archive closes synthetic contract/reference acceptance.
 Kernel qualification retains its separately recorded scope and evidence.

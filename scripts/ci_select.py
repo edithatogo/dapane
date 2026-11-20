@@ -36,6 +36,7 @@ STANDALONE_CARGO_MANIFESTS: tuple[str, ...] = (
     "adapters/observed_events/Cargo.toml",
     "adapters/decision_draws/Cargo.toml",
     "adapters/process_models/Cargo.toml",
+    "adapters/kairos_usage/Cargo.toml",
     "bindings/polyglot/abi/Cargo.toml",
     "bindings/polyglot/r/src/rust/Cargo.toml",
 )
@@ -430,6 +431,11 @@ def select_changes(
         if path.startswith("adapters/decision_draws/"):
             lanes.add("decisions")
             adapters.add("adapters/decision_draws/Cargo.toml")
+            continue
+
+        if path.startswith("adapters/kairos_usage/"):
+            sel.run_process_models = True
+            adapters.add("adapters/kairos_usage/Cargo.toml")
             continue
 
         if path.startswith("adapters/process_models/"):

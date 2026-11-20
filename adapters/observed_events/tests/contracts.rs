@@ -612,9 +612,203 @@ fn a_contract_with_no_uses_cannot_claim_costing_readiness() {
 }
 
 #[test]
-fn native_format_tag_never_enables_a_decoder() {
-    assert_eq!(RAW_IMPORT_STATUS, "blocked_dependency_qualification");
+fn format_tag_alone_does_not_verify_source_bytes() {
+    assert_eq!(RAW_IMPORT_STATUS, "bounded_xes_and_ocel2_json_v1");
     let mut input = baseline();
     input.source.format = SourceFormat::Xes;
     assert!(validate_contract(input).is_ok());
+}
+
+fn import_input(snapshot: &Snapshot) -> ObservationInput {
+    ObservationInput {
+        namespace: snapshot.source.namespace.clone(),
+        revision: snapshot.source.revision.clone(),
+        window: snapshot.window,
+        uses: snapshot.uses.clone(),
+    }
+}
+
+fn xes_mapping(snapshot: &mut Snapshot, censored: bool) -> XesObjectContext {
+    let oracle: serde_json::Value =
+        serde_json::from_str(include_str!("../fixtures/expected.json")).unwrap();
+    let native_ids = &oracle["xes_event_identity_map"];
+    let translate = |key: &str| native_ids[key].as_str().unwrap().to_owned();
+    for usage in &mut snapshot.uses {
+        match &mut usage.extent {
+            Extent::Point { event_id } => *event_id = translate(event_id),
+            Extent::Interval {
+                start_event_id,
+                end_event_id,
+                ..
+            } => {
+                *start_event_id = start_event_id.as_deref().map(translate);
+                *end_event_id = end_event_id.as_deref().map(translate);
+            }
+        }
+    }
+    XesObjectContext {
+        objects: snapshot.objects.clone(),
+        relations: snapshot.relations.clone(),
+        event_objects: snapshot
+            .events
+            .iter()
+            .filter(|e| !censored || e.id != "run-complete")
+            .map(|e| (translate(&e.id), e.objects.clone()))
+            .collect(),
+    }
+}
+
+#[test]
+fn raw_ocel_conserves_qualified_relationships_use_and_source_bytes() {
+    let expected = validate_contract(baseline()).unwrap();
+    let sources: &[(&[u8], &str)] = &[
+        (
+            include_bytes!("../fixtures/many-to-many.ocel.json"),
+            "many-to-many.ocel.json",
+        ),
+        (
+            include_bytes!("../fixtures/reordered.ocel.json"),
+            "reordered.ocel.json",
+        ),
+        (
+            include_bytes!("../fixtures/offset-equivalent.ocel.json"),
+            "offset-equivalent.ocel.json",
+        ),
+    ];
+    let oracle: serde_json::Value =
+        serde_json::from_str(include_str!("../fixtures/expected.json")).unwrap();
+    for &(bytes, name) in sources {
+        let imported = import_ocel2(bytes, import_input(expected.snapshot())).unwrap();
+        let got = imported.contract().snapshot();
+        assert_eq!(got.events, expected.snapshot().events, "{name}");
+        assert_eq!(got.objects, expected.snapshot().objects);
+        assert_eq!(got.relations, expected.snapshot().relations);
+        assert_eq!(
+            imported.contract().require_costing_ready().unwrap(),
+            expected.snapshot().uses
+        );
+        assert_eq!(imported.source_bytes(), bytes);
+        let case = oracle["cases"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|case| case["file"] == name)
+            .unwrap();
+        assert_eq!(
+            got.source.content_digest,
+            format!("sha256:{}", case["sha256"].as_str().unwrap())
+        );
+    }
+}
+
+#[test]
+fn raw_xes_requires_explicit_anchors_and_preserves_offset_equivalence() {
+    let mut expected = baseline();
+    let mapping = xes_mapping(&mut expected, false);
+    let original = import_xes(
+        include_bytes!("../fixtures/observed.xes"),
+        import_input(&expected),
+        mapping,
+    )
+    .unwrap();
+    let original_snapshot = original.contract().snapshot();
+    assert_eq!(
+        original.contract().require_costing_ready().unwrap().len(),
+        3
+    );
+    for source in [
+        include_bytes!("../fixtures/reordered.xes").as_slice(),
+        include_bytes!("../fixtures/offset-equivalent.xes").as_slice(),
+    ] {
+        let mut repeat = baseline();
+        let mapping = xes_mapping(&mut repeat, false);
+        let observed = import_xes(source, import_input(&repeat), mapping).unwrap();
+        assert_eq!(
+            observed.contract().snapshot().events,
+            original_snapshot.events
+        );
+        assert_eq!(observed.contract().snapshot().uses, original_snapshot.uses);
+        assert_ne!(
+            observed.contract().snapshot().source.content_digest,
+            original_snapshot.source.content_digest
+        );
+        assert_eq!(observed.source_bytes(), source);
+    }
+}
+
+#[test]
+fn native_missing_and_duplicate_fields_fail_before_use() {
+    let source = baseline();
+    for bytes in [
+        include_bytes!("../fixtures/duplicate-id.ocel.json").as_slice(),
+        include_bytes!("../fixtures/duplicate-member.ocel.json").as_slice(),
+        include_bytes!("../fixtures/missing-time.ocel.json").as_slice(),
+        br#"{"eventTypes":[["type",[]]],"objectTypes":[],"events":[],"objects":[]}"#,
+    ] {
+        assert!(import_ocel2(bytes, import_input(&source)).is_err());
+    }
+    for bytes in [
+        include_bytes!("../fixtures/duplicate-id.xes").as_slice(),
+        include_bytes!("../fixtures/missing-time.xes").as_slice(),
+    ] {
+        let mut expected = baseline();
+        let mapping = xes_mapping(&mut expected, false);
+        assert!(import_xes(bytes, import_input(&expected), mapping).is_err());
+    }
+}
+
+#[test]
+fn native_censored_use_never_becomes_ready() {
+    let mut expected = baseline();
+    let usage = expected.uses.last_mut().unwrap();
+    usage.extent = Extent::Interval {
+        start_event_id: Some("run-start".into()),
+        end_event_id: None,
+        censoring: Censoring::Right,
+    };
+    usage.quantity = None;
+    let projected = import_ocel2(
+        include_bytes!("../fixtures/right-censored.ocel.json"),
+        import_input(&expected),
+    )
+    .unwrap();
+    assert_eq!(
+        projected
+            .contract()
+            .require_costing_ready()
+            .unwrap_err()
+            .code,
+        ErrorCode::CensoredUse
+    );
+    let mapping = xes_mapping(&mut expected, true);
+    let projected = import_xes(
+        include_bytes!("../fixtures/right-censored.xes"),
+        import_input(&expected),
+        mapping,
+    )
+    .unwrap();
+    assert_eq!(
+        projected
+            .contract()
+            .require_costing_ready()
+            .unwrap_err()
+            .code,
+        ErrorCode::CensoredUse
+    );
+}
+
+#[test]
+fn xes_mapping_needs_a_start_transition_for_each_interval() {
+    let mut expected = baseline();
+    let mapping = xes_mapping(&mut expected, false);
+    if let Extent::Interval { start_event_id, .. } = &mut expected.uses.last_mut().unwrap().extent {
+        *start_event_id = Some("00000000-0000-4000-8000-000000000001".into());
+    }
+    let failure = import_xes(
+        include_bytes!("../fixtures/observed.xes"),
+        import_input(&expected),
+        mapping,
+    )
+    .unwrap_err();
+    assert_eq!(failure.to_string(), "inconsistent XES lifecycle anchor");
 }
