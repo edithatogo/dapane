@@ -28,7 +28,8 @@ their repository owners.
 - [Implemented contract 0.1](../docs/contract-v0.1.md), [quickstart](../docs/quickstart.md) and [runtime verification](../docs/runtime-verification.md): the working bounded Rust/CLI/Python candidate.
 - [Event/process/object model](../docs/event-process-object-model.md) and [provider boundaries](../docs/provider-boundaries.md): independent core and optional Kairos/provider integration.
 - [Installed workforce and genomics consumers](../docs/python-provider-verification.md): dated quotation composition, canonical/legacy imports and selected historical-workbook qualification.
-- [Release handoff and qualification](../docs/release-handoff-2026-11-15.md): incorporated archives, exact hosted baseline, distribution notices and remaining publication/security blockers.
+- The GitHub `v0.1.0` prerelease includes a Linux x86_64 CLI, a qualified CPython 3.15.1 wheel and signed provenance. [Release archive](tracks/release_consolidation_20261108/index.md)
+- [Historical release handoff and qualification](../docs/release-handoff-2026-11-15.md): incorporated archives, exact hosted baseline, distribution notices and the gates recorded at handoff.
 - [Post-merge `main` release qualification and attestation](../docs/release-qualification-2026-11-19.md): `0658d94` verified matrix, exact-artifact providers, signed provenance and cancelled central offline security status.
 
 - [Roadmap](roadmap.md): capability milestones and optional delivery paths.

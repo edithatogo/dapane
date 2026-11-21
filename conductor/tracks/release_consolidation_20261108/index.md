@@ -2,13 +2,13 @@
 
 Track: `release_consolidation_20261108`
 
-Status: blocked
+Status: archived
 
-The owner selected GitHub Releases under `edithatogo/dapane` for the
-`v0.1.0` prerelease on candidate `d02095d`. PyPI and crates.io are deferred.
-Hosted release assurance, the installed target matrix and five signed artifact
-subjects passed verification. The central offline-security scan for the
-candidate is queued with no runner assigned. [Decision and evidence](evidence.md#github-prerelease-selection-21-november-2026)
+GitHub prerelease `v0.1.0` is published on source `5a24196` following successful
+offline security, installed-artifact verification and signed provenance checks.
+The public tag and all ten uploaded assets were verified before archival.
+PyPI and crates.io are deferred.
+[Verified prerelease](https://github.com/edithatogo/dapane/releases/tag/v0.1.0) · [Evidence](evidence.md#verified-github-prerelease-and-in-place-archive)
 
 - [Specification](spec.md)
 - [Implementation plan](plan.md)
@@ -29,9 +29,5 @@ candidate is queued with no runner assigned. [Decision and evidence](evidence.md
 
 Requirements: RQ-12, RQ-04.
 
-The remaining work is the exact-source offline scan, GitHub prerelease and
-readback, then the authorised track archival.
-
-The [latest control review](evidence.md#publication-control-review--20-november-2026)
-records the exact-source security requirement in candidate receipts and the
-current runner evidence.
+The [publication control review](evidence.md#publication-control-review--20-november-2026)
+records the exact-source security requirement in candidate receipts.

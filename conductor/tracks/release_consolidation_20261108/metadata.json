@@ -1,9 +1,9 @@
 {
   "track_id": "release_consolidation_20261108",
   "type": "chore",
-  "status": "blocked",
+  "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-20T23:14:23Z",
+  "updated_at": "2026-11-21T00:37:28Z",
   "description": "Release only evidenced capabilities with reproducible artifacts and a practical migration path. The first core/Python release must not wait for optional domains, language bindings, process models or Power Platform.",
   "repositories": [
     "."
@@ -29,78 +29,149 @@
     "authenticated_administrator": "edithatogo",
     "tag": "v0.1.0",
     "prerelease": true,
-    "candidate_source": "d02095d9bf7e89c6fc00805c4bc484a3ead3e33b",
-    "candidate_run": 44748104482,
-    "offline_security_run": 44748104889,
+    "candidate_source": "5a24196c6e3b8905613dcf5100c239018c919b7a",
+    "candidate_run": 44841721904,
+    "offline_security_run": 44841722219,
     "pypi": "deferred",
-    "crates_io": "deferred"
+    "crates_io": "deferred",
+    "release_id": 453328144,
+    "release_url": "https://github.com/edithatogo/dapane/releases/tag/v0.1.0",
+    "published_at": "2026-11-21T00:36:28Z",
+    "superseded_candidate": {
+      "source": "d02095d9bf7e89c6fc00805c4bc484a3ead3e33b",
+      "candidate_run": 44748104482,
+      "offline_security_run": 44748104889,
+      "offline_security_conclusion": "failure",
+      "disposition": "Replaced after OpenGrep findings in the exchange CLI console boundary."
+    }
   },
   "requirement_ids": [
     "RQ-12",
     "RQ-04"
   ],
-  "capability_status": "main_candidate_attested_central_security_and_publication_blocked",
+  "capability_status": "github_prerelease_published_and_verified",
   "verification": {
-    "status": "ordinary_hosted_checks_and_attestation_passed_security_and_publication_blocked",
-    "tested_source": "0658d94ad772023a0185a000b5254f9c2f4a63a9",
-    "tree": "48c3ae972ed48e5e1e6e47862e99381323191fa7",
+    "status": "passed",
+    "tested_source": "5a24196c6e3b8905613dcf5100c239018c919b7a",
+    "tree": "b90e90da7fe07bbad0b6daa12ef783d40de043a9",
     "evidence": [
-      "evidence.md",
-      "../../../docs/release-qualification-2026-11-19.md",
-      "../../../docs/release-qualification-0658d94.json"
+      "evidence.md"
     ],
     "commands": [
-      "python scripts/release_assurance.py validate",
-      "python -m unittest discover -s tests/release -v",
-      "python scripts/distribution_notices.py --check",
-      "cargo build --locked --release --no-default-features -p dapane-cli",
-      "maturin build --locked --release",
-      "python scripts/release_assurance.py compare",
-      "python scripts/release_assurance.py collect",
-      "python scripts/release_assurance.py verify",
-      "python scripts/release_assurance.py verify-matrix",
-      "python -m pytest --import-mode=importlib tests/python -q",
-      "python scripts/validate_intervals.py --cli <installed-cli>",
-      "python scripts/verify_provider_consumers.py <provider> --cli <release-cli>",
-      "cargo deny --locked --format json check advisories bans licenses sources",
-      "python -m pip_audit --strict",
-      "cargo cyclonedx --format json --spec-version 1.6",
-      "gh attestation verify <subject> --bundle <bundle> --repo edithatogo/dapane --signer-workflow edithatogo/dapane/.github/workflows/release-assurance.yml --source-ref refs/heads/main --source-digest 0658d94ad772023a0185a000b5254f9c2f4a63a9 --deny-self-hosted-runners"
+      "DAPANE_CLI=<native-cli> .venv/bin/python -m pytest -q power_platform/test_manual_exchange.py",
+      "gh run download <release-assurance-run> --repo edithatogo/dapane --name candidate-python-3.15.1",
+      "gh run download <release-assurance-run> --repo edithatogo/dapane --name candidate-provenance",
+      ".venv/bin/python scripts/release_assurance.py verify-matrix --directory <downloaded-candidate-artifacts>",
+      "gh attestation verify <asset> --bundle <attestation.json> --repo edithatogo/dapane --signer-workflow edithatogo/dapane/.github/workflows/release-assurance.yml --source-ref refs/heads/main --source-digest <exact-source> --deny-self-hosted-runners",
+      "gh api repos/edithatogo/dapane/releases/tags/v0.1.0",
+      "gh api repos/edithatogo/dapane/git/matching-refs/tags/v0.1.0",
+      "curl --fail --location <published-asset-url>"
     ],
     "results": {
-      "control_tests": 64,
-      "installed_tests_per_target": 196,
-      "independent_references_per_target": 10,
-      "interval_schema_rejections_per_target": 9,
-      "interval_runtime_rejections_per_target": 11,
-      "interval_tamper_controls_per_target": 15,
-      "matrix_targets": 4,
-      "native_dependency_packages": 29,
-      "python_runtime_dependencies": 0,
-      "interpreters": [
-        "3.12.16",
-        "3.13.18",
-        "3.14.10",
-        "3.15.2"
-      ],
-      "native_behavioral_tests": 62,
-      "kernel_tooling_tests": 11,
-      "artifact_archives_directly_inspected": 6,
-      "artifact_member_checksums_verified": 100,
-      "local_verify_matrix_clean_head": "passed (4 targets)",
-      "dual_builds": "byte-identical for each interpreter",
-      "wheel_sdist_metadata": "Metadata 2.4; optional aggregate fields absent; all three legal files declared and byte-verified",
-      "exact_artifact_provider_job": "passed (candidate artifact 14184700967; 196 native-boundary tests)",
-      "cargo_deny": "passed; zero errors/warnings in all four domains",
-      "python_audit": "36 resolved packages; no known vulnerabilities",
-      "sboms": 3,
-      "bounded_benchmark": "passed; raw measurements and limits retained (86,428 KiB peak RSS)",
-      "publication_gate": "expected exit 2; publication disabled and registry identity unverified",
-      "central_offline_security": "cancelled after 24h queue timeout on run 43769725442 / job 132982710619 (runner_id 0, 0 steps executed)",
-      "trusted_main_attestation": "passed on run 43769725207 / job 132994080532; artifact 14184669447 (14 distinct subjects, 20 files verified offline with gh attestation verify --bundle)"
+      "qualification": {
+        "run": 44841721904,
+        "candidate_artifact_id": 14680969580,
+        "provenance_artifact_id": 14682781163,
+        "matrix_targets": 1,
+        "platform": "Linux x86_64",
+        "interpreter": "CPython 3.15.1",
+        "installed_tests": 215,
+        "independent_references": 10,
+        "attested_subjects": [
+          "dapane",
+          "dapane-0.1.0-cp315-cp315-manylinux_2_34_x86_64.whl",
+          "source.tar.gz",
+          "evidence.json",
+          "reproducibility.json"
+        ]
+      },
+      "manual_exchange_tests": 12,
+      "opengrep_preflight": {
+        "tracked_sources": 121,
+        "scanned": 121,
+        "findings": 0
+      },
+      "central_offline_security": {
+        "source": "5a24196c6e3b8905613dcf5100c239018c919b7a",
+        "base": "389e4d9156f7b0336b3ea9b987a45fe603038bdc",
+        "run": 44841722219,
+        "job": 136651486647,
+        "attempt": 1,
+        "workflow_id": 414513035,
+        "runner_id": 28,
+        "conclusion": "success",
+        "completed_at": "2026-11-21T00:21:22Z",
+        "executed_steps": [
+          "Checkout consumer without credentials",
+          "Checkout central security policy without credentials",
+          "Verify isolated execution preconditions",
+          "Run 4 layers in a network-disabled container"
+        ],
+        "url": "https://github.com/edithatogo/dapane/actions/runs/44841722219"
+      },
+      "public_prerelease": {
+        "id": 453328144,
+        "url": "https://github.com/edithatogo/dapane/releases/tag/v0.1.0",
+        "tag": "v0.1.0",
+        "source": "5a24196c6e3b8905613dcf5100c239018c919b7a",
+        "draft": false,
+        "prerelease": true,
+        "published_at": "2026-11-21T00:36:28Z",
+        "assets": [
+          {
+            "name": "LICENSE",
+            "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+            "bytes": 11358
+          },
+          {
+            "name": "NOTICE",
+            "sha256": "e9a11dc82b40f759e3a4ab319daed92f5e548486a14babb249861e49aba16839",
+            "bytes": 450
+          },
+          {
+            "name": "SHA256SUMS",
+            "sha256": "cf2b0f2407d62f1ffe03f3fe674bda68aa1c71187caede42f52aab11f0f089ed",
+            "bytes": 757
+          },
+          {
+            "name": "THIRD_PARTY_NOTICES.txt",
+            "sha256": "68268c0249dc942b6e3d451db153b88a272fb6a0552c78a2098232511be18bcb",
+            "bytes": 1655903
+          },
+          {
+            "name": "attestation.json",
+            "sha256": "63c36644a0264c8ee269668c9720f333c2b372b52845441266d45a6388e32376",
+            "bytes": 11400
+          },
+          {
+            "name": "dapane",
+            "sha256": "dc37528fffe494ce8cf1ca9d9b9e8ac68d1bfe22888ee058603a8498778e1e89",
+            "bytes": 1410840
+          },
+          {
+            "name": "dapane-0.1.0-cp315-cp315-manylinux_2_34_x86_64.whl",
+            "sha256": "ec4b2465a732036c15f97fb1f26e5f18d20b8bd7e793610eadca6d92f8e2de36",
+            "bytes": 710522
+          },
+          {
+            "name": "evidence.json",
+            "sha256": "c74b328001c8a23086ebc425658ed1c44adb096944978bcd595c55b87d1df360",
+            "bytes": 90756
+          },
+          {
+            "name": "reproducibility.json",
+            "sha256": "8afb6b1a6d98845363374e15dc3fb20df04695fa3faebce23f33c55137706e7f",
+            "bytes": 714
+          },
+          {
+            "name": "source.tar.gz",
+            "sha256": "9838d66e499f8b73340a12c0b3647e87aa7561b0a5c7973663d0b4a66c7da4b5",
+            "bytes": 1681594
+          }
+        ]
+      }
     },
-    "scope": "Main merge commit 0658d94 candidate artifacts on the declared Linux x86_64 interpreter matrix, selected providers and signed trusted-main provenance. Central offline security timed out unexecuted; no publication, empirical validation or other-platform claim.",
-    "command_context": "Abbreviated command families; exact arguments, environment paths and complete logs are retained by source-pinned Release assurance and Runtime workflow runs plus the local verification receipt linked in docs/release-qualification-2026-11-19.md."
+    "scope": "The exact published v0.1.0 Linux x86_64 CLI and CPython 3.15.1 wheel, source and notices, bounded independent cases and qualified providers, trusted-main provenance, and completed central security run."
   },
   "completion_evidence": [
     "A core/Python release can qualify after contracts, kernel and the two consumers; optional integration tracks remain independently planned or experimental.",
@@ -111,14 +182,12 @@
     "No archive is executed from a recommendation alone; unique history/research, rights, successor behaviour and any required authorization are retained."
   ],
   "archive_requested": true,
-  "archive_performed": false,
-  "blockers": [
-    "GitHub prerelease publication and track archival require a successful central offline-security scan for the selected candidate d02095d. Run 44748104889 was queued with no assigned runner and zero steps at decision readback."
-  ],
+  "archive_performed": true,
+  "blockers": [],
   "review": {
     "status": "completed_with_fixes",
     "findings_resolved": 5,
-    "scope": "Candidate assurance, Apache-2.0 project licensing, full notice provenance, bounded merged providers and exact-release-artifact coupling; publication and central security execution remain open.",
+    "scope": "Candidate assurance, Apache-2.0 project licensing, bounded providers, signed artifacts, the manual exchange console-boundary fix, exact-source security and public release readback.",
     "integration_findings_resolved": 1,
     "handoff_integration": {
       "status": "independent_review_passed",
@@ -129,7 +198,8 @@
       "status": "independent_review_passed",
       "material_findings": 0,
       "acceptance_section_unchanged_from": "d7063cecc26abe96a3f28fca575b99b450241430"
-    }
+    },
+    "opengrep_findings_resolved": 2
   },
   "historical_verification": [
     {
@@ -340,6 +410,68 @@
       },
       "scope": "Hosted candidate artifacts on the declared Linux x86_64 interpreter matrix and selected providers. Central offline security remains unexecuted; no publication, empirical validation or other-platform claim.",
       "command_context": "Abbreviated command families; exact arguments, environment paths and complete logs are retained by source-pinned Release assurance and Runtime workflow runs linked in the receipt."
+    },
+    {
+      "status": "ordinary_hosted_checks_and_attestation_passed_security_and_publication_blocked",
+      "tested_source": "0658d94ad772023a0185a000b5254f9c2f4a63a9",
+      "tree": "48c3ae972ed48e5e1e6e47862e99381323191fa7",
+      "evidence": [
+        "evidence.md",
+        "../../../docs/release-qualification-2026-11-19.md",
+        "../../../docs/release-qualification-0658d94.json"
+      ],
+      "commands": [
+        "python scripts/release_assurance.py validate",
+        "python -m unittest discover -s tests/release -v",
+        "python scripts/distribution_notices.py --check",
+        "cargo build --locked --release --no-default-features -p dapane-cli",
+        "maturin build --locked --release",
+        "python scripts/release_assurance.py compare",
+        "python scripts/release_assurance.py collect",
+        "python scripts/release_assurance.py verify",
+        "python scripts/release_assurance.py verify-matrix",
+        "python -m pytest --import-mode=importlib tests/python -q",
+        "python scripts/validate_intervals.py --cli <installed-cli>",
+        "python scripts/verify_provider_consumers.py <provider> --cli <release-cli>",
+        "cargo deny --locked --format json check advisories bans licenses sources",
+        "python -m pip_audit --strict",
+        "cargo cyclonedx --format json --spec-version 1.6",
+        "gh attestation verify <subject> --bundle <bundle> --repo edithatogo/dapane --signer-workflow edithatogo/dapane/.github/workflows/release-assurance.yml --source-ref refs/heads/main --source-digest 0658d94ad772023a0185a000b5254f9c2f4a63a9 --deny-self-hosted-runners"
+      ],
+      "results": {
+        "control_tests": 64,
+        "installed_tests_per_target": 196,
+        "independent_references_per_target": 10,
+        "interval_schema_rejections_per_target": 9,
+        "interval_runtime_rejections_per_target": 11,
+        "interval_tamper_controls_per_target": 15,
+        "matrix_targets": 4,
+        "native_dependency_packages": 29,
+        "python_runtime_dependencies": 0,
+        "interpreters": [
+          "3.12.16",
+          "3.13.18",
+          "3.14.10",
+          "3.15.2"
+        ],
+        "native_behavioral_tests": 62,
+        "kernel_tooling_tests": 11,
+        "artifact_archives_directly_inspected": 6,
+        "artifact_member_checksums_verified": 100,
+        "local_verify_matrix_clean_head": "passed (4 targets)",
+        "dual_builds": "byte-identical for each interpreter",
+        "wheel_sdist_metadata": "Metadata 2.4; optional aggregate fields absent; all three legal files declared and byte-verified",
+        "exact_artifact_provider_job": "passed (candidate artifact 14184700967; 196 native-boundary tests)",
+        "cargo_deny": "passed; zero errors/warnings in all four domains",
+        "python_audit": "36 resolved packages; no known vulnerabilities",
+        "sboms": 3,
+        "bounded_benchmark": "passed; raw measurements and limits retained (86,428 KiB peak RSS)",
+        "publication_gate": "expected exit 2; publication disabled and registry identity unverified",
+        "central_offline_security": "cancelled after 24h queue timeout on run 43769725442 / job 132982710619 (runner_id 0, 0 steps executed)",
+        "trusted_main_attestation": "passed on run 43769725207 / job 132994080532; artifact 14184669447 (14 distinct subjects, 20 files verified offline with gh attestation verify --bundle)"
+      },
+      "scope": "Main merge commit 0658d94 candidate artifacts on the declared Linux x86_64 interpreter matrix, selected providers and signed trusted-main provenance. Central offline security timed out unexecuted; no publication, empirical validation or other-platform claim.",
+      "command_context": "Abbreviated command families; exact arguments, environment paths and complete logs are retained by source-pinned Release assurance and Runtime workflow runs plus the local verification receipt linked in docs/release-qualification-2026-11-19.md."
     }
   ],
   "handoff": {

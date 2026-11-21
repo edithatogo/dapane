@@ -230,6 +230,10 @@ The same integration checkout owns the Power Platform source closeout in `power_
 On 21 November 2026 the same integration chat recorded the release channel
 decision from the isolated CLI clone at
 `/Volumes/PortableSSD/dapane-prerelease-20261121.x5LbfG/dapane` after the managed
-checkout's Git volume filled. This work owns the release track records and the
-`edithatogo/dapane` prerelease for exact candidate `d02095d`. Its next native
-operation is the central offline-security run for the selected candidate.
+checkout's Git volume filled. This work owned the release track records and the
+`edithatogo/dapane` prerelease, initially selecting `d02095d`.
+
+The same checkout merged the exchange fix in PR #67 and qualified `5a24196`.
+The one-job runner completed the central scan and deregistered. GitHub served
+the verified `v0.1.0` prerelease and all ten assets. The release track is archived
+in place. [Terminal evidence](tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)

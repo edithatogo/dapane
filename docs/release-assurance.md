@@ -54,7 +54,13 @@ Publication requires a successful central offline-security scan on the selected
 candidate. PyPI and crates.io identities are deferred. The workflow verifies and
 attests candidate artifacts for release through the selected channel.
 [Release decision](../conductor/tracks/release_consolidation_20261108/evidence.md#github-prerelease-selection-21-november-2026)
-The publication check intentionally returns exit code 2 with those blockers:
+
+The published `v0.1.0` prerelease has a verified tag, ten uploaded assets and
+exact-source security evidence. [Publication record](../conductor/tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
+
+The local publication command reports the static candidate and registry blockers
+with exit code 2. The owner-authorised GitHub prerelease uses the separately
+recorded exact-source evidence above.
 
 ~~~sh
 python scripts/release_assurance.py validate

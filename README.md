@@ -10,12 +10,15 @@ specialist rules and source data. Installed R and Julia candidates exercise the 
 
 ## Current status
 
-This is an **unpublished 0.1.0 candidate**, implementing a bounded subset of the
-Conductor requirements and roadmap. It supports nonnegative point-date quantities,
+The **v0.1.0 GitHub prerelease** ships a Linux x86_64 CLI and a wheel qualified
+on CPython 3.15.1. [Download and verify the assets](https://github.com/edithatogo/dapane/releases/tag/v0.1.0)
+
+Dapane implements a bounded subset of the Conductor requirements and roadmap.
+It supports nonnegative point-date quantities,
 exact quotation application, conserving allocation and event/process/object context.
 Wire profile 0.1 retains full-pool allocation; [profile 0.2](docs/contract-v0.2.md)
 adds explicit incomplete instrument-capacity allocation, preserving unknown
-observations and unallocated value. The package remains an unpublished candidate.
+observations and unallocated value.
 Documentation validation alone does not establish numerical or empirical validity.
 
 The separate [run-bundle profile 0.1](docs/run-bundle-v0.1.md) adds immutable
@@ -40,10 +43,10 @@ The [release handoff record](docs/release-handoff-2026-11-15.md) confirms that t
 setup, contracts, kernel and Python/provider archives are incorporated, and
 [post-merge `main` qualification](docs/release-qualification-2026-11-19.md)
 records verified `0658d94` candidate artifacts and signed trusted-main provenance.
-Release qualification consumes their existing records and checks the exact candidate
-artifacts; publication remains disabled.
+The prerelease archive records the exact source, signed assets and successful
+offline-security scan. [Release qualification and publication evidence](conductor/tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
 
-Optional adapters now cover bounded process models, reporting exports, fiscal decision tables and adoption forecasts. The archived CareOps baseline verifies manual file exchange through the installed CLI and wheel and defines the SharePoint list and library contract. The live tenant pilot is deferred. Public package distribution remains open. The [track registry](conductor/tracks.md) lists the evidence and remaining work.
+Optional adapters cover bounded process models, reporting exports, fiscal decision tables and adoption forecasts. The archived CareOps baseline verifies manual file exchange through the installed CLI and wheel and defines the SharePoint list and library contract. The live tenant pilot is deferred. The [track registry](conductor/tracks.md) lists each track's scope and evidence.
 
 ## Kairos and the three contexts
 
@@ -163,9 +166,6 @@ bundles. Python's optional aggregate distribution licence expression is omitted;
 the [controls guide](docs/release-controls.md) explains that metadata boundary.
 Separately obtained provider assets retain their own terms and are excluded.
 
-No registry release, package-name reservation or app deployment is asserted.
-Workspace publication remains disabled pending registry ownership and release
-qualification. The [release handoff record](docs/release-handoff-2026-11-15.md)
-and [post-merge `main` qualification](docs/release-qualification-2026-11-19.md)
-identify the incorporated archives, attested `0658d94` artifacts and remaining
-publication/security gates.
+PyPI and crates.io publication are deferred. The GitHub prerelease includes
+signed artifact provenance, the source archive, licence and notices.
+[Asset and source verification](conductor/tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
