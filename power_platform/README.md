@@ -10,7 +10,7 @@ Install the wheel, schema dependencies and matching CLI from the [quickstart](..
 exchange_dir="$(mktemp -d)"
 .venv/bin/python power_platform/manual_exchange.py export \
   --input power_platform/fixtures/manual-input.json --out "$exchange_dir/input.json" \
-  --sharepoint-plan > "$exchange_dir/upload-plan.json"
+  --sharepoint-plan "$exchange_dir/upload-plan.json"
 .venv/bin/python power_platform/manual_exchange.py run \
   --input "$exchange_dir/input.json" --cli target/release/dapane \
   --archive "$exchange_dir/result"
@@ -22,7 +22,7 @@ exchange_dir="$(mktemp -d)"
 
 The export preserves the submitted UTF-8 bytes. The result directory contains the exact CLI stdout in `report.json`, a replayable [run bundle](../docs/run-bundle-v0.1.md) in `bundle.json`, and SHA-256 file identities in `receipt.json`. The import verifies all three downloaded files against the retained original export and replays the full bundle history with the installed wheel. For a correction, use a new `InputRevision` and supply the existing native envelopes in `history`.
 
-The `--sharepoint-plan` and `--sharepoint-library` options produce upload paths and manual List form values. The default export digest and import JSON remain available to existing callers.
+The command prints a fixed status. Use `--sharepoint-plan PATH` to save upload paths as JSON or `--digest-out PATH` to save the export digest as text. Both files use the same immutable, byte-identical retry rule as the export. Read the run digest in the archived `bundle.json`. Import saves the verified row at `--out`, with manual List form fields when `--sharepoint-library` is supplied.
 
 ## Set up a future SharePoint pilot
 
