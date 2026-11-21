@@ -1,0 +1,36 @@
+{
+  "base_commit": "5c035f655aa0acab0469fedc8de5da539a84b7de",
+  "scope": "process-model adapter only; working patch validated before commit",
+  "native_toolchain": "1.99.1",
+  "checks": [
+    {
+      "command": "cargo +1.99.1 fmt --manifest-path adapters/process_models/Cargo.toml --all --check",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo +1.99.1 clippy --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets -- -D warnings",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo +1.99.1 test --manifest-path adapters/process_models/Cargo.toml --locked --offline --all-targets",
+      "exit_code": 0,
+      "passed": 33
+    }
+  ],
+  "campaign": {
+    "target": "parse_models",
+    "nightly": "nightly-2026-11-19",
+    "cargo_fuzz": "0.13.2",
+    "requested_seconds": 30,
+    "executed_units": 34920,
+    "elapsed_seconds": 31,
+    "sanitizer": "address",
+    "local_environment": "ASAN_OPTIONS=detect_leaks=0; LeakSanitizer requires unavailable ptrace in this executor",
+    "first_default_run": "50,255 units completed; exit-time LeakSanitizer fatal environment error; watchdog returned124, not a pass",
+    "fuzz_lock_sha256": "dc780dcc7262e227dbd90e256de90afa6c9e4feac0c173ca7faa25da56b58522"
+  },
+  "remaining_gates": [
+    "Default sanitizer execution in hosted CI",
+    "Integrator-owned shared CI schedule and artifact wiring; no shared workflow/registry edits in this patch"
+  ]
+}
