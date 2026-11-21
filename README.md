@@ -10,8 +10,9 @@ specialist rules and source data. Installed R and Julia candidates exercise the 
 
 ## Current status
 
-The **v0.1.0 GitHub prerelease** ships a Linux x86_64 CLI and a wheel qualified
-on CPython 3.15.1. [Download and verify the assets](https://github.com/edithatogo/dapane/releases/tag/v0.1.0)
+The **v0.1.0 GitHub prerelease** ships a Linux x86_64 CLI. The corresponding
+wheel qualified on CPython 3.15.1 is also available on PyPI.
+[GitHub release](https://github.com/edithatogo/dapane/releases/tag/v0.1.0) · [PyPI release](https://pypi.org/project/dapane/0.1.0/)
 
 Dapane implements a bounded subset of the Conductor requirements and roadmap.
 It supports nonnegative point-date quantities,
@@ -166,6 +167,6 @@ bundles. Python's optional aggregate distribution licence expression is omitted;
 the [controls guide](docs/release-controls.md) explains that metadata boundary.
 Separately obtained provider assets retain their own terms and are excluded.
 
-PyPI and crates.io publication are deferred. The GitHub prerelease includes
-signed artifact provenance, the source archive, licence and notices.
+The GitHub prerelease includes signed artifact provenance, the source archive,
+licence and notices.
 [Asset and source verification](conductor/tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
