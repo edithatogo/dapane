@@ -28,6 +28,7 @@ into a second authoritative location.
 | [Observed events, Petri nets and BPMN adapters](../tracks/process_models_20261108/index.md) | Bounded raw XES and OCEL, PNML and BPMN, and qualified Kairos staged occupancy | 2026-11-20 | [Native and provider review](../tracks/process_models_20261108/native-and-kairos-review.md) |
 | [Frontier research and comparative benchmarks](../tracks/frontier_benchmarks_20261108/index.md) | Synthetic comparisons and independent public CMS aggregate funding replay and transfer benchmark | 2026-11-20 | [External benchmark review](../tracks/frontier_benchmarks_20261108/external-review.md) |
 | [R and Julia bindings](../tracks/polyglot_bindings_20261108/index.md) | Independently installed local R source and macOS arm64 Julia packages with qualified native calls | 2026-11-20 | [Distribution review](../tracks/polyglot_bindings_20261108/distribution-review.md) |
+| [Release assurance and conditional consolidation](../tracks/release_consolidation_20261108/index.md) | Verified GitHub `v0.1.0` prerelease, exact-source offline security and recorded consolidation decisions | 2026-11-21 | [Publication and verification](../tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive) |
 
 The core-contract archive closes synthetic contract/reference acceptance.
 Kernel qualification retains its separately recorded scope and evidence.

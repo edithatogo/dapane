@@ -263,7 +263,8 @@ Consequence: project-licence selection is resolved. The
 [provider subset](../docs/python-provider-verification.md) is qualified with its
 own bounded evidence. Registry/channel choices, exact-source release qualification,
 broader migration and external asset inclusion retain their existing requirements.
-Package publication stays disabled pending the applicable evidence.
+Automated registry publication stays disabled. The authorised GitHub prerelease
+has its own verified publication record. [Release evidence](tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
 
 ## Decisions intentionally left to their implementation tracks
 
@@ -271,7 +272,7 @@ Package publication stays disabled pending the applicable evidence.
 | --- | --- |
 | Wider schemas and compatibility windows | Request profiles 0.1/0.2, bundle 0.1 and interval 0.1 define the current boundary. Further profiles need explicit versioning, reference cases and migration in a new scoped contract increment coordinated with the owning kernel/provider track. |
 | Wider numeric methods and platform matrix | First Rust/CPython versions and precision bounds are recorded in the technology stack and runtime evidence; other methods/platforms remain unqualified. |
-| First release channel and repository | GitHub Releases under `edithatogo/dapane` for the `v0.1.0` prerelease on `d02095d`. PyPI and crates.io are deferred. [Release decision and evidence](tracks/release_consolidation_20261108/evidence.md#github-prerelease-selection-21-november-2026) |
+| First release channel and repository | GitHub Releases under `edithatogo/dapane` for the verified `v0.1.0` prerelease on `5a24196`. PyPI and crates.io are deferred. [Release decision and evidence](tracks/release_consolidation_20261108/evidence.md#github-prerelease-selection-21-november-2026) |
 | First real newborn programme and data access | Newborn-screening track; separate synthetic arithmetic from sourced programme validity. |
 | Power Platform tenant and optional worker/API/WASM route | Power Platform track; retain the standard file baseline and record actual entitlements and host evidence. |
 | Exact process subset, adapter revisions and advanced backends | Process/frontier tracks; use bounded semantic and comparative tests. |

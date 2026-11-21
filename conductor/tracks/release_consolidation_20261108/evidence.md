@@ -14,17 +14,47 @@ The owner selected GitHub Releases under `edithatogo/dapane` for the
 GitHub returned the authenticated login `edithatogo` and admin permission
 on the repository. The releases and matching tag lookups returned empty lists.
 
-The selected candidate is `d02095d9bf7e89c6fc00805c4bc484a3ead3e33b`.
+The first selected candidate was `d02095d9bf7e89c6fc00805c4bc484a3ead3e33b`.
 The successful hosted release run contains five verified provenance subjects.
 Local `verify-matrix` accepted the downloaded Linux x86_64 CPython 3.15.1 target
 for this source. The candidate passed 215 installed tests and ten independent
 reference cases. [Release artifacts](https://github.com/edithatogo/dapane/actions/runs/44748104482)
 
-The central offline-security job for this exact commit was queued with
-`runner_id: 0` and zero steps at decision readback. The public prerelease
-requires an executed scan with a successful conclusion on this revision.
-The release tag will reference this commit and carry the verified files.
-[Exact-source scan](https://github.com/edithatogo/dapane/actions/runs/44748104889)
+The central job was queued at decision readback. The later executed scan failed.
+Targeted OpenGrep diagnosis found two console sinks in the manual exchange CLI.
+The source fix required a fresh candidate.
+[Original scan](https://github.com/edithatogo/dapane/actions/runs/44748104889)
+
+## Verified GitHub prerelease and in-place archive
+
+- PR #67 moved the manual exchange's request-derived digests and SharePoint
+  upload plan to explicit local files. The console reports fixed statuses and
+  error summaries. All 12 manual exchange tests passed, including byte-identical
+  retries and rejection without echoing raw diagnostics. The pinned OpenGrep
+  analyzer covered all 121 tracked sources with zero findings on `fcfe244`.
+  [Reviewed source change](https://github.com/edithatogo/dapane/pull/67)
+- The published candidate is `5a24196c6e3b8905613dcf5100c239018c919b7a`
+  (tree `b90e90da7fe07bbad0b6daa12ef783d40de043a9`). The Linux x86_64 CLI and
+  CPython 3.15.1 wheel passed the two clean builds, 215 installed tests,
+  10 independent references and exact-artifact provider replay. The dependency
+  advisory and licence checks and the aggregate candidate matrix passed.
+  The CLI, wheel, source archive, evidence and reproducibility receipt verified
+  against the trusted GitHub-hosted `main` attestation.
+  [Release assurance](https://github.com/edithatogo/dapane/actions/runs/44841721904)
+- The same commit passed the central offline-security workflow. Job
+  `136651486647` passed the isolated preconditions and the four layers in a
+  network-disabled container, completing at `2026-11-21T00:21:22Z`. The
+  one-job runner deregistered after completion.
+  [Executed exact-source scan](https://github.com/edithatogo/dapane/actions/runs/44841722219)
+- GitHub published the prerelease at `2026-11-21T00:36:28Z` after the scan passed.
+  The tag resolved to the checked commit. All ten uploaded assets were
+  downloaded from the public URLs, and their byte sizes and SHA-256 digests
+  matched the staged files and GitHub's asset metadata.
+  [Public prerelease](https://github.com/edithatogo/dapane/releases/tag/v0.1.0)
+
+The [track metadata](metadata.json) retains the source and asset identities,
+native readback and earlier candidate evidence. The original specification,
+plan and dependency links remain at the authoritative track path.
 
 ## Publication control review — 20 November 2026
 

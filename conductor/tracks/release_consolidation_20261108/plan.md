@@ -1,6 +1,6 @@
 # Implementation plan: Release assurance and conditional consolidation
 
-Status: blocked
+Status: archived
 
 Use `[ ]` pending, `[~]` active, `[x]` verified complete, `[!]` blocked and `[-]` intentionally omitted with a recorded reason.
 Check a task only when its acceptance evidence is available. Provider capabilities and conditional options retain their own status.
@@ -10,10 +10,11 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
 - [x] L1.1 Select the exact first capability set: qualified Rust core, CLI and Python with workforce/genomics evidence; list all other tracks as optional or planned.
   - The manifest selects core/CLI/Python, profiles 0.1/0.2, Rust/CLI intervals 0.1, run-bundles 0.1, independent synthetic cases and the selected QLD HP3.1/manual-extraction provider subset. Existing owners' durable records and exact pins are consumed; all four prerequisite archives are incorporated. Broader providers and optional tracks remain separate.
 - [x] L1.2 Resolve repository/package licensing, registry identities, supported matrix and source redistribution terms before public package publication.
-  - The owner selected GitHub Releases under `edithatogo/dapane` for the `v0.1.0` prerelease and deferred PyPI and crates.io. The authenticated GitHub account has admin permission on that repository. The release uses the exact `d02095d` candidate for Linux x86_64, with its Python wheel qualified on CPython 3.15.1. Dapane project material is Apache-2.0. The verified distribution retains project and dependency notices and excludes external provider assets. [Decision and evidence](evidence.md#github-prerelease-selection-21-november-2026)
+  - The owner selected GitHub Releases under `edithatogo/dapane` for the `v0.1.0` prerelease and deferred PyPI and crates.io. The authenticated account has admin permission on the repository. The verified `5a24196` distribution includes the Linux x86_64 CLI and a wheel qualified on CPython 3.15.1. Dapane project material is Apache-2.0. The distribution includes project and dependency notices and excludes external provider assets. [Decision and evidence](evidence.md#github-prerelease-selection-21-november-2026)
 - [x] L1.3 Configure reproducible artifacts, dependency/advisory/licence checks, scoped CI permissions and provenance/SBOM generation using maintained tooling.
-  - Historical PR #17 source `5f03f28` and post-merge `main` source `0658d94` both passed all four hosted dual builds, advisory/licence checks, three SBOMs and the aggregate matrix. On `main` (`0658d94`, run `43769725207`), trusted-main signed provenance (`attest` job `132994080532`, artifact `14184669447`) passed and all 20 subject files (14 distinct digests) verified offline with `gh attestation verify --bundle`. Central offline security remains a separate unexecuted gate.
+  - Historical PR #17 source `5f03f28` and post-merge `main` source `0658d94` both passed all four hosted dual builds, advisory/licence checks, three SBOMs and the aggregate matrix. On `main` (`0658d94`, run `43769725207`), trusted-main signed provenance (`attest` job `132994080532`, artifact `14184669447`) passed and all 20 subject files (14 distinct digests) verified offline with `gh attestation verify --bundle`. The central offline-security run for that historical candidate was unexecuted.
 - [x] L1.4 Verify a clean build and installed-consumer reference runs for every advertised target; retain exact commands and artifact identities.
+  - The v0.1.0 prerelease on `5a24196` passed two clean builds, 215 installed tests and ten independent cases on the selected Linux x86_64 CPython 3.15.1 target. The exact-artifact providers and all five signed subjects passed. [Release qualification](evidence.md#verified-github-prerelease-and-in-place-archive)
   - Post-merge `main` source `0658d94` passed 196 installed tests on each of CPython 3.12.16, 3.13.18, 3.14.10 and 3.15.2 (following PR #22's 63 newborn tests; historical PR #17 source `5f03f28` passed 133), plus ten independent references and installed interval controls per target. The `0658d94` release provider job consumed verified candidate artifact `14184700967` and passed in the existing separate environments (`14145643783` on `5f03f28`). Aggregate success and local clean-head `verify-matrix` include these exact-artifact results; names/digests are retained in the receipts.
 
 ## Phase 2 — Operational quality
@@ -44,8 +45,15 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
     offline scan from their publication blockers. The manifest, receipt writer
     and verifier now enforce its inclusion. The 67 control tests and Ruff passed.
     [Control review and runner evidence](evidence.md#publication-control-review--20-november-2026).
-- [!] L4.2 Archive this track after all mandatory acceptance criteria have evidence.
-  - The selected candidate `d02095d` passed release assurance and signed provenance verification. The central scan for this revision is queued with no runner assigned. Publish the `v0.1.0` prerelease after the exact-source scan passes, then verify its tag and assets before archival. [Offline security run](https://github.com/edithatogo/dapane/actions/runs/44748104889)
+  - Targeted OpenGrep diagnosis found two console sinks in the manual exchange.
+    PR #67 keeps exchange metadata in explicit local files and emits fixed
+    console messages. All 12 exchange tests passed, and the pinned OpenGrep scan
+    covered 121 tracked sources with zero findings. [Reviewed change](https://github.com/edithatogo/dapane/pull/67)
+- [x] L4.2 Archive this track after all mandatory acceptance criteria have evidence.
+  - The central offline-security workflow passed on `5a24196`. GitHub prerelease
+    `v0.1.0` was then published, its tag resolved to that exact source, and all
+    ten uploaded assets matched the qualified bytes. The authoritative track
+    remains at its original path. [Verified prerelease](evidence.md#verified-github-prerelease-and-in-place-archive)
 
 ## Evidence record
 

@@ -54,9 +54,9 @@ Retain old artifacts, source packs and consumer adapters; use a new corrective r
 
 Project licensing is resolved as Apache-2.0 by the owner's explicit instruction.
 The owner selected GitHub Releases under `edithatogo/dapane` for the first
-prerelease, `v0.1.0`. PyPI and crates.io are deferred. The distribution uses the
-verified files for the selected candidate after the central offline-security scan
-passes on that revision. [Decision and evidence](evidence.md#github-prerelease-selection-21-november-2026)
+prerelease, `v0.1.0`. PyPI and crates.io are deferred. The published distribution
+uses the verified files from `5a24196`, which passed the central offline-security
+scan. [Verified release](evidence.md#verified-github-prerelease-and-in-place-archive)
 
 ## Execution and verification
 
