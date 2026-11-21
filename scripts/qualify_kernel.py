@@ -15,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RUST_BASELINE = "1.99.1"
 NATIVE_ROOTS = {"dapane-core", "dapane-cli"}
+PUBLISH_REGISTRIES = {"dapane-core": ["crates-io"]}
 # A positive list rejects new dependencies without relying on category/name guesses.
 NATIVE_PACKAGES = {
     "autocfg",
@@ -150,9 +151,11 @@ def load_static(root: Path) -> tuple[dict, dict, dict]:
         member_path = root / member / "Cargo.toml"
         package = tomllib.loads(member_path.read_text(encoding="utf-8"))["package"]
         publish = package.get("publish")
+        if publish is False or publish == {"workspace": True}:
+            publish = []
         require(
-            publish is False or publish == {"workspace": True},
-            f"Package does not preserve publish=false: {package['name']}",
+            publish == PUBLISH_REGISTRIES.get(package["name"], []),
+            f"Unexpected Cargo publication scope: {package['name']}",
         )
         rust_version = package.get("rust-version")
         require(
@@ -202,9 +205,10 @@ def check_metadata(metadata: dict, lock: dict, recorded: dict) -> list[dict]:
         "Resolved default workspace members include a wrapper or omit a native root",
     )
     for key in workspace_ids:
+        package = by_id[key]
         require(
-            by_id[key].get("publish") == [],
-            f"Resolved package permits publication: {by_id[key]['name']}",
+            package.get("publish") == PUBLISH_REGISTRIES.get(package["name"], []),
+            f"Unexpected resolved publication scope: {package['name']}",
         )
         require(
             by_id[key].get("rust_version") == RUST_BASELINE,

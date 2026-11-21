@@ -46,8 +46,8 @@ support follows from the range alone.
 The [dependency inventory](../docs/dependencies.json) records the 36 locked
 registry packages and their declared licences/checksums. This is a source
 inventory, not a completed project-licence or source-data rights decision.
-Project material is Apache-2.0 under ADR-014. Packages retain `publish = false`
-pending registry ownership and release qualification.
+Project material is Apache-2.0 under ADR-014. The Cargo publication allowlist
+names `dapane-core` and crates.io.
 
 The [kernel qualification guard](../docs/kernel-dependencies.md) checks the exact
 compiler, fetched manifest declarations and the resolved native graph. Its observed
