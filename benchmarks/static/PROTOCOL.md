@@ -8,10 +8,11 @@ corrections, the local counterpart passed its acceptance suite at
 before the execution environment became unavailable. [History](HISTORY.md)
 separates that observation from this reconstructed, unexecuted publication.
 
-The active runtime pin is `2311d6028f30ff7af01f064a76234cb0db7d1236`, the
-date-library repair. The frozen mutation inventory, workloads and acceptance
-conditions apply to this revision. Historical observations retain their
-original runtime pins.
+The active runtime pin is `9a03eea4656115da38dec4d8a802406c482511b5`. Among
+the tracked runtime files, this revision updates only the core package's
+registry and file inclusion metadata relative to the historical pin
+`2311d6028f30ff7af01f064a76234cb0db7d1236`. The frozen mutation inventory,
+workloads and acceptance conditions apply to this revision.
 
 ## Questions and comparators
 

@@ -29,7 +29,7 @@ def synthetic_metadata(lock: dict, recorded: dict) -> dict:
             item["license"] = record["declared_license"]
             item["rust_version"] = record["declared_rust_version"]
         else:
-            item["publish"] = []
+            item["publish"] = ["crates-io"] if item["name"] == "dapane-core" else []
             item["rust_version"] = guard.RUST_BASELINE
         packages.append(item)
         nodes.append(
@@ -64,6 +64,7 @@ class KernelQualificationTests(unittest.TestCase):
         _, recorded, members = guard.load_static(ROOT)
         self.assertEqual(len(recorded), 41)
         self.assertEqual(set(members), {"dapane-core", "dapane-cli", "dapane-python"})
+        self.assertEqual(members["dapane-core"]["publish"], ["crates-io"])
 
     def test_changed_checksum_is_rejected(self):
         self.inventory["packages"][0]["checksum"] = "0" * 64
@@ -122,12 +123,19 @@ class KernelQualificationTests(unittest.TestCase):
             guard.check_metadata(self.metadata, self.lock, self.recorded)
 
     def test_resolved_publication_gate_is_enforced(self):
-        core = next(
-            package for package in self.metadata["packages"] if package["name"] == "dapane-core"
+        invalid_scopes = (
+            ("dapane-core", None),
+            ("dapane-core", ["crates-io", "other"]),
+            ("dapane-cli", ["crates-io"]),
+            ("dapane-python", ["crates-io"]),
         )
-        core["publish"] = None
-        with self.assertRaisesRegex(guard.QualificationError, "permits publication"):
-            guard.check_metadata(self.metadata, self.lock, self.recorded)
+        for name, registry in invalid_scopes:
+            with self.subTest(name=name, registry=registry):
+                metadata = deepcopy(self.metadata)
+                package = next(p for p in metadata["packages"] if p["name"] == name)
+                package["publish"] = registry
+                with self.assertRaisesRegex(guard.QualificationError, "publication scope"):
+                    guard.check_metadata(metadata, self.lock, self.recorded)
 
     def test_default_wrapper_is_rejected(self):
         wrapper = next(

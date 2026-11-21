@@ -51,12 +51,17 @@ expression is omitted as explained in [release controls](release-controls.md).
 External provider assets remain excluded. GitHub Releases under
 `edithatogo/dapane` is the selected channel for the `v0.1.0` prerelease.
 Publication requires a successful central offline-security scan on the selected
-candidate. PyPI and crates.io identities are deferred. The workflow verifies and
-attests candidate artifacts for release through the selected channel.
+candidate. The initial GitHub decision deferred registry publication. The
+workflow verifies and attests candidate artifacts for release.
 [Release decision](../conductor/tracks/release_consolidation_20261108/evidence.md#github-prerelease-selection-21-november-2026)
 
 The published `v0.1.0` prerelease has a verified tag, ten uploaded assets and
 exact-source security evidence. [Publication record](../conductor/tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
+
+PyPI `dapane` 0.1.0 carries the same signed Linux x86_64 CPython 3.15 wheel
+from `5a24196`. The wheel downloaded from PyPI matched the qualified SHA-256
+digest `ec4b2465a732036c15f97fb1f26e5f18d20b8bd7e793610eadca6d92f8e2de36`.
+[PyPI release](https://pypi.org/project/dapane/0.1.0/)
 
 The local publication command reports the static candidate and registry blockers
 with exit code 2. The owner-authorised GitHub prerelease uses the separately

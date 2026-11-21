@@ -6,7 +6,9 @@ edition.workspace = true
 rust-version.workspace = true
 repository.workspace = true
 license.workspace = true
-publish = false
+publish = ["crates-io"]
+# These workspace tests read fixtures outside the crate directory.
+exclude = ["/tests/capacity.rs", "/tests/interval_review.rs", "/tests/intervals.rs"]
 
 [dependencies]
 serde.workspace = true

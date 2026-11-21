@@ -7,7 +7,7 @@
     "Cargo.lock": "d38be2f47c6c5f78eea8d439dddad1980d7554beedd0d0c2bb82b2d9a4837871",
     "Cargo.toml": "25f13585690394814fbdfa2d73136571a4b03a49dad26bfb9e65846d4f088d7c",
     "crates/dapane-cli/Cargo.toml": "03cb396599213a339d79a2d467a4c17b84413350d803ddf32a350de7eec11c1f",
-    "crates/dapane-core/Cargo.toml": "0136aaf398bdc4a52c714326b1297692035b972da825b172042736a7cf611e77",
+    "crates/dapane-core/Cargo.toml": "095f33814cbe61d59cb3eb8aa80758fa0efb839a4feae9fe187299f079990a06",
     "crates/dapane-python/Cargo.toml": "4bc65462a6676413b012ad8bf477ace2a29e426f67a8bc0175b3dc8e10bc7d59",
     "licenses/rust-1.99.1/COPYRIGHT": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
     "licenses/rust-1.99.1/COPYRIGHT-library.html": "5647be074c8edf7339fd863055923a8fc80bc5610a8d4661ec3b767b9d392c27",

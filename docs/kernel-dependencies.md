@@ -64,8 +64,8 @@ compatibility evidence for the exercised target. It does not infer an older MSRV
 The owner selected Apache-2.0 for project material in ADR-014. Source-data rights,
 distribution notices and registry publication remain with the
 [release track](../conductor/tracks/release_consolidation_20261108/index.md).
-Every workspace package retains `publish = false`; current qualification reports
-derive `project_licence` from the workspace manifest and retain
+The Cargo publication allowlist names `dapane-core` and crates.io. Dependency
+qualification reports derive `project_licence` from the workspace manifest and retain
 `release_qualified: false`. Historical archived observations retain the licence
 state at their checked source. Kernel dependency qualification does not establish
 registry rights, economic, clinical or source-data validity.

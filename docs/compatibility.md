@@ -119,11 +119,10 @@ affected consumers have qualified the new result.
 No repository should be archived based on these synthetic tests. Real provider
 integration, compatibility/rollback evidence and review of unique assets remain
 release/consolidation work. Dapane project material is Apache-2.0 under ADR-014;
-registry ownership and release qualification remain prerequisites. The workspace
-packages retain `publish = false`.
+registry ownership and release qualification remain prerequisites. The Cargo
+publication allowlist names `dapane-core` and crates.io.
 
 Completing the selected provider track does not authorize repository retirement.
 Review of unique assets and functioning successors remains separate
-release/consolidation work. A project licence and registry identity are also
-unresolved release prerequisites; the workspace packages set `publish = false`.
+release/consolidation work.
 

@@ -35,9 +35,11 @@ cargo install --locked --path crates/dapane-cli --root /absolute/install/locatio
 
 ## Python extension
 
-Build a native wheel for a selected CPython interpreter and install it into a
-separate virtual environment. This is a local source build; no PyPI release is
-assumed.
+On Linux x86_64 with CPython 3.15.1, install the qualified wheel with
+`python -m pip install dapane==0.1.0`. [PyPI release](https://pypi.org/project/dapane/0.1.0/)
+
+To build a native wheel locally, select the interpreter and install the wheel
+into its virtual environment.
 
 ```sh
 uv venv --seed --python 3.15.1 .venv
