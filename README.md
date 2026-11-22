@@ -169,3 +169,8 @@ Separately obtained provider assets retain their own terms and are excluded.
 The GitHub prerelease includes signed artifact provenance, the source archive,
 licence and notices.
 [Asset and source verification](conductor/tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
+
+## Security
+
+Follow the [security policy](https://github.com/edithatogo/.github/blob/main/SECURITY.md) to report vulnerabilities
+privately. Keep credentials and sensitive data out of public issues and pull requests.
