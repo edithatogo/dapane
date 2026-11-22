@@ -1,16 +1,22 @@
 name: Offline AI security
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   offline-ai-security:
-    uses: edithatogo/repository-standards/.github/workflows/reusable-ai-sec-pipeline.yml@1376767b249024adf975a72d4307dedc607ab16b
+    uses: edithatogo/repository-standards/.github/workflows/reusable-ai-sec-pipeline.yml@f31dd7b53edce92c1c977188744d4e04c955c792
     permissions:
       contents: read
     with:
       enforce_ai: false
       verify_scanner_model: true
-      runner_label: ${{ github.event_name == 'pull_request' && format('ai-security-offline-dapane-pr-{0}', github.event.pull_request.number) || 'ai-security-offline' }}
+      runner_label: >-
+        ${{ (github.event_name == 'pull_request' &&
+             format('ai-security-offline-dapane-pr-{0}', github.event.pull_request.number)) ||
+            (github.event_name == 'workflow_dispatch' &&
+             format('dapane-offline-rc-{0}', github.sha)) ||
+            'ai-security-offline' }}
