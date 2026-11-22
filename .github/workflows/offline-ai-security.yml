@@ -1,6 +1,7 @@
 name: Offline AI security
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -13,4 +14,9 @@ jobs:
     with:
       enforce_ai: false
       verify_scanner_model: true
-      runner_label: ${{ github.event_name == 'pull_request' && format('ai-security-offline-dapane-pr-{0}', github.event.pull_request.number) || 'ai-security-offline' }}
+      runner_label: >-
+        ${{ (github.event_name == 'pull_request' &&
+             format('ai-security-offline-dapane-pr-{0}', github.event.pull_request.number)) ||
+            (github.event_name == 'workflow_dispatch' &&
+             format('dapane-offline-rc-{0}', github.sha)) ||
+            'ai-security-offline' }}

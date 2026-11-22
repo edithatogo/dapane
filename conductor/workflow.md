@@ -96,6 +96,19 @@ duplicate workers or implement another lane's scope.
 
 ## Release and research claims
 
+The offline-security workflow runs on pull requests and pushes to `main`.
+For a staged release candidate, set `candidate_ref` to its branch or tag
+and `candidate_sha` to the full qualified source SHA. The manual run selects
+a qualified offline runner with label `dapane-offline-rc-${candidate_sha}`.
+
+```sh
+gh workflow run offline-ai-security.yml --ref "$candidate_ref"
+gh run list --workflow offline-ai-security.yml --event workflow_dispatch --commit "$candidate_sha"
+```
+
+Use a successful run whose head SHA equals `candidate_sha` for release
+verification.
+
 Qualify capabilities independently. The initial core/Python release must not wait
 for every optional language, Power Platform or process adapter. A release states
 its actual methods, data sources, platforms and installed-consumer evidence.
