@@ -10,9 +10,8 @@ specialist rules and source data. Installed R and Julia candidates exercise the 
 
 ## Current status
 
-The **v0.1.0 GitHub prerelease** ships a Linux x86_64 CLI. The corresponding
-wheel qualified on CPython 3.15.1 is also available on PyPI.
-[GitHub release](https://github.com/edithatogo/dapane/releases/tag/v0.1.0) · [PyPI release](https://pypi.org/project/dapane/0.1.0/)
+See [published artifacts](docs/release-assurance.md#published-artifacts)
+for current downloads, qualified source revisions and verification.
 
 Dapane implements a bounded subset of the Conductor requirements and roadmap.
 It supports nonnegative point-date quantities,

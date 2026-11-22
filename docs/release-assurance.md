@@ -48,24 +48,20 @@ The canonical LICENSE, NOTICE and THIRD_PARTY_NOTICES.txt are checked in source,
 installed wheels and candidate CLI bundles. The dependency and standard-library
 texts retain their source identities; the optional Python aggregate licence
 expression is omitted as explained in [release controls](release-controls.md).
-External provider assets remain excluded. GitHub Releases under
-`edithatogo/dapane` is the selected channel for the `v0.1.0` prerelease.
-Publication requires a successful central offline-security scan on the selected
-candidate. The initial GitHub decision deferred registry publication. The
-workflow verifies and attests candidate artifacts for release.
-[Release decision](../conductor/tracks/release_consolidation_20261108/evidence.md#github-prerelease-selection-21-november-2026)
+External provider assets remain excluded. Publication requires a successful
+central offline-security scan on the selected source. The workflow verifies and
+attests release candidates. [Original release decision](../conductor/tracks/release_consolidation_20261108/evidence.md#github-prerelease-selection-21-november-2026)
 
-The published `v0.1.0` prerelease has a verified tag, ten uploaded assets and
-exact-source security evidence. [Publication record](../conductor/tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
+## Published artifacts
 
-PyPI `dapane` 0.1.0 carries the same signed Linux x86_64 CPython 3.15 wheel
-from `5a24196`. The wheel downloaded from PyPI matched the qualified SHA-256
-digest `ec4b2465a732036c15f97fb1f26e5f18d20b8bd7e793610eadca6d92f8e2de36`.
-[PyPI release](https://pypi.org/project/dapane/0.1.0/)
+| Channel | Published distribution | Qualified source | Verification |
+| --- | --- | --- | --- |
+| GitHub Releases | [`v0.1.0` prerelease](https://github.com/edithatogo/dapane/releases/tag/v0.1.0), including the Linux x86_64 CLI | [`5a24196`](https://github.com/edithatogo/dapane/commit/5a24196c6e3b8905613dcf5100c239018c919b7a) | [Verified tag, ten assets, signed provenance and exact-source scan](../conductor/tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive) |
+| PyPI | [`dapane` 0.1.0](https://pypi.org/project/dapane/0.1.0/), a Linux x86_64 wheel qualified on CPython 3.15.1 | `5a24196` | The downloaded wheel matched the signed release wheel. SHA-256 `ec4b2465a732036c15f97fb1f26e5f18d20b8bd7e793610eadca6d92f8e2de36`. |
+| crates.io | [`dapane-core` 0.1.0](https://crates.io/crates/dapane-core/0.1.0), the Rust source crate | [`7098782`](https://github.com/edithatogo/dapane/commit/7098782f9249d03dea064e3a0fe778441f8d59c8) | The downloaded crate matched the qualified archive and the registry index. SHA-256 `5788d7a9fe0d4915398f923410166964ce00424a4ee8e65eb81ccd82aef17052`. [Exact-source scan](https://github.com/edithatogo/dapane/actions/runs/44858887138) |
 
-The local publication command reports the static candidate and registry blockers
-with exit code 2. The owner-authorised GitHub prerelease uses the separately
-recorded exact-source evidence above.
+The local publication command evaluates the stored candidate and reports its
+static candidate and registry blockers with exit code 2.
 
 ~~~sh
 python scripts/release_assurance.py validate
