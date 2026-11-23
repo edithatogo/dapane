@@ -8,15 +8,10 @@ permissions:
   contents: read
 jobs:
   offline-ai-security:
-    uses: edithatogo/repository-standards/.github/workflows/reusable-ai-sec-pipeline.yml@f31dd7b53edce92c1c977188744d4e04c955c792
+    uses: edithatogo/repository-standards/.github/workflows/reusable-ai-sec-pipeline.yml@10fbf2e718edc2d4eb4c2177fd0675f12ff7c6a6
     permissions:
       contents: read
     with:
       enforce_ai: false
       verify_scanner_model: true
-      runner_label: >-
-        ${{ (github.event_name == 'pull_request' &&
-             format('ai-security-offline-dapane-pr-{0}', github.event.pull_request.number)) ||
-            (github.event_name == 'workflow_dispatch' &&
-             format('dapane-offline-rc-{0}', github.sha)) ||
-            'ai-security-offline' }}
+      github_hosted: true
