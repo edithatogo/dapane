@@ -154,10 +154,10 @@ and pushes to main; their reusable call cannot restore a manual branch-trigger
 path into provider execution or its default-branch caches.
 
 The separate, centrally managed [offline security caller](../.github/workflows/offline-ai-security.yml)
-retains its existing pinned reusable workflow and policy. Main requires a
-`self-hosted`, `linux`, `x64` runner with the `ai-security-offline` label.
-Pull requests select the dedicated `ai-security-offline-dapane-pr-<number>`
-label. The capability manifest and candidate receipts identify the requirement
+uses a pinned reusable workflow on GitHub-hosted Ubuntu. It qualifies the
+scanner image, then runs the consumer scan with networking disabled, read-only
+mounts and the scanner model checks enabled. The capability manifest and
+candidate receipts identify the requirement
 for executed scan evidence on the exact release source. The hosted release
 workflow verifies that the requirement appears in each receipt.
 

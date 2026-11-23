@@ -96,11 +96,11 @@ duplicate workers or implement another lane's scope.
 
 ## Release and research claims
 
-The offline-security workflow scans each pull request's exact head SHA and
-the exact source of each push to `main`.
+The offline-security workflow runs on GitHub-hosted Ubuntu. It scans each
+pull request's exact head SHA and the exact source of each push to `main`
+in a read-only container with networking disabled.
 For a staged release candidate, set `candidate_ref` to its branch or tag
-and `candidate_sha` to the full qualified source SHA. The manual run selects
-a qualified offline runner with label `dapane-offline-rc-${candidate_sha}`.
+and `candidate_sha` to the full qualified source SHA.
 
 ```sh
 gh workflow run offline-ai-security.yml --ref "$candidate_ref"
