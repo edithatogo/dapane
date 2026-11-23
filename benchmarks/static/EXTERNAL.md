@@ -58,3 +58,32 @@ identical on the recorded host.
 - [U.S. government catalogue and 2024 data endpoint](https://catalog.data.gov/dataset/medicare-inpatient-hospitals-by-geography-and-service-d713e)
 - [CMS geography and service data dictionary](https://data.cms.gov/resources/medicare-inpatient-hospitals-by-geography-and-service-data-dictionary-0)
 - [CMS methodology and coverage](https://data.cms.gov/resources/medicare-inpatient-hospitals-methodology)
+
+## Held-out aggregate calibration
+
+This 24 November 2026 protocol addendum precedes execution of the calibration
+follow-up. The F3.1 result motivated the follow-up. Use the same pinned 2024
+CMS response, DRG 470, and the same state/DC inclusion and missingness rules.
+Set aside the published national summary for this fit.
+
+Hold out each usable geography once. Fit the mean Medicare payment per
+discharge using only the other usable geographies, weighted by their published
+discharge counts. Apply that exact rational rate to the held-out geography's
+published count. Score against the reconstruction from its published mean.
+Use native half-even cent rounding and independently compute each rounded
+prediction with fractions over the other geographies. Retain every held-out
+prediction and signed error. Report the sum of absolute errors and its ratio
+to the sum of local reconstructions. Fewer than two usable geographies
+leaves the fit undefined.
+
+The hand-calculated control uses (count, rate) pairs (2, 100), (3, 200) and
+(5, 400). The held-out predictions are USD 650.00, 942.86 and 800.00 against
+USD 200.00, 600.00 and 2,000.00. The absolute errors sum to USD 1,992.86.
+Changing a held-out mean changes its reference only. The published national
+rate from F3.1 is a descriptive comparator because it includes the held-out
+geographies.
+
+This retrospective check measures out-of-geography error within one published
+year and DRG. It uses public summary cells and introduces no new disclosure
+mechanism. Prospective validation and inference about individual payments
+would require different data.
