@@ -18,7 +18,7 @@ Status: completed
     • Advisories: none known for v0.3.2
     • API safety: safe API, but behavioral differences make it unsafe for Dapane's hash-stability requirements
     Decision: do NOT replace write_canonical with serde_json_canonicalizer. Historical canonical hashes would change, breaking digest verification of existing receipts.
-- [-] For a go result, propose versioned v2 behind an optional adapter, keep v1 byte-for-byte, test cross-language Python CLI contract parity, historical hash validation and source/rounding invariants; do not change core logic through this lane.    
-  **Status: intentionally omitted — no-go decision recorded in Task 3; no v2 proposal needed.**
+- [x] Qualify a separately selected v2 report fingerprint and preserve historical v1 verification.
+  **Executed 2026-11-24.** The earlier drop-in replacement decision stands. The optional crate uses a separate domain and accepts the lossless safe-integer subset of JCS. Five historical point requests and one capacity request matched in the native CLI and installed Python. Their independently calculated v2 fingerprints matched the adapter. [Adapter contract and checks](../../../adapters/canonicalization_v2/README.md)
 - [x] Run exact-head locked Rust build/test/clippy, available independent references and central offline-security gate; integrator reviews and owns merge.   
   **Executed 2026-11-19:** `cargo fmt --all --check` passes, `cargo clippy --locked --all-targets -- -D warnings` passes, `cargo test --locked --package dapane-core --lib` passes (13 tests: 12 canonical regression + 1 canonicalizer comparison), `cargo test --locked --test canonicalization` passes (12 tests). Full `cargo test --locked` passes except pre-existing macOS APFS `non_utf8_arguments` failure (EILSEQ errno 92, documented in newborn track). `cargo build --locked --release --no-default-features -p dapane-cli` passes. Conductor validation passes.
