@@ -40,7 +40,8 @@ incremental engine or empirical/frontier claim follows. See the
 ## Phase 3 — External validation and publication
 
 - [x] F3.1 Run the preregistered CMS 2024 public aggregate benchmark across 51 state/DC geographies for DRG 470. Record exact native parity, missingness, mapping steps and state-level transfer error. [External protocol and evidence](../../../benchmarks/static/EXTERNAL.md)
-- [-] F3.2 Aggregate/federated calibration was optional. The selected CMS analysis uses already published aggregates and evaluates no new disclosure or calibration method.
+- [x] F3.2 Calibrate on the published CMS aggregates with one geography held out per fit.
+  All 51 native predictions matched the independent Fraction oracle. Absolute errors totalled 17.2825% of the local reconstruction. [Protocol and results](../../../benchmarks/static/EXTERNAL.md#held-out-aggregate-calibration)
 - [x] F3.3 Choose target software/methods/application venues from the actual contribution and evidence; keep software release, paper and clinical validation claims distinct.
   The dated comparator review identifies a software venue and conditional routes for methods and applications. Manuscript preparation, real-world validation and submission remain separate. [Venue rationale](../../../benchmarks/static/COMPARATORS.md#publication-fit)
 - [x] F3.4 Reproduce the relevant synthetic and external comparisons and record conclusions with scope and limitations. The repository holds the dated review, reproducible evidence and candidate venue plan.

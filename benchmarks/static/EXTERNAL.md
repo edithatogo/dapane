@@ -87,3 +87,24 @@ This retrospective check measures out-of-geography error within one published
 year and DRG. It uses public summary cells and introduces no new disclosure
 mechanism. Prospective validation and inference about individual payments
 would require different data.
+
+### Executed calibration results
+
+The reretrieved CMS response matched the original SHA-256. All 51 state/DC
+geographies and 64,419 discharges entered the follow-up. The independent
+Fraction oracle and restored native CLI agreed on all 51 held-out predictions
+and 51 local reconstructions. The held-out payment sum was USD 917,761,381.52.
+Absolute state errors totalled USD 159,445,947.54, or 17.2825% of the local
+reconstruction of USD 922,586,578.00. The in-frame national comparator from
+F3.1 had 16.2171% absolute error. Each held-out fit used the other 50 geographies
+in the state/DC frame.
+
+CPython 3.15.1 ran against the Rust 1.99.1 macOS CLI rebuilt from prerelease
+source `5a24196c6e3b8905613dcf5100c239018c919b7a`. The calibration rerun produced
+identical receipt bytes. A fresh F3.1 replay matched the historical amounts,
+coverage and both native report hashes. All three calibration tests passed,
+including the hand calculation and held-out mean perturbation.
+[Calibration receipt](evidence/external/cms-funding-calibration-v1.json)
+
+Use the existing reproduction command with `--calibrate` and a new output
+path to repeat the follow-up.
