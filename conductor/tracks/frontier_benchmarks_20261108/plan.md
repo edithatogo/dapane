@@ -49,6 +49,7 @@ incremental engine or empirical/frontier claim follows. See the
 ## Review fixes
 
 - [x] Preserve full declared source precision, measure missingness separately and retain the native/Fraction cross-check. [Review](external-review.md)
+- [x] Verify unrounded CMS state amounts and totals before rounding (`ab5bdeb`). The regression rejects an incorrect exact amount with matching cents. Both receipts replayed byte-for-byte with the same restored CLI.
 
 ## Evidence record
 
