@@ -130,33 +130,44 @@ def request(rows: dict[str, tuple[str, str]], pooled: bool) -> dict:
     }
 
 
-def verify_valuation(cli: Path, mapped: dict, expected: dict[str, int]) -> str:
+def exact_amount(value: dict[str, str]) -> Fraction:
+    return Fraction(f"{value['numerator']}/{value['denominator']}")
+
+
+def verify_valuation(
+    cli: Path, mapped: dict, expected: dict[str, Fraction]
+) -> tuple[dict[str, int], str]:
     payload = json.dumps(mapped, sort_keys=True, separators=(",", ":")).encode()
     output = subprocess.run(
         [cli, "evaluate", "-"], input=payload, check=True, capture_output=True, timeout=30
     ).stdout
     report = json.loads(output)
-    actual = {row["id"]: Fraction(row["rounded"]) * 100 for row in report["lines"]}
-    if (
-        report["status"] != "complete"
-        or len(report["lines"]) != len(expected)
-        or expected != actual
-    ):
-        raise ValueError("native state amounts differ from the independent exact oracle")
-    if Fraction(report["totals"]["rounded"]) * 100 != sum(expected.values()):
+    lines = report["lines"]
+    if report["status"] != "complete" or len(lines) != len(expected):
+        raise ValueError("native report does not contain all expected state amounts")
+
+    actual_exact = {row["id"]: exact_amount(row["exact"]) for row in lines}
+    if actual_exact != expected:
+        raise ValueError("native unrounded state amounts differ from the independent exact oracle")
+    if exact_amount(report["totals"]["exact"]) != sum(expected.values()):
+        raise ValueError("native unrounded total differs from the sum of independent state amounts")
+
+    expected_cents = {key: round(amount * 100) for key, amount in expected.items()}
+    actual_cents = {row["id"]: Fraction(row["rounded"]) * 100 for row in lines}
+    if actual_cents != expected_cents:
+        raise ValueError("native rounded state amounts differ from independent half-even rounding")
+    if Fraction(report["totals"]["rounded"]) * 100 != sum(expected_cents.values()):
         raise ValueError("native total differs from the sum of independent rounded state amounts")
-    return digest(output)
+    return expected_cents, digest(output)
 
 
 def check(cli: Path, rows: dict[str, tuple[str, str]], pooled: bool) -> tuple[dict[str, int], str]:
     expected = {
-        f"state-{key}": round(
-            Fraction(count) * Fraction(rows["national"][1] if pooled else amount) * 100
-        )
+        f"state-{key}": Fraction(count) * Fraction(rows["national"][1] if pooled else amount)
         for key, (count, amount) in rows.items()
         if key != "national"
     }
-    return expected, verify_valuation(cli, request(rows, pooled), expected)
+    return verify_valuation(cli, request(rows, pooled), expected)
 
 
 def transport(cli: Path, rows: dict[str, tuple[str, str]]) -> dict:
@@ -209,13 +220,13 @@ def calibrate(cli: Path, rows: dict[str, tuple[str, str]]) -> dict:
     if total <= 0:
         raise ValueError("the aggregate benchmark requires positive funding in disclosed states")
 
-    predictions = {}
+    expected = {}
     for key, (count, _) in sorted(states.items()):
         training = [values for other, values in states.items() if other != key]
         training_payment = sum(Fraction(size) * Fraction(mean) for size, mean in training)
         training_count = sum(int(size) for size, _ in training)
-        predictions[f"state-{key}"] = round(training_payment * int(count) * 100 / training_count)
-    fitted_report = verify_valuation(cli, mapped, predictions)
+        expected[f"state-{key}"] = training_payment * int(count) / training_count
+    predictions, fitted_report = verify_valuation(cli, mapped, expected)
     folds = [
         {
             "geography": key.removeprefix("state-"),

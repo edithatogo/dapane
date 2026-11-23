@@ -1,8 +1,11 @@
 """Check independent held-out predictions and prevent target leakage."""
 
+import json
 import os
+import subprocess
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from benchmarks.static.cms_funding_transport import calibrate, calibration_request
 
@@ -37,6 +40,24 @@ class CmsCalibrationTests(unittest.TestCase):
             ],
         )
         self.assertEqual(result["sum_absolute_state_error_cents"], 199286)
+
+    def test_calibration_rejects_unrounded_drift_with_matching_cents(self):
+        cli = Path(os.environ["DAPANE_BENCH_CLI"]).resolve(strict=True)
+
+        def evaluate_with_drift(*args, **kwargs):
+            completed = subprocess.run(*args, **kwargs)
+            if json.loads(kwargs["input"])["run_id"] == "cms-held-out-state-rate-calibration":
+                report = json.loads(completed.stdout)
+                line = next(line for line in report["lines"] if line["id"] == "state-01")
+                self.assertEqual(line["rounded"], "650.00")
+                line["exact"] = {"numerator": "650001", "denominator": "1000"}
+                completed.stdout = json.dumps(report).encode()
+            return completed
+
+        with patch("benchmarks.static.cms_funding_transport.subprocess") as native:
+            native.run.side_effect = evaluate_with_drift
+            with self.assertRaisesRegex(ValueError, "unrounded state amounts"):
+                calibrate(cli, {**STATES, "national": ("10", "9999")})
 
     def test_holdout_rate_is_independent_of_its_published_mean(self):
         revised = {**STATES, "01": ("2", "9999")}
