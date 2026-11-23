@@ -243,3 +243,10 @@ offline-security migration from the isolated CLI checkout listed above.
 The scope is the pinned scanner, Dapane workflow and release instructions.
 The next operation is GitHub Actions qualification of the migration before
 landing PR #73 and scanning the resulting `main` commit.
+
+On 24 November 2026, integration chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3`
+uses the same isolated CLI checkout on `codex/dapane-optional-followups`.
+It owns the L3.3/L3.4 release evidence, F3.2 CMS benchmark and opt-in
+canonicalization experiment. The repository reads cover predecessor metadata,
+release assets and pinned consumer receipts. The next operation is the public
+aggregate benchmark replay from the registered protocol.

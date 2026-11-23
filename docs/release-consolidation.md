@@ -53,3 +53,51 @@ successor/recovery path, then use authority for that particular repository actio
 The user's request to archive the Dapane Conductor track is separate from
 archiving these repositories. Track completion still depends on the release
 acceptance criteria and evidence.
+
+## Successor and recovery follow-up — 24 November 2026
+
+GitHub readback confirmed that the four candidates above still have active
+private repositories and retained branches. Both historical CareOps costing
+repositories are already archived. The maintained module link resolved at its
+recorded revision. [CareOps costing module](https://github.com/edithatogo/careops/blob/11f5b224fdd0263cc9ec7f27441231eb72674a24/modules/careops-costing/README.md)
+
+| Candidate | Maintained route to evaluate | Evidence required before cutover |
+| --- | --- | --- |
+| `hwcc` | Use the retained workforce package for the qualified dated quotation. [Workforce and genomics handoff](python-provider-verification.md) | Restore the original rules, rate editions, workbook inputs and historical outputs within their existing access controls. Replay the affected public entry points against independent expected values. |
+| `cobra-costing` | Establish a consumer and method match before naming a successor. | Restore retained branches and research sources. Trace every proposed removal to a supported call and replay its historical examples. |
+| `tutorial_microcosting_genomics` | Use the genomics provider for the qualified manual-extraction labour slice. [Genomics handoff](python-provider-verification.md#historical-interpretation) | Preserve citation targets, manuscripts, workbook/model inputs and historical environments. Reproduce the published results that depend on any proposed removal. |
+| `checklist_microcosting` | Use the existing reporting catalogue and semantic profile for their respective roles. [Retained owners](../conductor/ecosystem.md#source-of-truth) | Preserve the study protocol, instrument editions, rights and analysis receipts. Verify item-level provenance and replay against the preserved instrument before extracting code. |
+
+For an approved cutover, retain the predecessor's exact refs, binaries,
+environment locks and restore instructions with its owner. Inventory any
+LFS objects, release assets and owner-held records separately from Git blobs.
+Restore the inputs under their existing access controls and compare old and
+new outputs under the same source, method and rounding identities. Retain the
+prior entry point and report identities as the rollback target.
+[Migration and recovery](release-migration.md#recover-a-failed-migration)
+
+### Executed recovery
+
+- Downloaded all ten assets from the [GitHub prerelease](https://github.com/edithatogo/dapane/releases/tag/v0.1.0).
+  The nine manifest entries and the independently returned manifest SHA-256
+  matched. The source archive SHA-256 was
+  `9838d66e499f8b73340a12c0b3647e87aa7561b0a5c7973663d0b4a66c7da4b5`.
+  `gh attestation verify --bundle` accepted the source at
+  `5a24196c6e3b8905613dcf5100c239018c919b7a` from GitHub-hosted `main`.
+- Restored the archive to an isolated directory and compared 620 tracked blobs
+  to the tagged Git tree. Built the restored CLI using Rust 1.99.1 on
+  aarch64 macOS with `cargo build --locked --offline --no-default-features -p dapane-cli`.
+  With CPython 3.15.1, `scripts/validate_contract.py --cli` verified five
+  independent reports, 14 runtime rejection cases and three identity/context
+  cases. This exercise covers source recovery and reference replay.
+- Both installed-provider jobs on `a66e9bc28969578078ac61210b132c80bac30e06`
+  installed the pinned consumers, exported the workforce quotation and
+  reproduced the manual extraction labour composition. The supported slice
+  and its historical references are recorded with the original provider
+  recipes and source pack. [Provider job](https://github.com/edithatogo/dapane/actions/runs/45197381257)
+  · [Release-candidate job](https://github.com/edithatogo/dapane/actions/runs/45197381351)
+
+The recovered source and installed provider evidence support that bounded
+handoff. Each proposed external archive still needs its own authorised asset
+restore and historical consumer replay. The candidate disposition above
+continues to apply.
