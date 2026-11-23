@@ -237,3 +237,9 @@ The same checkout merged the exchange fix in PR #67 and qualified `5a24196`.
 The one-job runner completed the central scan and deregistered. GitHub served
 the verified `v0.1.0` prerelease and all ten assets. The release track is archived
 in place. [Terminal evidence](tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
+
+On 24 November 2026 the same integration chat owns the Dapane hosted
+offline-security migration from the isolated CLI checkout listed above.
+The scope is the pinned scanner, Dapane workflow and release instructions.
+The next operation is GitHub Actions qualification of the migration before
+landing PR #73 and scanning the resulting `main` commit.
