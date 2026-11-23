@@ -4,11 +4,10 @@ Track: `release_consolidation_20261108`
 
 Status: archived
 
-GitHub prerelease `v0.1.0` is published on source `5a24196` following successful
-offline security, installed-artifact verification and signed provenance checks.
-The public tag and all ten uploaded assets were verified before archival.
-PyPI and crates.io are deferred.
-[Verified prerelease](https://github.com/edithatogo/dapane/releases/tag/v0.1.0) · [Evidence](evidence.md#verified-github-prerelease-and-in-place-archive)
+This track records the original GitHub prerelease and its archival decision.
+See [published artifacts](../../../docs/release-assurance.md#published-artifacts)
+for current distribution and verification.
+[Archived evidence](evidence.md#verified-github-prerelease-and-in-place-archive)
 
 - [Specification](spec.md)
 - [Implementation plan](plan.md)

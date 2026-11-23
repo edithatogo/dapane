@@ -34,7 +34,7 @@ All 15 tracks have met their recorded scope. Nine are archived and six are compl
 
 The [installed core and two-provider qualification](../docs/python-provider-verification.md), [fiscal handoff](tracks/tobac_regulatory_fiscal_valuation_20261110/plan.md), [decision-provider runs](tracks/decision_integrations_20261108/plan.md) and [canonicalization qualification](tracks/serde_canonicalization_qualification_20261118/plan.md) record the delivered numerical and integration scopes. The latest fiscal comparisons cover New Zealand and Australian synthetic policy cases. The decision runs include an installed adoption model.
 
-GitHub prerelease `v0.1.0` was published after the offline-security scan passed on `5a24196`. The release track retains the exact tag, assets, signed provenance and verification history. [Release evidence](tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive)
+The [published artifacts](../docs/release-assurance.md#published-artifacts) table records current distribution and verification. The archived release track retains the [original publication evidence](tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive).
 
 The [first release handoff](../docs/release-handoff-2026-11-15.md) and [trusted-main qualification](../docs/release-qualification-2026-11-19.md) retain the source and artifact identities for earlier candidates.
 
