@@ -1,6 +1,8 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Source-checked annual platform costs with explicit idle-capacity allocation."""
 
+__lazy_modules__ = ("genomics_microcosting.parameter_provenance",)
+
 import json
 from dataclasses import dataclass
 from fractions import Fraction
@@ -13,7 +15,7 @@ from genomics_microcosting.compute_cost import (
     ComputeCostContext,
     verify_numeric_source_values,
 )
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
+from genomics_microcosting.parameter_provenance import NonEmpty
 
 Role = Literal[
     "acquisition",

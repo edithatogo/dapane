@@ -5,14 +5,20 @@ Derived numeric snapshots are temporary computation products, not independent
 source evidence. Original sources and the complete derivation remain hash-bound.
 """
 
+__lazy_modules__ = (
+    "datetime",
+    "genomics_microcosting.parameter_provenance",
+    "genomics_microcosting.workflow_cost",
+)
+
 import json
 from dataclasses import dataclass
+from datetime import date
 from fractions import Fraction
 from hashlib import sha256
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Literal
-lazy from datetime import date
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -20,6 +26,7 @@ from genomics_microcosting.compute_cost import (
     ComputeCostContext,
     verify_numeric_source_values,
 )
+from genomics_microcosting.parameter_provenance import Digest, NonEmpty
 from genomics_microcosting.provenance_ledger import (
     Parameter,
     ParameterQualification,
@@ -37,10 +44,8 @@ from genomics_microcosting.workflow_allocations import (
     allocation_workload_sha256,
     calculate_allocated_workflow_cost,
 )
-from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.parameter_provenance import Digest, NonEmpty
-lazy from genomics_microcosting.workflow_cost import WorkflowCostInputs
-lazy from genomics_microcosting.workload_contract import WorkloadCase
+from genomics_microcosting.workflow_cost import WorkflowCostInputs
+from genomics_microcosting.workload_contract import Workload, WorkloadCase
 
 MAX_DIGITS = 128
 MAX_INTEGER_BITS = 426

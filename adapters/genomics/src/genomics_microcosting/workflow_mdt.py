@@ -1,8 +1,10 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Allocate synthetic MDT attendance independently of meeting elapsed time."""
 
+__lazy_modules__ = ("typing",)
+
 from fractions import Fraction
-lazy from typing import Self
+from typing import Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 

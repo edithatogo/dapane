@@ -1,12 +1,14 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Performance optimization tools for microcosting analysis."""
 
+__lazy_modules__ = ("collections.abc",)
+
 import logging
 import time
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from functools import wraps
 from typing import TYPE_CHECKING, Any
-lazy from collections.abc import Callable
 
 import polars as pl
 

@@ -5,6 +5,8 @@ This module provides comprehensive error handling capabilities with graceful
 degradation for missing data sources and other error conditions.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import inspect
 import json
 import logging
@@ -12,14 +14,13 @@ import sys
 import time
 import traceback
 import uuid
+from collections.abc import Callable, Mapping
 from datetime import UTC, datetime
 from functools import wraps
 from pathlib import Path
 from typing import Any, TypedDict, Unpack
-lazy from collections.abc import Callable, Mapping
 
-from .execution_contracts import legacy_bool_option
-lazy from .execution_contracts import DegradationDecorator
+from .execution_contracts import DegradationDecorator, legacy_bool_option
 
 logger = logging.getLogger(__name__)
 

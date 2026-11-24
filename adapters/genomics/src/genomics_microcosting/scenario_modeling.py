@@ -1,11 +1,13 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Scenario modeling tools for what-if analysis in microcosting."""
 
+__lazy_modules__ = ("decimal",)
+
 import logging
 from dataclasses import dataclass
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
-lazy from decimal import Decimal
 
 import polars as pl
 

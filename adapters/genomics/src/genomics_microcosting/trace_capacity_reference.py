@@ -6,6 +6,11 @@ or scheduling validation, or full workload cost. Exact execution links and unit
 mapping remain explicit declarations; missing original fields stay unknown.
 """
 
+__lazy_modules__ = (
+    "genomics_microcosting.parameter_provenance",
+    "genomics_microcosting.trace_registry",
+)
+
 import json
 from dataclasses import dataclass
 from decimal import Decimal
@@ -27,8 +32,8 @@ from genomics_microcosting.execution_reconciliation import (
     ReconciledExecution,
     reconcile_executions,
 )
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
-lazy from genomics_microcosting.trace_registry import TraceExport
+from genomics_microcosting.parameter_provenance import NonEmpty
+from genomics_microcosting.trace_registry import TraceExport
 
 MAX_DIGITS = 128
 

@@ -1,9 +1,11 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Validate and preview evidence-only alternatives without activating costs."""
 
+__lazy_modules__ = ("datetime",)
+
+from datetime import date
 from hashlib import sha256
 from typing import TYPE_CHECKING, Annotated, Literal, Self
-lazy from datetime import date
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field, model_validator
 

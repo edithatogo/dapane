@@ -1,13 +1,18 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Web-based visualization utilities for the microcosting analysis web interface."""
 
+__lazy_modules__ = (
+    "collections.abc",
+    "matplotlib.figure",
+)
+
 import base64
 import io
+from collections.abc import Callable
 from typing import Protocol, TypedDict, Unpack, cast
-lazy from collections.abc import Callable
 
 import polars as pl
-lazy from matplotlib.figure import Figure
+from matplotlib.figure import Figure
 
 from .visualization import (
     plot_category_costs,

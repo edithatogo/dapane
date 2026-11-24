@@ -5,11 +5,12 @@ Evidence qualification is an explicit assertion by the caller, not a claim that
 this module has independently verified the truth or transferability of a source.
 """
 
-from decimal import localcontext
+__lazy_modules__ = ("datetime",)
+
+from datetime import date
+from decimal import Decimal, localcontext
 from hashlib import sha256
 from typing import TYPE_CHECKING, Annotated, Literal, Self
-lazy from datetime import date
-lazy from decimal import Decimal
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field, model_validator
 

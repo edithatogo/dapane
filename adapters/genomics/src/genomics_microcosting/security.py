@@ -6,20 +6,25 @@ input sanitization, role-based access control, audit trail tracking,
 and secure configuration storage.
 """
 
+__lazy_modules__ = (
+    "collections.abc",
+    "cryptography.fernet",
+)
+
 import json
 import logging
 import os
 import re
 import tempfile
+from collections.abc import Callable, Mapping
 from datetime import UTC, datetime
 from functools import wraps
 from pathlib import Path
 from typing import TypedDict, Unpack
-lazy from collections.abc import Callable, Mapping
 
+from cryptography.fernet import Fernet, InvalidToken
 from pydantic import ConfigDict, TypeAdapter
 from pydantic import ValidationError as ModelValidationError
-lazy from cryptography.fernet import Fernet, InvalidToken
 
 from .input_validation import InputValidator, ValidationError
 from .logging_config import get_logger

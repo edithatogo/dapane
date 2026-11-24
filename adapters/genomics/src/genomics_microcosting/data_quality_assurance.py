@@ -6,19 +6,24 @@ automated anomaly detection, cross-sheet consistency validation, missing data ha
 and data integrity verification.
 """
 
+__lazy_modules__ = (
+    "genomics_microcosting.data_manager",
+    "logging",
+)
+
+import logging
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Required, TypedDict
-lazy import logging
 
 import numpy as np
 import polars as pl
 import polars.selectors as cs
 
 from .data_consistency_validator import DataConsistencyValidator
+from .data_manager import DataManager
 from .input_validation import InputValidator, ValidationError
 from .logging_config import get_logger
-lazy from .data_manager import DataManager
 
 logger = get_logger(__name__)
 _OUTLIER_STANDARD_DEVIATIONS = 3

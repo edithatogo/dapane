@@ -1,23 +1,29 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Immutable uncertainty assertions without inferred probability semantics."""
 
+__lazy_modules__ = (
+    "decimal",
+    "genomics_microcosting.parameter_provenance",
+    "pathlib",
+)
+
 import re
+from decimal import Decimal, InvalidOperation
 from hashlib import sha256
 from io import BytesIO
 from itertools import pairwise
+from pathlib import Path
 from typing import Literal, Self
-lazy from decimal import Decimal, InvalidOperation
-lazy from pathlib import Path
 
 from openpyxl import load_workbook
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.provenance_ledger import (
     ParameterSet,
     SourceRecord,
     require_resolved_parameters,
 )
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 
 class BoundValue(BaseModel):

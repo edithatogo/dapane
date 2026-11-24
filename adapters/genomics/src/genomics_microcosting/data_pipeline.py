@@ -6,6 +6,8 @@ Extractor → Transformer → Loader (ETL) pattern for flexible and
 extensible data processing workflows.
 """
 
+__lazy_modules__ = ("genomics_microcosting.data_manager",)
+
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -13,7 +15,7 @@ from typing import TypeGuard
 
 import polars as pl
 
-lazy from .data_manager import DataManager
+from .data_manager import DataManager
 
 logger = logging.getLogger(__name__)
 

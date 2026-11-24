@@ -6,16 +6,18 @@ system health checks, performance metrics collection, usage analytics,
 and alerting for critical events.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import json
 import logging
 import sys
 import time
 from collections import defaultdict, deque
+from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from functools import wraps
 from pathlib import Path
 from typing import Never
-lazy from collections.abc import Callable
 
 import psutil
 

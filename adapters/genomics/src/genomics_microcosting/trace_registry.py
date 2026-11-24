@@ -1,11 +1,13 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Append-only finalized trace snapshots with explicit correction identities."""
 
+__lazy_modules__ = ("pathlib",)
+
 import sqlite3
 from contextlib import closing
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Literal
-lazy from pathlib import Path
 
 from genomics_microcosting.nextflow_trace import (
     TraceContext,

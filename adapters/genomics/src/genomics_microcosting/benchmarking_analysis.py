@@ -6,10 +6,12 @@ including comparison against published benchmarks, performance benchmarking,
 and efficiency metrics evaluation.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import logging
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
-lazy from collections.abc import Mapping
 
 import polars as pl
 

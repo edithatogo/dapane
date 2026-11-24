@@ -1,12 +1,14 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Load workbook sheets and explicitly selected prepared tables."""
 
+__lazy_modules__ = ("openpyxl.worksheet.worksheet",)
+
 import logging
 from pathlib import Path
 
 import openpyxl
 import polars as pl
-lazy from openpyxl.worksheet.worksheet import Worksheet
+from openpyxl.worksheet.worksheet import Worksheet
 
 from .config import SHEET_CONFIG_ADAPTER, SheetConfig, load_config
 from .utils import cell_to_coords

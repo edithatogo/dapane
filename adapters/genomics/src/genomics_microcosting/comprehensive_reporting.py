@@ -5,10 +5,12 @@ This module integrates all analytical components to generate comprehensive repor
 for the genomics microcosting model.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import logging
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
-lazy from collections.abc import Callable
 
 from .break_even_analysis import BreakEvenAnalyzer
 from .budget_impact_analysis import BudgetImpactAnalyzer

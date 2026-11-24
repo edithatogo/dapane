@@ -5,9 +5,11 @@ This module contains concrete implementations of transformer components
 for data processing, validation, and calculation operations.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import re
+from collections.abc import Mapping
 from typing import Literal, TypedDict
-lazy from collections.abc import Mapping
 
 import polars as pl
 import polars.selectors as cs

@@ -1,28 +1,35 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Versioned compute arithmetic over explicitly sourced quantities and rates."""
 
+__lazy_modules__ = (
+    "datetime",
+    "genomics_microcosting.parameter_provenance",
+    "openpyxl.workbook",
+    "pathlib",
+)
+
 import json
 import re
 from contextlib import ExitStack
 from dataclasses import dataclass
+from datetime import date
 from decimal import Decimal, Inexact, InvalidOperation, localcontext
 from hashlib import sha256
 from io import BytesIO
+from pathlib import Path
 from typing import Literal, Self
-lazy from datetime import date
-lazy from pathlib import Path
 
 from openpyxl import load_workbook
+from openpyxl.workbook import Workbook
 from pydantic import BaseModel, ConfigDict, Field, model_validator
-lazy from openpyxl.workbook import Workbook
 
 from genomics_microcosting.native_usage import NativeUsageContext, read_native_usage
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.provenance_ledger import (
     QualificationLedger,
     SourceValidity,
     verify_qualified_period,
 )
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 Basis = Literal["measured", "requested", "allocated", "billed"]
 

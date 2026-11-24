@@ -1,15 +1,17 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Enhanced plugin system with more sophisticated plugin management."""
 
+__lazy_modules__ = ("collections.abc",)
+
 import importlib
 import importlib.util
 import json
 import logging
+from collections.abc import Callable
 from dataclasses import InitVar, asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, TypedDict, cast, override
-lazy from collections.abc import Callable
 
 from .logging_config import get_logger
 from .plugin_system import (

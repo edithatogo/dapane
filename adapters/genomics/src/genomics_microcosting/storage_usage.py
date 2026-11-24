@@ -7,15 +7,17 @@ consumption. Constant-size copy intervals are clipped to the declared workload
 horizon; incompatible quantity/evidence/time bases never share an aggregate.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import json
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 from decimal import Decimal
 from fractions import Fraction
 from hashlib import sha256
 from types import MappingProxyType
 from typing import Literal, Self
-lazy from collections.abc import Mapping
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, model_validator
 

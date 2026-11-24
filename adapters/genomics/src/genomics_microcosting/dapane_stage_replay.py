@@ -1,10 +1,12 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Replay selected costing formulas from the preserved VCGS workbook."""
 
+__lazy_modules__ = ("pathlib",)
+
 import re
 from fractions import Fraction
+from pathlib import Path
 from typing import Any, NamedTuple
-lazy from pathlib import Path
 
 from genomics_microcosting.dapane_adapter import (
     SHEET,

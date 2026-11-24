@@ -5,12 +5,17 @@ Source and component checks validate declarations, not economic completeness,
 physical resource independence or actual consumption by served/failed cases.
 """
 
+__lazy_modules__ = (
+    "decimal",
+    "genomics_microcosting.parameter_provenance",
+)
+
 import json
 from dataclasses import dataclass
+from decimal import Decimal
 from fractions import Fraction
 from hashlib import sha256
 from typing import Annotated, Literal, Self
-lazy from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -22,13 +27,13 @@ from genomics_microcosting.cost_denominators import (
     ReportableCostSummary,
     summarize_reportable_cost,
 )
+from genomics_microcosting.parameter_provenance import Digest, NonEmpty
 from genomics_microcosting.workflow_cost import (
     WorkflowCost,
     WorkflowCostInputs,
     calculate_workflow_cost,
 )
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.parameter_provenance import Digest, NonEmpty
 
 MAX_ROWS = 10_000
 MAX_NUMERIC_DIGITS = 128

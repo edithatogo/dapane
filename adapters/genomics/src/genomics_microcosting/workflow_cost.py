@@ -6,6 +6,8 @@ clinical feasibility or global optimality. Resource quantities are proposed
 allocated/available capacity-time, never measured CPU or paid labour by default.
 """
 
+__lazy_modules__ = ("genomics_microcosting.parameter_provenance",)
+
 import json
 from dataclasses import dataclass, replace
 from decimal import Decimal
@@ -32,13 +34,13 @@ from genomics_microcosting.inventory_ledger import (
     WorkflowInputs,
     value_inventory,
 )
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.workflow_schedule import (
     ResourceUtilization,
     ReworkScenario,
     WorkflowScenario,
 )
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 MAX_NUMERIC_DIGITS = 128
 MAX_POINTS = 256

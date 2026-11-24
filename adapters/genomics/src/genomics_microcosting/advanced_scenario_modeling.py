@@ -1,22 +1,29 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Advanced scenario modeling tools with sophisticated comparison features."""
 
+__lazy_modules__ = (
+    "collections.abc",
+    "decimal",
+    "genomics_microcosting.dsa_analysis",
+    "matplotlib.figure",
+)
+
 import logging
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Any, cast
-lazy from collections.abc import Sequence
-lazy from decimal import Decimal
 
 import matplotlib.pyplot as plt
 import numpy as np
 import polars as pl
-lazy from matplotlib.figure import Figure
+from matplotlib.figure import Figure
 
+from .dsa_analysis import TornadoPlotter
 from .scenario_modeling import Scenario, ScenarioManager
 from .sensitivity_evidence import markdown_table
-lazy from .dsa_analysis import TornadoPlotter
 
 logger = logging.getLogger(__name__)
 

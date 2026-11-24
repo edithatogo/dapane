@@ -1,9 +1,11 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Compare labour usage with the prepared ground truth."""
 
+__lazy_modules__ = ("pandas",)
+
 import sys
 
-lazy import pandas as pd
+import pandas as pd
 
 from genomics_microcosting.calculation_engine import CalculationEngine
 from genomics_microcosting.sheet_manager import SheetManager

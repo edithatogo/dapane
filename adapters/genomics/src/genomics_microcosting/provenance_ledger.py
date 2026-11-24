@@ -1,12 +1,17 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Immutable, explicit parameter versions for research costing."""
 
+__lazy_modules__ = (
+    "datetime",
+    "pathlib",
+)
+
+from datetime import date
 from hashlib import sha256
 from os import link
+from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Literal, Self
-lazy from datetime import date
-lazy from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 

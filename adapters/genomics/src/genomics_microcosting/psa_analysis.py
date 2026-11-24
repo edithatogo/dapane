@@ -5,14 +5,20 @@ This module provides functionality to perform probabilistic sensitivity analysis
 using Monte Carlo simulation to quantify uncertainty in cost outcomes.
 """
 
+__lazy_modules__ = (
+    "matplotlib.figure",
+    "numpy.typing",
+    "polars",
+)
+
 import logging
 from pathlib import Path
 from typing import Protocol, TypedDict, cast
 
 import numpy as np
-lazy import polars as pl
-lazy from matplotlib.figure import Figure
-lazy from numpy.typing import NDArray
+import polars as pl
+from matplotlib.figure import Figure
+from numpy.typing import NDArray
 
 from .sensitivity_evidence import archived_draws, markdown_table
 

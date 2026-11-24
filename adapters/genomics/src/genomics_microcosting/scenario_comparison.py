@@ -5,13 +5,15 @@ Validation cannot prove clinical equivalence, source interpretation or complete
 cost accounting. Existing catalogue research leads remain non-costing.
 """
 
+__lazy_modules__ = ("datetime",)
+
 import json
 import re
 from dataclasses import dataclass
+from datetime import date
 from decimal import Decimal, InvalidOperation, localcontext
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Self
-lazy from datetime import date
 
 from openpyxl import load_workbook
 from openpyxl.formula import Tokenizer

@@ -1,6 +1,8 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Evaluate workbook cost formulas through validated calculation strategies."""
 
+__lazy_modules__ = ("genomics_microcosting.sheet_manager",)
+
 import logging
 
 import polars as pl
@@ -23,6 +25,7 @@ from .formula_contracts import validate_formula_record
 from .formula_parser import parse_formula
 from .input_validation import InputValidator, ValidationError
 from .logging_config import get_logger
+from .sheet_manager import SheetManager
 from .strategies import (
     AdditionStrategy,
     AverageCellsStrategy,
@@ -61,7 +64,6 @@ from .strategies import (
     VLookupStrategy,
 )
 from .utils import cell_to_coords, coords_to_cell
-lazy from .sheet_manager import SheetManager
 
 logger = get_logger(__name__)
 

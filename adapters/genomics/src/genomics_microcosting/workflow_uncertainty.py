@@ -1,25 +1,36 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Evaluate finite assumed joint workflow realizations with fixed economics."""
 
+__lazy_modules__ = (
+    "decimal",
+    "genomics_microcosting.batch_uncertainty",
+    "genomics_microcosting.dynamic_batch",
+    "genomics_microcosting.parameter_provenance",
+    "pathlib",
+)
+
 import json
 import sys
 from bisect import bisect_right
 from dataclasses import dataclass, replace
+from decimal import Decimal
 from fractions import Fraction
 from hashlib import sha256
 from itertools import accumulate
+from pathlib import Path
 from typing import Literal, Self
-lazy from decimal import Decimal
-lazy from pathlib import Path
 
 import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from genomics_microcosting.batch_uncertainty import CaseArrival
+from genomics_microcosting.dynamic_batch import AvailabilityWindow
 from genomics_microcosting.inventory_ledger import (
     InventoryPlan,
     StockSnapshot,
     WorkflowInputs,
 )
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.workflow_cost import (
     WorkflowCost,
     WorkflowCostInputs,
@@ -32,9 +43,6 @@ from genomics_microcosting.workflow_schedule import (
     WorkflowScenario,
 )
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.batch_uncertainty import CaseArrival
-lazy from genomics_microcosting.dynamic_batch import AvailabilityWindow
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 RESULT_VERSION = "joint-workflow-uncertainty-v1"
 MAX_STATES = 256

@@ -5,13 +5,15 @@ Source validity, clinical equivalence and completeness must be established by a
 separate integration. Inputs are explicit and unknowns cannot become zero.
 """
 
+__lazy_modules__ = ("genomics_microcosting.parameter_provenance",)
+
 from decimal import Decimal, Inexact, InvalidOperation, localcontext
 from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.provenance_ledger import Parameter, ParameterSet
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 
 class ResourceLine(BaseModel):

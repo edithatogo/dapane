@@ -5,14 +5,20 @@ This module provides functionality to perform deterministic sensitivity analysis
 by systematically varying key parameters and observing the impact on cost outcomes.
 """
 
+__lazy_modules__ = (
+    "collections.abc",
+    "matplotlib.figure",
+    "matplotlib.patches",
+)
+
 import logging
+from collections.abc import Iterable, Sequence
 from pathlib import Path
 from typing import Protocol, TypedDict, Unpack, cast
-lazy from collections.abc import Iterable, Sequence
 
 import polars as pl
-lazy from matplotlib.figure import Figure
-lazy from matplotlib.patches import Rectangle
+from matplotlib.figure import Figure
+from matplotlib.patches import Rectangle
 
 from .data_manager import DataManager
 from .logging_config import get_logger

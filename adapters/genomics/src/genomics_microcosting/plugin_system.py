@@ -1,12 +1,14 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Plugin system for extending microcosting functionality."""
 
+__lazy_modules__ = ("collections.abc",)
+
 import importlib
 import importlib.util
 import logging
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any, cast
-lazy from collections.abc import Callable
 
 from .logging_config import get_logger
 

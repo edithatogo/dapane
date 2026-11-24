@@ -1,6 +1,8 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Static batch arithmetic with explicit sourced rates and assumed pack rules."""
 
+__lazy_modules__ = ("genomics_microcosting.parameter_provenance",)
+
 import json
 from dataclasses import dataclass
 from decimal import Decimal, Inexact, localcontext
@@ -26,13 +28,13 @@ from genomics_microcosting.dynamic_batch import (
     earliest_batch_start,
     schedule_batches,
 )
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.static_batch import (
     StaticBatchPolicy,
     plan_static_batches,
     validate_batch_demand,
 )
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 
 class BatchPricing(BaseModel):

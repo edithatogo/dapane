@@ -1,6 +1,8 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Bind verified trace attempts to declared workload cases without allocating cost."""
 
+__lazy_modules__ = ("genomics_microcosting.parameter_provenance",)
+
 import json
 from dataclasses import dataclass
 from hashlib import sha256
@@ -13,8 +15,8 @@ from genomics_microcosting.nextflow_trace import (
     TraceImport,
     read_raw_trace,
 )
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 
 class TaskMapping(BaseModel):

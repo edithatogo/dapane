@@ -1,12 +1,15 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Finite assumed batch-policy comparisons with fixed process constraints."""
 
+__lazy_modules__ = ("genomics_microcosting.compute_cost",)
+
 import json
 from dataclasses import dataclass
 from decimal import Decimal, Inexact, localcontext
 from hashlib import sha256
 from typing import Literal, TypedDict, Unpack
 
+from genomics_microcosting.compute_cost import ComputeCostContext
 from genomics_microcosting.dynamic_batch import DynamicBatchPolicy
 from genomics_microcosting.static_batch_cost import (
     BatchPricing,
@@ -14,7 +17,6 @@ from genomics_microcosting.static_batch_cost import (
     calculate_dynamic_batch_cost,
 )
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.compute_cost import ComputeCostContext
 
 MAX_POLICY_POINTS = 256
 

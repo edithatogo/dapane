@@ -6,11 +6,13 @@ of the microcosting analysis system, including data validation, configuration
 validation, and parameter validation.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import logging
 import re
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import SupportsFloat, SupportsIndex, SupportsInt, cast
-lazy from collections.abc import Mapping, Sequence
 
 import numpy as np
 import polars as pl

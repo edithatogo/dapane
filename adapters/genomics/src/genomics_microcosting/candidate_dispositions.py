@@ -7,9 +7,11 @@ applicability. The separate manifest reader checks retained manifest bytes and
 declared counts, without verifying their evidence or completeness.
 """
 
+__lazy_modules__ = ("datetime",)
+
+from datetime import date
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Self
-lazy from datetime import date
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 

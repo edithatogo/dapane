@@ -1,8 +1,13 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Read Excel header hierarchies into uniquely named Polars columns."""
 
-lazy from collections.abc import Sequence
-lazy from pathlib import Path
+__lazy_modules__ = (
+    "collections.abc",
+    "pathlib",
+)
+
+from collections.abc import Sequence
+from pathlib import Path
 
 import openpyxl
 import polars as pl

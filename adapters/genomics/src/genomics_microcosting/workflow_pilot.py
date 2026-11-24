@@ -1,26 +1,32 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Price a selected workflow revision log through the component costing API."""
 
+__lazy_modules__ = (
+    "genomics_microcosting.workflow_allocations",
+    "pathlib",
+)
+
 import json
 from dataclasses import dataclass
 from fractions import Fraction
-lazy from pathlib import Path
+from pathlib import Path
 
-from genomics_microcosting.component_allocations import price_component_allocations
-from genomics_microcosting.nextflow_trace import read_raw_trace
-from genomics_microcosting.workflow_events import (
-    WorkflowEventError,
-    read_event_revision_log,
-)
-lazy from genomics_microcosting.component_allocations import (
+from genomics_microcosting.component_allocations import (
     ComponentAllocationCost,
     ComponentAllocationInputs,
+    price_component_allocations,
 )
-lazy from genomics_microcosting.nextflow_trace import TraceContext, TraceImport
-lazy from genomics_microcosting.workflow_allocations import AllocationQuantity
-lazy from genomics_microcosting.workflow_events import (
+from genomics_microcosting.nextflow_trace import (
+    TraceContext,
+    TraceImport,
+    read_raw_trace,
+)
+from genomics_microcosting.workflow_allocations import AllocationQuantity
+from genomics_microcosting.workflow_events import (
+    WorkflowEventError,
     WorkflowEventRevision,
     WorkflowRevisionLog,
+    read_event_revision_log,
 )
 
 

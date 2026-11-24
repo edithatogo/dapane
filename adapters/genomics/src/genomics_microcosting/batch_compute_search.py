@@ -1,6 +1,11 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Combine finite batch policies with explicitly bound compute evidence."""
 
+__lazy_modules__ = (
+    "genomics_microcosting.dynamic_batch",
+    "genomics_microcosting.parameter_provenance",
+)
+
 import json
 from dataclasses import dataclass
 from decimal import Decimal, Inexact, localcontext
@@ -22,10 +27,10 @@ from genomics_microcosting.compute_cost import (
     calculate_compute_cost,
     calculate_core_hour_cost,
 )
+from genomics_microcosting.dynamic_batch import DynamicBatchPolicy
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.static_batch_cost import BatchPricing
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.dynamic_batch import DynamicBatchPolicy
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 
 class ComponentAssignment(BaseModel):

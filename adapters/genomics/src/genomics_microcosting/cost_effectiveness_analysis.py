@@ -6,9 +6,11 @@ including cost per diagnostic yield comparisons, technical efficiency metrics,
 and productivity improvements assessment.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import logging
+from collections.abc import Mapping
 from pathlib import Path
-lazy from collections.abc import Mapping
 
 import polars as pl
 

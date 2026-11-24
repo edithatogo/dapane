@@ -5,18 +5,23 @@ This module contains concrete implementations of extractor components
 for various data source types used in the genomics microcosting project.
 """
 
+__lazy_modules__ = (
+    "genomics_microcosting.reader_options",
+    "openpyxl.worksheet.worksheet",
+)
+
 import re
 from pathlib import Path
 from typing import Unpack
 
 import openpyxl
 import polars as pl
-lazy from openpyxl.worksheet.worksheet import Worksheet
+from openpyxl.worksheet.worksheet import Worksheet
 
 from .config import SheetConfig, load_config
 from .data_pipeline import Extractor
+from .reader_options import CSVReadOptions, ParquetReadOptions
 from .type_specifications import DataType, get_type_spec
-lazy from .reader_options import CSVReadOptions, ParquetReadOptions
 
 
 class ExcelExtractor(Extractor):

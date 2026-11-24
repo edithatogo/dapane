@@ -5,16 +5,18 @@ This module provides a comprehensive framework for extending the microcosting an
 with custom analyses, visualizations, and plugins.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import importlib
 import importlib.util
 import json
 import logging
 from abc import abstractmethod
+from collections.abc import Callable
 from dataclasses import InitVar, asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
-lazy from collections.abc import Callable
 
 from .data_manager import DataManager
 from .logging_config import get_logger

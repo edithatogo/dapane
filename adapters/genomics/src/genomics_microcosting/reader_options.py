@@ -1,13 +1,20 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Keyword contracts matching the locked native Polars readers."""
 
+__lazy_modules__ = (
+    "collections.abc",
+    "genomics_microcosting.loader_options",
+    "polars",
+    "polars._typing",
+)
+
+from collections.abc import Callable, Sequence
 from typing import Literal, TypedDict
-lazy from collections.abc import Callable, Sequence
 
-lazy import polars as pl
-lazy from polars._typing import ParallelStrategy, PolarsDataType, SchemaDict
+import polars as pl
+from polars._typing import ParallelStrategy, PolarsDataType, SchemaDict
 
-lazy from .loader_options import CredentialCallback
+from .loader_options import CredentialCallback
 
 
 class CSVReadOptions(TypedDict, total=False):

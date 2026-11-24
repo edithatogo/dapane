@@ -1,8 +1,10 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Immutable phase-one workload accounting; no capacity or cost assumptions."""
 
+__lazy_modules__ = ("decimal",)
+
+from decimal import Decimal
 from typing import Literal, Self
-lazy from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 

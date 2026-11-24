@@ -1,13 +1,14 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Inspect a selected preserved source without publishing or repairing its data."""
 
+__lazy_modules__ = ("collections.abc",)
+
+from collections.abc import Collection, Mapping
 from hashlib import sha256
 from io import BytesIO
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 from typing import Any, cast
 from zipfile import ZipFile
-lazy from collections.abc import Collection, Mapping
-lazy from pathlib import Path
 
 from defusedxml import ElementTree
 from openpyxl import load_workbook

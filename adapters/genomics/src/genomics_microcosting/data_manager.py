@@ -6,13 +6,15 @@ all data sheets in the microcosting analysis, ensuring consistent treatment
 of all sheets regardless of their source or purpose.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
 import json
 import math
 import sys
+from collections.abc import Iterable, Iterator
 from numbers import Integral, Real
 from pathlib import Path
 from typing import Any, Protocol, cast, runtime_checkable
-lazy from collections.abc import Iterable, Iterator
 
 import polars as pl
 

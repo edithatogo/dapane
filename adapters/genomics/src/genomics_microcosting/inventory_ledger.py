@@ -6,12 +6,14 @@ not change schedules, place orders, dispose stock or prove complete material
 coverage. Valuation uses remaining physical units, not all pack purchases.
 """
 
+__lazy_modules__ = ("decimal",)
+
 import json
 from dataclasses import dataclass, field
+from decimal import Decimal
 from fractions import Fraction
 from hashlib import sha256
 from typing import Literal, Self
-lazy from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 

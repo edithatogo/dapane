@@ -1,10 +1,12 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Inspect selected workbook cells and their merged ranges."""
 
+__lazy_modules__ = ("openpyxl.worksheet.worksheet",)
+
 import sys
 
 import openpyxl
-lazy from openpyxl.worksheet.worksheet import Worksheet
+from openpyxl.worksheet.worksheet import Worksheet
 
 EXCEL_FILE_PATH = (
     "data/Microcosting - Study 1 - Utilisation and Microcosts v15 (20230902).xlsm"

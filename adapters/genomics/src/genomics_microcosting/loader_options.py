@@ -1,13 +1,19 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Typed native writer options qualified against the locked Polars signatures."""
 
+__lazy_modules__ = (
+    "json",
+    "polars",
+    "polars._typing",
+)
+
+import json
 from collections.abc import Callable, Sequence
 from typing import Literal, Protocol, TypedDict, runtime_checkable
-lazy import json
 
+import polars as pl
+from polars._typing import ParquetMetadataContext
 from pydantic import ConfigDict, TypeAdapter, with_config
-lazy import polars as pl
-lazy from polars._typing import ParquetMetadataContext
 
 
 @runtime_checkable

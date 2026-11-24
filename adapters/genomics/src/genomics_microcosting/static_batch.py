@@ -1,6 +1,8 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Opt-in assumed static capacity accounting; no timing or cost feasibility."""
 
+__lazy_modules__ = ("genomics_microcosting.parameter_provenance",)
+
 import json
 from dataclasses import dataclass
 from hashlib import sha256
@@ -8,8 +10,8 @@ from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 
 class StaticBatchPolicy(BaseModel):

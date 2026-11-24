@@ -1,13 +1,15 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Explicit time-unit normalization for provenance-bound resource quantities."""
 
+__lazy_modules__ = ("genomics_microcosting.provenance_ledger",)
+
 from decimal import Decimal, InvalidOperation, localcontext
 from fractions import Fraction
 from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-lazy from .provenance_ledger import Parameter, SourceRecord
+from .provenance_ledger import Parameter, SourceRecord
 
 
 class TimeConversion(BaseModel):

@@ -1,12 +1,14 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Build an explicitly selected, source-verified T1 workbook copy."""
 
+__lazy_modules__ = ("pathlib",)
+
 import re
 from hashlib import sha256
 from html import escape
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 from zipfile import ZipFile
-lazy from pathlib import Path
 
 from defusedxml import ElementTree
 from openpyxl import load_workbook

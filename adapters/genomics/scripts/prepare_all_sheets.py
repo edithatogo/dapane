@@ -6,11 +6,13 @@ Prepare the worksheets consistently across the microcosting analysis,
 ensuring that all sheets are treated uniformly regardless of their source or purpose.
 """
 
+__lazy_modules__ = ("pandas",)
+
 import logging
 import sys
 import traceback
 
-lazy import pandas as pd
+import pandas as pd
 
 from genomics_microcosting.data_manager import DataManager
 from genomics_microcosting.sheet_manager import SheetManager

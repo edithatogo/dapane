@@ -5,11 +5,13 @@ This is the selected labour stage, not a complete assay costing, workforce
 eligibility decision, clinical workflow approval or empirical validation.
 """
 
+__lazy_modules__ = ("collections.abc",)
+
+from collections.abc import Sequence
 from dataclasses import dataclass
 from importlib import import_module
 from typing import Any, Literal, Protocol, TypedDict, Unpack, cast
 from unicodedata import category
-lazy from collections.abc import Sequence
 
 from genomics_microcosting.dapane_release import selected_workforce_quote
 

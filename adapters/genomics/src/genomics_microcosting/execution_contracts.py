@@ -1,8 +1,10 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Shared contracts for execution decorators and profiling results."""
 
+__lazy_modules__ = ("collections.abc",)
+
+from collections.abc import Callable
 from typing import Protocol, TypedDict
-lazy from collections.abc import Callable
 
 
 def legacy_bool_option(

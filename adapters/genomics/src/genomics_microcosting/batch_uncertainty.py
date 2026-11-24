@@ -1,6 +1,12 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Seeded sampling of explicitly assumed joint batch realizations."""
 
+__lazy_modules__ = (
+    "genomics_microcosting.compute_cost",
+    "genomics_microcosting.parameter_provenance",
+    "pathlib",
+)
+
 import json
 import sys
 from bisect import bisect_right
@@ -9,21 +15,21 @@ from decimal import Decimal, Inexact, localcontext
 from fractions import Fraction
 from hashlib import sha256
 from itertools import accumulate
+from pathlib import Path
 from typing import Literal, Self, TypedDict, Unpack
-lazy from pathlib import Path
 
 import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from genomics_microcosting.compute_cost import ComputeCostContext
 from genomics_microcosting.dynamic_batch import AvailabilityWindow, DynamicBatchPolicy
+from genomics_microcosting.parameter_provenance import NonEmpty
 from genomics_microcosting.static_batch_cost import (
     BatchPricing,
     DynamicBatchCost,
     calculate_dynamic_batch_cost,
 )
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.compute_cost import ComputeCostContext
-lazy from genomics_microcosting.parameter_provenance import NonEmpty
 
 MAX_DRAWS = 10000
 MAX_SEED = 2**64 - 1

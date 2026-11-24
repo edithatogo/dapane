@@ -1,16 +1,22 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Reconcile source subtotal references without selecting alternative branches."""
 
+__lazy_modules__ = (
+    "collections.abc",
+    "openpyxl.cell.cell",
+    "openpyxl.workbook.workbook",
+)
+
 import ast
 import operator
 import re
-lazy from collections.abc import Callable
+from collections.abc import Callable
 
 import openpyxl
 import polars as pl
+from openpyxl.cell.cell import Cell, MergedCell
 from openpyxl.utils.cell import range_boundaries
-lazy from openpyxl.cell.cell import Cell, MergedCell
-lazy from openpyxl.workbook.workbook import Workbook
+from openpyxl.workbook.workbook import Workbook
 
 _CACHE_COMPARISON_TOLERANCE = 0.01
 

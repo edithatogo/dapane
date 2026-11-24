@@ -2,12 +2,14 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Script to generate automated reports with visualizations and summary statistics."""
 
+__lazy_modules__ = ("pandas",)
+
 import logging
 import sys
 import traceback
 from pathlib import Path
 
-lazy import pandas as pd
+import pandas as pd
 
 from genomics_microcosting.visualization import (
     create_summary_dashboard,

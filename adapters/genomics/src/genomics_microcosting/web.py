@@ -1,6 +1,12 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Web interface for microcosting analysis."""
 
+__lazy_modules__ = (
+    "genomics_microcosting",
+    "reportlab.lib.pagesizes",
+    "reportlab.pdfgen",
+)
+
 import io
 import zipfile
 from functools import partial
@@ -10,16 +16,16 @@ from typing import TYPE_CHECKING
 import polars as pl
 from flask import Flask, Response, abort, jsonify, render_template, request
 from openpyxl import Workbook
-lazy from reportlab.lib.pagesizes import letter
-lazy from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
+from . import monitoring
 from .visualization import (
     VisualizationUnavailableError,
     load_prepared_data,
     prepared_data_directory,
 )
 from .web_viz import generate_visualization, get_available_columns
-lazy from . import monitoring
 
 if TYPE_CHECKING:
     from .monitoring import (

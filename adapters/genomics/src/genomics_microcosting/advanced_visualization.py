@@ -1,19 +1,28 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Advanced visualization tools for microcosting analysis with interactive features."""
 
+__lazy_modules__ = (
+    "collections.abc",
+    "matplotlib.container",
+    "matplotlib.figure",
+    "matplotlib.image",
+    "matplotlib.patches",
+    "numpy.typing",
+)
+
 import logging
+from collections.abc import Sequence
 from importlib import import_module
 from pathlib import Path
 from typing import Protocol, TypedDict, Unpack, cast
-lazy from collections.abc import Sequence
 
 import numpy as np
 import polars as pl
-lazy from matplotlib.container import BarContainer
-lazy from matplotlib.figure import Figure
-lazy from matplotlib.image import AxesImage
-lazy from matplotlib.patches import Patch
-lazy from numpy.typing import NDArray
+from matplotlib.container import BarContainer
+from matplotlib.figure import Figure
+from matplotlib.image import AxesImage
+from matplotlib.patches import Patch
+from numpy.typing import NDArray
 
 from .visualization import load_prepared_data
 

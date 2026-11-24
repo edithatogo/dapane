@@ -1,13 +1,18 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Reconcile immutable event revisions for the synthetic workflow sidecar."""
 
+__lazy_modules__ = (
+    "collections.abc",
+    "pathlib",
+)
+
 import json
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import datetime
 from hashlib import sha256
+from pathlib import Path
 from typing import cast
-lazy from collections.abc import Iterable, Mapping
-lazy from pathlib import Path
 
 from genomics_microcosting.workflow_allocations import AllocationQuantity
 from genomics_microcosting.workflow_mdt import MeetingObservation

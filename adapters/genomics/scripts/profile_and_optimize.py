@@ -2,18 +2,23 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Script to profile and optimize the performance of microcosting analysis."""
 
+__lazy_modules__ = (
+    "collections.abc",
+    "numpy",
+)
+
 import argparse
 import json
 import logging
 import sys
 import time
 import traceback
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
-lazy from collections.abc import Callable
 
+import numpy as np
 import pandas as pd
-lazy import numpy as np
 
 from genomics_microcosting.calculation_engine import CalculationEngine
 from genomics_microcosting.performance import (

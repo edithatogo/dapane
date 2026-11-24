@@ -1,6 +1,11 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Price requested resource components without assuming scheduled service."""
 
+__lazy_modules__ = (
+    "genomics_microcosting.parameter_provenance",
+    "genomics_microcosting.workload_contract",
+)
+
 import json
 from dataclasses import dataclass
 from fractions import Fraction
@@ -13,6 +18,7 @@ from genomics_microcosting.compute_cost import (
     ComputeCostContext,
     verify_numeric_source_values,
 )
+from genomics_microcosting.parameter_provenance import Digest, NonEmpty
 from genomics_microcosting.workflow_allocations import (
     MAX_ROWS,
     AllocationCostLine,
@@ -20,8 +26,7 @@ from genomics_microcosting.workflow_allocations import (
     AllocationResource,
     allocation_parameter_value,
 )
-lazy from genomics_microcosting.parameter_provenance import Digest, NonEmpty
-lazy from genomics_microcosting.workload_contract import WorkloadCase
+from genomics_microcosting.workload_contract import WorkloadCase
 
 
 class _Model(BaseModel):

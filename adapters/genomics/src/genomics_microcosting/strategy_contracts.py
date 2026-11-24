@@ -1,11 +1,13 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Strict typed records for the existing formula-strategy input shapes."""
 
+__lazy_modules__ = ("genomics_microcosting.formula_contracts",)
+
 from typing import TypedDict
 
 from pydantic import ConfigDict, TypeAdapter, with_config
 
-lazy from .formula_contracts import ReferenceTarget
+from .formula_contracts import ReferenceTarget
 
 
 @with_config(ConfigDict(strict=True, extra="allow"))

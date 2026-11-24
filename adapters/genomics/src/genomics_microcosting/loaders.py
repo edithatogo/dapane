@@ -5,15 +5,21 @@ This module contains concrete implementations of loader components
 for saving processed data to various destinations and formats.
 """
 
-import json
-from datetime import UTC, datetime
-from typing import NotRequired, TypedDict, TypeGuard, Unpack
-lazy from collections.abc import Mapping
-lazy from pathlib import Path
+__lazy_modules__ = (
+    "collections.abc",
+    "pathlib",
+    "polars",
+)
 
+import json
+from collections.abc import Mapping
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import NotRequired, TypedDict, TypeGuard, Unpack
+
+import polars as pl
 from pydantic import ConfigDict, TypeAdapter
 from pydantic import ValidationError as OptionValidationError
-lazy import polars as pl
 
 from .data_manager import DataManager
 from .data_pipeline import Loader

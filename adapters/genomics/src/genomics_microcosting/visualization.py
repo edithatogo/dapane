@@ -1,17 +1,25 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Visualization tools for microcosting analysis."""
 
+__lazy_modules__ = (
+    "collections.abc",
+    "matplotlib.container",
+    "matplotlib.figure",
+    "matplotlib.text",
+    "numpy.typing",
+)
+
 import logging
+from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import Protocol, TypedDict, Unpack, cast
-lazy from collections.abc import Callable, Sequence
 
 import numpy as np
 import polars as pl
-lazy from matplotlib.container import BarContainer
-lazy from matplotlib.figure import Figure
-lazy from matplotlib.text import Text
-lazy from numpy.typing import NDArray
+from matplotlib.container import BarContainer
+from matplotlib.figure import Figure
+from matplotlib.text import Text
+from numpy.typing import NDArray
 
 try:
     import matplotlib as mpl

@@ -6,22 +6,27 @@ source truth, complete economic scope or scientific acceptance. Oracle creation
 from this same model is a regression snapshot, not an independent baseline.
 """
 
+__lazy_modules__ = (
+    "collections.abc",
+    "genomics_microcosting.parameter_provenance",
+)
+
 import json
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
 from fractions import Fraction
 from hashlib import sha256
 from typing import Literal, Self
-lazy from collections.abc import Callable
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from genomics_microcosting.parameter_provenance import Digest, NonEmpty
 from genomics_microcosting.workflow_cost import (
     WorkflowCost,
     WorkflowCostInputs,
     calculate_workflow_cost,
 )
-lazy from genomics_microcosting.parameter_provenance import Digest, NonEmpty
 
 MAX_ORACLE_BYTES = 32 * 1024 * 1024
 MAX_OBSERVATIONS = 250_000

@@ -4,14 +4,20 @@
 Legacy model assumptions require separate scientific qualification.
 """
 
+__lazy_modules__ = (
+    "collections.abc",
+    "numpy.typing",
+    "polars",
+)
+
 import logging
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Literal, TypedDict
-lazy from collections.abc import Sequence
 
 import numpy as np
-lazy import polars as pl
-lazy from numpy.typing import NDArray
+import polars as pl
+from numpy.typing import NDArray
 
 from .data_manager import DataManager
 from .logging_config import get_logger

@@ -7,22 +7,28 @@ are allocated capacity-time, not measured consumption or paid labour. No native
 scheduler, process activation, prices or clinical equivalence are implied.
 """
 
+__lazy_modules__ = (
+    "collections.abc",
+    "decimal",
+    "genomics_microcosting.dynamic_batch",
+)
+
 import json
+from collections.abc import Callable
 from dataclasses import dataclass
+from decimal import Decimal
 from fractions import Fraction
 from hashlib import sha256
 from typing import Literal, Self
-lazy from collections.abc import Callable
-lazy from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from genomics_microcosting.dynamic_batch import AvailabilityWindow
 from genomics_microcosting.parameter_provenance import (
     Digest,
     NonEmpty,
 )
 from genomics_microcosting.workload_contract import Workload
-lazy from genomics_microcosting.dynamic_batch import AvailabilityWindow
 
 ResourceKind = Literal["staff", "equipment", "compute", "storage", "licence"]
 MAX_NUMERIC_DIGITS = 128

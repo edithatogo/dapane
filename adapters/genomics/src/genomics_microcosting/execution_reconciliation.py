@@ -6,6 +6,8 @@ counters independently establish physical identity. Cached timings remain raw
 observations and never become new execution consumption or implicit zero.
 """
 
+__lazy_modules__ = ("genomics_microcosting.trace_registry",)
+
 import json
 from dataclasses import dataclass
 from hashlib import sha256
@@ -15,7 +17,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from genomics_microcosting.nextflow_trace import TraceTask, read_raw_trace
 from genomics_microcosting.parameter_provenance import Digest, NonEmpty
-lazy from genomics_microcosting.trace_registry import TraceExport
+from genomics_microcosting.trace_registry import TraceExport
 
 MAX_EXPORTS = 256
 MAX_BINDINGS = 100000
