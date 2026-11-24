@@ -17,11 +17,11 @@ import polars.selectors as cs
 
 from genomics_microcosting.visualization import (
     VisualizationUnavailableError,
-    _plotter,
     load_prepared_data,
     plot_category_costs,
     plot_cost_distribution,
     plot_top_costs,
+    plotting_backend,
 )
 
 _TITLE = "Microcosting Analysis Report"
@@ -201,7 +201,7 @@ def create_cost_analysis_plots(
     numeric = _numeric_columns(frame)
     if not numeric:
         return []
-    plotter = _plotter()
+    plotter = plotting_backend()
     cost = next((col for col in numeric if "cost" in col.lower()), numeric[0])
     category = next((col for col in frame.columns if "category" in col.lower()), None)
     figures = [

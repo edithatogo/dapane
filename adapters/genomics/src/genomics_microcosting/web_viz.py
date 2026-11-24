@@ -10,10 +10,10 @@ import polars as pl
 lazy from matplotlib.figure import Figure
 
 from .visualization import (
-    _plotter,
     plot_category_costs,
     plot_cost_distribution,
     plot_top_costs,
+    plotting_backend,
 )
 
 
@@ -43,7 +43,7 @@ def create_plot_base64[**P](
         str: Base64 encoded PNG image
 
     """
-    plotter = _plotter()
+    plotter = plotting_backend()
     fig = plot_function(*args, **kwargs)
     try:
         with io.BytesIO() as buffer:

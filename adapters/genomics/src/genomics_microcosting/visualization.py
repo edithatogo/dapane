@@ -92,7 +92,8 @@ class VisualizationUnavailableError(RuntimeError):
     """Report a missing optional visualization runtime."""
 
 
-def _plotter() -> _ChartPlotter:
+def plotting_backend() -> _ChartPlotter:
+    """Return the installed chart backend so figures can be closed after use."""
     if plt is None:
         message = "Install genomics-microcosting[visualization] to generate charts"
         raise VisualizationUnavailableError(message)
@@ -158,7 +159,7 @@ def plot_cost_distribution(
         message = f"Column '{column_name}' not found in data"
         raise ValueError(message)
 
-    fig, ax = _plotter().subplots(figsize=figsize)
+    fig, ax = plotting_backend().subplots(figsize=figsize)
 
     # Remove NaN values
     values = data[column_name].cast(pl.Float64).fill_nan(None).drop_nulls().to_numpy()
@@ -208,7 +209,7 @@ def plot_category_costs(
         .sort([cost_column, category_column], descending=[True, False])
     )
 
-    fig, ax = _plotter().subplots(figsize=figsize)
+    fig, ax = plotting_backend().subplots(figsize=figsize)
 
     # Create bar plot
     values = category_costs[cost_column].cast(pl.Float64).to_numpy()
@@ -280,7 +281,7 @@ def plot_cost_breakdown(
         .sort(category_column)
     )
 
-    fig, ax = _plotter().subplots(figsize=figsize)
+    fig, ax = plotting_backend().subplots(figsize=figsize)
 
     # Create stacked bar plot
     bottom = np.zeros(grouped_data.height)
@@ -349,7 +350,7 @@ def plot_top_costs(
     else:
         labels = [str(label) for label in top_costs[label_column].fill_null("Unknown")]
 
-    fig, ax = _plotter().subplots(figsize=figsize)
+    fig, ax = plotting_backend().subplots(figsize=figsize)
 
     values = top_costs[cost_column].cast(pl.Float64).to_numpy()
     bars = ax.bar(range(len(top_costs)), values, color="gold")
@@ -450,7 +451,7 @@ def create_summary_dashboard(
         )
 
     if not output_dir:
-        _plotter().show()
+        plotting_backend().show()
 
     return figures
 
@@ -470,7 +471,7 @@ def _add_dashboard_chart(
                 bbox_inches="tight",
                 dpi=300,
             )
-            _plotter().close(figure)
+            plotting_backend().close(figure)
     except Exception:
         logger.exception("Could not create chart %s", filename)
 
@@ -498,7 +499,7 @@ def example_usage() -> None:
         if cost_columns:
             try:
                 plot_cost_distribution(detailed_data, cost_columns[0])
-                _plotter().show()
+                plotting_backend().show()
             except Exception:
                 logger.exception("Could not create plot")
     else:
