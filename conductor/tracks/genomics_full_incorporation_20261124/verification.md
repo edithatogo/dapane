@@ -110,3 +110,32 @@ installed feature ledger open. See the
 and [installed provider evidence](../../../docs/python-provider-verification.md).
 
 Phase 1 passed the Conductor validator and all 12 lifecycle regression tests.
+
+## Independent formula baseline
+
+The installed legacy engine evaluated 36,404 original formulas. Seven
+returned no value. The preserved Calc 26.8.3.1 oracle was generated from a
+private copy with **all 36,411 caches cleared** and each formula and
+formula attribute verified unchanged first. This covers all original
+branch columns on WB19, WB20 and WB22–WB25 and their summary and graph inputs.
+
+| Comparison with original caches | Legacy evaluator | Calc recalculation |
+| --- | ---: | ---: |
+| Stored numeric or text values and error codes agree | 17,660 | 7,134 |
+| Additional values coincide at 12 significant digits | 18,728 | 29,248 |
+| Remaining numeric residuals are below `1e-12` in original units | 16 | 26 |
+| Remaining error-code or missing-output differences | 7 | 3 |
+
+The significant-digit and absolute residual counts describe the independent
+comparators. The historical errors all occur on WB32. Calc preserved the
+four division errors and translated the three broken references to
+`#NAME?`. The installed legacy evaluator returned no value for all seven.
+The successor must preserve the original error codes.
+
+The private legacy comparison has SHA-256
+`140d734f17c45a44d95553f581d1eb89a8c6dff3077d6a97de0c18d3eea0ef09`.
+The Calc workbook has SHA-256
+`01926b302bd2752fe65c12f651f37d6627846c5a5b15de2c740a5ae02ce87c20`.
+The original workbook hash was unchanged. Synthetic cases for ranges,
+rates, annuity, errors and a changed numeric source independently fix
+the expected results for the exact replay.

@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-24T14:00:23Z",
+  "updated_at": "2026-11-24T14:05:07Z",
   "description": "Incorporate the full v15 genomics workbook and every existing and planned legacy feature into an independently installable Dapane successor.",
   "repositories": [
     ".",
@@ -42,7 +42,9 @@
       "python -I adapters/genomics/src/genomics_microcosting/workbook_ledger.py <original-v15> <legacy-catalogue> <private-ledger>",
       "python -I adapters/genomics/tools/feature_inventory.py <legacy-checkout> <revision> <frozen-issues> <private-ledger>",
       "python scripts/validate_conductor.py",
-      "python -m unittest discover -s tests -p test_conductor_validation.py -v"
+      "python -m unittest discover -s tests -p test_conductor_validation.py -v",
+      "CalculationEngine(SheetManager(original_v15)).execute_formula for all original formula coordinates",
+      "soffice --headless --convert-to xlsx in an isolated profile with the original formula caches removed"
     ],
     "evidence": [
       "verification.md",

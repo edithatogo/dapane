@@ -231,8 +231,10 @@ Integration chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` owns the
 Its CLI checkout is `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/dapane`
 on `codex/plan-full-genomics-incorporation-20261124` during planning (merged as
 PR #80). The same chat now owns `codex/genomics-incorporation-baselines` in that
-checkout for the source freeze and coverage inventory. The provider checkout and
-the original workbook are read-only inputs. The next operation is G2.1, the workbook comparison baseline.
+checkout for the source freeze and coverage inventory in PR #81. The same
+checkout continues on `codex/genomics-workbook-replay` for the workbook
+comparison and formula replay. The provider checkout and workbook remain
+read-only inputs. The next operation is G2.2.
 
 ## Main integration reconciliation — 19 November 2026
 
