@@ -232,7 +232,7 @@ Its CLI checkout is `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z
 on `codex/plan-full-genomics-incorporation-20261124` during planning (merged as
 PR #80). The same chat now owns `codex/genomics-incorporation-baselines` in that
 checkout for the source freeze and coverage inventory. The provider checkout and
-the original workbook are read-only inputs. The next operation is G1.4.
+the original workbook are read-only inputs. The next operation is G2.1, the workbook comparison baseline.
 
 ## Main integration reconciliation — 19 November 2026
 
