@@ -18,7 +18,13 @@ def main() -> int:
 
     try:
         app = create_app()
-        app.run(debug=True, host="127.0.0.1", port=5000)
+        app.run(
+            host="127.0.0.1",
+            port=5000,
+            debug=False,
+            use_debugger=False,
+            use_reloader=False,
+        )
     except Exception as e:
         logger.exception("Could not complete run web")
         sys.stdout.write(f"Error starting web application: {e}" + "\n")
