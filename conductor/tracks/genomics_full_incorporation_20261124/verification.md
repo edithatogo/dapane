@@ -33,3 +33,36 @@ The installed comparator ran
 `dapane.evaluate(request)` from outside both source checkouts. The exact
 request produced a report with totals. The source copy and workbook member
 extracted from the archived tree both matched the pinned workbook SHA-256.
+
+## Workbook ledger
+
+The [inventory command](../../../adapters/genomics/src/genomics_microcosting/workbook_ledger.py)
+reconciled populated coordinates and formula counts for every catalogue
+sheet against both the raw worksheet parts and the existing workbook
+reader. It retained stored numeric strings, text and errors, expanded
+shared formulas, formula references, and the worksheet layout including
+merged regions and hidden views.
+
+| Observation | Count |
+| --- | ---: |
+| Worksheets | 35 |
+| Hidden worksheets | 3 |
+| Formula cells | 36,411 |
+| Shared-formula cells | 17,781 |
+| Populated nonformula cells | 13,525 |
+| Formula caches with `#REF!` | 3 |
+| Formula caches with `#DIV/0!` | 4 |
+
+The original formulas use `SUM` (7,881 calls), `PMT` (29) and `AVERAGE`
+(28). The workbook's scenario variants live in separate regions and columns.
+The private ledger records their coordinates and reference expressions.
+It accounts for the source cells and caches. Evaluation and economic
+reconciliation are Phase 2 work.
+
+The catalogue digest is
+`85f61076a8a0a00ae615a2ac26f962c9f0f159e348017b12454afe4c36e7df21`.
+Two runs using the pinned CPython 3.15.1 comparator produced identical
+ledger bytes, SHA-256
+`9b7a0996b0ca012315ceffcd492ef1813719d2ea56ec7bfcf81a364ffd59aba5`.
+An existing output path was rejected. The original workbook digest
+matched before and after the inventory.

@@ -5,8 +5,8 @@ Status: in_progress
 ## Phase 1 — Freeze the workbook and feature scope
 
 - [x] G1.1 Freeze the read-only v15 workbook, provider and Dapane revisions, relevant maintained plan/issue versions, legacy invocation and source rights. Retain the exact source and a runnable legacy comparator. [Freeze and comparator](verification.md#frozen-sources)
-- [~] G1.2 Start from the existing workbook catalogue. Enumerate all worksheet regions, inputs, formula coordinates, references, branches, errors and output views. Reconcile 35 sheets and 36,411 formula cells against the original bytes.
-- [ ] G1.3 Inventory the actual public and compatibility surfaces from package entry points, source, docs and tests. Reconcile every documented planned deliverable against implementation and tests and map each distinct outcome to this plan.
+- [x] G1.2 Start from the existing workbook catalogue. Enumerate all worksheet regions, inputs, formula coordinates, references, branches, errors and output views. Reconcile 35 sheets and 36,411 formula cells against the original bytes. [Workbook ledger evidence](verification.md#workbook-ledger)
+- [~] G1.3 Inventory the actual public and compatibility surfaces from package entry points, source, docs and tests. Reconcile every documented planned deliverable against implementation and tests and map each distinct outcome to this plan.
 - [ ] G1.4 Verify both ledgers against the frozen sources. Link the existing replay evidence to the rows it covers and leave every gap visible.
 
 ## Phase 2 — Complete workbook parity
