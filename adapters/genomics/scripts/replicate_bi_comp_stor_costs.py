@@ -4,7 +4,7 @@
 import sys
 from pathlib import Path
 
-import pandas as pd
+import polars as pl
 
 
 def replicate_bi_comp_stor_costs() -> None:
@@ -23,43 +23,63 @@ def replicate_bi_comp_stor_costs() -> None:
     }
 
     # Create a DataFrame for server costs
-    df_server = pd.DataFrame(server_data)
+    df_server = pl.DataFrame(server_data)
 
     # --- Server Cost Calculations ---
-    df_server["Total Cores"] = df_server["CPUs"] * df_server["Cores/CPU"]
-    df_server["Total Threads"] = df_server["CPUs"] * df_server["Threads/CPU"]
-    df_server["inc. GST"] = df_server["ex-GST"] * 1.1
-    df_server["3-yr"] = df_server["ex-GST"] / 3
-    df_server["5-yr"] = df_server["ex-GST"] / 5
-    df_server["Cost/CPU"] = df_server["ex-GST"] / df_server["CPUs"]
-    df_server["Cost/Core"] = df_server["ex-GST"] / df_server["Total Cores"]
-    df_server["Cost/Thread"] = df_server["inc. GST"] / df_server["Total Threads"]
-    df_server["Cost/GB"] = df_server["ex-GST"] / df_server["Memory"]
+    df_server = df_server.with_columns(
+        (pl.col("CPUs") * pl.col("Cores/CPU")).alias("Total Cores")
+    )
+    df_server = df_server.with_columns(
+        (pl.col("CPUs") * pl.col("Threads/CPU")).alias("Total Threads")
+    )
+    df_server = df_server.with_columns((pl.col("ex-GST") * 1.1).alias("inc. GST"))
+    df_server = df_server.with_columns((pl.col("ex-GST") / 3).alias("3-yr"))
+    df_server = df_server.with_columns((pl.col("ex-GST") / 5).alias("5-yr"))
+    df_server = df_server.with_columns(
+        (pl.col("ex-GST") / pl.col("CPUs")).alias("Cost/CPU")
+    )
+    df_server = df_server.with_columns(
+        (pl.col("ex-GST") / pl.col("Total Cores")).alias("Cost/Core")
+    )
+    df_server = df_server.with_columns(
+        (pl.col("inc. GST") / pl.col("Total Threads")).alias("Cost/Thread")
+    )
+    df_server = df_server.with_columns(
+        (pl.col("ex-GST") / pl.col("Memory")).alias("Cost/GB")
+    )
 
     ul_total_hours = 5 * 365 * 24
     ll_total_hours = ul_total_hours * 0.7
 
-    df_server["UL Total Hours"] = ul_total_hours
-    df_server["LL Total Hours"] = ll_total_hours
+    df_server = df_server.with_columns((pl.lit(ul_total_hours)).alias("UL Total Hours"))
+    df_server = df_server.with_columns((pl.lit(ll_total_hours)).alias("LL Total Hours"))
 
-    df_server["Cost/CPU/hr - 70%"] = df_server["Cost/CPU"] / df_server["LL Total Hours"]
-    df_server["Cost/Core/hr - 70%"] = (
-        df_server["Cost/Core"] / df_server["LL Total Hours"]
+    df_server = df_server.with_columns(
+        (pl.col("Cost/CPU") / pl.col("LL Total Hours")).alias("Cost/CPU/hr - 70%")
     )
-    df_server["Cost/thread/hr - 70%"] = (
-        df_server["Cost/Thread"] / df_server["LL Total Hours"]
+    df_server = df_server.with_columns(
+        (pl.col("Cost/Core") / pl.col("LL Total Hours")).alias("Cost/Core/hr - 70%")
     )
-    df_server["cost/gb/hr - 70%"] = df_server["Cost/GB"] / df_server["LL Total Hours"]
-    df_server["Cost/CPU/hr - 100%"] = (
-        df_server["Cost/CPU"] / df_server["UL Total Hours"]
+    df_server = df_server.with_columns(
+        (pl.col("Cost/Thread") / pl.col("LL Total Hours")).alias("Cost/thread/hr - 70%")
     )
-    df_server["Cost/Core/hr - 100%"] = (
-        df_server["Cost/Core"] / df_server["UL Total Hours"]
+    df_server = df_server.with_columns(
+        (pl.col("Cost/GB") / pl.col("LL Total Hours")).alias("cost/gb/hr - 70%")
     )
-    df_server["Cost/thread/hr - 100%"] = (
-        df_server["Cost/Thread"] / df_server["UL Total Hours"]
+    df_server = df_server.with_columns(
+        (pl.col("Cost/CPU") / pl.col("UL Total Hours")).alias("Cost/CPU/hr - 100%")
     )
-    df_server["cost/gb/hr - 100%"] = df_server["Cost/GB"] / df_server["UL Total Hours"]
+    df_server = df_server.with_columns(
+        (pl.col("Cost/Core") / pl.col("UL Total Hours")).alias("Cost/Core/hr - 100%")
+    )
+    df_server = df_server.with_columns(
+        (pl.col("Cost/Thread") / pl.col("UL Total Hours")).alias(
+            "Cost/thread/hr - 100%"
+        )
+    )
+    df_server = df_server.with_columns(
+        (pl.col("Cost/GB") / pl.col("UL Total Hours")).alias("cost/gb/hr - 100%")
+    )
 
     # --- Equipment Cost Calculations ---
     equipment_data = {
@@ -71,19 +91,25 @@ def replicate_bi_comp_stor_costs() -> None:
         "Initial Estimate": [2000, 2000],
         "Max": [50000, 50000],
     }
-    df_equipment = pd.DataFrame(equipment_data)
-    df_equipment["Annualised cost"] = (
-        df_equipment["List Price (AUD)"] / df_equipment["Useful Life"]
+    df_equipment = pl.DataFrame(equipment_data)
+    df_equipment = df_equipment.with_columns(
+        (pl.col("List Price (AUD)") / pl.col("Useful Life")).alias("Annualised cost")
     )
-    df_equipment["Actual (0.7)"] = df_equipment["Max"] * 0.7
-    df_equipment["Unit Cost ($/sample) - Initial"] = (
-        df_equipment["Annualised cost"] / df_equipment["Initial Estimate"]
+    df_equipment = df_equipment.with_columns(
+        (pl.col("Max") * 0.7).alias("Actual (0.7)")
     )
-    df_equipment["Unit Cost ($/sample) - Actual (0.7)"] = (
-        df_equipment["Annualised cost"] / df_equipment["Actual (0.7)"]
+    df_equipment = df_equipment.with_columns(
+        (pl.col("Annualised cost") / pl.col("Initial Estimate")).alias(
+            "Unit Cost ($/sample) - Initial"
+        )
     )
-    df_equipment["Unit Cost ($/sample) - Max"] = (
-        df_equipment["Annualised cost"] / df_equipment["Max"]
+    df_equipment = df_equipment.with_columns(
+        (pl.col("Annualised cost") / pl.col("Actual (0.7)")).alias(
+            "Unit Cost ($/sample) - Actual (0.7)"
+        )
+    )
+    df_equipment = df_equipment.with_columns(
+        (pl.col("Annualised cost") / pl.col("Max")).alias("Unit Cost ($/sample) - Max")
     )
 
     # --- Storage Cost Calculations ---
@@ -98,22 +124,26 @@ def replicate_bi_comp_stor_costs() -> None:
         "ex-GST": [23800, 21000, 75, 115],
         "Useable life (years)": [5, 5, 5, 5],
     }
-    df_storage = pd.DataFrame(storage_data)
-    df_storage["Cost/GB"] = df_storage["ex-GST"] / df_storage["Total Space (GB)"]
-    df_storage["Cost/GB/year"] = (
-        df_storage["Cost/GB"] / df_storage["Useable life (years)"]
+    df_storage = pl.DataFrame(storage_data)
+    df_storage = df_storage.with_columns(
+        (pl.col("ex-GST") / pl.col("Total Space (GB)")).alias("Cost/GB")
+    )
+    df_storage = df_storage.with_columns(
+        (pl.col("Cost/GB") / pl.col("Useable life (years)")).alias("Cost/GB/year")
     )
 
     # Special case for 'LTO-7 or LTO-8 Tape Drive Module'
     lto_module_cost = 21000 / 5 / 20000
-    df_storage.loc[1, "Cost/test"] = lto_module_cost
+    df_storage = df_storage.with_columns(
+        pl.Series("Cost/test", [None, lto_module_cost, None, None], dtype=pl.Float64)
+    )
 
     # --- Save outputs ---
     output_dir = Path("data/replicated")
-    output_dir.mkdir(exist_ok=True)
-    df_server.to_csv(output_dir / "server_costs.csv", index=False)
-    df_equipment.to_csv(output_dir / "equipment_costs.csv", index=False)
-    df_storage.to_csv(output_dir / "storage_costs.csv", index=False)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    df_server.write_csv(output_dir / "server_costs.csv")
+    df_equipment.write_csv(output_dir / "equipment_costs.csv")
+    df_storage.write_csv(output_dir / "storage_costs.csv")
 
     sys.stdout.write(
         "Replicated BI Comp+Stor Costs and saved to data/replicated/" + "\n",

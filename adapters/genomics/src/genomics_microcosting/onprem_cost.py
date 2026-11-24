@@ -143,6 +143,26 @@ def calculate_onprem_cost(
     context: ComputeCostContext,
 ) -> OnPremCost:
     """Price a declared annual platform scope without rounding rational rates."""
+    return _calculate_onprem_cost(pricing, context, None)
+
+
+def calculate_onprem_cost_with_life(
+    pricing: OnPremPricing,
+    context: ComputeCostContext,
+    assumed_years: int,
+) -> OnPremCost:
+    """Revalue the platform using an explicit assumed life and retain its source."""
+    if type(assumed_years) is not int or assumed_years <= 0:
+        msg = "Assumed useful life must be a positive integer"
+        raise ValueError(msg)
+    return _calculate_onprem_cost(pricing, context, assumed_years)
+
+
+def _calculate_onprem_cost(
+    pricing: OnPremPricing,
+    context: ComputeCostContext,
+    assumed_years: int | None,
+) -> OnPremCost:
     pricing = OnPremPricing.model_validate(pricing.model_dump())
     raw = verify_numeric_source_values(context)
     identifiers = {b.role: b.parameter_id for b in pricing.bindings}
@@ -163,7 +183,7 @@ def calculate_onprem_cost(
     capital = _annual_capital(
         values["acquisition"],
         values["residual"],
-        values["life"],
+        values["life"] if assumed_years is None else Fraction(assumed_years),
         values["interest"],
         pricing.annualization,
     )
@@ -188,12 +208,14 @@ def calculate_onprem_cost(
     other = Fraction() if rate is None else rate * (used - workload)
     unallocated = total - allocated - other
     idle = None if available == 0 else total * (available - used) / available
-    identity = {
+    identity: dict[str, object] = {
         "pricing": pricing.model_dump(mode="json"),
         "ledger": context.ledger.model_dump(mode="json"),
         "validity": [v.model_dump(mode="json") for v in context.validity],
         "costing_date": context.costing_date.isoformat(),
     }
+    if assumed_years is not None:
+        identity["assumed_useful_life_years"] = assumed_years
     digest = sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
     return OnPremCost(
         digest,

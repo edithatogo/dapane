@@ -9,9 +9,20 @@ from copy import deepcopy
 from dataclasses import dataclass
 from fractions import Fraction
 from hashlib import sha256
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from genomics_microcosting.dapane_adapter import evaluate_native_request
+from genomics_microcosting.onprem_cost import (
+    OnPremCost,
+    OnPremPricing,
+    calculate_onprem_cost,
+    calculate_onprem_cost_with_life,
+)
+
+from .model_tables import LabProfile
+
+if TYPE_CHECKING:
+    from genomics_microcosting.compute_cost import ComputeCostContext
 
 type FetchPrices = Callable[[tuple[str, ...]], bytes]
 
@@ -80,6 +91,8 @@ def value_with_prices(
     fetch: FetchPrices,
     volume: int,
     discounts: Mapping[str, Sequence[VolumeDiscount]] | None = None,
+    lab_profile: LabProfile | None = None,
+    labour_quote_ids: Sequence[str] = (),
 ) -> dict[str, Any]:
     """Preserve fetched price identity, then value the resulting exact request.
 
@@ -101,6 +114,46 @@ def value_with_prices(
     if set(criteria) - {quote["id"] for quote in prepared["quotes"]}:
         raise ValueError("Volume discounts must name a supplied quotation")
 
+    lab_changes = {}
+    if lab_profile is not None:
+        profile_digest = sha256(lab_profile.model_dump_json().encode()).hexdigest()
+        labour_quotes = {
+            quote["id"]: quote
+            for quote in prepared["quotes"]
+            if quote["components"] == ["labour"]
+        }
+        multiplier = _fraction(lab_profile.cost_adjustments.labor_multiplier)
+        selected = set(labour_quote_ids)
+        if len(selected) != len(labour_quote_ids) or selected - labour_quotes.keys():
+            raise ValueError("Select distinct labour-only quotations for lab pricing")
+        if multiplier != 1 and not selected:
+            raise ValueError(
+                "Select the quotations covered by the lab labour multiplier"
+            )
+        if multiplier != 1:
+            for quote_id in sorted(selected):
+                quote = labour_quotes[quote_id]
+                source_amount = _fraction(quote["amount"])
+                source = quote["source"]
+                lab_changes[quote_id] = {
+                    "profile_sha256": profile_digest,
+                    "original_amount": _exact(source_amount),
+                    "original_source": source,
+                    "multiplier": _exact(multiplier),
+                }
+                quote["amount"] = _exact(source_amount * multiplier)
+                quote["source"] = {
+                    "id": "lab-adjusted-labour",
+                    "version": profile_digest,
+                    "evidence": "derived",
+                    "access": source["access"],
+                    "validation": "unvalidated",
+                    "content_digest": f"sha256:{profile_digest}",
+                    "locator": "cost_adjustments.labor_multiplier",
+                }
+    elif labour_quote_ids:
+        raise ValueError("Labour quotation selection requires a lab profile")
+
     applied = {}
     for quote in prepared["quotes"]:
         tier = _select_tier(criteria.get(quote["id"], ()), volume)
@@ -120,6 +173,19 @@ def value_with_prices(
         "external_release_sha256": digest,
         "volume": volume,
         "applied_discounts": applied,
+        "applied_lab_adjustments": lab_changes,
         "request": prepared,
         "report": evaluate_native_request(prepared),
     }
+
+
+def calculate_lab_equipment_cost(
+    pricing: OnPremPricing,
+    context: ComputeCostContext,
+    profile: LabProfile,
+) -> OnPremCost:
+    """Value equipment with the lab's declared depreciation life when supplied."""
+    life = profile.cost_adjustments.equipment_depreciation_years
+    if life is None:
+        return calculate_onprem_cost(pricing, context)
+    return calculate_onprem_cost_with_life(pricing, context, life)

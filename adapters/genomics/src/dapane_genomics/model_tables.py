@@ -7,6 +7,7 @@ import argparse
 import csv
 import json
 from collections.abc import Mapping
+from fractions import Fraction
 from importlib.resources import files
 from io import BytesIO, StringIO
 from pathlib import Path
@@ -34,6 +35,29 @@ def _label(value: str) -> str:
     return normalized
 
 
+class LabCostAdjustments(BaseModel):
+    """An exact labour-rate multiplier and optional equipment useful life."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+
+    labor_multiplier: str = Field(default="1", max_length=64)
+    equipment_depreciation_years: int | None = Field(default=None, gt=0)
+
+    @field_validator("labor_multiplier")
+    @classmethod
+    def check_multiplier(cls, value: str) -> str:
+        """Require a positive exact amount represented as text."""
+        try:
+            multiplier = Fraction(value)
+        except (ValueError, ZeroDivisionError) as exc:
+            raise ValueError(
+                "Labour multiplier must be a positive exact number"
+            ) from exc
+        if multiplier <= 0:
+            raise ValueError("Labour multiplier must be a positive exact number")
+        return value
+
+
 class LabProfile(BaseModel):
     """Optional lab name and local extensions to the standard input taxonomy."""
 
@@ -41,6 +65,7 @@ class LabProfile(BaseModel):
 
     lab_name: str = Field(default="", max_length=100)
     custom_categories: dict[str, list[str]] = Field(default_factory=dict, max_length=25)
+    cost_adjustments: LabCostAdjustments = Field(default_factory=LabCostAdjustments)
 
     @field_validator("lab_name")
     @classmethod

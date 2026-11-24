@@ -2,6 +2,7 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Script to prepare translated tables for publication with metadata."""
 
+import argparse
 import json
 import logging
 import sys
@@ -9,7 +10,7 @@ import traceback
 from datetime import UTC, datetime
 from pathlib import Path
 
-import pandas as pd
+import polars as pl
 
 from genomics_microcosting.config import load_config
 
@@ -17,14 +18,14 @@ logger = logging.getLogger(__name__)
 
 
 def create_table_metadata(
-    df: pd.DataFrame,
+    df: pl.DataFrame,
     table_name: str,
     description: str = "",
 ) -> dict[str, object]:
     """Create metadata for a table.
 
     Args:
-        df (pd.DataFrame): The DataFrame containing the table data
+        df (pl.DataFrame): The DataFrame containing the table data
         table_name (str): Name of the table
         description (str): Description of the table
 
@@ -41,18 +42,23 @@ def create_table_metadata(
         "columns": [],
     }
 
-    for col in df.columns:
+    for col, dtype in df.schema.items():
+        series = df[col]
+        if dtype.is_float():
+            series = series.fill_nan(None)
         col_info = {
             "name": col,
-            "dtype": str(df[col].dtype),
-            "null_count": int(df[col].isna().sum()),
+            "dtype": str(dtype),
+            "null_count": series.null_count(),
         }
 
         # Add unique count for categorical columns
-        if df[col].dtype == "object":
-            col_info["unique_count"] = int(df[col].nunique())
+        if dtype.base_type() in (pl.String, pl.Categorical, pl.Enum):
+            col_info["unique_count"] = series.drop_nulls().n_unique()
             # Add sample values for context
-            sample_values = df[col].dropna().unique()[:5].tolist()
+            sample_values = (
+                series.drop_nulls().unique(maintain_order=True).head(5).to_list()
+            )
             col_info["sample_values"] = sample_values
 
         metadata["columns"].append(col_info)
@@ -60,7 +66,10 @@ def create_table_metadata(
     return metadata
 
 
-def prepare_publication_tables() -> int | None:
+def prepare_publication_tables(
+    data_dir: Path | None = None,
+    publication_dir: Path | None = None,
+) -> int:
     """Prepare all tables for publication with metadata."""
     sys.stdout.write("Preparing tables for publication..." + "\n")
 
@@ -70,14 +79,19 @@ def prepare_publication_tables() -> int | None:
         sys.stdout.write("Configuration loaded successfully" + "\n")
 
         # Define paths
-        data_dir = Path(__file__).resolve().parents[1] / "data" / "prepared"
-        publication_dir = Path(__file__).resolve().parents[1] / "publication"
-        publication_dir.mkdir(exist_ok=True)
+        root = Path(__file__).resolve().parents[1]
+        data_dir = data_dir if data_dir is not None else root / "data/prepared"
+        publication_dir = (
+            publication_dir if publication_dir is not None else root / "publication"
+        )
+        publication_dir.mkdir(exist_ok=True, parents=True)
 
         sys.stdout.write(f"Looking for prepared data in {data_dir}" + "\n")
 
         # Process all parquet files
-        parquet_files = list(data_dir.glob("*.parquet"))
+        parquet_files = sorted(data_dir.glob("*.parquet"))
+        if not parquet_files:
+            raise FileNotFoundError("No prepared Parquet tables were found")
         sys.stdout.write(f"Found {len(parquet_files)} parquet files" + "\n")
 
         processed_count = 0
@@ -88,14 +102,14 @@ def prepare_publication_tables() -> int | None:
 
             try:
                 # Load the data
-                df = pd.read_parquet(parquet_file)
+                df = pl.read_parquet(parquet_file)
                 sys.stdout.write(
                     f"  Loaded {len(df)} rows and {len(df.columns)} columns" + "\n",
                 )
 
                 # Save as CSV for publication
                 csv_file = publication_dir / f"{table_name}.csv"
-                df.to_csv(csv_file, index=False)
+                df.write_csv(csv_file)
                 sys.stdout.write(f"  Saved CSV to {csv_file}" + "\n")
 
                 # Create metadata
@@ -162,12 +176,16 @@ This directory holds the workbook tables prepared for publication.
         traceback.print_exc()
         return 1
     else:
-        return 0
+        return int(processed_count != len(parquet_files))
 
 
-def main() -> int | None:
+def main() -> int:
     """Prepare the tables used in the publication."""
-    return prepare_publication_tables()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--data-dir", type=Path)
+    parser.add_argument("--output-dir", type=Path)
+    options = parser.parse_args()
+    return prepare_publication_tables(options.data_dir, options.output_dir)
 
 
 if __name__ == "__main__":

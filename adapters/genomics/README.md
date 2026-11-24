@@ -67,7 +67,11 @@ JSON file and returns the selected template.
 ```json
 {
   "lab_name": "Example lab",
-  "custom_categories": {"Local costs": ["Shipping", "Taxes"]}
+  "custom_categories": {"Local costs": ["Shipping", "Taxes"]},
+  "cost_adjustments": {
+    "labor_multiplier": "1.2",
+    "equipment_depreciation_years": 9
+  }
 }
 ```
 
@@ -77,6 +81,14 @@ read-only price source that returns quotes in the
 applicable volume tier and uses Dapane's valuation and shared-cost
 allocation. Retain the resulting request and price-release digest to
 reproduce a valuation without querying the source again.
+
+Pass the profile and explicit `labour_quote_ids` to apply its multiplier to
+labour-only quotes. The valuation receipt retains the source amount, source
+identity, exact multiplier and profile digest. Quote prices and volumes still
+pass through native Dapane valuation. Use
+`dapane_genomics.pricing.calculate_lab_equipment_cost` for the separate on-prem
+cost estimate with the lab's depreciation life. The original pricing record
+remains available for comparison.
 
 `dapane_genomics.prediction.fit_cost_model` fits an identifiable model to
 named numeric predictors and a cost response. Its statistical estimates

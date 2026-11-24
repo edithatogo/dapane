@@ -74,6 +74,13 @@ include = [
     "/scripts/parse_additional_tables.py", "/scripts/generate_report.py",
     "/scripts/generate_comprehensive_report.py", "/scripts/run_web.py",
     "/scripts/prepare_all_sheets.py", "/scripts/validate_all_sheets.py",
+    "/scripts/demonstrate_excel_version_control.py",
+    "/scripts/prepare_publication_tables.py",
+    "/scripts/replicate_bi_comp_stor_costs.py",
+    "/scripts/replicate_consumable_costs.py",
+    "/scripts/replicate_equipment_costs.py",
+    "/scripts/replicate_labour_costs.py",
+    "/scripts/validate_labour_usage.py",
     "/tools/__init__.py", "/tools/select_tests.py", "/tools/check_package.py",
     "/tools/build_t1_scenario.py",
 ]
