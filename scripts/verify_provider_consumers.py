@@ -253,6 +253,105 @@ def verify_gdna_qc(args, dapane, workbook, history, legacy_engine):
     )
 
 
+def verify_genomics_cost_stages(args, dapane, workbook, legacy):
+    """Verify booked stage costs and hourly components against the original cells."""
+    stages = installed(
+        "genomics_microcosting.dapane_stage_replay", "genomics-microcosting", args.provider_root
+    )
+    # Independent row map from the workbook's Summary and Detailed Table sheets.
+    cases = {
+        "Panel": (8, 22, 109, 78, 51),
+        "EA-P": (23, 280, 373, 342, 51),
+        "EA-T": (38, 544, 649, 611, 58),
+        "WGA-P": (53, 844, 938, 907, 46),
+        "WGA-T": (68, 1090, 1187, 1155, 46),
+    }
+    output = args.output / "genomics-stage-replays"
+    output.mkdir(exist_ok=True)
+    tolerance = Fraction(1, 10**12)
+    comparisons = {}
+
+    def cell(sheet, coordinate):
+        return Fraction(str(legacy.get_cell_value(sheet, coordinate)))
+
+    def evaluate(request):
+        report = dapane.evaluate(request)
+        native_parity(request, args.cli, report)
+        run_id = report["run_id"]
+        (output / f"{run_id}.request.json").write_text(
+            json.dumps(request, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+        )
+        (output / f"{run_id}.report.json").write_text(
+            json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+        )
+        return report
+
+    def compare(report, expected):
+        actual = exact(report["totals"]["exact"])
+        assert abs(actual - expected) <= tolerance, (report["run_id"], actual, expected)
+        comparisons[report["run_id"]] = {
+            "actual": str(actual),
+            "workbook_expected": str(expected),
+            "residual": str(actual - expected),
+            "line_rounded": report["totals"]["rounded"],
+        }
+
+    for scenario, (row, labour, consumables, equipment, count) in cases.items():
+        library = evaluate(stages.historical_library_preparation_request(workbook, scenario))
+        assert len(library["lines"]) == count
+        grouped = {
+            component: sum(
+                exact(line["exact"])
+                for line in library["lines"]
+                if line["components"] == [component]
+            )
+            for component in ("equipment", "consumables", "loaded_labour", "overhead")
+        }
+        for component, column in zip(grouped, ("B", "E", "H", "K"), strict=True):
+            assert abs(grouped[component] - cell("Summary Table", f"{column}{row}")) <= tolerance
+        for line in library["lines"]:
+            if line["id"].startswith(("labour-", "consumable-")):
+                reference = line["id"].split("-", 1)[1]
+                assert abs(exact(line["exact"]) - cell("Detailed Table", reference)) <= tolerance
+        direct = grouped["equipment"] + grouped["consumables"] + grouped["loaded_labour"]
+        assert grouped["overhead"] == direct * Fraction("0.27")
+        compare(library, cell("Summary Table", f"N{row}"))
+
+        qc = evaluate(stages.historical_qc_full_request(workbook, scenario))
+        expected_lines = {
+            "G32": labour,
+            "G33": labour + 1,
+            "equipment-U7": equipment,
+            **{f"F{13 + step}": consumables + step for step in range(7)},
+        }
+        actual_lines = {line["id"]: exact(line["exact"]) for line in qc["lines"]}
+        assert actual_lines.keys() == {*expected_lines, "stage-overhead"}
+        workbook_direct = Fraction()
+        for use, detail_row in expected_lines.items():
+            expected = cell("Detailed Table", f"N{detail_row}")
+            assert abs(actual_lines[use] - expected) <= tolerance
+            workbook_direct += expected
+        assert actual_lines["stage-overhead"] == Fraction("0.27") * sum(
+            actual_lines[use] for use in expected_lines
+        )
+        compare(qc, workbook_direct * Fraction("1.27"))
+
+    for band, coordinate in (
+        ("technician-midpoint", "AC3"),
+        ("scientist-midpoint", "AC4"),
+        ("scientist-lower", "AB4"),
+    ):
+        report = evaluate(stages.historical_loaded_labour_request(workbook, band))
+        lines = {line["id"]: exact(line["exact"]) for line in report["lines"]}
+        assert len(lines) == 11
+        assert lines["base_salary"] == lines["repeated_base_in_leave_formula"] > 0
+        compare(report, cell("Labour - Costs - VCGS", coordinate))
+
+    (output / "workbook-comparison.json").write_text(
+        json.dumps(comparisons, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def genomics(args, dapane):
     """Consume the workforce file in the independently pinned genomic environment."""
     assert sys.version_info[:3] == (3, 15, 1), sys.version
@@ -427,6 +526,7 @@ def genomics(args, dapane):
         json.dumps(comparison, ensure_ascii=False, default=str), encoding="utf-8"
     )
     verify_gdna_qc(args, dapane, workbook, history, legacy_engine)
+    verify_genomics_cost_stages(args, dapane, workbook, legacy_engine)
     return [
         "installed-genomics-without-workforce-import",
         "six-batch-occupancies-and-native-parity",
@@ -437,6 +537,7 @@ def genomics(args, dapane):
         "historical-workbook-inspection-and-native-replay",
         "installed-legacy-calculator-entry-point-and-cache-parity",
         "tapestation-gdna-quality-control-exact-json-and-workbook-parity",
+        "booked-equipment-overhead-loaded-labour-and-five-library-preparation-pathways",
     ]
 
 

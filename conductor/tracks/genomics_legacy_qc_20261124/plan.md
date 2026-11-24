@@ -1,6 +1,6 @@
 # Implementation plan
 
-Status: in_progress
+Status: completed
 
 ## Replay the next legacy stage
 
@@ -10,6 +10,6 @@ Status: in_progress
 
 ## Recover equipment, overhead and library preparation
 
-- [~] G2.1 Trace the workbook's booked equipment charge, overhead basis and loaded labour components.
-- [ ] G2.2 Replay those costs and the five original library-preparation paths through exact JSON.
-- [ ] G2.3 Verify installed parity, retain historical anomalies and record the qualified scope.
+- [x] G2.1 Trace the workbook's booked equipment charge, overhead basis and loaded labour components.
+- [x] G2.2 Replay those costs and the five original library-preparation paths through exact JSON.
+- [x] G2.3 Verify installed parity, retain historical anomalies and record the qualified scope.

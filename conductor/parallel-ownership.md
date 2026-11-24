@@ -218,8 +218,11 @@ Its CLI worktree is `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z
 The companion isolated clone is `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/genomics-provider`.
 The Dapane scope is the track, provider verification and exact provider pin.
 The provider scope is the historical workbook adapter, focused tests and usage
-notes. The source workbook is read-only. The next operation is review and hosted
-verification of the two exact changes after local installed replay.
+notes. The source workbook is read-only. The follow-on extends that replay to booked
+equipment and overhead, the loaded hourly rates and library preparation.
+The companion scanner fix uses the isolated CLI checkout
+`/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/standards-full` and only the Dapane-hosted Wolfi
+dependency pin. The next operation is exact-head hosted verification.
 
 ## Main integration reconciliation — 19 November 2026
 

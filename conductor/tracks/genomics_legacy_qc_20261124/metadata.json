@@ -1,9 +1,9 @@
 {
   "track_id": "genomics_legacy_qc_20261124",
   "type": "feature",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-11-24T01:04:15Z",
-  "updated_at": "2026-11-24T01:53:50Z",
+  "updated_at": "2026-11-24T02:05:24Z",
   "description": "Replay the original VCGS workbook's next genomics labour stage through the exact Dapane provider path.",
   "repositories": [
     ".",
@@ -25,7 +25,7 @@
   ],
   "verification": {
     "status": "passed",
-    "scope": "Nine direct costing rows from the preserved VCGS workbook. The installed provider, exact CLI and installed wheel, independent arithmetic, historical reader and selected macro-free formula recalculation agree within the recorded bounds.",
+    "scope": "Original nine direct QC rows, five QC equipment and overhead cases, five library-preparation totals and three loaded hourly rates. Exact Rust CLI and installed wheel agree and the original workbook comparisons preserve the source formula references.",
     "commands": [
       "cargo build --locked --release -p dapane-cli",
       "maturin build --locked --release --interpreter <repo-local CPython 3.15.1>",

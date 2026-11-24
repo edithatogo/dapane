@@ -68,7 +68,7 @@ CPython 3.15.1 and 3.15.2 respectively, using the pinned source revisions and
 locked dependencies. The workbook and extraction regression selection passed
 72 tests. Conductor passed its validator and 12 lifecycle tests.
 
-## Remaining gaps
+## Scope at the first replay
 
 The equipment worksheet prices the TapeStation across declared instrument
 throughput and lists it for both WES and WGS. A stage-specific share remains
@@ -76,3 +76,63 @@ unqualified. The replay retains the opaque loaded labour rate and the
 original direct consumable weights. Cost component decomposition, a full
 inventory and overhead roll-up, other QC blocks, pathway-level totals and
 library preparation remain outside this result.
+
+## Equipment, overhead, loaded labour and library preparation
+
+The completed follow-on replays five booked QC cases, the five library-preparation
+columns in the original summary, and three loaded hourly rates. The native CLI
+and the installed Dapane wheel agreed on all 13 exact reports. Compared with the
+original workbook cells and authorised source operands, the largest total
+residual was AUD `2.464e-13`. The workbook and original direct-QC and extraction
+requests retain their recorded identities.
+
+### Booked equipment and overhead
+
+`Detailed Table!N78,N342,N611,N907,N1155` establish the TapeStation extraction
+charge in the five pathways. The workbook values the charge as the annual PMT
+amount from the equipment cost sheet divided by throughput
+(`Eq - Usage - VCGS!Q7/E7`). Its one-test value is approximately AUD 15.078444.
+The straight-line cost in `Eq - Costs and Usage - VCGS!AF25` is a separate view.
+
+The `Summary Table` formula applies 27% to the stage's exact direct equipment,
+labour and consumable costs. The QC-only request attributes the same linear
+share of the extraction stage overhead to the selected QC lines. The original
+workbook has a combined extraction subtotal. QC and extraction overhead
+should be counted once in a pathway roll-up. The WGA-T QC lines use one set
+of labour inputs while their consumables and equipment have a multiplier of
+three.
+
+### Loaded labour
+
+The provider decomposes the annual inputs and productive-hour divisor that feed
+`Labour - Costs - VCGS!AC3,AC4,AB4`. The derived hourly totals reconcile at
+approximately AUD 122.622695 (technician midpoint), 132.709030 (scientist
+midpoint) and 79.725668 (scientist lower bound). The legacy leave term counts
+the base salary a second time. The component ledger identifies that amount
+explicitly and preserves the workbook total. This verifies the original
+formulation and its booked cost, with current rates and entitlements outside
+the historical scope.
+
+### Library preparation
+
+The provider follows the original detail formulas for equipment, labour and
+consumables. This includes WGA-P's equipment reference to the WES allocation
+block and WGA-T's use of lower-bound labour results with midpoint rates shown
+elsewhere in the detailed table. Verification matches each priced labour and
+consumable line to the original detail cells and each category to its summary
+cell. Requests use the unrounded direct subtotal for overhead, then apply the
+existing Dapane line rounding to the report.
+
+| Original pathway | Workbook subtotal rounded once (AUD) | Dapane line-rounded total (AUD) |
+| --- | ---: | ---: |
+| Panel | 411.31 | 411.31 |
+| EA-P | 411.31 | 411.31 |
+| EA-T | 1234.43 | 1234.44 |
+| WGA-P | 314.82 | 314.82 |
+| WGA-T | 836.97 | 836.97 |
+
+The installed verification runner exports the requests, results and
+comparisons to its private results directory. The provider's
+`dapane_stage_replay` module contains the three historical entry points.
+Actual instrument sharing, corrected labour policy and current economic
+assumptions require separate source evidence.

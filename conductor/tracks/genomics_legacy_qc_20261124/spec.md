@@ -20,3 +20,10 @@ valuation, rounding and report.
 This increment covers the selected direct costs. Shared equipment allocation,
 overhead, new assay or batch assumptions, and later library preparation retain
 separate qualification. Historical labour inputs retain the workbook's original cost basis.
+
+## Follow-on acceptance
+
+1. Recover the booked TapeStation charge and 27% overhead formula and state their scope.
+2. Decompose the three loaded rates used by the QC and library-preparation cases.
+3. Reproduce the five original library-preparation allocations and totals.
+4. Preserve the original workbook formulas and identify their unusual cost references.
