@@ -374,8 +374,9 @@ The source and installed runtime have no Pandas imports on those paths.
 The installed commands completed in an independent consumer directory
 without the legacy checkout on the import path. Their distinct evidence
 includes 35 CSV and Parquet worksheet round trips, 17,897 detailed-table
-comparisons, 1,014 cost-row comparisons and 99 comparisons of server,
-equipment and storage fields, with zero disagreements in those groups.
+comparisons, 1,014 cost-row comparisons, 39 process worksheet cells and
+99 comparisons of server, equipment and storage fields, with zero
+disagreements in those groups.
 The worksheet that supplies shared labour inputs used its own assay label.
 The deterministic and archived probabilistic outputs contained 70 and five
 evidence rows respectively.
@@ -426,7 +427,7 @@ copied into the harness and passed on the focused rerun. This covers all
 1,339 inherited cases, including the four earlier prepared-input skips.
 
 The later native source commands, lab adjustments and recovery changes
-built from a checked source distribution and passed 166 packaged tests
+built from a checked source distribution and passed 171 packaged tests
 with sockets disabled. After including the candidate lock in the test
 harness, the independent inherited suite also passed all 1,339 cases in
 one run. The installed replay produced the same workbook, formula and

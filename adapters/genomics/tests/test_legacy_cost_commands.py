@@ -122,6 +122,111 @@ def test_publication_command_exports_data_and_metadata(tmp_path):
     assert metadata["columns"][0]["sample_values"] == ["Synthetic"]
 
 
+def test_enhanced_reporting_source_alias_emits_the_installed_formats(tmp_path):
+    prepared = tmp_path / "prepared"
+    prepared.mkdir()
+    destination = tmp_path / "reports"
+    pl.DataFrame({"component": ["Synthetic cost"], "price": [10]}).write_parquet(
+        prepared / "synthetic.parquet"
+    )
+    run_command(
+        tmp_path,
+        "enhanced_reporting",
+        "--data-dir",
+        prepared,
+        "--output-dir",
+        destination,
+    )
+    report = destination / "enhanced_microcosting_report"
+    assert report.with_suffix(".html").is_file()
+    assert report.with_suffix(".md").is_file()
+    assert "synthetic" in report.with_suffix(".json").read_text(encoding="utf-8")
+
+
+def test_manage_data_restores_version_and_exports_both_formats(tmp_path):
+    original = pl.DataFrame({"Assay": ["Synthetic panel"], "Cost": [10.5]})
+    source = tmp_path / "costs.parquet"
+    original.write_parquet(source)
+    options = ("--data-dir", tmp_path / "data", "--metadata-dir", tmp_path / "metadata")
+    run_command(
+        tmp_path, "manage_data", *options, "--action", "register", "--file", source
+    )
+    run_command(
+        tmp_path, "manage_data", *options, "--action", "verify", "--dataset", "costs"
+    )
+    for file_format, read in (("csv", pl.read_csv), ("parquet", pl.read_parquet)):
+        target = tmp_path / f"restored.{file_format}"
+        run_command(
+            tmp_path,
+            "manage_data",
+            *options,
+            "--action",
+            "load",
+            "--dataset",
+            "costs",
+            "--output",
+            target,
+        )
+        assert read(target).equals(original)
+
+
+@pytest.mark.parametrize(
+    ("script", "scenario"),
+    [
+        ("run_scenario_analysis", "inflation_5"),
+        ("run_advanced_scenario_analysis", "advanced_inflation"),
+    ],
+)
+def test_scenario_command_exports_the_expected_price_increase(
+    tmp_path, script, scenario
+):
+    prepared = tmp_path / "prepared"
+    prepared.mkdir()
+    pl.DataFrame({"unit_cost_aud_per_unit": [100.0, 200.0]}).write_parquet(
+        prepared / "detailed_table.parquet"
+    )
+    destination = tmp_path / "scenarios"
+    run_command(
+        tmp_path,
+        script,
+        "--data-dir",
+        prepared,
+        "--output-dir",
+        destination,
+        "--scenario",
+        scenario,
+        "--compare",
+        scenario,
+    )
+    if script == "run_scenario_analysis":
+        output = pl.read_csv(destination / "scenario_comparison.csv")
+        assert output["Base Case"][0] == pytest.approx(300)
+        assert output[scenario][0] == pytest.approx(315)
+    else:
+        path = (
+            destination
+            / "detailed_comparisons/detailed_comparison_unit_cost_aud_per_unit"
+        )
+        output = pl.read_csv(path.with_suffix(".csv"))
+        assert output["Base Case"][0] == pytest.approx(150)
+        assert output[scenario][0] == pytest.approx(157.5)
+        receipt = json.loads(path.with_suffix(".json").read_bytes())
+        assert receipt[scenario]["0"] == pytest.approx(157.5)
+
+
+def test_process_sheet_validator_compares_cached_source_cells(tmp_path):
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "Process"
+    sheet.append(["Stage", "Amount"])
+    sheet.append(["Synthetic stage", 8])
+    source = tmp_path / "process.xlsx"
+    workbook.save(source)
+    workbook.close()
+    result = run_command(tmp_path, "validate_process_sheet", "--workbook", source)
+    assert "Compared 2 process worksheet cells, 0 differences" in result
+
+
 def test_compute_storage_export_uses_source_formula_cells(tmp_path):
     workbook = Workbook()
     sheet = workbook.active

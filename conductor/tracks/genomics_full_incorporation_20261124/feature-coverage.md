@@ -57,6 +57,8 @@ records what was compared.
 | `prepare_reference_tables`, `validate_simple_tables` | Prepared both historical reference layouts from an independent synthetic workbook and compared their populated numeric cells. |
 | `validate_labour_usage`, `extract_excel_data_properly` | Compared the original labour sheet and exported its shared assay classification as stored. |
 | `transfer_validate_tables`, `prepare_publication_tables` | Round-tripped all 35 sheets through native formats. A separate synthetic case verifies publication CSV and metadata. |
+| `enhanced_reporting` | The source command and installed package use the same report generator. The packaged alias produces HTML, Markdown and JSON from a synthetic table. |
+| `manage_data`, `run_scenario_analysis`, `run_advanced_scenario_analysis`, `validate_process_sheet` | Restored a versioned dataset to CSV and Parquet. Checked two scenario comparison reports against independent synthetic costs, and matched 39 original process worksheet cells. |
 | `analyze_scenarios` | Read 70 workbook DSA records and five archived PSA summaries. New scenarios use native exact requests. |
 | `analyze_model_consistency`, `automated_standardization`, `model_transformation`, `phase3_data_enhancement` | Produced the five model audits and exports. Original values and physical row identity remain available in the source-backed exports. |
 | `excel_data_extractor`, `extract_excel_comprehensive`, `validate_excel_comparison`, `validate_data_integrity` | Verified the exported and projected model values against the selected workbook revision. |
@@ -65,6 +67,10 @@ records what was compared.
 | `establish_performance_baselines`, `compare_performance`, `profile_and_optimize` | Measured native contribution workloads, checked values during optimization, and exercised parallel and cache equivalence. Compare only receipts with matching runtime and workload identities. |
 
 The command audit supplements the structural inventory and inherited tests.
+All 37 legacy commands with Pandas imports are present in the source
+distribution with native implementations. The Dapane source tree retains
+all 74 registered command paths, including development and diagnostic
+commands.
 Some frozen feature rows, including repository controls and operational
 acceptance, still need individual disposition for G3.5.
 

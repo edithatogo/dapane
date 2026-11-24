@@ -23,24 +23,13 @@ def _compare_requested_scenarios(
     output_dir: Path,
 ) -> None:
     sys.stdout.write(f"Comparing scenarios: {names}\n")
-    try:
-        comparison = scenario_manager.compare_scenarios(
-            names,
-            "detailed_table",
-        )
-
-        # Save comparison to CSV
-        comparison_file = output_dir / "scenario_comparison.csv"
-        comparison.to_csv(comparison_file, index=False)
-        sys.stdout.write(f"Saved comparison to {comparison_file}" + "\n")
-
-        # Print summary
-        sys.stdout.write("\nScenario Comparison Summary:" + "\n")
-        sys.stdout.write(str(comparison.to_string(index=False)) + "\n")
-
-    except Exception as e:
-        logger.exception("Could not complete run scenario analysis")
-        sys.stdout.write(f"Error comparing scenarios: {e}" + "\n")
+    comparison = scenario_manager.compare_scenarios(names, "detailed_table")
+    if comparison.is_empty():
+        raise ValueError("No comparable numeric scenario columns")
+    comparison_file = output_dir / "scenario_comparison.csv"
+    comparison.write_csv(comparison_file)
+    sys.stdout.write(f"Saved comparison to {comparison_file}\n")
+    sys.stdout.write(f"\nScenario Comparison Summary\n{comparison}\n")
 
 
 def main() -> int:
@@ -104,7 +93,7 @@ def main() -> int:
                     f"Warning: Scenario '{scenario_name}' not found" + "\n",
                 )
 
-        if args.compare and "detailed_table" in data_dict:
+        if args.compare:
             _compare_requested_scenarios(scenario_manager, args.compare, output_dir)
 
         # Generate report
