@@ -156,7 +156,7 @@ def inventory_workbook(payload: bytes, catalogue: dict[str, Any]) -> dict[str, A
 
 
 def main() -> None:
-    """Write the private ledger to a new file and print only aggregate counts."""
+    """Write the private ledger to a new restricted file."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("workbook", type=Path)
     parser.add_argument("catalogue", type=Path)
@@ -172,7 +172,6 @@ def main() -> None:
     with args.output.open("w", encoding="utf-8") as handle:
         json.dump(ledger, handle, ensure_ascii=False, separators=(",", ":"))
         handle.write("\n")
-    print(json.dumps(ledger["counts"], sort_keys=True))
 
 
 if __name__ == "__main__":

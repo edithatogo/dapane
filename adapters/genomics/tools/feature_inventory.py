@@ -212,16 +212,6 @@ def main() -> None:
     args.output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print(
-        json.dumps(
-            {
-                "modules": len(report["modules"]),
-                "test_files": len(report["tests"]),
-                "tracked_plan_rows": sum(len(plan["entries"]) for plan in report["plans"]),
-            },
-            sort_keys=True,
-        )
-    )
 
 
 if __name__ == "__main__":
