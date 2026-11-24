@@ -27,10 +27,11 @@ A completed planning task does not change a runtime capability from planned to q
 | [-] | [Frontier research and comparative benchmarks](./tracks/frontier_benchmarks_20261108/index.md) | archived | RQ-12, RQ-06, RQ-10, RQ-11 |
 | [x] | [Regulatory public-finance and health-system valuation handoff for tobac](./tracks/tobac_regulatory_fiscal_valuation_20261110/index.md) | completed | RQ-01, RQ-02, RQ-07, RQ-11 |
 | [x] | [Serde and canonicalization equivalence qualification](./tracks/serde_canonicalization_qualification_20261118/index.md) | completed | RQ-01, RQ-02, RQ-03 |
+| [x] | [Genomics legacy quality-control costing](./tracks/genomics_legacy_qc_20261124/index.md) | completed | RQ-02, RQ-03, RQ-04 |
 
 ## Track disposition
 
-All 15 tracks have met their recorded scope. Nine are archived and six are completed. The [ownership map](parallel-ownership.md) records the integrator and lane assignments.
+Nine tracks are archived and seven are completed. The [ownership map](parallel-ownership.md) records the integrator and lane assignments.
 
 The [installed core and two-provider qualification](../docs/python-provider-verification.md), [fiscal handoff](tracks/tobac_regulatory_fiscal_valuation_20261110/plan.md), [decision-provider runs](tracks/decision_integrations_20261108/plan.md) and [canonicalization qualification](tracks/serde_canonicalization_qualification_20261118/plan.md) record the delivered numerical and integration scopes. The latest fiscal comparisons cover New Zealand and Australian synthetic policy cases. The decision runs include an installed adoption model.
 

@@ -210,6 +210,20 @@ The [registry](tracks.md) retains each track's actual lifecycle state. This map
 records responsibility and review boundaries; it does not silently advance those
 states or make optional lanes prerequisites for the bounded first release.
 
+## Genomics quality-control follow-on
+
+Integration chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` owns
+[the quality-control follow-on](tracks/genomics_legacy_qc_20261124/index.md).
+Its CLI worktree is `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/dapane`.
+The companion isolated clone is `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/genomics-provider`.
+The Dapane scope is the track, provider verification and exact provider pin.
+The provider scope is the historical workbook adapter, focused tests and usage
+notes. The source workbook is read-only. The follow-on extends that replay to booked
+equipment and overhead, the loaded hourly rates and library preparation.
+The companion scanner fix uses the isolated CLI checkout
+`/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/standards-full` and only the Dapane-hosted Wolfi
+dependency pin. The next operation is exact-head hosted verification.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

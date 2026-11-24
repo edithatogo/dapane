@@ -103,18 +103,26 @@ def test_qld_nbs_cases_match_schemas_exact_arithmetic_and_locked_provenance(
 
 
 def test_programme_pack_locks_perspective_source_gaps_and_pending_reporting() -> None:
+    programme_file = FIXTURES / "programme.json"
     programme = load("programme.json")
-    locks = json.loads((ROOT / "docs/provider-consumers.lock.json").read_text(encoding="utf-8"))
+    receipt_path = (
+        ROOT / "conductor" / "tracks" / "newborn_screening_20261108" / "qld-nbs-verification.json"
+    )
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    # The historical scenario's provenance is bound to its own qualification.
+    relative_path = programme_file.relative_to(ROOT).as_posix()
+    assert (
+        hashlib.sha256(programme_file.read_bytes()).hexdigest()
+        == receipt["file_sha256"][relative_path]
+    )
+    pins = receipt["provider_pins"]
     wf = programme["qualified_provider_inputs"]["workforce"]
     gen = programme["qualified_provider_inputs"]["genomics_extraction_recipe"]
 
-    assert wf["repository"] == locks["workforce"]["repository"]
-    assert wf["commit"] == locks["workforce"]["commit"]
-    assert wf["python"] == locks["workforce"]["python"]
-    assert wf["exported_artifact_sha256"] == locks["workforce"]["artifact_sha256"]
-    assert gen["repository"] == locks["genomics"]["repository"]
-    assert gen["commit"] == locks["genomics"]["commit"]
-    assert gen["python"] == locks["genomics"]["python"]
+    assert wf["commit"] == pins["workforce_commit"]
+    assert wf["exported_artifact_sha256"] == pins["workforce_artifact_sha256"]
+    assert gen["commit"] == pins["genomics_commit"]
+    assert gen["workbook_sha256"] == pins["workbook_sha256"]
 
     assert programme["perspective"] == "provider"
     assert programme["reporting_profile"]["status"] == "pending"

@@ -8,7 +8,7 @@
   },
   "genomics": {
     "repository": "edithatogo/microcosting_genomics",
-    "commit": "be2451f34a389f90e618cf37a5e8e1fcbb148dea",
+    "commit": "5af1240324e3d5fa3c8d9dfb198aae81e32b361e",
     "python": "3.15.1"
   },
   "qualification": "passed"
