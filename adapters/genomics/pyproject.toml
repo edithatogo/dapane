@@ -1,0 +1,113 @@
+[build-system]
+requires = ["hatchling==1.33.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "genomics-microcosting"
+version = "0.2.1.dev0"
+description = "Source-backed rare disease genomics microcosting with native Polars"
+
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+readme = "README.md"
+requires-python = "==3.15.1"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pydantic>=2.14.3,<3",
+    "pandera[polars]",
+    "openpyxl",
+    "pyarrow",
+    "polars",
+    "numpy",
+    "numpy-financial",
+    "scipy",
+    "PyYAML",
+    "flask",
+    "defusedxml>=0.7.1",
+]
+
+[project.optional-dependencies]
+native = ["dapane==0.1.0"]
+visualization = ["matplotlib", "plotly"]
+reporting = [
+    "weasyprint",
+    "jinja2",
+    "reportlab>=5.1.0",
+]
+security = [
+    "cryptography>=50.0.2",
+]
+
+[project.scripts]
+validate-engine = "genomics_microcosting.validate_engine:validate_engine"
+prepare-data = "genomics_microcosting.prepare_data:main"
+dapane-genomics-inventory = "dapane_genomics.workbook_ledger:main"
+dapane-genomics-replay = "dapane_genomics.v15_replay:main"
+dapane-genomics-pathways = "dapane_genomics.v15_pathways:main"
+
+[tool.hatch.build]
+exclude = ["**/*.xlsx", "**/*.xlsm", "**/*.parquet", "**/*.pkl", "**/*.docx", "**/*.ipynb", "/conductor", "/.private-runs"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/genomics_microcosting", "src/dapane_genomics"]
+exclude = ["/src/genomics_microcosting/ruff.toml"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"config.yaml" = "genomics_microcosting/config.yaml"
+"config" = "genomics_microcosting/configuration"
+"configs" = "genomics_microcosting/analysis_defaults"
+"CITATION.cff" = "genomics_microcosting/CITATION.cff"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src", "/scripts", "/tools", "/tests", "/config", "/configs", "/config.yaml",
+    "/pyproject.toml", "/README.md", "/LICENSE", "/CITATION.cff", "/uv.lock",
+]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+xfail_strict = true
+filterwarnings = ["error"]
+testpaths = ["tests"]
+env = [
+    "MPLBACKEND=Agg",
+]
+
+
+[tool.ruff]
+extend = "../../pyproject.toml"
+line-length = 88
+
+[dependency-groups]
+profiling = ["scalene"]
+dev = [
+    "cryptography",
+    "plotly",
+    "basedpyright",
+    "ruff>=0.17.4",
+    "bandit",
+    "pytest",
+    "pytest-cov",
+    "hypothesis",
+    "pytest-env>=1.8.5",
+    "pre-commit",
+    "pytest-gremlins",
+    "matplotlib",
+    "psutil>=7.2.2",
+    "types-psutil>=7.2.2.20260906",
+    "types-openpyxl>=3.1.5.20261017",
+    "types-pyyaml>=6.0.12.20261103",
+    "vulture>=2.16",
+    "pytest-timeout>=2.4.0",
+    "pytest-socket>=0.8.1",
+    "reportlab>=5.1.0",
+    "types-reportlab>=5.1.0.20261104",
+]
+
+[tool.basedpyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.15"
+include = ["src", "tests"]

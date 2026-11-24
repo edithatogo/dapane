@@ -14,11 +14,14 @@ from xml.etree.ElementTree import Element, tostring
 from zipfile import ZipFile
 
 from defusedxml import ElementTree
-from genomics_microcosting.dapane_workbook import verified_workbook_payload
 from openpyxl import load_workbook
 from openpyxl.formula import Tokenizer
 
-_RELATIONSHIP_ID = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id"
+from genomics_microcosting.dapane_workbook import verified_workbook_payload
+
+_RELATIONSHIP_ID = (
+    "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id"
+)
 
 
 def _sheet_parts(archive: ZipFile) -> dict[str, str]:
@@ -29,13 +32,17 @@ def _sheet_parts(archive: ZipFile) -> dict[str, str]:
     for sheet in book.findall("{*}sheets/{*}sheet"):
         relationship = by_id[sheet.attrib[_RELATIONSHIP_ID]]
         target = relationship["Target"]
-        path = PurePosixPath(target.lstrip("/") if target.startswith("/") else f"xl/{target}")
+        path = PurePosixPath(
+            target.lstrip("/") if target.startswith("/") else f"xl/{target}"
+        )
         if (
             relationship.get("TargetMode") == "External"
             or ".." in path.parts
             or path.parts[:2] != ("xl", "worksheets")
         ):
-            raise ValueError("Workbook sheet must resolve to an internal worksheet part")
+            raise ValueError(
+                "Workbook sheet must resolve to an internal worksheet part"
+            )
         parts[sheet.attrib["name"]] = path.as_posix()
     return parts
 
@@ -88,9 +95,16 @@ def inventory_workbook(payload: bytes, catalogue: dict[str, Any]) -> dict[str, A
             parts = _sheet_parts(archive)
             if list(parts) != workbook.sheetnames:
                 raise ValueError("Workbook reader and raw sheet relationships differ")
-            for sheet, listed in zip(workbook.worksheets, catalogue["sheets"], strict=True):
-                if sheet.title != listed["sheet"] or sheet.sheet_state != listed["state"]:
-                    raise ValueError(f"Catalogue sheet identity differs at {listed['id']}")
+            for sheet, listed in zip(
+                workbook.worksheets, catalogue["sheets"], strict=True
+            ):
+                if (
+                    sheet.title != listed["sheet"]
+                    or sheet.sheet_state != listed["state"]
+                ):
+                    raise ValueError(
+                        f"Catalogue sheet identity differs at {listed['id']}"
+                    )
                 expanded: dict[str, str] = {}
                 texts: dict[str, str] = {}
                 populated = set()
@@ -111,16 +125,22 @@ def inventory_workbook(payload: bytes, catalogue: dict[str, Any]) -> dict[str, A
                     if (record := _cell_record(cell, expanded, texts)) is not None:
                         coordinate = record["coordinate"]
                         if coordinate in records:
-                            raise ValueError(f"Duplicate coordinate {listed['id']}:{coordinate}")
+                            raise ValueError(
+                                f"Duplicate coordinate {listed['id']}:{coordinate}"
+                            )
                         records[coordinate] = record
-                raw_formulas = {key for key, record in records.items() if "formula" in record}
+                raw_formulas = {
+                    key for key, record in records.items() if "formula" in record
+                }
                 if (
                     populated != records.keys()
                     or expanded.keys() != raw_formulas
                     or len(populated) != listed["nonempty_cells"]
                     or len(raw_formulas) != listed["formulas"]
                 ):
-                    raise ValueError(f"Workbook, reader and catalogue disagree at {listed['id']}")
+                    raise ValueError(
+                        f"Workbook, reader and catalogue disagree at {listed['id']}"
+                    )
 
                 sheets.append(
                     {
@@ -138,16 +158,23 @@ def inventory_workbook(payload: bytes, catalogue: dict[str, Any]) -> dict[str, A
         workbook.close()
 
     counts = Counter(
-        "formula" if "formula" in cell else "input" for sheet in sheets for cell in sheet["cells"]
+        "formula" if "formula" in cell else "input"
+        for sheet in sheets
+        for cell in sheet["cells"]
     )
-    if len(sheets) != catalogue["sheet_count"] or counts["formula"] != catalogue["formula_count"]:
+    if (
+        len(sheets) != catalogue["sheet_count"]
+        or counts["formula"] != catalogue["formula_count"]
+    ):
         raise ValueError("Workbook totals disagree with the frozen catalogue")
     return {
         "version": 1,
         "source_sha256": digest,
         "counts": {
             "sheets": len(sheets),
-            "hidden_sheets": sum(sheet["catalogue"]["state"] != "visible" for sheet in sheets),
+            "hidden_sheets": sum(
+                sheet["catalogue"]["state"] != "visible" for sheet in sheets
+            ),
             "formula_cells": counts["formula"],
             "populated_nonformula_cells": counts["input"],
         },
@@ -160,7 +187,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("workbook", type=Path)
     parser.add_argument("catalogue", type=Path)
-    parser.add_argument("output", type=Path, help="New local file for source-derived evidence")
+    parser.add_argument(
+        "output", type=Path, help="New local file for source-derived evidence"
+    )
     args = parser.parse_args()
     catalogue_bytes = args.catalogue.read_bytes()
     ledger = inventory_workbook(

@@ -41,7 +41,9 @@ def _module(path: Path) -> str:
 def _exports(nodes: list[ast.stmt], prefix: str = "") -> list[dict[str, Any]]:
     symbols = []
     for node in nodes:
-        if not isinstance(node, (*_FUNCTIONS, ast.ClassDef)) or node.name.startswith("_"):
+        if not isinstance(node, (*_FUNCTIONS, ast.ClassDef)) or node.name.startswith(
+            "_"
+        ):
             continue
         name = prefix + node.name
         symbol: dict[str, Any] = {"name": name, "line": node.lineno}
@@ -98,15 +100,23 @@ def _markdown_rows(text: str, prefix: str) -> list[dict[str, Any]]:
     return rows
 
 
-def inventory_features(repo: Path, revision: str, issues: list[list[dict]]) -> dict[str, Any]:
+def inventory_features(
+    repo: Path, revision: str, issues: list[list[dict]]
+) -> dict[str, Any]:
     """Bind candidate features to source coordinates and existing test files."""
     if _git(repo, "rev-parse", "HEAD").decode().strip() != revision:
         raise ValueError("Legacy checkout is not at the frozen revision")
     if _git(repo, "status", "--porcelain", "-z"):
         raise ValueError("Legacy checkout has uncommitted files")
 
-    tracked = [Path(path.decode()) for path in _git(repo, "ls-files", "-z").split(b"\0") if path]
-    tests = [path for path in tracked if path.parts[0] == "tests" and path.suffix == ".py"]
+    tracked = [
+        Path(path.decode())
+        for path in _git(repo, "ls-files", "-z").split(b"\0")
+        if path
+    ]
+    tests = [
+        path for path in tracked if path.parts[0] == "tests" and path.suffix == ".py"
+    ]
     tested_by: dict[str, set[str]] = defaultdict(set)
     for path in tests:
         tree = ast.parse((repo / path).read_text(encoding="utf-8"), str(path))
@@ -149,7 +159,12 @@ def inventory_features(repo: Path, revision: str, issues: list[list[dict]]) -> d
             }
         )
     for issue in sorted(
-        (issue for page in issues for issue in page if issue["number"] in {163, 164, 165, 170}),
+        (
+            issue
+            for page in issues
+            for issue in page
+            if issue["number"] in {163, 164, 165, 170}
+        ),
         key=lambda issue: issue["number"],
     ):
         prefix = f"GH{issue['number']}"
@@ -172,7 +187,8 @@ def inventory_features(repo: Path, revision: str, issues: list[list[dict]]) -> d
         "configuration": [
             path.as_posix()
             for path in tracked
-            if path.parts[0] in {"config", "configs", "config.yaml", "pyproject.toml", "uv.lock"}
+            if path.parts[0]
+            in {"config", "configs", "config.yaml", "pyproject.toml", "uv.lock"}
         ],
         "modules": modules,
         "resources": [
@@ -190,7 +206,8 @@ def inventory_features(repo: Path, revision: str, issues: list[list[dict]]) -> d
         "documents": [
             path.as_posix()
             for path in tracked
-            if path.suffix == ".md" and (path.parts[0] == "docs" or len(path.parts) == 1)
+            if path.suffix == ".md"
+            and (path.parts[0] == "docs" or len(path.parts) == 1)
         ],
         "tests": [path.as_posix() for path in tests],
         "plans": plans,

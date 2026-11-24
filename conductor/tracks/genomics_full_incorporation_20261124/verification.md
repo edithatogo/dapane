@@ -36,7 +36,7 @@ extracted from the archived tree both matched the pinned workbook SHA-256.
 
 ## Workbook ledger
 
-The [inventory command](../../../adapters/genomics/src/genomics_microcosting/workbook_ledger.py)
+The [inventory command](../../../adapters/genomics/src/dapane_genomics/workbook_ledger.py)
 reconciled populated coordinates and formula counts for every catalogue
 sheet against both the raw worksheet parts and the existing workbook
 reader. It retained stored numeric strings, text and errors, expanded
@@ -248,3 +248,29 @@ The installed route-map result and Matplotlib gap are recorded in the
 
 These baselines define the compatibility checks to run again with the
 optional package built from Dapane.
+
+## Dapane-built legacy runtime
+
+The [optional genomics distribution](../../../adapters/genomics/README.md)
+keeps the source-pinned implementation and both legacy console entry
+points alongside the v15 replay commands. Its licence, citation,
+configuration templates and lock are included. The native extra uses the
+Dapane binding. The installed artifact contains the source catalogue and
+the original package resources, with the workbook provided separately.
+
+A noneditable CPython 3.15.1 installation built from Dapane matched the
+frozen source digests of all 109 legacy modules before subsequent
+compatibility fixes. It passed all 1,335 available inherited tests with
+sockets disabled. The four old DSA skip cases were then exercised by
+supplying the two verified export tables under their expected historical
+filenames in the private test harness. The focused six-case run all passed.
+
+An independent consumer directory used the installed entry points and
+the packaged catalogue. Its workbook inventory, exact formula results
+and native pathway reports reproduced the prior artifacts byte-for-byte.
+The 35 CSV and 35 Parquet outputs also matched all 70 legacy export
+digests. Installed validation again passed all 2,894 comparisons across
+the three selected cost columns.
+
+The remaining report, web, plugin and revision checks are G3.3. Planned
+capabilities and the complete feature dispositions are G3.4 and G3.5.
