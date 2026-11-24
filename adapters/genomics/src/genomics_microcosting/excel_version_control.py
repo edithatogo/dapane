@@ -9,6 +9,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
+from uuid import uuid4
 
 import polars as pl
 from openpyxl import Workbook
@@ -158,17 +159,15 @@ class WorkbookVersionControl:
     def _save_metadata(self) -> None:
         """Save metadata to file."""
         metadata_file = self.metadata_dir / "workbooks.json"
-        try:
-            data = {}
-            for workbook_name, versions in self.workbooks.items():
-                data[workbook_name] = [version.to_dict() for version in versions]
-
-            with Path(metadata_file).open("w") as f:
-                json.dump(data, f, indent=2)
-
-            logger.info("Saved metadata for %s workbooks", len(self.workbooks))
-        except Exception:
-            logger.exception("Error saving metadata")
+        data = {
+            workbook_name: [version.to_dict() for version in versions]
+            for workbook_name, versions in self.workbooks.items()
+        }
+        with TemporaryDirectory(dir=self.metadata_dir) as directory:
+            staged = Path(directory) / metadata_file.name
+            staged.write_text(json.dumps(data, indent=2), encoding="utf-8")
+            staged.replace(metadata_file)
+        logger.info("Saved metadata for %s workbooks", len(self.workbooks))
 
     def commit_workbook(
         self,
@@ -203,13 +202,29 @@ class WorkbookVersionControl:
             logger.info("Workbook %s unchanged since last commit", workbook_name)
             return latest_version.version_id
 
-        # Copy file to repository
+        # Keep older identifiers readable and avoid replacing a same-second commit.
         repo_file_path = self.workbooks_dir / f"{version_id}{file_path.suffix}"
-        shutil.copy2(file_path, repo_file_path)
+        try:
+            destination = repo_file_path.open("xb")
+        except FileExistsError:
+            version_id = f"{version_id}_{uuid4().hex}"
+            repo_file_path = self.workbooks_dir / f"{version_id}{file_path.suffix}"
+            destination = repo_file_path.open("xb")
+        try:
+            with destination, file_path.open("rb") as source:
+                shutil.copyfileobj(source, destination)
+            matches_source = self._get_file_checksum(repo_file_path) == checksum
+        except Exception:
+            repo_file_path.unlink()
+            raise
+        if not matches_source:
+            repo_file_path.unlink()
+            message = "Workbook changed while it was being committed"
+            raise ValueError(message)
 
         # Create metadata
         file_metadata = {
-            "file_size": file_path.stat().st_size,
+            "file_size": repo_file_path.stat().st_size,
             "file_extension": file_path.suffix,
             "original_path": str(file_path),
             "committed_by": "WorkbookVersionControl",
@@ -227,12 +242,16 @@ class WorkbookVersionControl:
         )
 
         # Add to workbooks
-        if workbook_name not in self.workbooks:
-            self.workbooks[workbook_name] = []
-        self.workbooks[workbook_name].append(version)
-
-        # Save metadata
-        self._save_metadata()
+        versions = self.workbooks.setdefault(workbook_name, [])
+        versions.append(version)
+        try:
+            self._save_metadata()
+        except Exception:
+            versions.pop()
+            if not versions:
+                del self.workbooks[workbook_name]
+            repo_file_path.unlink()
+            raise
 
         logger.info("Committed workbook %s with version %s", workbook_name, version_id)
         return version_id

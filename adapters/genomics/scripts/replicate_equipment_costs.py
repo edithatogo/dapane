@@ -1,29 +1,14 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Replicate equipment cost calculations using the extracted CSV data."""
 
+import argparse
 import sys
 from pathlib import Path
 
-import numpy as np
 import numpy_financial as npf
-import pandas as pd
+import polars as pl
 
-# Load the data, skipping initial rows and setting a header row
-DATA_DIR = Path(__file__).resolve().parents[0] / "data" / "extracted"
-df = pd.read_csv(
-    DATA_DIR / "Eq - Costs and Usage - VCGS_values.csv",
-    header=3,
-    dtype=str,
-)
-
-# Drop empty rows
-df = df.dropna(how="all")
-df = df.reset_index(drop=True)
-
-# Clean up column names
-# The header has some issues due to merged cells in Excel.
-# Let's create a cleaned-up list of column names.
-columns = [
+COLUMNS = [
     "Equipment",
     "Description",
     "Brand",
@@ -59,55 +44,66 @@ columns = [
     "Cost per sample MP",
     "Cost per sample UL",
 ]
-# There are more columns in the file, but we'll only name the ones we need for now
-df.columns = columns[: len(df.columns)]
-
-# Convert relevant columns to numeric, coercing errors to NaN
-numeric_cols = ["Useful Life", "List Price (AUD)", "Annualised cost", "Present value"]
-for col in numeric_cols:
-    # Remove any non-numeric characters (except for the decimal point)
-    if df[col].dtype == "object":
-        df[col] = df[col].str.replace(r"[^0-9.-]", "", regex=True)
-    df[col] = pd.to_numeric(df[col], errors="coerce")
+NUMERIC_COLUMNS = [
+    "Useful Life",
+    "List Price (AUD)",
+    "Annualised cost",
+    "Present value",
+]
 
 
-# Replicate the 'Annualised cost' calculation: =H5/E5
-df["Calculated Annualised cost"] = df["List Price (AUD)"] / df["Useful Life"]
+def replicate_costs(source: Path) -> pl.DataFrame:
+    """Read the legacy extracted table and reproduce its calculated columns."""
+    df = pl.read_csv(source, skip_rows=3, infer_schema=False)
+    if df.width < len(COLUMNS):
+        raise ValueError(
+            "The extracted table has fewer columns than its published layout"
+        )
+    df = df.rename(dict(zip(df.columns[: len(COLUMNS)], COLUMNS, strict=True)))
+    df = df.filter(pl.any_horizontal(pl.all().is_not_null()))
 
-# Replicate the 'Present value' calculation: "=PMT(4.52%, E5, -H5)"
-# The rate is 4.52%
-rate = 0.0452
-df["Calculated Present value"] = df.apply(
-    lambda row: (
-        npf.pmt(rate, row["Useful Life"], -row["List Price (AUD)"])
-        if pd.notna(row["Useful Life"]) and pd.notna(row["List Price (AUD)"])
-        else np.nan
-    ),
-    axis=1,
-)
-
-# Replicate 'Cost per sample LL': =K5/P8
-# K is 'Annualised cost', P is 'Initial Estimate Total Samples per Year'
-# This calculation has a fixed divisor from another row, which makes it tricky.
-# For now, we will just show the first few rows of the main calculations.
-
-sys.stdout.write("Cleaned Data:" + "\n")
-sys.stdout.write(str(df.head()) + "\n")
-
-
-sys.stdout.write("\nData with Calculated Columns:" + "\n")
-sys.stdout.write(
-    str(
-        df[
-            [
-                "List Price (AUD)",
-                "Useful Life",
-                "Annualised cost",
-                "Calculated Annualised cost",
-                "Present value",
-                "Calculated Present value",
-            ]
-        ].head(),
+    df = df.with_columns(
+        pl.col(column).str.replace_all(r"[^0-9.\-]", "").cast(pl.Float64, strict=False)
+        for column in NUMERIC_COLUMNS
     )
-    + "\n",
-)
+
+    df = df.with_columns(
+        (pl.col("List Price (AUD)") / pl.col("Useful Life")).alias(
+            "Calculated Annualised cost"
+        )
+    )
+    df = df.with_columns(
+        pl.struct("Useful Life", "List Price (AUD)")
+        .map_elements(
+            lambda row: (
+                float(npf.pmt(0.0452, row["Useful Life"], -row["List Price (AUD)"]))
+                if row["Useful Life"] and row["List Price (AUD)"] is not None
+                else None
+            ),
+            return_dtype=pl.Float64,
+        )
+        .alias("Calculated Present value")
+    )
+
+    return df
+
+
+def main() -> int:
+    """Run this workbook compatibility check."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=Path("data/extracted/Eq - Costs and Usage - VCGS_values.csv"),
+    )
+    parser.add_argument("--output", type=Path)
+    options = parser.parse_args()
+    result = replicate_costs(options.input)
+    if options.output is not None:
+        result.write_csv(options.output)
+    sys.stdout.write(f"Calculated rows: {result.height}\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

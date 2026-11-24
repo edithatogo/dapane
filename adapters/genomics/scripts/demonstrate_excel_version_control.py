@@ -6,7 +6,8 @@ import sys
 import tempfile
 from pathlib import Path
 
-import pandas as pd
+import polars as pl
+from openpyxl import Workbook, load_workbook
 
 from genomics_microcosting.excel_version_control import WorkbookVersionControl
 
@@ -19,8 +20,18 @@ def create_sample_workbook(file_path: Path, data: dict) -> None:
         data (dict): Data to include in the workbook
 
     """
-    df = pd.DataFrame(data)
-    df.to_excel(file_path, index=False)
+    frame = pl.DataFrame(data)
+    workbook = Workbook()
+    try:
+        sheet = workbook.active
+        if sheet is None:
+            raise RuntimeError("Sample workbook has no active sheet")
+        sheet.append(frame.columns)
+        for row in frame.iter_rows():
+            sheet.append(row)
+        workbook.save(file_path)
+    finally:
+        workbook.close()
 
 
 def main() -> int:
@@ -100,13 +111,19 @@ def main() -> int:
         sys.stdout.write("\n7. Comparing versions" + "\n")
         comparison = vc.compare_versions("sample_workbook", version_id_1, version_id_2)
         sys.stdout.write(f"   Same checksum: {comparison['same_checksum']}" + "\n")
+        if comparison["same_checksum"]:
+            raise RuntimeError("The two workbook revisions have the same checksum")
         if "differences" in comparison:
             sys.stdout.write(f"   Differences: {comparison['differences']}" + "\n")
 
         # Verify integrity
         sys.stdout.write("\n8. Verifying workbook integrity" + "\n")
-        is_valid = vc.verify_integrity("sample_workbook")
+        is_valid = vc.verify_integrity(
+            "sample_workbook", version_id_1
+        ) and vc.verify_integrity("sample_workbook", version_id_2)
         sys.stdout.write(f"   Integrity check passed: {is_valid}" + "\n")
+        if not is_valid:
+            raise RuntimeError("A saved workbook revision failed verification")
 
         # Checkout a specific version
         sys.stdout.write("\n9. Checking out a specific version" + "\n")
@@ -119,9 +136,19 @@ def main() -> int:
         sys.stdout.write(f"   Checked out version to: {checked_out_file}" + "\n")
 
         # Read and display the checked out data
-        checked_out_data = pd.read_excel(checked_out_file)
+        restored = load_workbook(checked_out_file, read_only=True, data_only=True)
+        try:
+            sheet = restored.active
+            if sheet is None:
+                raise RuntimeError("Restored workbook has no active sheet")
+            header, *rows = sheet.values
+            checked_out_data = pl.DataFrame(rows, schema=list(header), orient="row")
+            if not checked_out_data.equals(pl.DataFrame(data_v1)):
+                raise RuntimeError("Restored data differs from the first workbook")
+        finally:
+            restored.close()
         sys.stdout.write("   Content of checked out version:" + "\n")
-        sys.stdout.write(str(checked_out_data.to_string(index=False)) + "\n")
+        sys.stdout.write(str(checked_out_data) + "\n")
 
         sys.stdout.write(str("\n" + "=" * 50) + "\n")
         sys.stdout.write("Demonstration completed successfully!" + "\n")
