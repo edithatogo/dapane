@@ -224,3 +224,27 @@ reconcile. The parity receipt has SHA-256
 The workbook replays are qualified for the historical source and
 tested comparisons. Installed legacy feature and full successor
 qualification remain in Phases 3 and 4.
+
+## Installed legacy feature contract
+
+A clean private extraction of the frozen provider built and installed the
+legacy distribution noneditably with the frozen lock on CPython 3.15.1.
+The installed byte digests matched all 109 enumerated modules. All nine
+package resources were present. The same installation supplied the legacy
+test suite with visualization, reporting and security extras.
+
+The full baseline suite passed **1,335 tests** with sockets disabled.
+Four tests skipped because their prepared labour-price and throughput
+tables were unavailable under their expected names. The four skips were
+reproduced in a targeted run. The outcome and input paths remain in the
+feature qualification inventory.
+
+From a separate consumer directory, the installed `prepare-data` produced
+35 CSV and 35 Parquet files. Installed `validate-engine` passed all 2,894
+selected comparisons across three detailed-table cost columns. The fixture
+copy, exports, lock log and test receipts remain in restricted storage.
+The installed route-map result and Matplotlib gap are recorded in the
+[feature ledger](#feature-ledger).
+
+These baselines define the compatibility checks to run again with the
+optional package built from Dapane.
