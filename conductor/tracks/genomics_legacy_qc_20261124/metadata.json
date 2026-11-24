@@ -1,14 +1,45 @@
 {
   "track_id": "genomics_legacy_qc_20261124",
   "type": "feature",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-11-24T01:04:15Z",
-  "updated_at": "2026-11-24T01:04:15Z",
+  "updated_at": "2026-11-24T01:31:12Z",
   "description": "Replay the original VCGS workbook's next genomics labour stage through the exact Dapane provider path.",
-  "repositories": [".", "edithatogo/microcosting_genomics"],
-  "dependencies": ["python_two_consumers_20261108"],
-  "owners": ["edithatogo"],
-  "decisions": ["ADR-010"],
-  "requirement_ids": ["RQ-02", "RQ-03", "RQ-04"],
-  "verification": {"status": "pending", "commands": []}
+  "repositories": [
+    ".",
+    "edithatogo/microcosting_genomics"
+  ],
+  "dependencies": [
+    "python_two_consumers_20261108"
+  ],
+  "owners": [
+    "edithatogo"
+  ],
+  "decisions": [
+    "ADR-010"
+  ],
+  "requirement_ids": [
+    "RQ-02",
+    "RQ-03",
+    "RQ-04"
+  ],
+  "verification": {
+    "status": "passed",
+    "scope": "Nine direct costing rows from the preserved VCGS workbook. The installed provider, exact CLI and installed wheel, independent arithmetic, historical reader and selected macro-free formula recalculation agree within the recorded bounds.",
+    "commands": [
+      "cargo build --locked --release -p dapane-cli",
+      "maturin build --locked --release --interpreter <repo-local CPython 3.15.1>",
+      "uv sync --locked --no-install-project --python <provider's pinned patch>",
+      "uv build --wheel --python <provider's pinned interpreter>",
+      "python -I scripts/verify_provider_consumers.py workforce --provider-root <workforce> --dapane-root <dapane> --cli <native CLI> --output <private evidence>",
+      "python -I scripts/verify_provider_consumers.py genomics --provider-root <genomics> --dapane-root <dapane> --cli <native CLI> --output <private evidence>",
+      "python -m pytest tests/test_dapane_workbook.py tests/test_dapane_adapter.py -q",
+      "python scripts/validate_conductor.py",
+      "python -m unittest discover -s tests -p test_conductor_validation.py -q"
+    ],
+    "evidence": [
+      "conductor/tracks/genomics_legacy_qc_20261124/verification.md",
+      "docs/provider-consumers.lock.json"
+    ]
+  }
 }

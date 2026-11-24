@@ -184,6 +184,75 @@ def workforce(args, dapane):
     ]
 
 
+def verify_gdna_qc(args, dapane, workbook, history, legacy_engine):
+    """Compare the original QC labour rows with exact native and legacy results."""
+    inspection = history.inspect_gdna_qc_workbook(workbook)
+    request = history.historical_gdna_qc_request(workbook)
+    report = dapane.evaluate(request)
+    native_parity(request, args.cli, report)
+    assert report["status"] == "complete"
+    assert inspection["repairs_applied"] == []
+    labour_sheet = "Labour - Usage - VCGS"
+    consumables_sheet = "Cons -  Costs and Util - VCGS"
+    sheets = inspection["sheets"]
+    cases = {
+        f"G{row}": (labour_sheet, f"AB{row}", Fraction("2.16"), f"L{row}", 60) for row in (32, 33)
+    }
+    cases.update(
+        {
+            f"F{row}": (
+                consumables_sheet,
+                f"J{row}",
+                Fraction(sheets[consumables_sheet][f"F{row}"]["cached"]),
+                f"E{row}",
+                1,
+            )
+            for row in range(13, 20)
+        }
+    )
+    assert len(report["lines"]) == len(cases)
+    assert {line["id"] for line in report["lines"]} == cases.keys()
+
+    expected_total = Fraction()
+    rounded_total = Fraction()
+    comparisons = {}
+    for line in report["lines"]:
+        sheet, output_cell, quantity, price_cell, denominator = cases[line["id"]]
+        cells = sheets[sheet]
+        expected = quantity * Fraction(cells[price_cell]["cached"]) / denominator
+        cache = Fraction(cells[output_cell]["cached"])
+        legacy = legacy_engine.get_cell_value(sheet, output_cell)
+        assert legacy is not None
+        assert exact(line["quantity"]) == quantity
+        assert exact(line["exact"]) == expected
+        assert Fraction(line["rounded"]) == round(expected, 2)
+        # The original caches and historical reader represent binary spreadsheet
+        # values. This tolerance is only for comparisons with those values.
+        assert abs(cache - expected) <= Fraction(1, 10**12)
+        assert abs(Fraction(str(legacy)) - cache) <= Fraction(1, 10**12)
+        expected_total += expected
+        rounded_total += round(expected, 2)
+        comparisons[output_cell] = {
+            "legacy": str(legacy),
+            "cache_minus_exact": str(cache - expected),
+        }
+
+    assert exact(report["totals"]["exact"]) == expected_total
+    assert Fraction(report["totals"]["rounded"]) == rounded_total
+    (args.output / "gdna-qc-request.json").write_text(
+        json.dumps(request, allow_nan=False, indent=2) + "\n", encoding="utf-8"
+    )
+    (args.output / "gdna-qc-replay.json").write_text(
+        json.dumps(
+            {"workbook": inspection, "report": report, "comparisons": comparisons},
+            allow_nan=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
 def genomics(args, dapane):
     """Consume the workforce file in the independently pinned genomic environment."""
     assert sys.version_info[:3] == (3, 15, 1), sys.version
@@ -357,6 +426,7 @@ def genomics(args, dapane):
     (args.output / "historical-comparison.json").write_text(
         json.dumps(comparison, ensure_ascii=False, default=str), encoding="utf-8"
     )
+    verify_gdna_qc(args, dapane, workbook, history, legacy_engine)
     return [
         "installed-genomics-without-workforce-import",
         "six-batch-occupancies-and-native-parity",
@@ -366,6 +436,7 @@ def genomics(args, dapane):
         "source-dates-digest-and-role-mapping-rejections",
         "historical-workbook-inspection-and-native-replay",
         "installed-legacy-calculator-entry-point-and-cache-parity",
+        "tapestation-gdna-quality-control-exact-json-and-workbook-parity",
     ]
 
 
