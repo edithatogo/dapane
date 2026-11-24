@@ -29,6 +29,7 @@ into a second authoritative location.
 | [Frontier research and comparative benchmarks](../tracks/frontier_benchmarks_20261108/index.md) | Synthetic comparisons and independent public CMS aggregate funding replay and transfer benchmark | 2026-11-20 | [External benchmark review](../tracks/frontier_benchmarks_20261108/external-review.md) |
 | [R and Julia bindings](../tracks/polyglot_bindings_20261108/index.md) | Independently installed local R source and macOS arm64 Julia packages with qualified native calls | 2026-11-20 | [Distribution review](../tracks/polyglot_bindings_20261108/distribution-review.md) |
 | [Release assurance and conditional consolidation](../tracks/release_consolidation_20261108/index.md) | Verified GitHub `v0.1.0` prerelease, exact-source offline security and recorded consolidation decisions | 2026-11-21 | [Publication and verification](../tracks/release_consolidation_20261108/evidence.md#verified-github-prerelease-and-in-place-archive) |
+| [Genomics legacy quality-control costing](../tracks/genomics_legacy_qc_20261124/index.md) | Historical TapeStation QC, five library-preparation pathways and three loaded hourly rates | 2026-11-24 | [Review and fixes](../tracks/genomics_legacy_qc_20261124/review.md) |
 
 The core-contract archive closes synthetic contract/reference acceptance.
 Kernel qualification retains its separately recorded scope and evidence.

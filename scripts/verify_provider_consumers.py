@@ -278,6 +278,17 @@ def verify_genomics_cost_stages(args, dapane, workbook, legacy):
         report = dapane.evaluate(request)
         native_parity(request, args.cli, report)
         run_id = report["run_id"]
+        assert report["status"] == "complete", run_id
+        exact_total = Fraction()
+        rounded_total = Fraction()
+        for line in report["lines"]:
+            value = exact(line["exact"])
+            rounded = round(value, 2)
+            assert Fraction(line["rounded"]) == rounded, (run_id, line["id"])
+            exact_total += value
+            rounded_total += rounded
+        assert exact(report["totals"]["exact"]) == exact_total, run_id
+        assert Fraction(report["totals"]["rounded"]) == rounded_total, run_id
         (output / f"{run_id}.request.json").write_text(
             json.dumps(request, indent=2, allow_nan=False) + "\n", encoding="utf-8"
         )
@@ -288,7 +299,7 @@ def verify_genomics_cost_stages(args, dapane, workbook, legacy):
 
     def compare(report, expected):
         actual = exact(report["totals"]["exact"])
-        assert abs(actual - expected) <= tolerance, (report["run_id"], actual, expected)
+        assert abs(actual - expected) <= tolerance, report["run_id"]
         comparisons[report["run_id"]] = {
             "actual": str(actual),
             "workbook_expected": str(expected),
@@ -309,6 +320,20 @@ def verify_genomics_cost_stages(args, dapane, workbook, legacy):
         }
         for component, column in zip(grouped, ("B", "E", "H", "K"), strict=True):
             assert abs(grouped[component] - cell("Summary Table", f"{column}{row}")) <= tolerance
+        equipment_lines = {
+            line["id"]: exact(line["exact"])
+            for line in library["lines"]
+            if line["components"] == ["equipment"]
+        }
+        start = 21 if scenario == "WGA-T" else 13
+        runs = 3 if scenario in ("EA-T", "WGA-T") else 1
+        booked_equipment = {
+            f"equipment-U{source_row}": runs * cell("Eq - Usage - VCGS", f"U{source_row}")
+            for source_row in range(start, start + 5)
+        }
+        assert equipment_lines.keys() == booked_equipment.keys(), scenario
+        for use, booked in booked_equipment.items():
+            assert abs(equipment_lines[use] - booked) <= tolerance, (scenario, use)
         for line in library["lines"]:
             if line["id"].startswith(("labour-", "consumable-")):
                 reference = line["id"].split("-", 1)[1]
@@ -336,16 +361,42 @@ def verify_genomics_cost_stages(args, dapane, workbook, legacy):
         )
         compare(qc, workbook_direct * Fraction("1.27"))
 
-    for band, coordinate in (
-        ("technician-midpoint", "AC3"),
-        ("scientist-midpoint", "AC4"),
-        ("scientist-lower", "AB4"),
+    labour_sheet = "Labour - Costs - VCGS"
+    for band, row, salary_column, coordinate in (
+        ("technician-midpoint", 3, "W", "AC3"),
+        ("scientist-midpoint", 4, "W", "AC4"),
+        ("scientist-lower", 4, "V", "AB4"),
     ):
         report = evaluate(stages.historical_loaded_labour_request(workbook, band))
-        lines = {line["id"]: exact(line["exact"]) for line in report["lines"]}
-        assert len(lines) == 11
-        assert lines["base_salary"] == lines["repeated_base_in_leave_formula"] > 0
-        compare(report, cell("Labour - Costs - VCGS", coordinate))
+        inputs = {
+            column: cell(labour_sheet, f"{column}{row}")
+            for column in ("J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", salary_column)
+        }
+        hours = 52 * inputs["K"] * inputs["L"]
+        base = inputs[salary_column] / hours
+        leave = inputs["S"] / 52
+        # Independently expand the saved salary formula using the legacy reader.
+        expected = {
+            "base_salary": base,
+            "superannuation": base * inputs["J"],
+            "average_penalties": base * inputs["M"],
+            "public_holiday_penalty": base * inputs["N"],
+            "private_practice_loading": base * inputs["O"],
+            "attraction_retention_allowance": base * inputs["P"],
+            "sick_leave": base * inputs["Q"],
+            "professional_development": inputs["R"] / hours,
+            "repeated_base_in_leave_formula": base,
+            "annual_leave_weeks": base * leave,
+            "annual_leave_loading": base * (1 + leave) * inputs["T"],
+        }
+        lines = report["lines"]
+        assert len(lines) == len(expected), band
+        assert {line["id"] for line in lines} == expected.keys(), band
+        for line in lines:
+            component = line["id"]
+            assert line["components"] == [component], (band, component)
+            assert abs(exact(line["exact"]) - expected[component]) <= tolerance, (band, component)
+        compare(report, cell(labour_sheet, coordinate))
 
     (output / "workbook-comparison.json").write_text(
         json.dumps(comparisons, indent=2) + "\n", encoding="utf-8"
