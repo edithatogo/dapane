@@ -1,7 +1,7 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Runtime checks used where static annotations cannot validate actual test outputs."""
 
-lazy from collections.abc import Container
+from collections.abc import Container
 
 
 def require(*, condition: bool) -> None:

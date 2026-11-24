@@ -14,8 +14,8 @@ from unittest.mock import Mock
 
 import numpy as np
 import polars as pl
-lazy import psutil
-lazy from matplotlib.figure import Figure
+import psutil
+from matplotlib.figure import Figure
 
 from genomics_microcosting.cost_driver_analysis import CostDriverAnalyzer
 from genomics_microcosting.data_manager import DataManager

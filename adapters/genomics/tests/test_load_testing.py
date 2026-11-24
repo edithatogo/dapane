@@ -9,14 +9,14 @@ import logging
 import sys
 import time
 import unittest
+from collections.abc import Callable
 from datetime import UTC, datetime
-from typing import Concatenate, TypedDict
-lazy from collections.abc import Callable
-lazy from unittest.mock import Mock
+from typing import Concatenate, ParamSpec, TypedDict
+from unittest.mock import Mock
 
 import numpy as np
 import polars as pl
-lazy import psutil
+import psutil
 
 from genomics_microcosting.cost_driver_analysis import CostDriverAnalyzer
 from genomics_microcosting.performance import DataOptimizer, PerformanceProfiler
@@ -51,6 +51,8 @@ class LoadingBenchmarkResult(TypedDict):
     data_size: int
     requested_path: str
 
+
+P = ParamSpec("P")
 
 logger = logging.getLogger(__name__)
 SMALL_DATA_SIZE = 100
@@ -107,7 +109,7 @@ class LoadTestingFramework:
 
         return pl.DataFrame(data)
 
-    def run_load_test[**P](
+    def run_load_test(
         self,
         data_size: int,
         operation_name: str,
@@ -179,7 +181,7 @@ class LoadTestingFramework:
         except ImportError:
             return 0.0
 
-    def run_scalability_test[**P](
+    def run_scalability_test(
         self,
         sizes: list[int],
         operation_name: str,

@@ -1,12 +1,12 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Regression checks for removal of executable persistence and formula fallback."""
 
+from pathlib import Path
 from typing import cast
-lazy from pathlib import Path
 
+from genomics_microcosting.calculation_engine import CalculationEngine
 from genomics_microcosting.error_handling import CheckpointManager
 from genomics_microcosting.strategies import IfErrorStrategy
-lazy from genomics_microcosting.calculation_engine import CalculationEngine
 
 
 def test_unknown_formula_does_not_execute_python(tmp_path: Path) -> None:

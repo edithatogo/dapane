@@ -1,7 +1,7 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Enforce the archive boundary before release packaging is accepted."""
 
-lazy from pathlib import Path
+from pathlib import Path
 
 import pytest
 

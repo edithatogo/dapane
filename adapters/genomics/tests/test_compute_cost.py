@@ -5,7 +5,7 @@ from dataclasses import replace
 from datetime import date
 from decimal import Decimal
 from hashlib import sha256
-lazy from pathlib import Path
+from pathlib import Path
 
 import pytest
 
