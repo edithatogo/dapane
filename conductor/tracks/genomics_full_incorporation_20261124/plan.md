@@ -12,8 +12,8 @@ Status: in_progress
 ## Phase 2 — Complete workbook parity
 
 - [x] G2.1 Establish baseline and branch comparison cases from the original workbook and its legacy evaluator. Add independent reference cases for units, rates, allocations, subtotals, branch arithmetic and rounding before extending the costing paths. [Independent formula baseline](verification.md#independent-formula-baseline)
-- [~] G2.2 Reuse the workbook reader and formula engine to reproduce every original input, formula dependency, result and error. Close the missing subtotals and qualify all historical reference and division-error cases.
-- [ ] G2.3 Compose the full detailed pathway and resource ledger, including equipment and capital, throughput, bioinformatics compute and storage. Reproduce every summary, graph input and sensitivity branch with the original currency, units and denominators.
+- [x] G2.2 Reuse the workbook reader and formula engine to reproduce every original input, formula dependency, result and error. Close the missing subtotals and qualify all historical reference and division-error cases. [Exact formula replay](verification.md#exact-historical-formula-replay)
+- [~] G2.3 Compose the full detailed pathway and resource ledger, including equipment and capital, throughput, bioinformatics compute and storage. Reproduce every summary, graph input and sensitivity branch with the original currency, units and denominators.
 - [ ] G2.4 Verify every workbook ledger entry and compare independent totals, branches and rounding through the installed CLI and Python paths. Require complete accounting of affected cells and evaluated outcomes.
 
 ## Phase 3 — Deliver full legacy feature coverage

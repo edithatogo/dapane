@@ -234,7 +234,7 @@ PR #80). The same chat now owns `codex/genomics-incorporation-baselines` in that
 checkout for the source freeze and coverage inventory in PR #81. The same
 checkout continues on `codex/genomics-workbook-replay` for the workbook
 comparison and formula replay. The provider checkout and workbook remain
-read-only inputs. The next operation is G2.2.
+read-only inputs. The next operation is G2.3, the detailed pathway and resource ledger.
 
 ## Main integration reconciliation — 19 November 2026
 

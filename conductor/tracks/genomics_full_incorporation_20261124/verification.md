@@ -139,3 +139,29 @@ The Calc workbook has SHA-256
 The original workbook hash was unchanged. Synthetic cases for ranges,
 rates, annuity, errors and a changed numeric source independently fix
 the expected results for the exact replay.
+
+## Exact historical formula replay
+
+The [v15 replay](../../../adapters/genomics/src/dapane_genomics/v15_replay.py)
+recalculates from original literal values and coordinate dependencies using
+the existing workbook reader and tokenizer. It retains exact rational
+results, with no fallback to formula caches. Excel cell errors are typed
+values, so a broken reference stays distinct from a divide-by-zero result.
+This historical replay does not modify the source or the other legacy
+formula dialects.
+
+It produced a result for each of the 36,411 formula coordinates. All
+3,227 text results and the seven historical errors matched the source.
+Of 33,177 numeric results, 3,680 equal the original decimal cache exactly,
+29,476 more agree at 12 significant digits and the other 21 differ by
+at most `1e-12` in original units. The latter group preserves the exact
+result and per-coordinate residual for inspection. The complete results
+include the detailed-table subtotals and all original sensitivity sheets.
+
+The rational result file has SHA-256
+`2e8fb6133b913dfd103759eb36cedee6853a53c13c27e2f13e3fcc544b2dff4a`.
+The coordinate-level comparison file has SHA-256
+`616a67279b67f309993f93421b9c14e35ae032ab06d777057b28d99f15c488cc`.
+Both files remain restricted. Two independent synthetic tests cover
+cross-sheet ranges, exact expense arithmetic, annuity, input replacement
+and distinct propagated errors. Both passed on CPython 3.15.1.
