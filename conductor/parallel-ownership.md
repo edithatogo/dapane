@@ -235,8 +235,11 @@ checkout for the source freeze and coverage inventory in PR #81. The same
 checkout continues on `codex/genomics-workbook-replay` for the workbook
 comparison and formula replay. The provider checkout and workbook remain
 read-only inputs. The ownership continues on `codex/genomics-legacy-features`
-for compatibility tests and the optional package. The next operation is G3.4,
-qualifying and closing the planned feature gaps.
+for compatibility tests and the optional package. The same integration chat
+uses the separate CLI checkout
+`/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/genomics-standalone-ci`
+for the tested standalone package checkpoint. The implementation checkout
+continues G3.4 and G3.5 on the remaining commands and planned features.
 
 ## Main integration reconciliation — 19 November 2026
 

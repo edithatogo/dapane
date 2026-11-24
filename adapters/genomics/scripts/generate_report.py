@@ -2,15 +2,16 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Script to generate automated reports with visualizations and summary statistics."""
 
-__lazy_modules__ = ("pandas",)
-
+import argparse
 import logging
 import sys
 import traceback
 from pathlib import Path
 
-import pandas as pd
+import polars as pl
+import polars.selectors as cs
 
+from genomics_microcosting.sensitivity_evidence import markdown_table
 from genomics_microcosting.visualization import (
     create_summary_dashboard,
     load_prepared_data,
@@ -22,7 +23,7 @@ CATEGORY_PREVIEW_LIMIT = 5
 
 
 def generate_summary_statistics(
-    data_dict: dict[str, pd.DataFrame],
+    data_dict: dict[str, pl.DataFrame],
     output_file: str | Path,
 ) -> None:
     """Generate summary statistics for all data tables.
@@ -32,7 +33,7 @@ def generate_summary_statistics(
         output_file (str or Path): Path to output file
 
     """
-    with Path(output_file).open("w") as f:
+    with Path(output_file).open("w", encoding="utf-8") as f:
         f.write("# Microcosting Analysis Report\n\n")
         f.write("## Summary Statistics\n\n")
 
@@ -42,17 +43,22 @@ def generate_summary_statistics(
             f.write(f"- Number of columns: {len(df.columns)}\n\n")
 
             # Numeric column statistics
-            numeric_cols = df.select_dtypes(include=["number"]).columns
-            if len(numeric_cols) > 0:
+            numeric = df.select(cs.numeric())
+            if numeric.width:
                 f.write("#### Numeric Columns Summary\n\n")
-                f.write(df[numeric_cols].describe().to_markdown() + "\n\n")
+                stats = numeric.with_columns(cs.float().fill_nan(None)).describe(
+                    interpolation="linear",
+                )
+                f.write(markdown_table(stats) + "\n\n")
 
             # Categorical column information
-            categorical_cols = df.select_dtypes(include=["object"]).columns
-            if len(categorical_cols) > 0:
+            categorical_cols = df.select(
+                cs.string() | cs.categorical() | cs.enum()
+            ).columns
+            if categorical_cols:
                 f.write("#### Categorical Columns\n\n")
                 for col in categorical_cols[:5]:  # Limit to first 5
-                    unique_count = df[col].nunique()
+                    unique_count = df[col].drop_nulls().n_unique()
                     f.write(f"- **{col}**: {unique_count} unique values\n")
                 if len(categorical_cols) > CATEGORY_PREVIEW_LIMIT:
                     f.write(
@@ -66,13 +72,18 @@ def generate_summary_statistics(
 
 def main() -> int:
     """Generate automated report."""
+    root = Path(__file__).resolve().parents[1]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--data-dir", type=Path, default=root / "data/prepared")
+    parser.add_argument("--output-dir", type=Path, default=root / "reports")
+    options = parser.parse_args()
     sys.stdout.write("Generating automated report..." + "\n")
 
     try:
         # Load data
-        data_dir = Path(__file__).resolve().parents[1] / "data" / "prepared"
-        output_dir = Path(__file__).resolve().parents[1] / "reports"
-        output_dir.mkdir(exist_ok=True)
+        data_dir = options.data_dir
+        output_dir = options.output_dir
+        output_dir.mkdir(exist_ok=True, parents=True)
 
         sys.stdout.write(f"Loading data from {data_dir}" + "\n")
         data_dict = load_prepared_data(data_dir)
@@ -111,7 +122,7 @@ def main() -> int:
 
             f.write("## Generated Visualizations\n\n")
             f.writelines(
-                f"![{fig_file.stem}]({fig_file.name})\n\n"
+                f"![{fig_file.stem}](visualizations/{fig_file.name})\n\n"
                 for fig_file in viz_dir.glob("*.png")
             )
 

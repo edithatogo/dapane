@@ -1,0 +1,72 @@
+name: Installed genomics package
+
+on:
+  pull_request:
+    paths:
+      - 'adapters/genomics/**'
+      - '.github/workflows/genomics-package.yml'
+      - '.github/actions/project-python/**'
+      - '.python-version'
+  push:
+    branches: [main]
+    paths:
+      - 'adapters/genomics/**'
+      - '.github/workflows/genomics-package.yml'
+      - '.github/actions/project-python/**'
+      - '.python-version'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: genomics-package-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  installed-genomics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      UV_LINK_MODE: copy
+      MPLBACKEND: Agg
+    defaults:
+      run:
+        working-directory: adapters/genomics
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: ./.github/actions/project-python
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version: '0.13.8'
+          enable-cache: true
+          cache-dependency-glob: adapters/genomics/uv.lock
+      - name: Build from the locked source and verify package contents
+        run: |
+          set -euo pipefail
+          dist="$RUNNER_TEMP/genomics-dist"
+          uv build --python "$VIRTUAL_ENV/bin/python" --out-dir "$dist"
+          python tools/check_package.py "$dist"
+          sha256sum "$dist"/*.whl "$dist"/*.tar.gz
+      - name: Verify the installed wheel with the packaged synthetic tests
+        run: |
+          set -euo pipefail
+          dist="$RUNNER_TEMP/genomics-dist"
+          export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/genomics-installed"
+          uv sync --locked --no-install-project --no-editable --all-extras \
+            --python "$VIRTUAL_ENV/bin/python"
+          uv pip install --no-deps --python "$UV_PROJECT_ENVIRONMENT/bin/python" "$dist"/*.whl
+          "$UV_PROJECT_ENVIRONMENT/bin/python" --version
+          mkdir "$RUNNER_TEMP/genomics-source" "$RUNNER_TEMP/genomics-consumer"
+          python -m tarfile -e "$dist"/*.tar.gz "$RUNNER_TEMP/genomics-source"
+          cd "$RUNNER_TEMP/genomics-consumer"
+          suite=("$RUNNER_TEMP"/genomics-source/genomics_microcosting-*)
+          "$UV_PROJECT_ENVIRONMENT/bin/python" -I -m pytest \
+            -c "${suite[0]}/pyproject.toml" "${suite[0]}/tests" --disable-socket

@@ -6,13 +6,12 @@ Prepare the worksheets consistently across the microcosting analysis,
 ensuring that all sheets are treated uniformly regardless of their source or purpose.
 """
 
-__lazy_modules__ = ("pandas",)
-
 import logging
 import sys
 import traceback
 
-import pandas as pd
+import polars as pl
+import polars.selectors as cs
 
 from genomics_microcosting.data_manager import DataManager
 from genomics_microcosting.sheet_manager import SheetManager
@@ -20,33 +19,29 @@ from genomics_microcosting.sheet_manager import SheetManager
 logger = logging.getLogger(__name__)
 
 
-def create_sheet_metadata(df: pd.DataFrame, sheet_name: str) -> dict:
+def create_sheet_metadata(df: pl.DataFrame, sheet_name: str) -> dict[str, object]:
     """Create metadata for a sheet.
 
     Args:
-        df (pd.DataFrame): DataFrame containing the sheet data
+        df (pl.DataFrame): DataFrame containing the sheet data
         sheet_name (str): Name of the sheet
 
     Returns:
         dict: Metadata about the sheet
 
     """
-    metadata = {
+    unavailable = df.with_columns(cs.float().fill_nan(None)).null_count()
+    return {
         "sheet_name": sheet_name,
         "row_count": len(df),
         "column_count": len(df.columns),
-        "columns": [],
-        "data_types": {},
-        "null_counts": {},
-        "memory_usage_bytes": df.memory_usage(deep=True).sum(),
+        "columns": df.columns,
+        "data_types": {column: str(dtype) for column, dtype in df.schema.items()},
+        "null_counts": dict(zip(df.columns, unavailable.row(0), strict=True))
+        if df.width
+        else {},
+        "memory_usage_bytes": df.estimated_size(),
     }
-
-    for col in df.columns:
-        metadata["columns"].append(str(col))
-        metadata["data_types"][str(col)] = str(df[col].dtype)
-        metadata["null_counts"][str(col)] = int(df[col].isna().sum())
-
-    return metadata
 
 
 def prepare_sheet(
@@ -74,6 +69,17 @@ def prepare_sheet(
             sys.stdout.write(f"  Failed to load data for sheet '{sheet_name}'" + "\n")
             return False
 
+        # Excel columns with mixed cell types cannot be emitted as Polars Object.
+        # Preserve their textual values. Homogeneous numeric columns keep their types.
+        df = df.with_columns(
+            pl.Series(
+                name,
+                [None if value is None else str(value) for value in df[name]],
+                dtype=pl.String,
+            )
+            for name, dtype in df.schema.items()
+            if dtype == pl.Object
+        )
         sys.stdout.write(f"  Loaded data with shape {df.shape}" + "\n")
 
         # Save in consistent formats

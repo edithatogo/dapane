@@ -302,3 +302,119 @@ reports. The raw notebook and data are supplied separately as inputs.
 The unqualified legacy source scripts remain visible for feature
 reconciliation. The installed report command replaces the old Pandas
 report implementation.
+
+## Planned feature implementations
+
+The installed optional wheel passed eight new adapter tests including
+workbook replay, the web compatibility regression, external pricing,
+cost prediction and model templates. Under synthetic input, an exact
+volume tier changed the booked compute cost from AUD 50.00 to AUD 43.75.
+Dapane assigned the shared amount as AUD 14.58 and AUD 29.17 with zero
+residual. The returned price-release digest, applied tier and native
+request permit an offline replay. The external reader was a deterministic
+test provider.
+
+The prediction test recovered an independently specified cost model on
+two held-out observations and rejected an underidentified fit. Numeric
+predictions are kept separate from monetary valuation.
+
+The installed model command supplied all six template specifications and
+editable Excel/CSV inputs. Label normalization kept the exact input costs
+and typed output. The taxonomy audit reported common categories, model
+gaps, and unknown subcategories.
+
+A baseline regression selection covered 231 existing compute, storage,
+dynamic-batch, allocation, checkpoint/recovery, security, configuration,
+monitoring, quality and scenario tests. The remaining planned outcomes
+and legacy source commands are still being reconciled against installed
+behaviour.
+
+The optional lab profile extends template categories and recognizes local
+labels in the model audit. The installed Flask flow generated and reopened
+an Excel template containing a synthetic uploaded label and rejected an
+invalid profile. The CLI and web form use the same validation and template
+code. The profile never changes historical workbook costs.
+
+The Codex internal browser downloaded a Panel CSV with synthetic local labels.
+Reopening the file verified the labels and the blank unit cost. The installed
+performance command measured workloads at 1,000, 5,000 and 10,000 rows.
+Each run checked the real contribution totals, recorded elapsed time and RSS,
+and rejected an intentionally slower candidate in the automated comparison.
+
+## Standalone installed artifacts
+
+A locked CPython 3.15.1 environment built the wheel from a source
+distribution. The distribution verifier checked allowed paths, structural
+asset digests, source-to-package bytes, Apache-2.0 licence, attribution
+and Python version metadata. Research workbooks, notebooks and prepared
+tables are supplied separately.
+
+The clean installed wheel passed all 151 packaged synthetic tests with
+sockets disabled. The frozen interface inventory matched 109 module
+paths, 1,129 declared signatures and 21 legacy route registrations.
+This structural comparison and the runtime tests measure different
+parts of feature coverage. Both legacy console commands ran from a
+separate consumer directory and again reproduced all 70 exports
+byte-for-byte and passed all 2,894 selected validation comparisons.
+
+The native ports of the legacy all-sheet preparation and validation scripts
+prepared and validated all 35 workbook sheets from a separate consumer
+directory. They retain original sheet names for formula lookups, use the
+Parquet schema when reading CSV, and preserve the text of mixed Excel cells.
+The separate legacy reporting command produced both Markdown reports and
+three linked charts using an installed Polars-backed runtime.
+
+The clean successor replayed the restored workbook with sockets disabled.
+The workbook inventory, formula results and pathway results matched the
+previous installed receipts byte-for-byte.
+
+The separate inherited suite used the same installed package with sockets
+disabled, the frozen test sources and the original authorised inputs. The
+full run passed 1,338 cases. The remaining case needed the candidate lock
+copied into the harness and passed on the focused rerun. This covers all
+1,339 inherited cases, including the four earlier prepared-input skips.
+
+## Hosted qualification
+
+The official GitHub-hosted offline check passed for the frozen baseline
+and full workbook replay, both before and after merge. The full replay
+landed in [PR #82](https://github.com/edithatogo/dapane/pull/82) and
+passed on [the exact resulting main revision](https://github.com/edithatogo/dapane/actions/runs/45418815055).
+
+The package promotion in [PR #83](https://github.com/edithatogo/dapane/pull/83)
+corrects the inherited localhost debugger setting. After the official run
+identified a parser failure, the port retained deferred import behaviour
+through the named module declaration and converted inline generics to
+conventional typing declarations. CPython 3.15.1, strict type checking
+and installed imports passed on the revised source. All 18 applicable
+checks passed on the exact PR head, including the
+[official offline scan](https://github.com/edithatogo/dapane/actions/runs/45428022620).
+GitHub merged the package port at `3b870e185a7e824cfe982daccc05cee7c1a62026`.
+The [main-push qualification](https://github.com/edithatogo/dapane/actions/runs/45485868671)
+checks that merge revision.
+
+## Preservation and restoration
+
+The restricted source bundle contains all four public branch heads and the
+v0.2.0 tag from the frozen refs receipt, with complete Git history. Its SHA-256
+is `8175e779ae51148c6778e0841f31a70bd561d334a81709af8f215bb7e543c1e7`.
+The hosted release has zero separately attached files. The source archive
+and bundle preserve the catalogue, original workbook, notebooks, manuscript,
+software citation, licence and published source history. The private freeze
+records the file inventory and source digests. Workbook and study-data
+redistribution requires its own rights evidence.
+
+A new local clone restored the pinned commit and tag from the bundle.
+`git bundle verify` and `git fsck --full` passed. The restored workbook bytes
+matched the frozen SHA-256. A legacy wheel built in the restored checkout
+using the original lock and CPython 3.15.1 was installed into a new environment
+with the retained Dapane 0.1.0 build. With sockets disabled, its Panel
+library-preparation request and native result matched both frozen records.
+
+To migrate, use the [installation instructions](../../../adapters/genomics/README.md)
+from a separate consumer directory. Supply the original workbook and any
+supplemental research assets from the authorised store. For rollback,
+restore the verified bundle and tag locally, sync the recorded lock and
+repeat the frozen replay from an installed wheel. Retain the legacy
+repository while full feature verification and the separate retirement
+decision remain open.

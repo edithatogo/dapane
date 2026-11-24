@@ -21,17 +21,17 @@ Status: in_progress
 - [x] G3.1 Lock normal-entry-point tests for the frozen feature ledger, including imports, command options, configuration and input templates, supported workbook variants, error and recovery behaviour, and all user-facing outputs. [Installed legacy baseline](verification.md#installed-legacy-feature-contract)
 - [x] G3.2 Incorporate the provider's remaining calculation, data-preparation, scenario, workflow and analysis paths. Reuse existing code and dependencies and use Dapane for common valuation and reconciliation. [Dapane-built runtime](verification.md#dapane-built-legacy-runtime)
 - [x] G3.3 Incorporate the legacy reports, table exports, visualization, web interactions, workbook revision handling and plugins. Qualify the appropriate native or browser entry points and their configuration and error behaviour. [Report and web qualification](verification.md#reports-web-and-compatibility-tools)
-- [~] G3.4 Deliver every remaining planned outcome in the feature ledger, including compute and storage detail, scaling, extensible input and external price interfaces, advanced allocation and prediction, and quality, security, monitoring and performance commitments.
-- [ ] G3.5 Check all feature rows against installed behaviour and the original acceptance or documented contract. Require reproducible evidence for every shipped and planned outcome.
+- [~] G3.4 Deliver every remaining planned outcome in the feature ledger, including compute and storage detail, scaling, extensible input and external price interfaces, advanced allocation and prediction, and quality, security, monitoring and performance commitments. [Planned feature implementations](verification.md#planned-feature-implementations)
+- [~] G3.5 Check all feature rows against installed behaviour and the original acceptance or documented contract. Require reproducible evidence for every shipped and planned outcome. [Feature coverage record](feature-coverage.md)
 
 ## Phase 4 — Qualify an installable successor
 
-- [ ] G4.1 Package the optional genomics component and legacy entry points under Dapane ownership. Verify its dependencies and notices and preserve ingestion of authorised, versioned sources.
-- [ ] G4.2 Run the full workbook and feature ledgers from clean installed artifacts with the legacy checkout absent. Reconcile any historical or statistical differences against their recorded oracle and keep all restricted source data outside public artifacts.
-- [ ] G4.3 Review and fix the candidate, run the normal release and exact-head GitHub-hosted offline-security gates, and record both verified coverage counts with their supporting evidence.
+- [x] G4.1 Package the optional genomics component and legacy entry points under Dapane ownership. Verify its dependencies and notices and preserve ingestion of authorised, versioned sources. [Standalone installed artifacts](verification.md#standalone-installed-artifacts)
+- [~] G4.2 Run the full workbook and feature ledgers from clean installed artifacts with the legacy checkout absent. Reconcile any historical or statistical differences against their recorded oracle and keep all restricted source data outside public artifacts. [Standalone installed artifacts](verification.md#standalone-installed-artifacts)
+- [~] G4.3 Review and fix the candidate, run the normal release and exact-head GitHub-hosted offline-security gates, and record both verified coverage counts with their supporting evidence. [Hosted qualification](verification.md#hosted-qualification)
 
 ## Phase 5 — Preserve assets and rehearse cutover
 
-- [ ] G5.1 Inventory unique code, refs, tags, scholarly citations, study sources and workbook assets. Record preservation location, digest, rights, successor links and consumer migration steps.
-- [ ] G5.2 Rehearse clean restoration and rollback. Compare representative restored historical outputs and check that the successor runs with the provider checkout and public fetch unavailable.
-- [ ] G5.3 Record the repository retirement decision and any remaining rights or consumer dependencies. Prepare the evidence for a later authorised archive or visibility change.
+- [x] G5.1 Inventory unique code, refs, tags, scholarly citations, study sources and workbook assets. Record preservation location, digest, rights, successor links and consumer migration steps. [Preservation and restoration](verification.md#preservation-and-restoration)
+- [x] G5.2 Rehearse clean restoration and rollback. Compare representative restored historical outputs and check that the successor runs with the provider checkout and public fetch unavailable. [Preservation and restoration](verification.md#preservation-and-restoration)
+- [~] G5.3 Record the repository retirement decision and any remaining rights or consumer dependencies. Prepare the evidence for a later authorised archive or visibility change. [Preservation and restoration](verification.md#preservation-and-restoration)

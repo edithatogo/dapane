@@ -35,9 +35,15 @@ documented aliases, before G3.2–G3.4 change package or entry-point code.
 | F12 | Preserve the shipped package metadata, discoverable Python/source entry points, config examples, provenance and support documentation. | G4.1 checks wheel and source package manifests, extras, package data and runnable compatibility commands. G3.5 verifies each inventory row using an installed entry point or a reproduced source-command contract. |
 
 These families organize the detailed source rows. Each interface retains its
-own source coordinate and candidate tests. All installed successor
-dispositions remain open at the freeze except the bounded earlier workbook
-replays linked in the [verification record](verification.md).
+own source coordinate and candidate tests. The installed wheel matched all
+109 legacy module paths, 1,129 declared signatures and 21 legacy route
+registrations. The [verification record](verification.md#standalone-installed-artifacts)
+links the installed tests and the private workbook replays.
+
+Source-command parity remains open where the predecessor scripts rely on
+Pandas or lack a normal-entry-point test. The original source remains in
+the verified private bundle. Continue the per-command audit and qualify
+maintained replacements against their inputs and outputs.
 
 ## Planned deliverables
 
@@ -46,6 +52,12 @@ can refer back to every relevant commitment. The rows below state the
 behaviour to test even where the provider describes the task as complete.
 Existing modules are reuse candidates. G3.4 closes gaps found by G3.1–G3.3,
 then G3.5 reconciles the leaf rows and executable evidence.
+
+The planned pricing, shared allocation, template and prediction paths have
+synthetic installed evidence. The benchmark records measured resource use on
+a verified workload. Lab-specific valuation changes, the complete quality
+thresholds, deployment templates and outstanding provider and repository
+maintenance readbacks remain to be verified.
 
 | Source rows | Required outcome and verification |
 | --- | --- |
