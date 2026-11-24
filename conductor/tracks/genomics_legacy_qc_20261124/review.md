@@ -68,9 +68,15 @@ passed its exact source checks and reported two unresolved glibc matches.
 binds CVE-2026-121758 to the backport in the hash-locked Wolfi package. For
 CVE-2026-124024, the exact installed image must omit the optional glibc iconv
 package and the affected shared objects. The policy retains all raw findings
-and blocks any unresolved or ignored match. Its
-[official hosted image run](https://github.com/edithatogo/repository-standards/actions/runs/45389200495)
-passed. Dapane pins the merged scanner revision `ff15eb2695adea7bdceae45bd9b80fca41ebdf28`.
+and blocks any unresolved or ignored match. The
+[first run exercising that probe](https://github.com/edithatogo/dapane/actions/runs/45391076162)
+passed the source scan and could not verify the new image evidence.
+
+[Scanner PR #186](https://github.com/edithatogo/repository-standards/pull/186)
+uses the installed package inventory and Wolfi's module directory to verify
+absence. Its [official hosted image run](https://github.com/edithatogo/repository-standards/actions/runs/45393204812)
+passed the installed glibc evidence step. Dapane pins the merged scanner
+revision `d7b22133a2bbf80ae6161a2695d5e6b86507e4dd`.
 The merged tree matches the qualified PR tree, and the immutable policy
 checkout succeeded in a fresh fetch. The build uses the signed index,
 package checksums and a network-disabled installation.
