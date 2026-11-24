@@ -20,7 +20,7 @@ from collections.abc import Callable, Mapping
 from datetime import UTC, datetime
 from functools import wraps
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import ParamSpec, TypedDict, TypeVar, Unpack
 
 from cryptography.fernet import Fernet, InvalidToken
 from pydantic import ConfigDict, TypeAdapter
@@ -295,6 +295,10 @@ class User:
             self.roles.remove(role)
 
 
+P = ParamSpec("P")
+R = TypeVar("R", infer_variance=True)
+
+
 class AccessControlManager:
     """Manages role-based access control for the application."""
 
@@ -391,7 +395,7 @@ class AccessControlManager:
             self.logger.info("User logged out: %r", self.current_user.username)
             self.current_user = None
 
-    def require_permission[**P, R](
+    def require_permission(
         self,
         permission: str,
     ) -> Callable[[Callable[P, R]], Callable[P, R]]:

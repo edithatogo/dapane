@@ -4,7 +4,7 @@
 __lazy_modules__ = ("collections.abc",)
 
 from collections.abc import Callable
-from typing import Protocol, TypedDict
+from typing import ParamSpec, Protocol, TypedDict, TypeVar
 
 
 def legacy_bool_option(
@@ -37,17 +37,22 @@ class ProfileMetrics(TypedDict):
     errors: int
 
 
+P = ParamSpec("P")
+R = TypeVar("R", infer_variance=True)
+D = TypeVar("D", infer_variance=True)
+
+
 class ProfilerDecorator(Protocol):
     """Preserve the signature and result type of a profiled operation."""
 
-    def __call__[**P, R](self, func: Callable[P, R], /) -> Callable[P, R]:
+    def __call__(self, func: Callable[P, R], /) -> Callable[P, R]:
         """Wrap a callable without changing its argument or result contract."""
         ...
 
 
-class DegradationDecorator[D](Protocol):
+class DegradationDecorator(Protocol[D]):
     """Retain normal results and make fallback or null results explicit."""
 
-    def __call__[**P, R](self, func: Callable[P, R], /) -> Callable[P, R | D | None]:
+    def __call__(self, func: Callable[P, R], /) -> Callable[P, R | D | None]:
         """Wrap an operation with its declared recovery result."""
         ...

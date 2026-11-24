@@ -8,7 +8,7 @@ import time
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from functools import wraps
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Generic, ParamSpec, TypeVar
 
 import polars as pl
 
@@ -25,6 +25,11 @@ except ImportError:
     psutil = None
 
 
+P = ParamSpec("P")
+R = TypeVar("R", infer_variance=True)
+Value = TypeVar("Value", infer_variance=True, default=object)
+
+
 class PerformanceProfiler:
     """Profiles performance of operations and provides optimization suggestions."""
 
@@ -36,7 +41,7 @@ class PerformanceProfiler:
     def profile(self, operation_name: str) -> ProfilerDecorator:
         """Profile calls to a function."""
 
-        def decorator[**P, R](func: Callable[P, R]) -> Callable[P, R]:
+        def decorator(func: Callable[P, R]) -> Callable[P, R]:
             @wraps(func)
             def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
                 start_time = time.time()
@@ -260,7 +265,7 @@ class ParallelProcessor:
         return pl.concat(results)
 
 
-class CachingOptimizer[Value = object]:
+class CachingOptimizer(Generic[Value]):
     """Implements caching strategies for performance optimization."""
 
     def __init__(self) -> None:

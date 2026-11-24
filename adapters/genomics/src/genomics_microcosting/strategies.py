@@ -3,7 +3,7 @@
 
 import math
 import re
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, TypeVar
 
 import numpy_financial as npf
 
@@ -826,7 +826,10 @@ class CrossSheetMultiplicationThreeStrategy(CalculationStrategy):
         return (cell1_value * cell2_value) * number
 
 
-def _compare_scalars[T: (str, int | float)](left: T, right: T, operator: str) -> bool:
+T = TypeVar("T", str, int | float, infer_variance=True)
+
+
+def _compare_scalars(left: T, right: T, operator: str) -> bool:  # noqa: UP047
     """Compare values after narrowing both operands to a shared scalar domain."""
     if operator == ">":
         return left > right

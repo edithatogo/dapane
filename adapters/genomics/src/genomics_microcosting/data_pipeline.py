@@ -11,7 +11,7 @@ __lazy_modules__ = ("genomics_microcosting.data_manager",)
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import TypeGuard
+from typing import Generic, TypeGuard, TypeVar
 
 import polars as pl
 
@@ -27,7 +27,11 @@ def _are_frames(data: list[PipelineData]) -> TypeGuard[list[pl.DataFrame]]:
     return all(isinstance(item, pl.DataFrame) for item in data)
 
 
-class PipelineComponent[Input, Output](ABC):
+Input = TypeVar("Input", infer_variance=True)
+Output = TypeVar("Output", infer_variance=True)
+
+
+class PipelineComponent(ABC, Generic[Input, Output]):  # noqa: UP046
     """Abstract base class for all pipeline components."""
 
     def __init__(self, name: str) -> None:

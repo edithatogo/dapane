@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from hashlib import sha256
 from pathlib import Path
-from typing import cast
+from typing import TypeVar, cast
 
 from genomics_microcosting.workflow_allocations import AllocationQuantity
 from genomics_microcosting.workflow_mdt import MeetingObservation
@@ -179,7 +179,10 @@ def _decode_event(raw: object) -> WorkflowEventRevision:
     )
 
 
-def select_resource_observations[T](
+T = TypeVar("T", infer_variance=True)
+
+
+def select_resource_observations(  # noqa: UP047
     log: WorkflowRevisionLog,
     resources: Mapping[WorkflowEventRevision, T],
 ) -> tuple[tuple[WorkflowEventRevision, T], ...]:

@@ -17,7 +17,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from functools import wraps
 from pathlib import Path
-from typing import Never
+from typing import Never, ParamSpec, TypeVar
 
 import psutil
 
@@ -516,6 +516,10 @@ class AlertManager:
         return recent[-100:]
 
 
+P = ParamSpec("P")
+R = TypeVar("R", infer_variance=True)
+
+
 class MonitoringMiddleware:
     """Middleware for automatic monitoring of function calls."""
 
@@ -534,7 +538,7 @@ class MonitoringMiddleware:
         self.metrics_collector = metrics_collector or PerformanceMetricsCollector()
         self.logger = logger or get_logger(f"{__name__}.{self.__class__.__name__}")
 
-    def monitor_execution_time[**P, R](
+    def monitor_execution_time(
         self,
         metric_name: str | None = None,
     ) -> Callable[[Callable[P, R]], Callable[P, R]]:

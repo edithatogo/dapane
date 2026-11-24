@@ -9,7 +9,7 @@ __lazy_modules__ = (
 import base64
 import io
 from collections.abc import Callable
-from typing import Protocol, TypedDict, Unpack, cast
+from typing import ParamSpec, Protocol, TypedDict, Unpack, cast
 
 import polars as pl
 from matplotlib.figure import Figure
@@ -32,7 +32,10 @@ class _PngWriter(Protocol):
     def savefig(self, target: io.BytesIO, **options: Unpack[_PngOptions]) -> None: ...
 
 
-def create_plot_base64[**P](
+P = ParamSpec("P")
+
+
+def create_plot_base64(  # noqa: UP047
     plot_function: Callable[P, Figure],
     *args: P.args,
     **kwargs: P.kwargs,

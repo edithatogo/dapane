@@ -18,7 +18,7 @@ from collections.abc import Callable, Mapping
 from datetime import UTC, datetime
 from functools import wraps
 from pathlib import Path
-from typing import Any, TypedDict, Unpack
+from typing import Any, ParamSpec, TypedDict, TypeVar, Unpack
 
 from .execution_contracts import DegradationDecorator, legacy_bool_option
 
@@ -436,6 +436,11 @@ class CheckpointManager:
 type DegradationStrategy = Callable[[Exception, ErrorContext], object]
 
 
+D = TypeVar("D", infer_variance=True, default=None)
+P = ParamSpec("P")
+R = TypeVar("R", infer_variance=True)
+
+
 class ErrorHandler:
     """Comprehensive error handler with graceful degradation."""
 
@@ -563,7 +568,7 @@ class ErrorHandler:
         detailed_error["degradation_result"] = degradation_result
         return error_info
 
-    def graceful_degradation[D = None](
+    def graceful_degradation(
         self,
         operation: str,
         fallback_function: Callable[..., D] | None = None,
@@ -589,7 +594,7 @@ class ErrorHandler:
             context_fields,
         )
 
-        def decorator[**P, R](func: Callable[P, R]) -> Callable[P, R | D | None]:
+        def decorator(func: Callable[P, R]) -> Callable[P, R | D | None]:
             @wraps(func)
             def wrapper(*args: P.args, **kwargs: P.kwargs) -> R | D | None:
                 context = ErrorContext(

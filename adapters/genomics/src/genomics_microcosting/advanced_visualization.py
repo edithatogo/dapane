@@ -14,7 +14,7 @@ import logging
 from collections.abc import Sequence
 from importlib import import_module
 from pathlib import Path
-from typing import Protocol, TypedDict, Unpack, cast
+from typing import Protocol, TypedDict, TypeVar, Unpack, cast
 
 import numpy as np
 import polars as pl
@@ -62,7 +62,10 @@ class _Layout(TypedDict, total=False):
     height: int
 
 
-class PlotlyFigure[Trace: _PlotlyTrace = _PlotlyTrace](Protocol):
+Trace = TypeVar("Trace", bound=_PlotlyTrace, infer_variance=True, default=_PlotlyTrace)
+
+
+class PlotlyFigure(Protocol[Trace]):
     """Plotly figure operations used by the interactive charts."""
 
     @property
