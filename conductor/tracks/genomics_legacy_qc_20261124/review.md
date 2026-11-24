@@ -50,8 +50,18 @@ stay in the private workbook and replay output.
 
 The [first archive PR run](https://github.com/edithatogo/dapane/actions/runs/45382873227)
 stopped before starting a job after the original scanner source branch had
-been pruned. The workflow now pins the merged scanner commit from
-[Scanner PR #183](https://github.com/edithatogo/repository-standards/pull/183).
-Its Git tree and reusable workflow blob match the prior pinned revision.
-The exact policy checkout passed a fresh fetch, and the runner and scan
-settings remain identical.
+been pruned. The merged revision from
+[Scanner PR #183](https://github.com/edithatogo/repository-standards/pull/183)
+resolved on GitHub and matched the original Git tree. The
+[next run](https://github.com/edithatogo/dapane/actions/runs/45383151551)
+found that the signed Wolfi index offered a newer libexpat1 than the one in
+the checksum-locked bundle.
+
+[Scanner PR #184](https://github.com/edithatogo/repository-standards/pull/184)
+derives exact constraints for all 50 entries in the reviewed inventory. Its
+[official hosted image run](https://github.com/edithatogo/repository-standards/actions/runs/45384546540)
+passed the offline controls and collected the image inventory and vulnerability
+evidence. Dapane pins the merged scanner revision `64f7c59790df12fafe4773857cc1bec21269b7ac`.
+The merged tree matches the qualified PR tree, and the immutable policy
+checkout succeeded in a fresh fetch. The build still uses signed index
+verification, package checksums and a network-disabled installation.
