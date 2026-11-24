@@ -17,3 +17,4 @@ Status: archived
 ## Review fixes
 
 - [x] G3.1 Verify individual charges, exact and rounded totals, and comparison diagnostics in the installed replay. Fix e8344b3. [Review evidence](review.md).
+- [x] G3.2 Pin the merged scanner revision and verify that its source tree matches the previously qualified scanner. [Review evidence](review.md#scanner-workflow-reference).

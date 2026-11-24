@@ -45,3 +45,13 @@ applies only to comparisons with the saved workbook numbers.
 A failed stage comparison could print both exact amounts in public Actions
 logs. Its assertion now identifies the affected replay by ID. The amounts
 stay in the private workbook and replay output.
+
+### Scanner workflow reference
+
+The [first archive PR run](https://github.com/edithatogo/dapane/actions/runs/45382873227)
+stopped before starting a job after the original scanner source branch had
+been pruned. The workflow now pins the merged scanner commit from
+[Scanner PR #183](https://github.com/edithatogo/repository-standards/pull/183).
+Its Git tree and reusable workflow blob match the prior pinned revision.
+The exact policy checkout passed a fresh fetch, and the runner and scan
+settings remain identical.
