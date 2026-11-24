@@ -165,3 +165,35 @@ The coordinate-level comparison file has SHA-256
 Both files remain restricted. Two independent synthetic tests cover
 cross-sheet ranges, exact expense arithmetic, annuity, input replacement
 and distinct propagated errors. Both passed on CPython 3.15.1.
+
+## Detailed pathway and resource costing
+
+The [pathway adapter](../../../adapters/genomics/src/dapane_genomics/v15_pathways.py)
+follows each original summary component to its detailed booked charges.
+It expands exact detail subtotals, retains quantity and rate from direct
+multiplication rows, and carries the source cell and formula for derived
+charges. It prices the original overhead base and workbook FX rate
+through the existing native Dapane engine.
+
+The installed native binding reconciled **10 pathway/currency totals**,
+**100 stage totals** and **1,610 booked lines**. These are the five original
+pathways in AUD and USD. The complete replay also retains the detailed
+table, labour, capital, consumables, equipment, compute and storage views,
+every DSA branch and the separate summary/graph worksheets in the
+coordinate ledger. Alternate views carry their original currencies,
+labels, source units and denominators. They are kept outside the pathway
+sum. Some original USD sensitivity rationals exceed the core request
+bound. They remain exact values in the workbook replay.
+
+The original WGS processing and storage blocks reference the same two
+booked detail sources more than once in each WGS pathway. The adapter
+retains each occurrence with a separate line identity so the historical
+sum is reproduced and reports the repeated source coordinates. It does
+not infer a prospective charge correction from a historical overlap.
+The result remains identified as the original workbook financial view.
+
+The private pathway ledger has SHA-256
+`f3a729ad81f1c0d2f86dc33e627377c9cf385cda66d4fc08342b6cead2568f90`.
+Baseline formula results and component and pathway sums are reconciled
+before the requests are evaluated. G2.4 independently checks native CLI
+parity and changed source inputs.

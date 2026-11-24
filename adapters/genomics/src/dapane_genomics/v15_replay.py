@@ -294,7 +294,6 @@ def main() -> None:
     with args.output.open("w", encoding="utf-8") as handle:
         json.dump(result, handle, separators=(",", ":"))
         handle.write("\n")
-    print(json.dumps(result["counts"], sort_keys=True))
 
 
 if __name__ == "__main__":
