@@ -2,7 +2,7 @@
 
 Track: `genomics_legacy_qc_20261124`
 
-Status: completed
+Status: in_progress
 
 Extend the qualified provider path with TapeStation genomic DNA quality-control
 labour and consumables from the same historical VCGS workbook used for manual DNA extraction.
