@@ -11,6 +11,19 @@ import polars as pl
 import pytest
 from openpyxl import Workbook
 
+from dapane_genomics.legacy_models import model_rows, read_model_source, verify_model
+from dapane_genomics.legacy_performance import (
+    compare_baselines,
+    load_baselines,
+    save_baselines,
+)
+from dapane_genomics.legacy_workbooks import (
+    compare_sheet,
+    evaluate_sheet,
+    ground_truth,
+    replicate_cost_rows,
+)
+
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 
 
@@ -232,3 +245,148 @@ def test_quality_history_reports_a_value_changed_after_model_export(tmp_path):
     assert second["valid"] is False
     assert second["cost_issues"] == 1
     assert second["data_quality_score"] == 7 / 8
+
+
+def test_reference_extraction_preserves_row_addresses_and_detects_missing_inputs():
+    row_labels = pl.DataFrame(
+        {
+            "Test": ["Panel", None, None],
+            "Category": ["Labour", "Labour", "Equipment"],
+            "Sub-Category": ["Library", None, "Equipment"],
+            "Step": ["Synthetic row", None, "Synthetic fallback"],
+        }
+    )
+    reference = row_labels.with_columns(
+        pl.Series("Unit Cost (AUD $/unit) LL", [8.0, None, 2.0])
+    )
+    retained = ground_truth(reference, 5)
+    evaluated = pl.DataFrame({"price": [8.0, None, 2.0]})
+    output = replicate_cost_rows(retained, evaluated, 5, "A")
+    assert output["Source_Row"].to_list() == [5, 7]
+    assert output["unit_cost_labour"].to_list() == [8, 0]
+    assert output["unit_cost_equipment"].to_list() == [0, 2]
+    assert compare_sheet(evaluated, pl.DataFrame({"price": [8.0, None, 3.0]}), 5) == (
+        2,
+        ["A7"],
+    )
+    with pytest.raises(ValueError, match="same nonzero shape"):
+        compare_sheet(evaluated, evaluated.head(2), 5)
+    with pytest.raises(ValueError, match="Cost_Step"):
+        ground_truth(reference.drop("Step"), 5)
+    with pytest.raises(ValueError, match="reference cost columns"):
+        ground_truth(row_labels, 5)
+    with pytest.raises(ValueError, match="No populated source rows"):
+        ground_truth(reference.slice(1, 1), 6)
+    with pytest.raises(ValueError, match="distinct physical source rows"):
+        replicate_cost_rows(pl.concat([retained, retained]), evaluated, 5, "A")
+    with pytest.raises(ValueError, match="cost column is outside"):
+        replicate_cost_rows(retained, evaluated, 5, "AA")
+    with pytest.raises(ValueError, match="outside the worksheet"):
+        replicate_cost_rows(retained, evaluated.head(2), 5, "A")
+
+
+def test_explicit_sheet_offset_preserves_formulas_and_rejects_unknown_functions(
+    tmp_path,
+):
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "Synthetic Costs"
+    sheet["A2"] = "Price"
+    sheet["A3"] = 5
+    sheet["A4"] = "=A3*3"
+    path = tmp_path / "offset.xlsx"
+    workbook.save(path)
+    _, result, start = evaluate_sheet(path, sheet.title, first_row=3)
+    assert start == 3
+    assert result.to_series().to_list() == [5, 15]
+    sheet["A4"] = "=UNKNOWN_COST_FUNCTION(1)"
+    workbook.save(path)
+    workbook.close()
+    with pytest.raises(ValueError, match="evaluation failures"):
+        evaluate_sheet(path, "Synthetic Costs", first_row=3)
+
+
+def test_model_checks_reject_a_missing_field_and_an_unidentified_source(tmp_path):
+    unknown = pl.DataFrame(
+        {
+            "Test": ["Synthetic Unknown"],
+            "Category": ["Labour"],
+            "Sub-Category": ["No known model"],
+        }
+    )
+    source = tmp_path / "unknown.parquet"
+    unknown.write_parquet(source)
+    loaded = read_model_source(source)
+    assert loaded["Source_Row"].to_list() == [5]
+    with pytest.raises(ValueError, match="No identified model"):
+        model_rows(loaded)
+    finding = verify_model(unknown, "Panel")
+    assert finding["valid"] is False
+    assert "Item" in finding["missing_columns"]
+    invalid = tmp_path / "missing-header.csv"
+    invalid.write_text("cost,units\n3,2\n")
+    with pytest.raises(ValueError, match="No identifiable detailed-table header"):
+        read_model_source(invalid)
+
+
+def test_model_comparison_fails_if_an_expected_export_changes(tmp_path):
+    source = tmp_path / "source.csv"
+    pl.DataFrame(
+        {
+            "Test": ["Panel"],
+            "Category": ["Labour"],
+            "Sub-Category": ["DNA Extraction"],
+            "Step": ["Synthetic item"],
+            "Unit Cost (AUD $/unit)": [3],
+            "Units": [2],
+        }
+    ).write_csv(source)
+    data = tmp_path / "enhanced"
+    report = tmp_path / "comparison.md"
+    options = ("--workbook", source, "--data-dir", data, "--report", report)
+    with pytest.raises(subprocess.CalledProcessError):
+        run_command(tmp_path, "validate_excel_comparison", *options)
+    assert "missing Panel_enhanced.csv" in report.read_text()
+    run_command(
+        tmp_path,
+        "phase3_data_enhancement",
+        "--source",
+        source,
+        "--output-dir",
+        data,
+        "--report",
+        tmp_path / "enhance.md",
+    )
+    run_command(tmp_path, "validate_excel_comparison", *options)
+    assert "0 differences" in report.read_text()
+    output = data / "Panel_enhanced.csv"
+    pl.read_csv(output).drop("Units").write_csv(output)
+    with pytest.raises(subprocess.CalledProcessError):
+        run_command(tmp_path, "validate_excel_comparison", *options)
+    assert "schema or row count mismatch" in report.read_text()
+
+
+def test_legacy_performance_receipt_flags_a_six_percent_regression(
+    tmp_path, monkeypatch
+):
+    monkeypatch.chdir(tmp_path)
+    baseline = {
+        "schema_version": 1,
+        "python": "3.15.1",
+        "polars": "synthetic",
+        "platform": "synthetic",
+        "threads": 1,
+        "repeats": 5,
+        "measurements": [
+            {"rows": 10000, "median_ns": 100, "max_sampled_rss_growth_bytes": 0},
+        ],
+    }
+    stored = save_baselines(baseline)
+    current = load_baselines(stored)
+    current["measurements"][0]["median_ns"] = 106
+    comparison = compare_baselines(current, baseline)["processing_time"]
+    assert comparison["performance_regression"] is True
+    assert comparison["timing_regression_rows"] == [10000]
+    current["threads"] = 2
+    with pytest.raises(ValueError, match="threads"):
+        compare_baselines(current, baseline)

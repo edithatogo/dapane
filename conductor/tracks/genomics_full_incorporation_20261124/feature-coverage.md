@@ -65,8 +65,8 @@ records what was compared.
 | `establish_performance_baselines`, `compare_performance`, `profile_and_optimize` | Measured native contribution workloads, checked values during optimization, and exercised parallel and cache equivalence. Compare only receipts with matching runtime and workload identities. |
 
 The command audit supplements the structural inventory and inherited tests.
-Some frozen feature rows, including repository controls and named quality
-targets, still need individual disposition for G3.5.
+Some frozen feature rows, including repository controls and operational
+acceptance, still need individual disposition for G3.5.
 
 ## Planned deliverables
 

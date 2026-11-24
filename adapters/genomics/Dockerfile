@@ -2,7 +2,7 @@
 FROM ghcr.io/astral-sh/uv:0.13.8@sha256:5cc1805e2426484abca4ad46ea783bab281fdb225fd82d8ce6d66a81254bac85 AS uv
 FROM python:3.15.1-slim-trixie@sha256:533b0b2f9b5d46fd097091cf826f27902f1d6c3bca714b6dc74551356aa97a51 AS base
 
-FROM base AS build
+FROM python:3.15.1-trixie@sha256:c5075348770d14159b316d99a4f65f3771d227710877021833119b014cd1a803 AS build
 COPY --from=uv /uv /usr/local/bin/uv
 ENV UV_PROJECT_ENVIRONMENT=/opt/genomics \
     UV_PYTHON_DOWNLOADS=never \
@@ -24,4 +24,4 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 USER 10001:10001
 WORKDIR /tmp
 EXPOSE 8080
-ENTRYPOINT ["/opt/genomics/bin/gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "genomics_microcosting.web:create_app('/prepared')"]
+ENTRYPOINT ["/opt/genomics/bin/gunicorn", "--no-control-socket", "--bind", "0.0.0.0:8080", "--workers", "1", "genomics_microcosting.web:create_app('/prepared')"]

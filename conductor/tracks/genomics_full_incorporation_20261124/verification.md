@@ -380,9 +380,14 @@ The worksheet that supplies shared labour inputs used its own assay label.
 The deterministic and archived probabilistic outputs contained 70 and five
 evidence rows respectively.
 
+Coverage from the installed compatibility commands and focused package
+tests measured 98% for model processing, 98% for workbook compatibility
+and 100% for the performance command helpers. The measurements include
+branches and subprocesses. The 35-table transfer also generated a
+portable test that verified the retained export digests.
+
 The frozen feature audit remains open for individually tracing the rest
-of the documented commitments, the per-component coverage target and
-repository controls. GitHub reported that Dapane's `main` branch was
+of the documented commitments and repository controls. GitHub reported that Dapane's `main` branch was
 unprotected and had no active branch rules from a ruleset. Exact-head
 qualification is recorded below. The repository's planned safeguards
 still require native readback after any future settings change.
@@ -421,7 +426,7 @@ copied into the harness and passed on the focused rerun. This covers all
 1,339 inherited cases, including the four earlier prepared-input skips.
 
 The later native source commands, lab adjustments and recovery changes
-built from a checked source distribution and passed 161 packaged tests
+built from a checked source distribution and passed 166 packaged tests
 with sockets disabled. After including the candidate lock in the test
 harness, the independent inherited suite also passed all 1,339 cases in
 one run. The installed replay produced the same workbook, formula and
@@ -457,7 +462,7 @@ and the first costing commands. All 19 applicable checks passed, including
 the [official PR scan](https://github.com/edithatogo/dapane/actions/runs/45488885966).
 The merge commit is `9a63e7d7d8f313b49ffcb76963e8e1bb3b1c800f`.
 Its [main-push qualification](https://github.com/edithatogo/dapane/actions/runs/45491086666)
-identifies that exact merge revision.
+passed on that exact merge revision.
 
 ## Preservation and restoration
 

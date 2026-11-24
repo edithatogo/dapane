@@ -10,6 +10,7 @@ import polars as pl
 from openpyxl.utils import column_index_from_string, get_column_letter
 
 from genomics_microcosting.calculation_engine import CalculationEngine
+from genomics_microcosting.formula_parser import parse_formula
 from genomics_microcosting.sheet_manager import SheetManager
 
 DETAILED_SHEET = "Detailed Table"
@@ -149,6 +150,20 @@ def evaluate_sheet(
         expected = sheets.get_ground_truth(sheet)
         engine = CalculationEngine(sheets)
         actual, errors = engine.run_engine(sheet, fail_on_error=False)
+        formulas = sheets.get_formulas(sheet)
+        if actual is not None and formulas is not None:
+            for column, results in zip(formulas, actual, strict=True):
+                for formula, value in zip(column, results, strict=True):
+                    if (
+                        value is None
+                        and isinstance(formula, str)
+                        and formula.startswith("=")
+                    ):
+                        parsed = parse_formula(formula)
+                        if parsed is None or parsed.get("type") == "unknown":
+                            errors.append(
+                                "Unsupported formula with no calculated result"
+                            )
         if actual is None or errors:
             raise ValueError(f"{sheet} reported {len(errors)} evaluation failures")
         start = sheets.sheet_configs[sheet].get("data_starts_at", 2)
