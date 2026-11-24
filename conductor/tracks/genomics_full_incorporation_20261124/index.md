@@ -2,7 +2,7 @@
 
 Track: `genomics_full_incorporation_20261124`
 
-Status: new
+Status: in_progress
 
 This is Dapane's next implementation tranche. Deliver an installable successor
 for the complete v15 genomics workbook and the existing and planned features of
@@ -13,3 +13,5 @@ workbook and feature coverage ledgers.
 - [Implementation plan](plan.md)
 - [Track metadata](metadata.json)
 - [Prior exact-JSON replay and review](../genomics_legacy_qc_20261124/index.md)
+- [Verification](verification.md)
+- [Legacy feature coverage](feature-coverage.md)

@@ -229,10 +229,10 @@ dependency pin. That lane closed after exact-head hosted verification.
 Integration chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` owns the
 [next genomics tranche](tracks/genomics_full_incorporation_20261124/index.md).
 Its CLI checkout is `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/dapane`
-on `codex/plan-full-genomics-incorporation-20261124` for planning. The scope is
-the new track, roadmap and registry. The provider repository and original workbook
-are read-only planning inputs. The first implementation operation is the source
-freeze and coverage inventory.
+on `codex/plan-full-genomics-incorporation-20261124` during planning (merged as
+PR #80). The same chat now owns `codex/genomics-incorporation-baselines` in that
+checkout for the source freeze and coverage inventory. The provider checkout and
+the original workbook are read-only inputs. The next operation is G2.1, the workbook comparison baseline.
 
 ## Main integration reconciliation — 19 November 2026
 

@@ -28,7 +28,7 @@ A completed planning task does not change a runtime capability from planned to q
 | [x] | [Regulatory public-finance and health-system valuation handoff for tobac](./tracks/tobac_regulatory_fiscal_valuation_20261110/index.md) | completed | RQ-01, RQ-02, RQ-07, RQ-11 |
 | [x] | [Serde and canonicalization equivalence qualification](./tracks/serde_canonicalization_qualification_20261118/index.md) | completed | RQ-01, RQ-02, RQ-03 |
 | [-] | [Genomics legacy quality-control costing](./tracks/genomics_legacy_qc_20261124/index.md) | archived | RQ-02, RQ-03, RQ-04 |
-| [ ] | [Full genomics workbook and feature incorporation](./tracks/genomics_full_incorporation_20261124/index.md) | new | RQ-02, RQ-03, RQ-04, RQ-07, RQ-11, RQ-12 |
+| [~] | [Full genomics workbook and feature incorporation](./tracks/genomics_full_incorporation_20261124/index.md) | in_progress | RQ-02, RQ-03, RQ-04, RQ-07, RQ-11, RQ-12 |
 
 ## Next implementation tranche
 
