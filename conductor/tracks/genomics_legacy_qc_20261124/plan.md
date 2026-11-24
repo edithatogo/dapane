@@ -1,6 +1,6 @@
 # Implementation plan
 
-Status: completed
+Status: archived
 
 ## Replay the next legacy stage
 
@@ -13,3 +13,7 @@ Status: completed
 - [x] G2.1 Trace the workbook's booked equipment charge, overhead basis and loaded labour components.
 - [x] G2.2 Replay those costs and the five original library-preparation paths through exact JSON.
 - [x] G2.3 Verify installed parity, retain historical anomalies and record the qualified scope.
+
+## Review fixes
+
+- [x] G3.1 Verify individual charges, exact and rounded totals, and comparison diagnostics in the installed replay. Fix e8344b3. [Review evidence](review.md).
