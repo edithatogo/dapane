@@ -2,7 +2,7 @@
 
 Track: `genomics_full_incorporation_20261124`
 
-Status: new
+Status: in_progress
 
 This is Dapane's next implementation tranche. Deliver an installable successor
 for the complete v15 genomics workbook and the existing and planned features of
