@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-24T14:16:39Z",
+  "updated_at": "2026-11-24T14:19:10Z",
   "description": "Incorporate the full v15 genomics workbook and every existing and planned legacy feature into an independently installable Dapane successor.",
   "repositories": [
     ".",
@@ -47,7 +47,9 @@
       "soffice --headless --convert-to xlsx in an isolated profile with the original formula caches removed",
       "python -m dapane_genomics.v15_replay <private-ledger> <private-result>",
       "python -m pytest adapters/genomics/tests/test_v15_replay.py -q",
-      "python -m dapane_genomics.v15_pathways <private-ledger> <private-pathway-results>"
+      "python -m dapane_genomics.v15_pathways <private-ledger> <private-pathway-results>",
+      "Compare Calc 26.8.3.1 recalculation of a synthetic workbook copy with WorkbookReplay overrides across all original formulas.",
+      "Compare dapane evaluate - and installed dapane.evaluate(request) on all ten complete original pathway requests."
     ],
     "evidence": [
       "verification.md",

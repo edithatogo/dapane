@@ -197,3 +197,30 @@ The private pathway ledger has SHA-256
 Baseline formula results and component and pathway sums are reconciled
 before the requests are evaluated. G2.4 independently checks native CLI
 parity and changed source inputs.
+
+## Formula, branch and installed native verification
+
+The replay regenerated the same baseline results and reconciled 49,936
+populated coordinates. A separate workbook copy changed the source FX,
+labour on-cost and selected consumable price. The copy used a declared
+synthetic scenario and cleared all formula caches. The installed Calc
+oracle and exact replay compared all 36,411 formula coordinates.
+The changes affected 7,321 formula outcomes across 24 worksheets.
+
+The variant matched 5,383 numeric values exactly, 27,781 at 12 significant
+digits and 13 with absolute residuals at most `1e-12` in their original
+units. It matched all 3,227 text outputs and four division errors. The
+three known Calc reference translations were recorded. The successor
+preserved `#REF!` for each. The changed workbook comparison has SHA-256
+`68d458daa69b594717a553a9b42850d09eb55a2361d78f3d792ff3130606d484`.
+The original v15 source still matches its frozen digest.
+
+Running all ten exact requests with the separately installed Dapane
+0.1.0 CLI and CPython 3.15.1 binding produced identical full reports.
+All 1,610 line amounts round independently half-even, all 100 stage
+totals equal their source formula and all ten exact pathway totals
+reconcile. The parity receipt has SHA-256
+`18e337c8643548835908353c88a5f610cbb136afa3d11f36c59889d2b42227b1`.
+The workbook replays are qualified for the historical source and
+tested comparisons. Installed legacy feature and full successor
+qualification remain in Phases 3 and 4.
