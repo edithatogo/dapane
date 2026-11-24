@@ -110,3 +110,117 @@ installed feature ledger open. See the
 and [installed provider evidence](../../../docs/python-provider-verification.md).
 
 Phase 1 passed the Conductor validator and all 12 lifecycle regression tests.
+
+## Independent formula baseline
+
+The installed legacy engine evaluated 36,404 original formulas. Seven
+returned no value. The preserved Calc 26.8.3.1 oracle was generated from a
+private copy with **all 36,411 caches cleared** and each formula and
+formula attribute verified unchanged first. This covers all original
+branch columns on WB19, WB20 and WB22–WB25 and their summary and graph inputs.
+
+| Comparison with original caches | Legacy evaluator | Calc recalculation |
+| --- | ---: | ---: |
+| Stored numeric or text values and error codes agree | 17,660 | 7,134 |
+| Additional values coincide at 12 significant digits | 18,728 | 29,248 |
+| Remaining numeric residuals are below `1e-12` in original units | 16 | 26 |
+| Remaining error-code or missing-output differences | 7 | 3 |
+
+The significant-digit and absolute residual counts describe the independent
+comparators. The historical errors all occur on WB32. Calc preserved the
+four division errors and translated the three broken references to
+`#NAME?`. The installed legacy evaluator returned no value for all seven.
+The successor must preserve the original error codes.
+
+The private legacy comparison has SHA-256
+`140d734f17c45a44d95553f581d1eb89a8c6dff3077d6a97de0c18d3eea0ef09`.
+The Calc workbook has SHA-256
+`01926b302bd2752fe65c12f651f37d6627846c5a5b15de2c740a5ae02ce87c20`.
+The original workbook hash was unchanged. Synthetic cases for ranges,
+rates, annuity, errors and a changed numeric source independently fix
+the expected results for the exact replay.
+
+## Exact historical formula replay
+
+The [v15 replay](../../../adapters/genomics/src/dapane_genomics/v15_replay.py)
+recalculates from original literal values and coordinate dependencies using
+the existing workbook reader and tokenizer. It retains exact rational
+results, with no fallback to formula caches. Excel cell errors are typed
+values, so a broken reference stays distinct from a divide-by-zero result.
+This historical replay does not modify the source or the other legacy
+formula dialects.
+
+It produced a result for each of the 36,411 formula coordinates. All
+3,227 text results and the seven historical errors matched the source.
+Of 33,177 numeric results, 3,680 equal the original decimal cache exactly,
+29,476 more agree at 12 significant digits and the other 21 differ by
+at most `1e-12` in original units. The latter group preserves the exact
+result and per-coordinate residual for inspection. The complete results
+include the detailed-table subtotals and all original sensitivity sheets.
+
+The rational result file has SHA-256
+`2e8fb6133b913dfd103759eb36cedee6853a53c13c27e2f13e3fcc544b2dff4a`.
+The coordinate-level comparison file has SHA-256
+`616a67279b67f309993f93421b9c14e35ae032ab06d777057b28d99f15c488cc`.
+Both files remain restricted. Two independent synthetic tests cover
+cross-sheet ranges, exact expense arithmetic, annuity, input replacement
+and distinct propagated errors. Both passed on CPython 3.15.1.
+
+## Detailed pathway and resource costing
+
+The [pathway adapter](../../../adapters/genomics/src/dapane_genomics/v15_pathways.py)
+follows each original summary component to its detailed booked charges.
+It expands exact detail subtotals, retains quantity and rate from direct
+multiplication rows, and carries the source cell and formula for derived
+charges. It prices the original overhead base and workbook FX rate
+through the existing native Dapane engine.
+
+The installed native binding reconciled **10 pathway/currency totals**,
+**100 stage totals** and **1,610 booked lines**. These are the five original
+pathways in AUD and USD. The complete replay also retains the detailed
+table, labour, capital, consumables, equipment, compute and storage views,
+every DSA branch and the separate summary/graph worksheets in the
+coordinate ledger. Alternate views carry their original currencies,
+labels, source units and denominators. They are kept outside the pathway
+sum. Some original USD sensitivity rationals exceed the core request
+bound. They remain exact values in the workbook replay.
+
+The original WGS processing and storage blocks reference the same two
+booked detail sources more than once in each WGS pathway. The adapter
+retains each occurrence with a separate line identity so the historical
+sum is reproduced and reports the repeated source coordinates. It does
+not infer a prospective charge correction from a historical overlap.
+The result remains identified as the original workbook financial view.
+
+The private pathway ledger has SHA-256
+`f3a729ad81f1c0d2f86dc33e627377c9cf385cda66d4fc08342b6cead2568f90`.
+Baseline formula results and component and pathway sums are reconciled
+before the requests are evaluated. G2.4 independently checks native CLI
+parity and changed source inputs.
+
+## Formula, branch and installed native verification
+
+The replay regenerated the same baseline results and reconciled 49,936
+populated coordinates. A separate workbook copy changed the source FX,
+labour on-cost and selected consumable price. The copy used a declared
+synthetic scenario and cleared all formula caches. The installed Calc
+oracle and exact replay compared all 36,411 formula coordinates.
+The changes affected 7,321 formula outcomes across 24 worksheets.
+
+The variant matched 5,383 numeric values exactly, 27,781 at 12 significant
+digits and 13 with absolute residuals at most `1e-12` in their original
+units. It matched all 3,227 text outputs and four division errors. The
+three known Calc reference translations were recorded. The successor
+preserved `#REF!` for each. The changed workbook comparison has SHA-256
+`68d458daa69b594717a553a9b42850d09eb55a2361d78f3d792ff3130606d484`.
+The original v15 source still matches its frozen digest.
+
+Running all ten exact requests with the separately installed Dapane
+0.1.0 CLI and CPython 3.15.1 binding produced identical full reports.
+All 1,610 line amounts round independently half-even, all 100 stage
+totals equal their source formula and all ten exact pathway totals
+reconcile. The parity receipt has SHA-256
+`18e337c8643548835908353c88a5f610cbb136afa3d11f36c59889d2b42227b1`.
+The workbook replays are qualified for the historical source and
+tested comparisons. Installed legacy feature and full successor
+qualification remain in Phases 3 and 4.
