@@ -49,6 +49,7 @@ dapane-genomics-inventory = "dapane_genomics.workbook_ledger:main"
 dapane-genomics-replay = "dapane_genomics.v15_replay:main"
 dapane-genomics-pathways = "dapane_genomics.v15_pathways:main"
 genomics-report = "dapane_genomics.reporting:main"
+genomics-model = "dapane_genomics.model_tables:main"
 
 [tool.hatch.build]
 exclude = ["**/*.xlsx", "**/*.xlsm", "**/*.parquet", "**/*.pkl", "**/*.docx", "**/*.ipynb", "/conductor", "/.private-runs"]

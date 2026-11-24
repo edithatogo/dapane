@@ -302,3 +302,29 @@ reports. The raw notebook and data are supplied separately as inputs.
 The unqualified legacy source scripts remain visible for feature
 reconciliation. The installed report command replaces the old Pandas
 report implementation.
+
+## Planned feature implementations
+
+The installed optional wheel passed eight new adapter tests including
+workbook replay, the web compatibility regression, external pricing,
+cost prediction and model templates. Under synthetic input, an exact
+volume tier changed the booked compute cost from AUD 50.00 to AUD 43.75.
+Dapane assigned the shared amount as AUD 14.58 and AUD 29.17 with zero
+residual. The returned price-release digest, applied tier and native
+request permit an offline replay. The external reader was a deterministic
+test provider.
+
+The prediction test recovered an independently specified cost model on
+two held-out observations and rejected an underidentified fit. Numeric
+predictions are kept separate from monetary valuation.
+
+The installed model command supplied all six template specifications and
+editable Excel/CSV inputs. Label normalization kept the exact input costs
+and typed output. The taxonomy audit reported common categories, model
+gaps, and unknown subcategories.
+
+A baseline regression selection covered 231 existing compute, storage,
+dynamic-batch, allocation, checkpoint/recovery, security, configuration,
+monitoring, quality and scenario tests. The remaining planned outcomes
+and legacy source commands are still being reconciled against installed
+behaviour.

@@ -49,6 +49,27 @@ for the data views and health check. The base installation serves the
 table and monitoring routes. The visualization extra adds chart rendering.
 The comprehensive analytical reports use the archived PSA data separately.
 
+## Model templates, pricing and prediction
+
+`genomics-model template <model> <output.json|output.csv|output.xlsx>`
+generates the selected model's input structure. The Excel and CSV formats
+include starting taxonomy rows and empty cost fields. Use
+`genomics-model standardize <source.parquet> <new-output-directory>` to
+normalize documented labels, preserve numeric fields and audit consistency
+across models.
+
+`dapane_genomics.pricing.value_with_prices` accepts a caller-supplied
+read-only price source that returns quotes in the
+[Dapane contract](../../docs/contract-v0.1.md). It applies the exact
+applicable volume tier and uses Dapane's valuation and shared-cost
+allocation. Retain the resulting request and price-release digest to
+reproduce a valuation without querying the source again.
+
+`dapane_genomics.prediction.fit_cost_model` fits an identifiable model to
+named numeric predictors and a cost response. Its statistical estimates
+are separate from exact valuation. Train and validate it on the relevant
+data before adopting predictions for a study.
+
 ## Source and licence
 
 The legacy implementation comes from
