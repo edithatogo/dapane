@@ -368,6 +368,27 @@ The clean successor replayed the restored workbook with sockets disabled.
 The workbook inventory, formula results and pathway results matched the
 previous installed receipts byte-for-byte.
 
+The separate inherited suite used the same installed package with sockets
+disabled, the frozen test sources and the original authorised inputs. The
+full run passed 1,338 cases. The remaining case needed the candidate lock
+copied into the harness and passed on the focused rerun. This covers all
+1,339 inherited cases, including the four earlier prepared-input skips.
+
+## Hosted qualification
+
+The official GitHub-hosted offline check passed for the frozen baseline
+and full workbook replay, both before and after merge. The full replay
+landed in [PR #82](https://github.com/edithatogo/dapane/pull/82) and
+passed on [the exact resulting main revision](https://github.com/edithatogo/dapane/actions/runs/45418815055).
+
+The package promotion in [PR #83](https://github.com/edithatogo/dapane/pull/83)
+corrects the inherited localhost debugger setting. After the official run
+identified a parser failure, the port retained deferred import behaviour
+through the named module declaration and converted inline generics to
+conventional typing declarations. CPython 3.15.1, strict type checking
+and installed imports passed on the revised source. The hosted scan is
+[running on the revised PR head](https://github.com/edithatogo/dapane/actions/runs/45428022620).
+
 ## Preservation and restoration
 
 The restricted source bundle contains all four public branch heads and the
