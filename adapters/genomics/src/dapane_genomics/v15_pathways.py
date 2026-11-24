@@ -12,7 +12,10 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
-from genomics_microcosting.dapane_adapter import WORKBOOK_SHA256, evaluate_native_request
+from genomics_microcosting.dapane_adapter import (
+    WORKBOOK_SHA256,
+    evaluate_native_request,
+)
 from genomics_microcosting.dapane_workbook import historical_use, new_historical_request
 
 from .v15_replay import WorkbookReplay
@@ -90,7 +93,9 @@ def _detail_charges(book: WorkbookReplay, coordinate: str) -> list[_Charge]:
                 if isinstance(book.value(_DETAIL, target), Fraction):
                     charges.extend(_detail_charges(book, target))
         if sum((charge.value for charge in charges), Fraction(0)) != source:
-            raise ValueError(f"Detailed booked charges do not reconcile at {coordinate}")
+            raise ValueError(
+                f"Detailed booked charges do not reconcile at {coordinate}"
+            )
         return charges
     # These formulas already state the booked charge. Keep its coordinates and
     # dependency formula instead of assigning it a conjectural quantity or rate.
@@ -167,7 +172,10 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
     fx = _number(book, _SUMMARY, "B81")
     pathways = {}
     for pathway, start in _PATHWAYS.items():
-        for currency, conversion, total_col in (("AUD", Fraction(1), "N"), ("USD", fx, "O")):
+        for currency, conversion, total_col in (
+            ("AUD", Fraction(1), "N"),
+            ("USD", fx, "O"),
+        ):
             name = f"historical-v15-{pathway}-{currency.lower()}"
             request = new_historical_request(name)
             request["policy"]["currency"] = currency
@@ -184,8 +192,12 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
                         base_id = f"{coordinate}-{charge.coordinate}"
                         line_occurrences[base_id] += 1
                         line_id = f"{base_id}-{line_occurrences[base_id]}"
-                        source_occurrences[charge.sheet, charge.coordinate].append(line_id)
-                        _append_charge(request, charge, line_id, component, coordinate, conversion)
+                        source_occurrences[charge.sheet, charge.coordinate].append(
+                            line_id
+                        )
+                        _append_charge(
+                            request, charge, line_id, component, coordinate, conversion
+                        )
                         direct += charge.value
                 overhead = _number(book, _SUMMARY, f"K{row}")
                 if overhead != direct * Fraction("0.27"):
@@ -200,7 +212,9 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
                 )
                 expected = _number(book, _SUMMARY, f"{total_col}{row}")
                 if expected != (direct + overhead) * conversion:
-                    raise ValueError(f"Stage and workbook subtotal disagree at {total_col}{row}")
+                    raise ValueError(
+                        f"Stage and workbook subtotal disagree at {total_col}{row}"
+                    )
                 stages[str(row)] = {
                     "stage": book.value(_SUMMARY, f"A{row}"),
                     "source": f"{_SUMMARY}!{total_col}{row}",
@@ -211,7 +225,9 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
             if expected_pathway != sum(
                 (_fraction(stage["exact"]) for stage in stages.values()), Fraction(0)
             ):
-                raise ValueError(f"Stages and pathway subtotal disagree at {total_col}{start + 10}")
+                raise ValueError(
+                    f"Stages and pathway subtotal disagree at {total_col}{start + 10}"
+                )
             pathways[name] = {
                 "denominator": "historical workbook test pathway",
                 "request": request,
@@ -226,7 +242,9 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
 
     # Keep the catalogue's original display/branch boundaries. These are
     # alternate views of the same ledger and are never added to its booked costs.
-    sheets = {source["catalogue"]["id"]: source["catalogue"] for source in ledger["sheets"]}
+    sheets = {
+        source["catalogue"]["id"]: source["catalogue"] for source in ledger["sheets"]
+    }
     return {
         "source_sha256": WORKBOOK_SHA256,
         "aud_to_usd": _exact(fx),
@@ -242,13 +260,20 @@ def evaluate_pathways(ledger: dict[str, Any]) -> dict[str, Any]:
     result = pathway_requests(ledger)
     for pathway in result["pathways"].values():
         report = evaluate_native_request(pathway["request"])
-        if report["status"] != "complete" or report["totals"]["exact"] != pathway["expected_total"]:
-            raise ValueError("Native total does not reconcile with the original pathway")
+        if (
+            report["status"] != "complete"
+            or report["totals"]["exact"] != pathway["expected_total"]
+        ):
+            raise ValueError(
+                "Native total does not reconcile with the original pathway"
+            )
         lines = {line["id"]: _fraction(line["exact"]) for line in report["lines"]}
         for stage in pathway["stages"].values():
             actual = sum((lines[line_id] for line_id in stage["lines"]), Fraction(0))
             if actual != _fraction(stage["exact"]):
-                raise ValueError(f"Native total does not reconcile at {stage['source']}")
+                raise ValueError(
+                    f"Native total does not reconcile at {stage['source']}"
+                )
         pathway["report"] = report
     return result
 
@@ -256,11 +281,15 @@ def evaluate_pathways(ledger: dict[str, Any]) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ledger", type=Path)
-    parser.add_argument("output", type=Path, help="New restricted file for the exact reports")
+    parser.add_argument(
+        "output", type=Path, help="New restricted file for the exact reports"
+    )
     args = parser.parse_args()
     result = evaluate_pathways(json.loads(args.ledger.read_bytes()))
     args.output.touch(mode=0o600, exist_ok=False)
-    args.output.write_text(json.dumps(result, separators=(",", ":")) + "\n", encoding="utf-8")
+    args.output.write_text(
+        json.dumps(result, separators=(",", ":")) + "\n", encoding="utf-8"
+    )
 
 
 if __name__ == "__main__":

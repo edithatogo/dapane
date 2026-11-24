@@ -4,6 +4,7 @@
 from fractions import Fraction
 
 import pytest
+
 from dapane_genomics.v15_replay import CellError, WorkbookReplay
 
 
@@ -15,7 +16,12 @@ def test_replay_resolves_exact_arithmetic_and_ignores_formula_caches():
                 "cells": [
                     {"coordinate": "A1", "stored_type": "n", "stored_value": "0.1"},
                     {"coordinate": "A2", "stored_type": "n", "stored_value": "0.2"},
-                    {"coordinate": "A3", "stored_type": "s", "stored_value": "0", "text": "rate"},
+                    {
+                        "coordinate": "A3",
+                        "stored_type": "s",
+                        "stored_value": "0",
+                        "text": "rate",
+                    },
                 ],
             },
             {
@@ -58,7 +64,13 @@ def test_replay_resolves_exact_arithmetic_and_ignores_formula_caches():
 def test_replay_preserves_distinct_cached_errors_and_recalculates_annuity():
     # Two end-of-period payments of 121 have discounted values 110 and 100
     # at 10%, giving an exact present value of 210.
-    formulas = ["=PMT(10%,2,-210)", "=PMT(0,3,-210)", "=1/(A6-A6)", "=SUM(#REF!,1)", "=A4*4"]
+    formulas = [
+        "=PMT(10%,2,-210)",
+        "=PMT(0,3,-210)",
+        "=1/(A6-A6)",
+        "=SUM(#REF!,1)",
+        "=A4*4",
+    ]
     ledger = {
         "sheets": [
             {

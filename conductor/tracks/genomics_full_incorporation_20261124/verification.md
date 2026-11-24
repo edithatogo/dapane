@@ -36,7 +36,7 @@ extracted from the archived tree both matched the pinned workbook SHA-256.
 
 ## Workbook ledger
 
-The [inventory command](../../../adapters/genomics/src/genomics_microcosting/workbook_ledger.py)
+The [inventory command](../../../adapters/genomics/src/dapane_genomics/workbook_ledger.py)
 reconciled populated coordinates and formula counts for every catalogue
 sheet against both the raw worksheet parts and the existing workbook
 reader. It retained stored numeric strings, text and errors, expanded
@@ -224,3 +224,81 @@ reconcile. The parity receipt has SHA-256
 The workbook replays are qualified for the historical source and
 tested comparisons. Installed legacy feature and full successor
 qualification remain in Phases 3 and 4.
+
+## Installed legacy feature contract
+
+A clean private extraction of the frozen provider built and installed the
+legacy distribution noneditably with the frozen lock on CPython 3.15.1.
+The installed byte digests matched all 109 enumerated modules. All nine
+package resources were present. The same installation supplied the legacy
+test suite with visualization, reporting and security extras.
+
+The full baseline suite passed **1,335 tests** with sockets disabled.
+Four tests skipped because their prepared labour-price and throughput
+tables were unavailable under their expected names. The four skips were
+reproduced in a targeted run. The outcome and input paths remain in the
+feature qualification inventory.
+
+From a separate consumer directory, the installed `prepare-data` produced
+35 CSV and 35 Parquet files. Installed `validate-engine` passed all 2,894
+selected comparisons across three detailed-table cost columns. The fixture
+copy, exports, lock log and test receipts remain in restricted storage.
+The installed route-map result and Matplotlib gap are recorded in the
+[feature ledger](#feature-ledger).
+
+These baselines define the compatibility checks to run again with the
+optional package built from Dapane.
+
+## Dapane-built legacy runtime
+
+The [optional genomics distribution](../../../adapters/genomics/README.md)
+keeps the source-pinned implementation and both legacy console entry
+points alongside the v15 replay commands. Its licence, citation,
+configuration templates and lock are included. The native extra uses the
+Dapane binding. The installed artifact contains the source catalogue and
+the original package resources, with the workbook provided separately.
+
+A noneditable CPython 3.15.1 installation built from Dapane matched the
+frozen source digests of all 109 legacy modules before subsequent
+compatibility fixes. It passed all 1,335 available inherited tests with
+sockets disabled. The four old DSA skip cases were then exercised by
+supplying the two verified export tables under their expected historical
+filenames in the private test harness. The focused six-case run all passed.
+
+An independent consumer directory used the installed entry points and
+the packaged catalogue. Its workbook inventory, exact formula results
+and native pathway reports reproduced the prior artifacts byte-for-byte.
+The 35 CSV and 35 Parquet outputs also matched all 70 legacy export
+digests. Installed validation again passed all 2,894 comparisons across
+the three selected cost columns.
+
+The remaining report, web, plugin and revision checks are G3.3. Planned
+capabilities and the complete feature dispositions are G3.4 and G3.5.
+
+## Reports, web and compatibility tools
+
+The installed wheel passed the 21 registered Flask routes on synthetic
+data, including three generated charts and CSV, Excel, JSON, Parquet,
+ZIP and PDF exports. Reopening the exports verified their content.
+Missing tables and invalid chart requests returned their expected errors.
+The separate locked base installation served the table and monitoring
+routes and reported the optional visualization dependency for charts.
+The health check follows the selected data directory.
+
+The dashboard was opened in Codex's internal browser. It displayed one
+loaded table and three records and the detail link rendered all three
+rows. The successor uses the actual loaded counts in the dashboard.
+It also passed the focused 38 legacy web, version, plugin and recovery
+tests plus the optional dependency regression.
+
+The installed `genomics-report` uses native Polars tables and the legacy
+chart generators. A synthetic fixture produced matching Markdown, HTML,
+JSON and three linked charts. Installed module execution with WeasyPrint
+and the existing macOS libraries generated a PDF whose text was verified.
+The separate comprehensive report reused the original archived PSA data
+from restricted storage and produced all six individual analytical
+reports. The raw notebook and data are supplied separately as inputs.
+
+The unqualified legacy source scripts remain visible for feature
+reconciliation. The installed report command replaces the old Pandas
+report implementation.

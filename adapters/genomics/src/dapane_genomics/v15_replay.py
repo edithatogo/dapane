@@ -97,7 +97,9 @@ class _Formula:
     def __init__(self, workbook: WorkbookReplay, sheet: str, formula: str) -> None:
         self.workbook = workbook
         self.sheet = sheet
-        self.tokens = [token for token in Tokenizer(formula).items if token.type != "WHITE-SPACE"]
+        self.tokens = [
+            token for token in Tokenizer(formula).items if token.type != "WHITE-SPACE"
+        ]
         self.position = 0
 
     def _peek(self) -> Token | None:
@@ -130,7 +132,9 @@ class _Formula:
                 return value
             case "FUNC", "OPEN":
                 arguments = [self._expression()]
-                while (separator := self._peek()) is not None and separator.type == "SEP":
+                while (
+                    separator := self._peek()
+                ) is not None and separator.type == "SEP":
                     self._take()
                     arguments.append(self._expression())
                 self._close("FUNC")
@@ -140,7 +144,11 @@ class _Formula:
 
     def _primary(self) -> Expression:
         token = self._peek()
-        if token is not None and token.type == "OPERATOR-PREFIX" and token.value in ("-", "+"):
+        if (
+            token is not None
+            and token.type == "OPERATOR-PREFIX"
+            and token.value in ("-", "+")
+        ):
             self._take()
             number = _numeric(self._primary())
             if isinstance(number, CellError) or token.value == "+":
@@ -194,7 +202,9 @@ class WorkbookReplay:
         overrides: dict[tuple[str, str], str] | None = None,
     ) -> None:
         self.cells = {
-            sheet["catalogue"]["sheet"]: {cell["coordinate"]: cell for cell in sheet["cells"]}
+            sheet["catalogue"]["sheet"]: {
+                cell["coordinate"]: cell for cell in sheet["cells"]
+            }
             for sheet in ledger["sheets"]
         }
         self._values: dict[tuple[str, str], CellValue] = {}
@@ -228,7 +238,9 @@ class WorkbookReplay:
         try:
             result = _Formula(self, sheet, cell["formula"]).evaluate()
         except (KeyError, ValueError) as error:
-            raise ValueError(f"Unable to recalculate {sheet}!{coordinate}: {error}") from error
+            raise ValueError(
+                f"Unable to recalculate {sheet}!{coordinate}: {error}"
+            ) from error
         finally:
             self._active.remove(key)
         self._values[key] = result
@@ -252,7 +264,10 @@ class WorkbookReplay:
 
 def _transport(value: CellValue) -> dict[str, str | bool | None]:
     if isinstance(value, Fraction):
-        return {"numerator": str(value.numerator), "denominator": str(value.denominator)}
+        return {
+            "numerator": str(value.numerator),
+            "denominator": str(value.denominator),
+        }
     if isinstance(value, CellError):
         return {"error": value.code}
     return {"value": value}
@@ -287,7 +302,9 @@ def replay_workbook(ledger: dict[str, Any]) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ledger", type=Path)
-    parser.add_argument("output", type=Path, help="New restricted file for formula results")
+    parser.add_argument(
+        "output", type=Path, help="New restricted file for formula results"
+    )
     args = parser.parse_args()
     result = replay_workbook(json.loads(args.ledger.read_bytes()))
     args.output.touch(mode=0o600, exist_ok=False)

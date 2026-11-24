@@ -1,0 +1,58 @@
+# Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
+"""Shared contracts for execution decorators and profiling results."""
+
+__lazy_modules__ = ("collections.abc",)
+
+from collections.abc import Callable
+from typing import ParamSpec, Protocol, TypedDict, TypeVar
+
+
+def legacy_bool_option(
+    name: str,
+    positional: tuple[bool, ...],
+    *,
+    keyword: bool | None,
+    default: bool,
+) -> bool:
+    """Bind an existing positional flag alongside its explicit keyword form."""
+    if len(positional) > 1 or (positional and keyword is not None):
+        message = f"Invalid arguments for {name}"
+        raise TypeError(message)
+    if positional:
+        return positional[0]
+    return default if keyword is None else keyword
+
+
+class ProfileMetrics(TypedDict):
+    """Describe measured counts, elapsed seconds and memory changes in MiB."""
+
+    call_count: int
+    total_time: float
+    avg_time: float
+    max_time: float
+    min_time: float
+    total_memory: float
+    avg_memory: float
+    max_memory: float
+    errors: int
+
+
+P = ParamSpec("P")
+R = TypeVar("R", infer_variance=True)
+D = TypeVar("D", infer_variance=True)
+
+
+class ProfilerDecorator(Protocol):
+    """Preserve the signature and result type of a profiled operation."""
+
+    def __call__(self, func: Callable[P, R], /) -> Callable[P, R]:
+        """Wrap a callable without changing its argument or result contract."""
+        ...
+
+
+class DegradationDecorator(Protocol[D]):
+    """Retain normal results and make fallback or null results explicit."""
+
+    def __call__(self, func: Callable[P, R], /) -> Callable[P, R | D | None]:
+        """Wrap an operation with its declared recovery result."""
+        ...

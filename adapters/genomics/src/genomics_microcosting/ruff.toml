@@ -1,0 +1,7 @@
+target-version = "py315"
+
+[lint]
+select = ["ALL"]
+
+[lint.flake8-type-checking]
+runtime-evaluated-base-classes = ["pydantic.BaseModel"]
