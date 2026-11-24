@@ -66,3 +66,26 @@ ledger bytes, SHA-256
 `9b7a0996b0ca012315ceffcd492ef1813719d2ea56ec7bfcf81a364ffd59aba5`.
 An existing output path was rejected. The original workbook digest
 matched before and after the inventory.
+
+## Feature ledger
+
+The [feature coverage record](feature-coverage.md) maps the installed and
+source entry points, configurations, reports, web and plugin contracts,
+planned outcomes and retained issues to their implementation tasks.
+
+Two runs of the source inventory produced the same private ledger, SHA-256
+`aa17ce9b28b137c67ad58741681fb56840f07cabbcfd792a76314eef81d3c11e`.
+It identifies 109 modules, 1,129 public-looking classes and callables,
+two console entry points, 74 source command candidates, 19 configuration
+assets, nine package resources, 68 documents and 161 Python test files.
+The 812 plan source lines cover proposals, duplicated checklists and
+maintenance receipts as well as distinct deliverables. The line count
+does not measure completed features.
+
+Installed distribution entry points matched the source manifest. The
+installed web module matched the frozen source digest, and its Flask
+test client registered all 21 source routes and served the table index.
+This check used the provider environment with the plotting dependencies
+present. The separate core-only wheel fails to import the web module
+without Matplotlib. F09 retains this compatibility gap for installed
+successor qualification.

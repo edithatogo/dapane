@@ -14,3 +14,4 @@ workbook and feature coverage ledgers.
 - [Track metadata](metadata.json)
 - [Prior exact-JSON replay and review](../genomics_legacy_qc_20261124/index.md)
 - [Verification](verification.md)
+- [Legacy feature coverage](feature-coverage.md)

@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-24T13:54:09Z",
+  "updated_at": "2026-11-24T13:59:20Z",
   "description": "Incorporate the full v15 genomics workbook and every existing and planned legacy feature into an independently installable Dapane successor.",
   "repositories": [
     ".",
@@ -39,10 +39,12 @@
     "commands": [
       "git archive --format=tar.gz fc8d4178bc3f5ce67cfc0547f7417272562c18a8",
       "Compare the workbook digest and run historical_library_preparation_request and dapane.evaluate in the installed CPython 3.15.1 comparator.",
-      "python -I adapters/genomics/src/genomics_microcosting/workbook_ledger.py <original-v15> <legacy-catalogue> <private-ledger>"
+      "python -I adapters/genomics/src/genomics_microcosting/workbook_ledger.py <original-v15> <legacy-catalogue> <private-ledger>",
+      "python -I adapters/genomics/tools/feature_inventory.py <legacy-checkout> <revision> <frozen-issues> <private-ledger>"
     ],
     "evidence": [
-      "verification.md"
+      "verification.md",
+      "feature-coverage.md"
     ]
   }
 }
