@@ -222,7 +222,17 @@ notes. The source workbook is read-only. The follow-on extends that replay to bo
 equipment and overhead, the loaded hourly rates and library preparation.
 The companion scanner fix uses the isolated CLI checkout
 `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/standards-full` and only the Dapane-hosted Wolfi
-dependency pin. The next operation is exact-head hosted verification.
+dependency pin. That lane closed after exact-head hosted verification.
+
+## Full genomics incorporation
+
+Integration chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` owns the
+[next genomics tranche](tracks/genomics_full_incorporation_20261124/index.md).
+Its CLI checkout is `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/dapane`
+on `codex/plan-full-genomics-incorporation-20261124` for planning. The scope is
+the new track, roadmap and registry. The provider repository and original workbook
+are read-only planning inputs. The first implementation operation is the source
+freeze and coverage inventory.
 
 ## Main integration reconciliation — 19 November 2026
 

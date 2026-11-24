@@ -100,10 +100,9 @@ and manual genomic extraction labour stage. The
 namespace compatibility, source/component preservation, historical comparison
 and exact native execution from separate installed Python environments.
 
-Next work broadens provider recipes and sources under their own acceptance
-criteria and completes G4 release assurance. Richer numerical methods retain
-separate scope; the selected source and batch cases do not establish general
-employment, assay or economic-method validity.
+Broader provider recipes, sources and numerical methods have their own
+acceptance criteria. The selected source and batch cases qualify the bounded
+extraction workflow. See the next-action section for the full genomics tranche.
 
 Contract 0.1 already verifies fractional exposure, effective/knowledge dates,
 half-even rounding, largest-remainder allocation, duplicate/component rejection,
@@ -184,7 +183,9 @@ registry identity decisions, reproducible installed artifacts, dependency/source
 checks, compatibility and bounded performance evidence. It does not require another
 approval board or a second evidence repository.
 
-Keep mchs, microcosting_healthworkforce and microcosting_genomics as domain packages.
+Keep mchs and microcosting_healthworkforce as domain packages. The genomics
+provider retains domain responsibility through the full incorporation tranche
+and successor qualification.
 Review hwcc and cobra-costing as conditional archive candidates; preserve unique rules,
 workbooks, history and research. Retain scholarly identities for tutorials and research
 consumers. A recommendation is not an archive action. Re-check current repository state,
@@ -194,8 +195,7 @@ any later archive or removal of duplicated machinery.
 ## Current status and next action
 
 The numerical candidate and synthetic consumers now have scoped runtime evidence.
-Full provider, programme, deployment and research capabilities retain their own
-unfinished acceptance criteria; no runtime track is closed merely because a
-bounded first profile works.
-Use the [registry](tracks.md) for current machine-aligned status and the
-[workflow](workflow.md) for the next bounded task.
+The next tranche is [full genomics workbook and feature incorporation](tracks/genomics_full_incorporation_20261124/index.md).
+Both the complete v15 workbook and all existing and planned legacy features are
+required. Start by freezing the two coverage ledgers. Use the [registry](tracks.md)
+for status and the [workflow](workflow.md) for execution.
