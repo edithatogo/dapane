@@ -25,6 +25,10 @@ formulas. Consumable quotes and use quantities retain the XML decimal strings.
 The Dapane kernel applies the original charged rates and its existing rounding
 policy. The original source digest was unchanged after replay.
 
+The newborn-screening fixture retains its original provider identities. Its
+regression checks the programme bytes and exact source pins against its own
+dated qualification receipt as the installed-consumer pin advances.
+
 ## Results
 
 The native CLI and installed Python wheel returned identical complete reports.
