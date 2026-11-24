@@ -17,8 +17,8 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
-import numpy as np
-import pandas as pd
+import polars as pl
+import polars.selectors as cs
 
 from genomics_microcosting.calculation_engine import CalculationEngine
 from genomics_microcosting.performance import (
@@ -52,13 +52,17 @@ def profile_data_loading(
     sys.stdout.write("Profiling data loading performance..." + "\n")
 
     @profiler.profile("load_prepared_data")
-    def load_data() -> dict[str, pd.DataFrame]:
+    def load_data() -> dict[str, pl.DataFrame]:
         return load_prepared_data(data_dir)
 
     try:
         data_dict = load_data()
         sys.stdout.write(f"Loaded {len(data_dict)} data tables" + "\n")
-        return {"status": "success", "table_count": len(data_dict), "data": data_dict}
+        return {
+            "status": "success" if data_dict else "error",
+            "table_count": len(data_dict),
+            "data": data_dict,
+        }
     except Exception as e:
         logger.exception("Could not complete profile data loading")
         sys.stdout.write(f"Error loading data: {e}" + "\n")
@@ -67,7 +71,8 @@ def profile_data_loading(
 
 def profile_calculation_engine(
     profiler: PerformanceProfiler,
-    _data_dict: dict[str, pd.DataFrame],
+    _data_dict: dict[str, pl.DataFrame],
+    workbook: Path | None = None,
 ) -> dict[str, Any]:
     """Profile calculation engine performance.
 
@@ -83,13 +88,16 @@ def profile_calculation_engine(
 
     @profiler.profile("initialize_engine")
     def init_engine() -> CalculationEngine:
-        sheet_manager = SheetManager()
+        sheet_manager = SheetManager(workbook)
         return CalculationEngine(sheet_manager)
 
     @profiler.profile("run_engine")
     def run_engine(engine: CalculationEngine) -> object:
-        return engine.run_engine()
+        return engine.run_engine(
+            engine.sheet_manager.default_sheet_names["detailed_table"]
+        )
 
+    engine = None
     try:
         engine = init_engine()
         results_df, errors = run_engine(engine)
@@ -107,12 +115,15 @@ def profile_calculation_engine(
         logger.exception("Could not complete profile calculation engine")
         sys.stdout.write(f"Error running calculation engine: {e}" + "\n")
         return {"status": "error", "error": str(e)}
+    finally:
+        if engine is not None:
+            engine.sheet_manager.close()
 
 
 def optimize_dataframes(
-    data_dict: dict[str, pd.DataFrame],
+    data_dict: dict[str, pl.DataFrame],
     output_dir: Path,
-) -> dict[str, pd.DataFrame]:
+) -> dict[str, pl.DataFrame]:
     """Optimize DataFrames for better memory usage.
 
     Args:
@@ -133,11 +144,11 @@ def optimize_dataframes(
         sys.stdout.write(f"  Optimizing {table_name} ({df.shape})..." + "\n")
         start_time = time.time()
 
-        original_memory = df.memory_usage(deep=True).sum() / 1024 / 1024  # MB
+        original_memory = df.estimated_size("mb")
         optimized_df = optimizer.optimize_dataframe(df)
-        optimized_memory = (
-            optimized_df.memory_usage(deep=True).sum() / 1024 / 1024
-        )  # MB
+        if not optimized_df.cast(df.schema).equals(df):
+            raise ValueError(f"Optimization changed values in {table_name}")
+        optimized_memory = optimized_df.estimated_size("mb")
 
         end_time = time.time()
 
@@ -161,7 +172,7 @@ def optimize_dataframes(
 
         # Save optimized DataFrame
         optimized_file = output_dir / f"optimized_{table_name}.parquet"
-        optimized_df.to_parquet(optimized_file)
+        optimized_df.write_parquet(optimized_file)
         sys.stdout.write(f"    Saved optimized data to {optimized_file}" + "\n")
 
     # Save optimization statistics
@@ -174,47 +185,35 @@ def optimize_dataframes(
 
 
 def _profile_column_processing(
-    df: pd.DataFrame,
+    df: pl.DataFrame,
     largest_table: str,
     profiler: PerformanceProfiler,
-) -> tuple[Callable[[], pd.Series | None], Callable[[], pd.Series | None]]:
+) -> tuple[Callable[[], pl.Series | None], Callable[[], pl.Series | None]]:
     # Create a test function to apply
-    def test_function(series_chunk: pd.Series) -> pd.Series:
+    def test_function(series_chunk: pl.Series) -> pl.Series:
         # Simulate some computation
-        return series_chunk.apply(
-            lambda x: x * 1.1 if isinstance(x, (int, float)) else x,
-        )
+        return series_chunk * 1.1
 
     column = next(
-        (name for name in df.columns if pd.api.types.is_numeric_dtype(df[name])),
+        (name for name, dtype in df.schema.items() if dtype.is_numeric()),
         None,
     )
 
     @profiler.profile(f"sequential_processing_{largest_table}")
-    def sequential_processing() -> pd.Series | None:
-        return df[column].apply(test_function) if column is not None else None
+    def sequential_processing() -> pl.Series | None:
+        return test_function(df[column]) if column is not None else None
 
     @profiler.profile(f"parallel_processing_{largest_table}")
-    def parallel_processing() -> pd.Series | None:
+    def parallel_processing() -> pl.Series | None:
         if column is None:
             return None
-        try:
-            return ParallelProcessor().parallel_apply(
-                df,
-                test_function,
-                column,
-                n_cores=4,
-            )
-        except Exception as e:
-            logger.exception("Could not complete parallel processing")
-            sys.stdout.write(f"    Parallel processing failed: {e}\n")
-            return df[column].apply(test_function)
+        return ParallelProcessor().parallel_apply(df, test_function, column, n_cores=4)
 
     return sequential_processing, parallel_processing
 
 
 def benchmark_parallel_processing(
-    data_dict: dict[str, pd.DataFrame],
+    data_dict: dict[str, pl.DataFrame],
     profiler: PerformanceProfiler,
 ) -> dict[str, Any]:
     """Benchmark parallel processing capabilities.
@@ -255,6 +254,10 @@ def benchmark_parallel_processing(
         sys.stdout.write("    Running parallel processing..." + "\n")
         parallel_result = parallel_processing()
 
+        if sequential_result is None or parallel_result is None:
+            return {"status": "skipped", "reason": "No numeric columns"}
+        if not sequential_result.equals(parallel_result):
+            return {"status": "error", "reason": "Parallel result changed values"}
         return {
             "status": "success",
             "table": largest_table,
@@ -273,7 +276,7 @@ def benchmark_parallel_processing(
 
 
 def test_caching_performance(
-    data_dict: dict[str, pd.DataFrame],
+    data_dict: dict[str, pl.DataFrame],
     profiler: PerformanceProfiler,
 ) -> dict[str, Any]:
     """Test caching performance improvements.
@@ -291,10 +294,13 @@ def test_caching_performance(
 
     # Test caching with a sample operation
     @profiler.profile("cache_test_operation")
-    def expensive_operation(data: np.ndarray | pd.Series) -> float | int:
-        # Simulate an expensive operation
-        time.sleep(0.01)  # 10ms delay
-        return data.sum().sum() if isinstance(data, pd.DataFrame) else 0
+    def expensive_operation(data: pl.DataFrame) -> float | int:
+        result = data.select(cs.numeric().sum())
+        return (
+            sum(value for value in result.row(0) if value is not None)
+            if result.width
+            else 0
+        )
 
     # Find a reasonably sized table
     test_table = None
@@ -340,6 +346,7 @@ def test_caching_performance(
         "table": test_table,
         "original_result": result1,
         "cached_result": result2,
+        "results_match": result1 == result2,
         "cache_stats": cache_stats,
     }
 
@@ -455,6 +462,9 @@ def main() -> int:
         description="Profile and optimize microcosting analysis performance",
     )
     parser.add_argument("--data-dir", help="Path to prepared data directory")
+    parser.add_argument(
+        "--workbook", type=Path, help="Workbook used for the formula benchmark"
+    )
     parser.add_argument("--output-dir", help="Path to output directory for results")
     parser.add_argument(
         "--optimize-data",
@@ -505,7 +515,9 @@ def main() -> int:
         data_dict = data_results["data"]
 
         # Profile calculation engine
-        profile_calculation_engine(profiler, data_dict)
+        engine_results = profile_calculation_engine(profiler, data_dict, args.workbook)
+        if engine_results["status"] != "success" or engine_results["error_count"]:
+            return 1
 
         # Optimize DataFrames if requested
         if args.optimize_data:
@@ -516,12 +528,19 @@ def main() -> int:
         if args.benchmark_parallel:
             parallel_results = benchmark_parallel_processing(data_dict, profiler)
             sys.stdout.write(f"Parallel processing results: {parallel_results}" + "\n")
+            if parallel_results["status"] != "success":
+                return 1
 
         # Test caching performance if requested
         cache_results = None
         if args.test_cache:
             cache_results = test_caching_performance(data_dict, profiler)
             sys.stdout.write(f"Caching test results: {cache_results}" + "\n")
+            if (
+                cache_results["status"] != "success"
+                or not cache_results["results_match"]
+            ):
+                return 1
 
         # Generate performance report
         generate_performance_report(profiler, {"optimization_stats": []}, output_dir)

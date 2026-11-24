@@ -165,15 +165,16 @@ def demonstrate_enhanced_plugin_system() -> None:
             )
 
 
-def create_sample_enhanced_plugin() -> Path:
+def create_sample_enhanced_plugin(output_dir: Path = Path("plugins")) -> Path:
     """Create a sample enhanced plugin."""
     sys.stdout.write("\n=== Creating Sample Enhanced Plugin ===" + "\n")
 
     plugin_content = '''
+# Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Sample enhanced cost analysis plugin."""
 
-import pandas as pd
-from typing import Any, Dict
+import polars as pl
+from typing import Any
 from genomics_microcosting.enhanced_plugin_system import AnalysisPlugin  # noqa: E402
 
 
@@ -186,11 +187,11 @@ class SampleCostAnalysisPlugin(AnalysisPlugin):
             version="1.0.0",
             description="Sample cost analysis plugin for demonstration",
             author="Microcosting Team",
-            license="MIT",
+            license="Apache-2.0",
             tags=["analysis", "cost", "finance"]
         )
 
-    def analyze(self, data: Any, **kwargs) -> Dict[str, Any]:
+    def analyze(self, data: Any, **kwargs) -> dict[str, Any]:
         """Perform sample cost analysis.
 
         Args:
@@ -201,12 +202,12 @@ class SampleCostAnalysisPlugin(AnalysisPlugin):
             Dict[str, Any]: Analysis results
         """
         # Handle different data types
-        if isinstance(data, pd.DataFrame):
+        if isinstance(data, pl.DataFrame):
             result = {
                 "data_type": "DataFrame",
                 "rows": len(data),
                 "columns": len(data.columns),
-                "numeric_columns": len(data.select_dtypes(include=['number']).columns)
+                "numeric_columns": sum(dtype.is_numeric() for dtype in data.dtypes)
             }
         elif isinstance(data, dict):
             result = {
@@ -228,15 +229,10 @@ class SampleCostAnalysisPlugin(AnalysisPlugin):
 '''
 
     # Save the sample plugin
-    plugins_dir = (
-        Path(__file__).resolve().parents[1]
-        / "src"
-        / "genomics_microcosting"
-        / "plugins"
-    )
-    sample_plugin_file = plugins_dir / "sample_enhanced_plugin.py"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    sample_plugin_file = output_dir / "sample_enhanced_plugin.py"
 
-    with Path(sample_plugin_file).open("w") as f:
+    with sample_plugin_file.open("x", encoding="utf-8") as f:
         f.write(plugin_content.strip())
 
     sys.stdout.write(f"Created sample enhanced plugin at {sample_plugin_file}" + "\n")
@@ -263,6 +259,7 @@ def main() -> int:
         action="store_true",
         help="Create a sample enhanced plugin",
     )
+    parser.add_argument("--output-dir", type=Path, default=Path("plugins"))
 
     args = parser.parse_args()
 
@@ -274,7 +271,7 @@ def main() -> int:
 
     try:
         if args.create_sample:
-            create_sample_enhanced_plugin()
+            create_sample_enhanced_plugin(args.output_dir)
 
         if args.basic:
             demonstrate_basic_plugin_system()

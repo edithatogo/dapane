@@ -1,229 +1,66 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
-"""Validates the replicated 'BI - Comp+Stor Costs - VCGS' data against the original."""
+"""Compare replicated compute and storage costs with the original CSV export."""
 
+import argparse
+import csv
 import sys
+from pathlib import Path
 
-import numpy as np
-import pandas as pd
+import polars as pl
+
+from dapane_genomics.legacy_workbooks import COMPUTE_STORAGE_BLOCKS, same_value
+
+SOURCE = Path("data/extracted/BI___CompStor_Costs___VCGS_values.csv")
 
 
-def validate_bi_comp_stor_costs() -> None:
-    """Validate the replicated 'BI - Comp+Stor Costs - VCGS' data."""
-    # Load original data, skipping headers
+def _scalar(value: str | None) -> float | str | None:
+    if not value:
+        return None
+    try:
+        return float(value.replace(",", ""))
+    except ValueError:
+        return value
 
-    # Load replicated data
-    replicated_server_df = pd.read_csv("data/replicated/server_costs.csv")
-    replicated_equipment_df = pd.read_csv("data/replicated/equipment_costs.csv")
-    replicated_storage_df = pd.read_csv("data/replicated/storage_costs.csv")
 
-    errors = []
+def validate_bi_comp_stor_costs(
+    source: Path = SOURCE,
+    replicated_dir: Path = Path("data/replicated"),
+) -> int:
+    """Compare the named calculated fields at their original source rows."""
+    with source.open(newline="", encoding="utf-8-sig") as handle:
+        rows = list(csv.reader(handle))
+    failures = []
+    compared = 0
+    for name, (indices, columns) in COMPUTE_STORAGE_BLOCKS.items():
+        actual = pl.read_csv(replicated_dir / name, infer_schema=False)
+        if actual.height != len(indices) or len(rows) < max(indices):
+            raise ValueError(f"{name} has an unexpected source or result row count")
+        for column_index, column_name in columns.items():
+            for index, value in zip(indices, actual[column_name], strict=True):
+                original = rows[index - 1]
+                raw = (
+                    original[column_index - 1] if column_index <= len(original) else ""
+                )
+                expected = _scalar(raw)
+                observed = _scalar(value)
+                if expected is not None or observed is not None:
+                    compared += 1
+                if not same_value(expected, observed):
+                    failures.append(f"{name} field {column_name} at source row {index}")
+    if failures:
+        sys.stderr.write("\n".join(failures) + "\n")
+    sys.stdout.write(f"{compared} cells compared, {len(failures)} mismatches\n")
+    return int(not compared or bool(failures))
 
-    # --- Validate Server Costs ---
-    server_cols = [
-        "Description",
-        "Source",
-        "Date",
-        "CPUs",
-        "Cores/CPU",
-        "Threads/CPU",
-        "Total Cores",
-        "Total Threads",
-        "Memory",
-        "ex-GST",
-        "inc. GST",
-        "3-yr",
-        "5-yr",
-        "Unnamed: 13",
-        "Cost/CPU",
-        "Cost/Core",
-        "Cost/Thread",
-        "Cost/GB",
-        "LL",
-        "UL",
-        "Cost/CPU/hr",
-        "Cost/Core/hr",
-        "Cost/thread/hr",
-        "cost/gb/hr",
-        "Cost/CPU/hr.1",
-        "Cost/Core/hr.1",
-        "Cost/thread/hr.1",
-        "cost/gb/hr.1",
-        "Unnamed: 28",
-    ]
-    server_df_orig = pd.read_csv(
-        "data/extracted/BI___CompStor_Costs___VCGS_values.csv",
-        header=None,
-        skiprows=2,
-        names=server_cols,
-    )
 
-    server_cols_to_check = {
-        "Total Cores": "Total Cores",
-        "Total Threads": "Total Threads",
-        "inc. GST": "inc. GST",
-        "3-yr": "3-yr",
-        "5-yr": "5-yr",
-        "Cost/CPU": "Cost/CPU",
-        "Cost/Core": "Cost/Core",
-        "Cost/Thread": "Cost/Thread",
-        "Cost/GB": "Cost/GB",
-        "Cost/CPU/hr.1": "Cost/CPU/hr - 100%",
-        "Cost/Core/hr.1": "Cost/Core/hr - 100%",
-        "Cost/thread/hr.1": "Cost/thread/hr - 100%",
-        "cost/gb/hr.1": "cost/gb/hr - 100%",
-    }
-    for orig_col, rep_col in server_cols_to_check.items():
-        orig_series = server_df_orig[orig_col].iloc[0:2].astype(float)
-        rep_series = replicated_server_df[rep_col].astype(float)
-        if not np.allclose(
-            orig_series.values,
-            rep_series.values,
-            rtol=1e-5,
-            atol=1e-8,
-            equal_nan=True,
-        ):
-            errors.append(
-                f"Server Costs Mismatch in column {orig_col}:\nOriginal:\n"
-                f"{orig_series.to_numpy()}\nReplicated:\n"
-                f"{rep_series.to_numpy()}",
-            )
-
-    # --- Validate Equipment Costs ---
-    equipment_cols = [
-        "Equipment",
-        "Brand",
-        "Model",
-        "Useful Life",
-        "List Price (USD)",
-        "List Price (EUR)",
-        "List Price (AUD)",
-        "Date Accessed",
-        "Source",
-        "Annualised cost",
-        "Workflows",
-        "Unnamed: 11",
-        "Initial Estimate",
-        "Unnamed: 13",
-        "Unnamed: 14",
-        "Unit Cost ($/sample)",
-        "Unnamed: 16",
-        "Unnamed: 17",
-        "Unnamed: 18",
-    ]
-    equipment_df_orig = pd.read_csv(
-        "data/extracted/BI___CompStor_Costs___VCGS_values.csv",
-        header=None,
-        skiprows=7,
-        names=equipment_cols,
-    )
-    equipment_cols_to_check = {
-        "Annualised cost": "Annualised cost",
-        "Unit Cost ($/sample)": "Unit Cost ($/sample) - Initial",
-        "Unnamed: 17": "Unit Cost ($/sample) - Actual (0.7)",
-        "Unnamed: 18": "Unit Cost ($/sample) - Max",
-    }
-    # --- Validate Equipment Costs ---
-    equipment_cols = [
-        "Equipment",
-        "Brand",
-        "Model",
-        "Useful Life",
-        "List Price (USD)",
-        "List Price (EUR)",
-        "List Price (AUD)",
-        "Date Accessed",
-        "Source",
-        "Annualised cost",
-        "Workflows",
-        "Unnamed: 11",
-        "Initial Estimate",
-        "Unnamed: 13",
-        "Unnamed: 14",
-        "Unit Cost ($/sample)",
-        "Unnamed: 16",
-        "Unnamed: 17",
-        "Unnamed: 18",
-    ]
-    equipment_df_orig = pd.read_csv(
-        "data/extracted/BI___CompStor_Costs___VCGS_values.csv",
-        header=None,
-        skiprows=8,
-        names=equipment_cols,
-        nrows=2,
-    )
-    equipment_cols_to_check = {
-        "Annualised cost": "Annualised cost",
-        "Unit Cost ($/sample)": "Unit Cost ($/sample) - Initial",
-        "Unnamed: 17": "Unit Cost ($/sample) - Actual (0.7)",
-        "Unnamed: 18": "Unit Cost ($/sample) - Max",
-    }
-    for orig_col, rep_col in equipment_cols_to_check.items():
-        orig_series = pd.to_numeric(equipment_df_orig[orig_col], errors="coerce")
-        rep_series = replicated_equipment_df[rep_col].astype(float)
-        if not np.allclose(
-            orig_series.values,
-            rep_series.values,
-            rtol=1e-5,
-            atol=1e-8,
-            equal_nan=True,
-        ):
-            errors.append(
-                f"Equipment Costs Mismatch in column {orig_col}:\nOriginal:\n"
-                f"{orig_series.to_numpy()}\nReplicated:\n"
-                f"{rep_series.to_numpy()}",
-            )
-
-    # --- Validate Storage Costs ---
-    storage_cols = [
-        "Description",
-        "Source",
-        "Date",
-        "Total Space (GB)",
-        "ex-GST",
-        "inc. GST",
-        "Useable life (years)",
-        "Cost/GB",
-        "Cost/GB/year",
-        "Cost/test",
-    ]
-    storage_df_orig = pd.read_csv(
-        "data/extracted/BI___CompStor_Costs___VCGS_values.csv",
-        header=None,
-        skiprows=14,
-        names=storage_cols,
-        nrows=7,
-    )
-    storage_cols_to_check = {
-        "Cost/GB": "Cost/GB",
-        "Cost/GB/year": "Cost/GB/year",
-        "Cost/test": "Cost/test",
-    }
-    for orig_col, rep_col in storage_cols_to_check.items():
-        orig_series = pd.to_numeric(
-            storage_df_orig[orig_col].iloc[[1, 4, 5, 6]],
-            errors="coerce",
-        )
-        rep_series = replicated_storage_df[rep_col].astype(float)
-        if not np.allclose(
-            orig_series.values,
-            rep_series.values,
-            rtol=1e-5,
-            atol=1e-8,
-            equal_nan=True,
-        ):
-            errors.append(
-                f"Storage Costs Mismatch in column {orig_col}:\nOriginal:\n"
-                f"{orig_series.to_numpy()}\nReplicated:\n"
-                f"{rep_series.to_numpy()}",
-            )
-
-    if errors:
-        for error in errors:
-            sys.stdout.write(str(error) + "\n")
-        sys.stdout.write(f"\\n{len(errors)} validation errors found." + "\n")
-    else:
-        sys.stdout.write("Validation successful! No discrepancies found." + "\n")
+def main() -> int:
+    """Validate a local historical export against calculated outputs."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", type=Path, default=SOURCE)
+    parser.add_argument("--replicated-dir", type=Path, default=Path("data/replicated"))
+    options = parser.parse_args()
+    return validate_bi_comp_stor_costs(options.input, options.replicated_dir)
 
 
 if __name__ == "__main__":
-    validate_bi_comp_stor_costs()
+    raise SystemExit(main())

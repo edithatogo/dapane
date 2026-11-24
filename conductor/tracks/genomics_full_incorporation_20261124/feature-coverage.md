@@ -40,10 +40,33 @@ own source coordinate and candidate tests. The installed wheel matched all
 registrations. The [verification record](verification.md#standalone-installed-artifacts)
 links the installed tests and the private workbook replays.
 
-Source-command parity remains open where the predecessor scripts rely on
-Pandas or lack a normal-entry-point test. The original source remains in
-the verified private bundle. Continue the per-command audit and qualify
-maintained replacements against their inputs and outputs.
+## Source command audit
+
+The packaged compatibility commands use Polars and the installed costing
+and workbook APIs. The old source interfaces remain available through the
+verified private bundle. The replacement commands use explicit inputs
+and source coordinates. The [runtime evidence](verification.md#source-command-qualification)
+records what was compared.
+
+| Commands | Observed outcome |
+| --- | --- |
+| `create_ground_truth`, `replicate_calculations`, `validate_calculations` | Projected the cached reference, calculated each retained row and compared 1,014 values by its physical worksheet coordinate. |
+| `replicate_detailed_table`, `advanced_validation`, `validate_calculation_engine` | Recalculated the detailed table and compared 17,897 populated cells. The independent legacy engine command also passed 2,894 selected numeric comparisons. |
+| `replicate_bi_comp_stor_costs`, `validate_bi_comp_stor_costs` | Recalculated and compared 99 cells in the original server, equipment and storage blocks. |
+| `replicate_consumable_costs`, `replicate_labour_costs`, `replicate_equipment_costs` | Synthetic source CSVs reproduced independent expected prices, quantities, hourly rates and depreciation. |
+| `prepare_reference_tables`, `validate_simple_tables` | Prepared both historical reference layouts from an independent synthetic workbook and compared their populated numeric cells. |
+| `validate_labour_usage`, `extract_excel_data_properly` | Compared the original labour sheet and exported its shared assay classification as stored. |
+| `transfer_validate_tables`, `prepare_publication_tables` | Round-tripped all 35 sheets through native formats. A separate synthetic case verifies publication CSV and metadata. |
+| `analyze_scenarios` | Read 70 workbook DSA records and five archived PSA summaries. New scenarios use native exact requests. |
+| `analyze_model_consistency`, `automated_standardization`, `model_transformation`, `phase3_data_enhancement` | Produced the five model audits and exports. Original values and physical row identity remain available in the source-backed exports. |
+| `excel_data_extractor`, `extract_excel_comprehensive`, `validate_excel_comparison`, `validate_data_integrity` | Verified the exported and projected model values against the selected workbook revision. |
+| `validate_standardization`, `validation_pipeline` | Reported historical empty fields and inconsistent rows. The synthetic model passed. Changing one booked cost failed validation and appended a second receipt. |
+| `generate_templates`, `demonstrate_plugins`, `demonstrate_excel_version_control` | Generated the six templates and optional plugin source. The revision demo restored the first of two distinct same-second versions. |
+| `establish_performance_baselines`, `compare_performance`, `profile_and_optimize` | Measured native contribution workloads, checked values during optimization, and exercised parallel and cache equivalence. Compare only receipts with matching runtime and workload identities. |
+
+The command audit supplements the structural inventory and inherited tests.
+Some frozen feature rows, including repository controls and named quality
+targets, still need individual disposition for G3.5.
 
 ## Planned deliverables
 
@@ -54,10 +77,12 @@ Existing modules are reuse candidates. G3.4 closes gaps found by G3.1–G3.3,
 then G3.5 reconciles the leaf rows and executable evidence.
 
 The planned pricing, shared allocation, template and prediction paths have
-synthetic installed evidence. The benchmark records measured resource use on
-a verified workload. Lab-specific valuation changes, the complete quality
-thresholds, deployment templates and outstanding provider and repository
-maintenance readbacks remain to be verified.
+synthetic installed evidence. Lab profiles apply exact multipliers to selected
+labour-only quotes and override equipment useful lives with separate
+provenance. The benchmark records measured resource use on a verified workload.
+The dashboard container and provider templates are packaged independently of
+the original workbook. The named quality and maintenance evidence is recorded
+in the [qualification report](verification.md#planned-feature-implementations).
 
 | Source rows | Required outcome and verification |
 | --- | --- |

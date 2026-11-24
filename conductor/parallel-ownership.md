@@ -238,8 +238,11 @@ read-only inputs. The ownership continues on `codex/genomics-legacy-features`
 for compatibility tests and the optional package. The same integration chat
 uses the separate CLI checkout
 `/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/genomics-standalone-ci`
-for the tested standalone package checkpoint. The implementation checkout
-continues G3.4 and G3.5 on the remaining commands and planned features.
+for the tested standalone package checkpoint in PR #84. The same chat used
+`/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/genomics-lab-ci`
+for the lab and costing command checkpoint in PR #85. The implementation
+checkout owns the remaining native commands, qualification and deployment
+templates. The provider and the preserved workbook remain read-only inputs.
 
 ## Main integration reconciliation — 19 November 2026
 

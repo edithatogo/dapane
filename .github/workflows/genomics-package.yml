@@ -70,3 +70,26 @@ jobs:
           suite=("$RUNNER_TEMP"/genomics-source/genomics_microcosting-*)
           "$UV_PROJECT_ENVIRONMENT/bin/python" -I -m pytest \
             -c "${suite[0]}/pyproject.toml" "${suite[0]}/tests" --disable-socket
+      - name: Exercise the dashboard image without network access
+        run: |
+          set -euo pipefail
+          image=dapane-genomics-dashboard:ci
+          docker build --tag "$image" .
+          prepared=$(mktemp -d)
+          chmod 755 "$prepared"
+          uv_project_python="$RUNNER_TEMP/genomics-installed/bin/python"
+          "$uv_project_python" -I -c 'import polars as pl, sys; pl.DataFrame({"Test": ["Synthetic assay"], "Cost": [10]}).write_parquet(sys.argv[1])' "$prepared/assay.parquet"
+          container=$(docker run --detach --network none --read-only --cap-drop ALL \
+            --tmpfs /tmp:mode=1777 \
+            --mount "type=bind,source=$prepared,target=/prepared,readonly" "$image")
+          trap 'docker logs "$container"; docker rm --force "$container" >/dev/null' EXIT
+          for attempt in {1..30}; do
+            if docker exec "$container" /opt/genomics/bin/python -I -c \
+              'import json, os, sys, urllib.request as u; assert sys.version_info[:3] == (3, 15, 1) and os.getuid() == 10001; u.urlopen("http://127.0.0.1:8080/health", timeout=3).close(); assert json.load(u.urlopen("http://127.0.0.1:8080/api/tables", timeout=3)) == ["assay"]' 2>/dev/null
+            then
+              exit 0
+            fi
+            sleep 1
+          done
+          printf 'Dashboard smoke test failed after %s attempts\n' "$attempt" >&2
+          exit 1

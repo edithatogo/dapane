@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-24T14:59:11Z",
+  "updated_at": "2026-11-24T21:35:50Z",
   "description": "Incorporate the full v15 genomics workbook and every existing and planned legacy feature into an independently installable Dapane successor.",
   "repositories": [
     ".",
@@ -58,7 +58,10 @@
       "Installed wheel and Flask test client readback of all 21 routes, source-data health check and format validations",
       "genomics-report --data-dir <synthetic> --output-dir <private-report> and python -m dapane_genomics.reporting --pdf",
       "Run installed adapter tests with native Dapane wheel and network sockets disabled.",
-      "Generate native JSON, CSV and Excel model templates and validate standardized Polars output."
+      "Generate native JSON, CSV and Excel model templates and validate standardized Polars output.",
+      "Run native source commands against authorised v15 inputs and synthetic template and pricing cases from the installed package.",
+      "Build and check the locked source distribution, and run the packaged and inherited tests with sockets disabled.",
+      "Compare the same-host genomics-benchmark receipts, verify checkpoint restart, and validate both dashboard deployment templates."
     ],
     "evidence": [
       "verification.md",

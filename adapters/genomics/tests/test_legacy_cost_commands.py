@@ -9,6 +9,7 @@ from pathlib import Path
 
 import polars as pl
 import pytest
+from openpyxl import Workbook
 
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 
@@ -106,3 +107,128 @@ def test_publication_command_exports_data_and_metadata(tmp_path):
     assert metadata["row_count"] == 2
     assert metadata["columns"][0]["null_count"] == 1
     assert metadata["columns"][0]["sample_values"] == ["Synthetic"]
+
+
+def test_compute_storage_export_uses_source_formula_cells(tmp_path):
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "BI - Comp+Stor Costs - VCGS"
+    sheet["AB2"] = "Last header"
+    sheet["D3"] = 2
+    sheet["E3"] = 6
+    sheet["G3"] = "=D3*E3"
+    sheet["J8"] = 100
+    sheet["M8"] = 10
+    sheet["P8"] = "=J8/M8"
+    sheet["D15"] = 20
+    sheet["E15"] = 500
+    sheet["H15"] = "=E15/D15"
+    sheet["A20"] = "Last source row"
+    path = tmp_path / "compute-source.xlsx"
+    workbook.save(path)
+    cached = [list(row) for row in sheet.values]
+    cached[2][6] = 12
+    cached[7][15] = 10
+    cached[14][7] = 25
+    source_csv = tmp_path / "reference.csv"
+    with source_csv.open("w", newline="", encoding="utf-8") as output:
+        csv.writer(output).writerows(cached)
+    workbook.close()
+    calculated = tmp_path / "replicated"
+    run_command(
+        tmp_path,
+        "replicate_bi_comp_stor_costs",
+        "--workbook",
+        path,
+        "--output-dir",
+        calculated,
+    )
+    result = run_command(
+        tmp_path,
+        "validate_bi_comp_stor_costs",
+        "--input",
+        source_csv,
+        "--replicated-dir",
+        calculated,
+    )
+    assert "0 mismatches" in result
+    assert pl.read_csv(calculated / "server_costs.csv")["Total Cores"][0] == 12
+    assert (
+        pl.read_csv(calculated / "equipment_costs.csv")[
+            "Unit Cost ($/sample) - Initial"
+        ][0]
+        == 10
+    )
+    assert pl.read_csv(calculated / "storage_costs.csv")["Cost/GB"][0] == 25
+
+
+def test_quality_history_reports_a_value_changed_after_model_export(tmp_path):
+    source = tmp_path / "synthetic.csv"
+    rows = {
+        "Labour": ["Specimen Collection", "Specimen Receipt", "DNA Extraction"],
+        "Equipment": ["DNA Extraction", "Library Preparation", "Sequencing"],
+        "Consumables": ["DNA Extraction", "Sequencing"],
+    }
+    categories = [
+        (category if index == 0 else None, item)
+        for category, items in rows.items()
+        for index, item in enumerate(items)
+    ]
+    with source.open("w", newline="", encoding="utf-8") as output:
+        writer = csv.writer(output)
+        writer.writerow(
+            [
+                "Test",
+                "Category",
+                "Sub-Category",
+                "Step",
+                "Unit Cost (AUD $/unit)",
+                "Units",
+            ]
+        )
+        for index, (category, item) in enumerate(categories):
+            writer.writerow(
+                [
+                    "Panel" if index == 0 else None,
+                    category,
+                    item,
+                    "Synthetic item",
+                    3,
+                    2,
+                ]
+            )
+    data = tmp_path / "enhanced"
+    report = tmp_path / "enhanced.md"
+    run_command(
+        tmp_path,
+        "phase3_data_enhancement",
+        "--source",
+        source,
+        "--output-dir",
+        data,
+        "--report",
+        report,
+    )
+    history = tmp_path / "history.json"
+    options = ("--data-dir", data, "--model", "Panel", "--history", history)
+    run_command(tmp_path, "validation_pipeline", *options)
+    model = data / "Panel_enhanced.csv"
+    calculated = pl.read_csv(model)
+    assert calculated["Total Cost (AUD)"].to_list() == [6.0] * len(categories)
+    assert calculated["Source_Row"].to_list() == list(range(2, 2 + len(categories)))
+    calculated.with_columns(
+        pl.when(pl.col("Source_Row") == 2)
+        .then(7.0)
+        .otherwise(pl.col("Total Cost (AUD)"))
+        .alias("Total Cost (AUD)")
+    ).write_csv(model)
+    with pytest.raises(subprocess.CalledProcessError) as raised:
+        run_command(tmp_path, "validation_pipeline", *options)
+    assert raised.value.returncode == 1
+    receipts = json.loads(history.read_bytes())
+    first, second = (receipt["models"][0] for receipt in receipts)
+    assert first["valid"] is True
+    assert first["data_quality_score"] == 1
+    assert second["valid"] is False
+    assert second["cost_issues"] == 1
+    assert second["data_quality_score"] == 7 / 8

@@ -1,0 +1,72 @@
+# Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Genomics dashboard task for an existing private Fargate service
+Parameters:
+  Image:
+    Type: String
+    AllowedPattern: '.+@sha256:[0-9a-f]{64}'
+  ExecutionRoleArn:
+    Type: String
+  TaskRoleArn:
+    Type: String
+  LogGroup:
+    Type: String
+  FileSystemId:
+    Type: String
+  AccessPointId:
+    Type: String
+Resources:
+  Dashboard:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      RequiresCompatibilities: [FARGATE]
+      RuntimePlatform:
+        CpuArchitecture: X86_64
+        OperatingSystemFamily: LINUX
+      NetworkMode: awsvpc
+      Cpu: '512'
+      Memory: '1024'
+      ExecutionRoleArn: !Ref ExecutionRoleArn
+      TaskRoleArn: !Ref TaskRoleArn
+      Volumes:
+        - Name: prepared
+          EFSVolumeConfiguration:
+            FilesystemId: !Ref FileSystemId
+            TransitEncryption: ENABLED
+            AuthorizationConfig:
+              AccessPointId: !Ref AccessPointId
+              IAM: ENABLED
+      ContainerDefinitions:
+        - Name: genomics
+          Image: !Ref Image
+          Essential: true
+          User: '10001:10001'
+          PortMappings:
+            - ContainerPort: 8080
+              Protocol: tcp
+          LinuxParameters:
+            Capabilities:
+              Drop: [ALL]
+          MountPoints:
+            - SourceVolume: prepared
+              ContainerPath: /prepared
+              ReadOnly: true
+          HealthCheck:
+            Command:
+              - CMD
+              - /opt/genomics/bin/python
+              - -c
+              - "from urllib.request import urlopen; urlopen('http://127.0.0.1:8080/health', timeout=3).close()"
+            StartPeriod: 30
+            Interval: 30
+            Timeout: 5
+            Retries: 3
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: genomics
+Outputs:
+  TaskDefinition:
+    Value: !Ref Dashboard

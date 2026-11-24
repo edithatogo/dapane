@@ -18,6 +18,7 @@ from collections.abc import Callable, Mapping
 from datetime import UTC, datetime
 from functools import wraps
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Any, ParamSpec, TypedDict, TypeVar, Unpack
 
 from .execution_contracts import DegradationDecorator, legacy_bool_option
@@ -317,8 +318,11 @@ class CheckpointManager:
         if self.checkpoint_dir:
             try:
                 checkpoint_file = self.checkpoint_dir / f"{checkpoint_id}.json"
-                with Path(checkpoint_file).open("w") as f:
-                    json.dump(checkpoint_record, f)
+                with TemporaryDirectory(dir=self.checkpoint_dir) as temporary:
+                    staged = Path(temporary) / "checkpoint.json"
+                    with staged.open("w", encoding="utf-8") as output:
+                        json.dump(checkpoint_record, output)
+                    staged.replace(checkpoint_file)
                 self.logger.debug(
                     "Saved checkpoint %s to %s",
                     checkpoint_id,

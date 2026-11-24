@@ -333,13 +333,59 @@ The optional lab profile extends template categories and recognizes local
 labels in the model audit. The installed Flask flow generated and reopened
 an Excel template containing a synthetic uploaded label and rejected an
 invalid profile. The CLI and web form use the same validation and template
-code. The profile never changes historical workbook costs.
+code. A separate cost-adjustment test multiplied a synthetic AUD 12.50
+labour quote by exactly 1.2, producing AUD 60 for four hours in native
+Dapane. The receipt retained the original quote and the lab profile hash.
+A second test changed depreciation from five to nine years on a separate
+on-prem model. With the synthetic residual value of AUD 100, annual
+capital cost fell from AUD 180 to AUD 100. The original valuation replayed
+unchanged.
 
 The Codex internal browser downloaded a Panel CSV with synthetic local labels.
 Reopening the file verified the labels and the blank unit cost. The installed
 performance command measured workloads at 1,000, 5,000 and 10,000 rows.
 Each run checked the real contribution totals, recorded elapsed time and RSS,
 and rejected an intentionally slower candidate in the automated comparison.
+The 101-repeat same-host comparison against the earlier installed successor
+measured median runtime changes of −0.65%, +3.22% and −2.90%. All three
+named workloads met the 5% gate on that host.
+
+The installed recovery test wrote a checkpoint after 1,000 seeded draws,
+interrupted the next write and reopened the last valid disk checkpoint.
+The resumed 2,000 draws matched the uninterrupted case, within the
+30-second transient recovery target. The template quality check passed
+the complete synthetic model at 100% and detected a changed cost on the
+next run. The original workbook's projected model tables retained their
+empty fields and showed the corresponding quality failures. The exact
+workbook replay remained reproducible.
+
+The [dashboard templates](../../../adapters/genomics/deploy/README.md)
+use one non-root image, read-only prepared data mounts, and private service
+boundaries. CloudFormation linting passed for the Fargate task. Bicep
+compiled the Azure template and its generated ARM template retained
+internal ingress and the readiness endpoint. Provider deployment and
+consumer acceptance remain separate.
+
+## Source command qualification
+
+The source distribution contains the formerly Pandas-dependent commands
+with the native replacements listed in the [command audit](feature-coverage.md#source-command-audit).
+The source and installed runtime have no Pandas imports on those paths.
+The installed commands completed in an independent consumer directory
+without the legacy checkout on the import path. Their distinct evidence
+includes 35 CSV and Parquet worksheet round trips, 17,897 detailed-table
+comparisons, 1,014 cost-row comparisons and 99 comparisons of server,
+equipment and storage fields, with zero disagreements in those groups.
+The worksheet that supplies shared labour inputs used its own assay label.
+The deterministic and archived probabilistic outputs contained 70 and five
+evidence rows respectively.
+
+The frozen feature audit remains open for individually tracing the rest
+of the documented commitments, the per-component coverage target and
+repository controls. GitHub reported that Dapane's `main` branch was
+unprotected and had no active branch rules from a ruleset. Exact-head
+qualification is recorded below. The repository's planned safeguards
+still require native readback after any future settings change.
 
 ## Standalone installed artifacts
 
@@ -374,6 +420,13 @@ full run passed 1,338 cases. The remaining case needed the candidate lock
 copied into the harness and passed on the focused rerun. This covers all
 1,339 inherited cases, including the four earlier prepared-input skips.
 
+The later native source commands, lab adjustments and recovery changes
+built from a checked source distribution and passed 161 packaged tests
+with sockets disabled. After including the candidate lock in the test
+harness, the independent inherited suite also passed all 1,339 cases in
+one run. The installed replay produced the same workbook, formula and
+pathway JSON bytes as the retained prior receipts.
+
 ## Hosted qualification
 
 The official GitHub-hosted offline check passed for the frozen baseline
@@ -391,7 +444,20 @@ checks passed on the exact PR head, including the
 [official offline scan](https://github.com/edithatogo/dapane/actions/runs/45428022620).
 GitHub merged the package port at `3b870e185a7e824cfe982daccc05cee7c1a62026`.
 The [main-push qualification](https://github.com/edithatogo/dapane/actions/runs/45485868671)
-checks that merge revision.
+passed on that merge revision.
+
+[PR #84](https://github.com/edithatogo/dapane/pull/84) promoted the standalone
+wheel qualification. The [official PR scan](https://github.com/edithatogo/dapane/actions/runs/45486862639)
+and the [official main scan](https://github.com/edithatogo/dapane/actions/runs/45488752881)
+passed for its tested head and the resulting commit
+`f7ab5be260206bf5dfe70a930e31040d7923d49b`.
+
+[PR #85](https://github.com/edithatogo/dapane/pull/85) added lab adjustments
+and the first costing commands. All 19 applicable checks passed, including
+the [official PR scan](https://github.com/edithatogo/dapane/actions/runs/45488885966).
+The merge commit is `9a63e7d7d8f313b49ffcb76963e8e1bb3b1c800f`.
+Its [main-push qualification](https://github.com/edithatogo/dapane/actions/runs/45491086666)
+identifies that exact merge revision.
 
 ## Preservation and restoration
 
@@ -415,6 +481,18 @@ To migrate, use the [installation instructions](../../../adapters/genomics/READM
 from a separate consumer directory. Supply the original workbook and any
 supplemental research assets from the authorised store. For rollback,
 restore the verified bundle and tag locally, sync the recorded lock and
-repeat the frozen replay from an installed wheel. Retain the legacy
-repository while full feature verification and the separate retirement
-decision remain open.
+repeat the frozen replay from an installed wheel.
+
+### Retirement decision
+
+Retain the legacy repository as a public reference for now. GitHub still
+showed it as public and unarchived on 25 November 2026. Its maintenance
+issues and pull requests remain open. The verified bundle, the historical
+replay and the installed successor give consumers a tested migration and
+rollback path.
+
+Revisit retirement when the full frozen feature audit has closed and
+dependent consumers and published references can still resolve the source
+and software citation. Confirm separate rights for study assets as needed
+and obtain explicit authorization for the repository's archive and
+visibility changes.
