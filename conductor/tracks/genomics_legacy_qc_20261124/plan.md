@@ -17,4 +17,4 @@ Status: archived
 ## Review fixes
 
 - [x] G3.1 Verify individual charges, exact and rounded totals, and comparison diagnostics in the installed replay. Fix e8344b3. [Review evidence](review.md).
-- [x] G3.2 Qualify the scanner against the full locked package inventory and pin the merged scanner workflow. [Review evidence](review.md#scanner-workflow-reference).
+- [x] G3.2 Qualify the scanner against the locked package inventory and require exact image evidence for the reported glibc matches. [Review evidence](review.md#scanner-workflow-reference).

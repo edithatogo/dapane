@@ -61,7 +61,16 @@ the checksum-locked bundle.
 derives exact constraints for all 50 entries in the reviewed inventory. Its
 [official hosted image run](https://github.com/edithatogo/repository-standards/actions/runs/45384546540)
 passed the offline controls and collected the image inventory and vulnerability
-evidence. Dapane pins the merged scanner revision `64f7c59790df12fafe4773857cc1bec21269b7ac`.
+evidence. The [Dapane scan using that revision](https://github.com/edithatogo/dapane/actions/runs/45386018356)
+passed its exact source checks and reported two unresolved glibc matches.
+
+[Scanner PR #185](https://github.com/edithatogo/repository-standards/pull/185)
+binds CVE-2026-121758 to the backport in the hash-locked Wolfi package. For
+CVE-2026-124024, the exact installed image must omit the optional glibc iconv
+package and the affected shared objects. The policy retains all raw findings
+and blocks any unresolved or ignored match. Its
+[official hosted image run](https://github.com/edithatogo/repository-standards/actions/runs/45389200495)
+passed. Dapane pins the merged scanner revision `ff15eb2695adea7bdceae45bd9b80fca41ebdf28`.
 The merged tree matches the qualified PR tree, and the immutable policy
-checkout succeeded in a fresh fetch. The build still uses signed index
-verification, package checksums and a network-disabled installation.
+checkout succeeded in a fresh fetch. The build uses the signed index,
+package checksums and a network-disabled installation.
