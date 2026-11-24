@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-24T14:33:16Z",
+  "updated_at": "2026-11-24T14:49:48Z",
   "description": "Incorporate the full v15 genomics workbook and every existing and planned legacy feature into an independently installable Dapane successor.",
   "repositories": [
     ".",
@@ -54,7 +54,9 @@
       "python -m pytest -q --disable-socket against the installed legacy distribution",
       "Installed prepare-data and validate-engine in a separate consumer working directory",
       "uv sync --project adapters/genomics --locked --no-editable --all-extras --group dev with the retained Dapane 0.1.0 native wheel",
-      "Replay all installed legacy feature tests, installed v15 CLI entry points and all 70 exports from independent consumer directories"
+      "Replay all installed legacy feature tests, installed v15 CLI entry points and all 70 exports from independent consumer directories",
+      "Installed wheel and Flask test client readback of all 21 routes, source-data health check and format validations",
+      "genomics-report --data-dir <synthetic> --output-dir <private-report> and python -m dapane_genomics.reporting --pdf"
     ],
     "evidence": [
       "verification.md",

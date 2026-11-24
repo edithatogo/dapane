@@ -13,7 +13,11 @@ from openpyxl import Workbook
 lazy from reportlab.lib.pagesizes import letter
 lazy from reportlab.pdfgen import canvas
 
-from .visualization import load_prepared_data
+from .visualization import (
+    VisualizationUnavailableError,
+    load_prepared_data,
+    prepared_data_directory,
+)
 from .web_viz import generate_visualization, get_available_columns
 lazy from . import monitoring
 
@@ -57,9 +61,10 @@ def create_app(data_dir: str | Path | None = None) -> ResearchFlask:
         static_folder=Path(__file__).resolve().parent / "static",
     )
 
+    prepared_dir = prepared_data_directory(data_dir)
     # Load data when app is created
     try:
-        app.data = load_prepared_data(data_dir)
+        app.data = load_prepared_data(prepared_dir)
         app.logger.info("Loaded %s data tables", len(app.data))
     except Exception:
         app.logger.exception("Error loading data")
@@ -74,6 +79,10 @@ def create_app(data_dir: str | Path | None = None) -> ResearchFlask:
             app.alert_manager,
             app.monitoring_middleware,
         ) = monitoring.setup_standard_monitoring(app.logger)
+        app.health_checker.register_health_check(
+            "data_availability",
+            partial(app.health_checker.check_data_availability, str(prepared_dir)),
+        )
         app.logger.info("Monitoring components initialized")
     except Exception:
         app.logger.exception("Error setting up monitoring")
@@ -402,6 +411,8 @@ def _api_generate_viz(
                 "viz_type": viz_type,
             },
         )
+    except VisualizationUnavailableError as error:
+        return jsonify({"error": str(error)}), 503
     except Exception:
         app.logger.exception("Invalid visualization request")
         # Log this error
@@ -603,6 +614,8 @@ def _api_dashboard_cost_distribution(
             )
 
         return jsonify({"success": True, "image": img_base64})
+    except VisualizationUnavailableError as error:
+        return jsonify({"error": str(error)}), 503
     except Exception:
         app.logger.exception("Could not render the cost distribution")
         return jsonify({"error": "Could not render the cost distribution"}), 500
@@ -644,6 +657,8 @@ def _api_dashboard_top_categories(
             )
 
         return jsonify({"success": True, "image": img_base64})
+    except VisualizationUnavailableError as error:
+        return jsonify({"error": str(error)}), 503
     except Exception:
         app.logger.exception("Could not render the category chart")
         return jsonify({"error": "Could not render the category chart"}), 500

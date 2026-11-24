@@ -235,8 +235,8 @@ checkout for the source freeze and coverage inventory in PR #81. The same
 checkout continues on `codex/genomics-workbook-replay` for the workbook
 comparison and formula replay. The provider checkout and workbook remain
 read-only inputs. The ownership continues on `codex/genomics-legacy-features`
-for compatibility tests and the optional package. The next operation is G3.3,
-qualification of the reports, application and plugins.
+for compatibility tests and the optional package. The next operation is G3.4,
+qualifying and closing the planned feature gaps.
 
 ## Main integration reconciliation — 19 November 2026
 

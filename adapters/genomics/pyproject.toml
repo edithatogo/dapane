@@ -27,6 +27,7 @@ dependencies = [
     "PyYAML",
     "flask",
     "defusedxml>=0.7.1",
+    "psutil>=7.2.2",
 ]
 
 [project.optional-dependencies]
@@ -47,6 +48,7 @@ prepare-data = "genomics_microcosting.prepare_data:main"
 dapane-genomics-inventory = "dapane_genomics.workbook_ledger:main"
 dapane-genomics-replay = "dapane_genomics.v15_replay:main"
 dapane-genomics-pathways = "dapane_genomics.v15_pathways:main"
+genomics-report = "dapane_genomics.reporting:main"
 
 [tool.hatch.build]
 exclude = ["**/*.xlsx", "**/*.xlsm", "**/*.parquet", "**/*.pkl", "**/*.docx", "**/*.ipynb", "/conductor", "/.private-runs"]
@@ -96,7 +98,6 @@ dev = [
     "pre-commit",
     "pytest-gremlins",
     "matplotlib",
-    "psutil>=7.2.2",
     "types-psutil>=7.2.2.20260906",
     "types-openpyxl>=3.1.5.20261017",
     "types-pyyaml>=6.0.12.20261103",

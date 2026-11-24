@@ -88,11 +88,22 @@ class _ImageWriter(Protocol):
     def savefig(self, target: Path, *, bbox_inches: str, dpi: int) -> None: ...
 
 
+class VisualizationUnavailableError(RuntimeError):
+    """Report a missing optional visualization runtime."""
+
+
 def _plotter() -> _ChartPlotter:
     if plt is None:
-        message = "Matplotlib is required for this chart"
-        raise RuntimeError(message)
+        message = "Install genomics-microcosting[visualization] to generate charts"
+        raise VisualizationUnavailableError(message)
     return cast("_ChartPlotter", plt)
+
+
+def prepared_data_directory(data_dir: str | Path | None = None) -> Path:
+    """Resolve the directory used by the app and prepared-table loaders."""
+    if data_dir is not None:
+        return Path(data_dir)
+    return Path(__file__).resolve().parents[2] / "data" / "prepared"
 
 
 def load_prepared_data(data_dir: str | Path | None = None) -> dict[str, pl.DataFrame]:
@@ -106,10 +117,7 @@ def load_prepared_data(data_dir: str | Path | None = None) -> dict[str, pl.DataF
         dict: Dictionary of loaded DataFrames with keys as table names.
 
     """
-    if data_dir is None:
-        data_dir = Path(__file__).resolve().parents[2] / "data" / "prepared"
-    else:
-        data_dir = Path(data_dir)
+    data_dir = prepared_data_directory(data_dir)
 
     if not data_dir.exists():
         message = f"Data directory not found: {data_dir}"

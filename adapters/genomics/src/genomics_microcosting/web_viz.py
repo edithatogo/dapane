@@ -6,11 +6,15 @@ import io
 from typing import Protocol, TypedDict, Unpack, cast
 lazy from collections.abc import Callable
 
-import matplotlib.pyplot as plt
 import polars as pl
 lazy from matplotlib.figure import Figure
 
-from .visualization import plot_category_costs, plot_cost_distribution, plot_top_costs
+from .visualization import (
+    _plotter,
+    plot_category_costs,
+    plot_cost_distribution,
+    plot_top_costs,
+)
 
 
 class _PngOptions(TypedDict):
@@ -39,21 +43,19 @@ def create_plot_base64[**P](
         str: Base64 encoded PNG image
 
     """
-    # Create the plot
+    plotter = _plotter()
     fig = plot_function(*args, **kwargs)
-
-    # Save to a bytes buffer
-    buf = io.BytesIO()
-    cast("_PngWriter", fig).savefig(buf, format="png", bbox_inches="tight", dpi=150)
-    buf.seek(0)
-
-    # Convert to base64
-    img_base64 = base64.b64encode(buf.getvalue()).decode("utf-8")
-
-    # Close the figure to free memory
-    plt.close(fig)
-
-    return img_base64
+    try:
+        with io.BytesIO() as buffer:
+            cast("_PngWriter", fig).savefig(
+                buffer,
+                format="png",
+                bbox_inches="tight",
+                dpi=150,
+            )
+            return base64.b64encode(buffer.getvalue()).decode("utf-8")
+    finally:
+        plotter.close(fig)
 
 
 def generate_visualization(

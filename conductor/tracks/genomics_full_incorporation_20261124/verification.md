@@ -274,3 +274,31 @@ the three selected cost columns.
 
 The remaining report, web, plugin and revision checks are G3.3. Planned
 capabilities and the complete feature dispositions are G3.4 and G3.5.
+
+## Reports, web and compatibility tools
+
+The installed wheel passed the 21 registered Flask routes on synthetic
+data, including three generated charts and CSV, Excel, JSON, Parquet,
+ZIP and PDF exports. Reopening the exports verified their content.
+Missing tables and invalid chart requests returned their expected errors.
+The separate locked base installation served the table and monitoring
+routes and reported the optional visualization dependency for charts.
+The health check follows the selected data directory.
+
+The dashboard was opened in Codex's internal browser. It displayed one
+loaded table and three records and the detail link rendered all three
+rows. The successor uses the actual loaded counts in the dashboard.
+It also passed the focused 38 legacy web, version, plugin and recovery
+tests plus the optional dependency regression.
+
+The installed `genomics-report` uses native Polars tables and the legacy
+chart generators. A synthetic fixture produced matching Markdown, HTML,
+JSON and three linked charts. Installed module execution with WeasyPrint
+and the existing macOS libraries generated a PDF whose text was verified.
+The separate comprehensive report reused the original archived PSA data
+from restricted storage and produced all six individual analytical
+reports. The raw notebook and data are supplied separately as inputs.
+
+The unqualified legacy source scripts remain visible for feature
+reconciliation. The installed report command replaces the old Pandas
+report implementation.

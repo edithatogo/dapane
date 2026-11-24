@@ -130,18 +130,12 @@
 
                         <hr class="my-3">
 
-                        <h5 class="mb-3">Recent Activity</h5>
-                        <div class="list-group list-group-flush">
-                            <div class="list-group-item px-0">
-                                <small class="text-muted">Data loaded successfully</small>
-                            </div>
-                            <div class="list-group-item px-0">
-                                <small class="text-muted">35 tables processed</small>
-                            </div>
-                            <div class="list-group-item px-0">
-                                <small class="text-muted">Dashboard updated</small>
-                            </div>
-                        </div>
+                        <h5 class="mb-3">Data status</h5>
+                        {% if tables %}
+                            <p class="text-muted mb-0">Prepared tables are available for export.</p>
+                        {% else %}
+                            <p class="text-muted mb-0">Load prepared tables to enable exports.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -206,12 +200,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h5>Data Quality Metrics</h5>
+                                <h5>Prepared data</h5>
                                 <ul class="list-unstyled">
-                                    <li><i class="fas fa-check-circle text-success me-2"></i>35 tables successfully loaded</li>
-                                    <li><i class="fas fa-check-circle text-success me-2"></i>All data validated and processed</li>
-                                    <li><i class="fas fa-check-circle text-success me-2"></i>Multi-level headers handled</li>
-                                    <li><i class="fas fa-check-circle text-success me-2"></i>Export functionality available</li>
+                                    <li>{{ tables|length }} prepared {% if tables|length == 1 %}table{% else %}tables{% endif %} loaded</li>
+                                    <li>{{ total_rows }} records available</li>
                                 </ul>
                             </div>
                             <div class="col-md-6">
