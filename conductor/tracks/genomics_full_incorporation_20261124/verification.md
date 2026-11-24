@@ -386,8 +386,12 @@ corrects the inherited localhost debugger setting. After the official run
 identified a parser failure, the port retained deferred import behaviour
 through the named module declaration and converted inline generics to
 conventional typing declarations. CPython 3.15.1, strict type checking
-and installed imports passed on the revised source. The hosted scan is
-[running on the revised PR head](https://github.com/edithatogo/dapane/actions/runs/45428022620).
+and installed imports passed on the revised source. All 18 applicable
+checks passed on the exact PR head, including the
+[official offline scan](https://github.com/edithatogo/dapane/actions/runs/45428022620).
+GitHub merged the package port at `3b870e185a7e824cfe982daccc05cee7c1a62026`.
+The [main-push qualification](https://github.com/edithatogo/dapane/actions/runs/45485868671)
+checks that merge revision.
 
 ## Preservation and restoration
 
