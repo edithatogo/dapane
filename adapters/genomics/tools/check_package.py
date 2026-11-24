@@ -64,6 +64,8 @@ SDIST_HELPERS = {
     "scripts/run_scenario_analysis.py",
     "scripts/run_advanced_scenario_analysis.py",
     "scripts/validate_process_sheet.py",
+    "scripts/validate_data_consistency.py",
+    "scripts/visualize_costs.py",
     "scripts/establish_performance_baselines.py",
     "scripts/excel_data_extractor.py",
     "scripts/extract_excel_comprehensive.py",

@@ -386,6 +386,10 @@ tests measured 98% for model processing, 98% for workbook compatibility
 and 100% for the performance command helpers. The measurements include
 branches and subprocesses. The 35-table transfer also generated a
 portable test that verified the retained export digests.
+The consistency report checked all 35 regenerated table pairs. It also
+reported schema disagreement when a retained CSV did not match its
+Parquet counterpart and continued checking the other tables. The
+standalone dashboard command wrote three PNGs from the verified exports.
 
 The frozen feature audit remains open for individually tracing the rest
 of the documented commitments and repository controls. GitHub reported that Dapane's `main` branch was
@@ -427,7 +431,7 @@ copied into the harness and passed on the focused rerun. This covers all
 1,339 inherited cases, including the four earlier prepared-input skips.
 
 The later native source commands, lab adjustments and recovery changes
-built from a checked source distribution and passed 171 packaged tests
+built from a checked source distribution and passed 173 packaged tests
 with sockets disabled. After including the candidate lock in the test
 harness, the independent inherited suite also passed all 1,339 cases in
 one run. The installed replay produced the same workbook, formula and

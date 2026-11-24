@@ -396,6 +396,13 @@ class DataConsistencyValidator:
             Report as a string
 
         """
+        return self.write_validation_report(output_file)[0]
+
+    def write_validation_report(
+        self,
+        output_file: str | None = None,
+    ) -> tuple[str, bool]:
+        """Return the rendered report and the aggregate status of its checks."""
         try:
             validation_results = self._validate_available_sheets()
 
@@ -476,7 +483,12 @@ class DataConsistencyValidator:
             self.logger.exception("Error generating validation report")
             raise
         else:
-            return report_str
+            passed = bool(validation_results) and all(
+                item["integrity"]["passed"]
+                and (item["consistency"] is None or item["consistency"]["passed"])
+                for item in validation_results
+            )
+            return report_str, passed
 
     def _validate_available_sheets(self) -> list[SheetResult]:
         sheet_names = self.data_manager.list_available_sheets()
@@ -492,16 +504,6 @@ class DataConsistencyValidator:
                 sheet_name,
                 file_format="parquet",
             )
-            df_csv = (
-                self.data_manager.load_sheet(
-                    sheet_name,
-                    file_format="csv",
-                    csv_schema=dict(df_parquet.schema),
-                )
-                if df_parquet is not None
-                else None
-            )
-
             if df_parquet is None:
                 continue
 
@@ -513,12 +515,30 @@ class DataConsistencyValidator:
 
             # Validate consistency between formats
             consistency_results: ValidationResult | None = None
-            if df_csv is not None:
-                consistency_results = self.validate_sheet_consistency(
+            try:
+                df_csv = self.data_manager.load_sheet(
                     sheet_name,
-                    df_parquet,
-                    df_csv,
+                    file_format="csv",
+                    csv_schema=dict(df_parquet.schema),
                 )
+            except (ValueError, OSError, pl.exceptions.PolarsError) as error:
+                reason = (
+                    "CSV could not be read using the Parquet schema "
+                    f"({type(error).__name__})"
+                )
+                consistency_results = {
+                    "sheet_name": sheet_name,
+                    "passed": False,
+                    "errors": [reason],
+                    "warnings": [],
+                }
+            else:
+                if df_csv is not None:
+                    consistency_results = self.validate_sheet_consistency(
+                        sheet_name,
+                        df_parquet,
+                        df_csv,
+                    )
 
             # Collect results
             sheet_results: SheetResult = {

@@ -407,17 +407,17 @@ def create_summary_dashboard(
 
     detailed_data = data_dict["detailed_table"]
 
-    # Find cost columns (those with 'unit_cost' or 'price' in the name)
-    cost_columns = [
-        col for col in detailed_data.columns if "unit_cost" in col or "price" in col
+    numeric_columns = [
+        name
+        for name, dtype in detailed_data.schema.items()
+        if dtype.is_numeric() and detailed_data[name].is_finite().any()
     ]
-    if not cost_columns:
-        # Try to find any numeric columns
-        numeric_columns = [
-            name for name, dtype in detailed_data.schema.items() if dtype.is_numeric()
-        ]
-        if numeric_columns:
-            cost_columns = [numeric_columns[0]]  # Use the first numeric column
+    cost_columns = [
+        name
+        for name in numeric_columns
+        if any(word in name.casefold() for word in ("unit_cost", "unit cost", "price"))
+    ]
+    cost_columns = cost_columns or numeric_columns
 
     figures: list[Figure] = []
     if cost_columns:
@@ -472,14 +472,18 @@ def _add_dashboard_chart(
 ) -> None:
     try:
         figure = plot()
-        figures.append(figure)
         if output_dir:
-            cast("_ImageWriter", figure).savefig(
-                Path(output_dir) / filename,
-                bbox_inches="tight",
-                dpi=300,
-            )
-            plotting_backend().close(figure)
+            safe_filename = filename.replace("/", "_").replace("\\", "_")
+            destination = Path(output_dir) / safe_filename
+            try:
+                cast("_ImageWriter", figure).savefig(
+                    destination,
+                    bbox_inches="tight",
+                    dpi=300,
+                )
+            finally:
+                plotting_backend().close(figure)
+        figures.append(figure)
     except Exception:
         logger.exception("Could not create chart %s", filename)
 

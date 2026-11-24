@@ -59,6 +59,7 @@ records what was compared.
 | `transfer_validate_tables`, `prepare_publication_tables` | Round-tripped all 35 sheets through native formats. A separate synthetic case verifies publication CSV and metadata. |
 | `enhanced_reporting` | The source command and installed package use the same report generator. The packaged alias produces HTML, Markdown and JSON from a synthetic table. |
 | `manage_data`, `run_scenario_analysis`, `run_advanced_scenario_analysis`, `validate_process_sheet` | Restored a versioned dataset to CSV and Parquet. Checked two scenario comparison reports against independent synthetic costs, and matched 39 original process worksheet cells. |
+| `validate_data_consistency`, `visualize_costs` | Validated all 35 freshly generated workbook tables, retained the error report for a mismatched CSV, and generated three charts from the original workbook exports. |
 | `analyze_scenarios` | Read 70 workbook DSA records and five archived PSA summaries. New scenarios use native exact requests. |
 | `analyze_model_consistency`, `automated_standardization`, `model_transformation`, `phase3_data_enhancement` | Produced the five model audits and exports. Original values and physical row identity remain available in the source-backed exports. |
 | `excel_data_extractor`, `extract_excel_comprehensive`, `validate_excel_comparison`, `validate_data_integrity` | Verified the exported and projected model values against the selected workbook revision. |

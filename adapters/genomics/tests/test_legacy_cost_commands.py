@@ -227,6 +227,49 @@ def test_process_sheet_validator_compares_cached_source_cells(tmp_path):
     assert "Compared 2 process worksheet cells, 0 differences" in result
 
 
+def test_consistency_report_retains_other_sheets_when_one_csv_disagrees(tmp_path):
+    data = tmp_path / "data"
+    prepared = data / "prepared"
+    prepared.mkdir(parents=True)
+    frame = pl.DataFrame({"cost": [5.5, 7.0]})
+    for name in ("matched", "mismatched"):
+        frame.write_parquet(prepared / f"{name}.parquet")
+        frame.write_csv(prepared / f"{name}.csv")
+    report = tmp_path / "consistency.md"
+    options = ("--data-dir", data, "--output", report)
+    run_command(tmp_path, "validate_data_consistency", *options)
+    frame.with_columns(pl.lit("Unrecognized column").alias("extra")).write_csv(
+        prepared / "mismatched.csv"
+    )
+    with pytest.raises(subprocess.CalledProcessError) as raised:
+        run_command(tmp_path, "validate_data_consistency", *options)
+    assert raised.value.returncode == 1
+    output = report.read_text(encoding="utf-8")
+    assert "### matched" in output
+    assert "### mismatched" in output
+    assert "CSV could not be read using the Parquet schema" in output
+
+
+def test_visualization_command_writes_pngs_in_the_requested_directory(tmp_path):
+    prepared = tmp_path / "prepared"
+    prepared.mkdir()
+    pl.DataFrame(
+        {
+            "Category": ["Synthetic labour", "Synthetic equipment"],
+            "Unrelated quantity": [100, 200],
+            "Unit Cost (AUD $/unit)": [5.0, 10.0],
+        }
+    ).write_parquet(prepared / "detailed_table.parquet")
+    output = tmp_path / "plots"
+    run_command(
+        tmp_path, "visualize_costs", "--data-dir", prepared, "--output-dir", output
+    )
+    charts = sorted(output.glob("*.png"))
+    assert len(charts) == 3
+    assert (output / "cost_distribution_Unit Cost (AUD $_unit).png").is_file()
+    assert all(chart.read_bytes().startswith(b"\x89PNG\r\n\x1a\n") for chart in charts)
+
+
 def test_compute_storage_export_uses_source_formula_cells(tmp_path):
     workbook = Workbook()
     sheet = workbook.active
