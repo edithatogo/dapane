@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Genomics model templates</title>
+</head>
+<body>
+<main>
+    <p><a href="{{ url_for('index') }}">Back to costing tables</a></p>
+    <h1>Genomics model templates</h1>
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('models.download_template') }}">
+        <p>
+            <label for="model">Model</label>
+            <select id="model" name="model">
+                {% for model in models %}<option value="{{ model }}">{{ model }}</option>{% endfor %}
+            </select>
+            <label for="format">Download format</label>
+            <select id="format" name="format">
+                {% for format in formats %}<option value="{{ format }}">{{ format }}</option>{% endfor %}
+            </select>
+        </p>
+        <fieldset>
+            <legend>Optional lab profile</legend>
+            <p>Enter a profile or choose a JSON file that adds local categories.</p>
+            <p>
+                <label for="profile">Profile JSON</label><br>
+                <textarea id="profile" name="profile" rows="6" cols="54"
+                    placeholder='{"lab_name":"My lab","custom_categories":{"Local costs":["Shipping"]}}'></textarea>
+            </p>
+            <p>
+                <label for="profile_file">Profile file</label>
+                <input id="profile_file" type="file" name="profile_file" accept=".json,application/json">
+            </p>
+        </fieldset>
+        <p><button type="submit">Download template</button></p>
+    </form>
+</main>
+</body>
+</html>

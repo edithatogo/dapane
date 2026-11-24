@@ -6,13 +6,15 @@ This script provides comprehensive validation of all sheets to ensure they have 
 properly translated and are consistent with the source data.
 """
 
+import argparse
 import json
 import logging
 import sys
 import traceback
 from pathlib import Path
 
-import pandas as pd
+import polars as pl
+import polars.selectors as cs
 
 from genomics_microcosting.calculation_engine import CalculationEngine
 from genomics_microcosting.data_manager import DataManager
@@ -24,12 +26,12 @@ LARGE_SHEET_ROWS = 100000
 HIGH_NULL_PERCENTAGE = 80
 
 
-def validate_sheet_integrity(sheet_name: str, df: pd.DataFrame) -> dict:
+def validate_sheet_integrity(sheet_name: str, df: pl.DataFrame) -> dict:
     """Validate the integrity of a sheet.
 
     Args:
         sheet_name (str): Name of the sheet
-        df (pd.DataFrame): DataFrame containing the sheet data
+        df (pl.DataFrame): DataFrame containing the sheet data
 
     Returns:
         dict: Validation results
@@ -50,7 +52,7 @@ def validate_sheet_integrity(sheet_name: str, df: pd.DataFrame) -> dict:
 
     try:
         # Check basic structure
-        if df.empty:
+        if df.is_empty():
             results["errors"].append("Sheet is empty")
             results["passed"] = False
 
@@ -63,7 +65,9 @@ def validate_sheet_integrity(sheet_name: str, df: pd.DataFrame) -> dict:
         # Check null percentage
         if len(df) > 0 and len(df.columns) > 0:
             total_cells = df.shape[0] * df.shape[1]
-            null_cells = df.isna().sum().sum()
+            null_cells = sum(
+                df.with_columns(cs.float().fill_nan(None)).null_count().row(0)
+            )
             null_percentage = (null_cells / total_cells) * 100 if total_cells > 0 else 0
             results["metrics"]["null_percentage"] = null_percentage
 
@@ -73,13 +77,13 @@ def validate_sheet_integrity(sheet_name: str, df: pd.DataFrame) -> dict:
                 )
 
         # Check for duplicate rows
-        duplicate_rows = df.duplicated().sum()
+        duplicate_rows = df.height - df.unique().height if df.width else 0
         results["metrics"]["duplicate_rows"] = duplicate_rows
         if duplicate_rows > 0:
             results["warnings"].append(f"Found {duplicate_rows} duplicate rows")
 
         # Check data types
-        numeric_cols = df.select_dtypes(include=["number"]).columns
+        numeric_cols = df.select(cs.numeric()).columns
 
         if len(numeric_cols) == 0:
             results["warnings"].append("No numeric columns found")
@@ -94,15 +98,15 @@ def validate_sheet_integrity(sheet_name: str, df: pd.DataFrame) -> dict:
 
 def validate_sheet_consistency(
     sheet_name: str,
-    df_parquet: pd.DataFrame,
-    df_csv: pd.DataFrame,
+    df_parquet: pl.DataFrame,
+    df_csv: pl.DataFrame,
 ) -> dict:
     """Validate consistency between different formats of the same sheet.
 
     Args:
         sheet_name (str): Name of the sheet
-        df_parquet (pd.DataFrame): DataFrame from parquet format
-        df_csv (pd.DataFrame): DataFrame from CSV format
+        df_parquet (pl.DataFrame): DataFrame from parquet format
+        df_csv (pl.DataFrame): DataFrame from CSV format
 
     Returns:
         dict: Consistency validation results
@@ -124,27 +128,30 @@ def validate_sheet_consistency(
             results["passed"] = False
 
         # Check column consistency
-        if not df_parquet.columns.equals(df_csv.columns):
+        if df_parquet.columns != df_csv.columns:
             results["errors"].append("Column names mismatch between formats")
             results["passed"] = False
 
         # Check data consistency (for a sample of numeric columns)
-        numeric_cols_parquet = df_parquet.select_dtypes(include=["number"]).columns
-        numeric_cols_csv = df_csv.select_dtypes(include=["number"]).columns
+        numeric_cols_parquet = df_parquet.select(cs.numeric()).columns
+        numeric_cols_csv = set(df_csv.select(cs.numeric()).columns)
 
-        common_numeric_cols = list(set(numeric_cols_parquet) & set(numeric_cols_csv))
+        common_numeric_cols = [
+            col for col in numeric_cols_parquet if col in numeric_cols_csv
+        ]
 
         if common_numeric_cols:
             # Check a sample of values
-            sample_size = min(100, len(df_parquet))
+            sample_size = min(100, df_parquet.height, df_csv.height)
             for col in common_numeric_cols[:3]:  # Check first 3 numeric columns
                 parquet_sample = df_parquet[col].head(sample_size)
                 csv_sample = df_csv[col].head(sample_size)
 
-                # Handle NaN values
-                comparison = parquet_sample.fillna(-999999) == csv_sample.fillna(
-                    -999999,
-                )
+                if parquet_sample.dtype.is_float():
+                    parquet_sample = parquet_sample.fill_nan(None)
+                if csv_sample.dtype.is_float():
+                    csv_sample = csv_sample.fill_nan(None)
+                comparison = parquet_sample.eq_missing(csv_sample)
                 if not comparison.all():
                     mismatch_count = (~comparison).sum()
                     results["warnings"].append(
@@ -167,7 +174,7 @@ def validate_sheet_consistency(
 
 def validate_sheet_cross_references(
     sheet_name: str,
-    _df: pd.DataFrame,
+    _df: pl.DataFrame,
     sheet_manager: SheetManager,
     _engine: CalculationEngine,
 ) -> dict:
@@ -175,7 +182,7 @@ def validate_sheet_cross_references(
 
     Args:
         sheet_name (str): Name of the sheet
-        df (pd.DataFrame): DataFrame containing the sheet data
+        df (pl.DataFrame): DataFrame containing the sheet data
         sheet_manager (SheetManager): Sheet manager instance
         engine (CalculationEngine): Calculation engine instance
 
@@ -206,7 +213,7 @@ def validate_sheet_cross_references(
             for c_idx in range(
                 min(10, formulas_df.shape[1]),
             ):  # Limit to first 10 columns
-                formula = formulas_df.iloc[r_idx, c_idx]
+                formula = formulas_df[r_idx, c_idx]
                 if (
                     isinstance(formula, str)
                     and formula.startswith("=")
@@ -255,13 +262,16 @@ def validate_sheet(
 
     try:
         # Load data in different formats
-        df_parquet = data_manager.load_sheet(sheet_name, format="parquet")
-        df_csv = data_manager.load_sheet(sheet_name, format="csv")
-
+        df_parquet = data_manager.load_sheet(sheet_name, file_format="parquet")
         if df_parquet is None:
             results["overall_passed"] = False
             sys.stdout.write(f"  Failed to load sheet '{sheet_name}'" + "\n")
             return results
+        df_csv = data_manager.load_sheet(
+            sheet_name,
+            file_format="csv",
+            csv_schema=dict(df_parquet.schema),
+        )
 
         # Validate integrity
         results["integrity"] = validate_sheet_integrity(sheet_name, df_parquet)
@@ -293,6 +303,8 @@ def validate_sheet(
             sheet_manager,
             engine,
         )
+        if not results["cross_references"]["passed"]:
+            results["overall_passed"] = False
 
         # Print summary
         status = "PASSED" if results["overall_passed"] else "FAILED"
@@ -356,6 +368,13 @@ def _print_validation_summary(
 
 def main() -> int | None:
     """Validate all sheets systematically."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path(__file__).resolve().parents[1] / "reports/validation_report.json",
+    )
+    options = parser.parse_args()
     sys.stdout.write("Systematically validating all sheets..." + "\n")
     sys.stdout.write(str("=" * 50) + "\n")
 
@@ -365,9 +384,8 @@ def main() -> int | None:
         sheet_manager = SheetManager()
         engine = CalculationEngine(sheet_manager)
 
-        # Get list of available sheets
-        available_sheets = data_manager.list_available_sheets()
-        sheet_names = list(available_sheets.keys())
+        # Use the workbook names for formula lookups. DataManager resolves file names.
+        sheet_names = sheet_manager.get_sheet_names()
 
         if not sheet_names:
             sys.stdout.write("No sheets found to validate!" + "\n")
@@ -393,17 +411,15 @@ def main() -> int | None:
         _print_validation_summary(validation_results, passed_count, sheet_names)
 
         # Save validation report
-        report_path = (
-            Path(__file__).resolve().parents[1] / "reports" / "validation_report.json"
-        )
-        report_path.parent.mkdir(exist_ok=True)
+        report_path = options.output
+        report_path.parent.mkdir(parents=True, exist_ok=True)
 
         # Convert to JSON-serializable format
         serializable_results = []
         for result in validation_results:
             serializable_result = {}
             for key, value in result.items():
-                if isinstance(value, pd.DataFrame):
+                if isinstance(value, pl.DataFrame):
                     serializable_result[key] = "DataFrame"
                 else:
                     serializable_result[key] = value

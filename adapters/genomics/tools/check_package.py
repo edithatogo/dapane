@@ -23,6 +23,8 @@ SDIST_ROOTS = {
     "tools",
     "pyproject.toml",
     "config.yaml",
+    "config",
+    "configs",
     "uv.lock",
     "README.md",
     "LICENSE",
@@ -35,10 +37,23 @@ SDIST_HELPERS = {
     "scripts/convert_to_csv.py",
     "scripts/parse_cost_tables.py",
     "scripts/parse_additional_tables.py",
+    "scripts/generate_report.py",
+    "scripts/generate_comprehensive_report.py",
+    "scripts/prepare_all_sheets.py",
+    "scripts/run_web.py",
+    "scripts/validate_all_sheets.py",
     "tools/__init__.py",
     "tools/select_tests.py",
     "tools/check_package.py",
     "tools/build_t1_scenario.py",
+}
+PACKAGE_DATA_HASHES = {
+    "genomics_microcosting/data/t1_known_zero_lineage.json": (
+        "c9c7b042ce024af28307be2d080f97f256933392d05c846cef0af2bad0222e54"
+    ),
+    "dapane_genomics/data/workbook_catalog.json": (
+        "85f61076a8a0a00ae615a2ac26f962c9f0f159e348017b12454afe4c36e7df21"
+    ),
 }
 
 
@@ -58,23 +73,21 @@ def check_paths(names: list[str]) -> None:
 
 
 def check_distribution_paths(payloads: dict[str, bytes]) -> None:
-    """Classify the pinned generated dependency index separately from research data.
+    """Classify the reviewed dependency index and workbook catalogue.
 
-    The index contains static cell identities and three missing-parameter IDs.
-    Its exact reviewed bytes are required; arbitrary files in data stay forbidden.
+    The pinned files contain structural identities. Arbitrary data stays forbidden.
     """
-    index = "t1_known_zero_lineage.json"
-    expected = "c9c7b042ce024af28307be2d080f97f256933392d05c846cef0af2bad0222e54"
     for name, payload in payloads.items():
         parts = PurePosixPath(name).parts
-        is_index = name == "genomics_microcosting/data/" + index or (
-            parts[1:] == ("src", "genomics_microcosting", "data", index)
+        package_name = (
+            PurePosixPath(*parts[2:]).as_posix() if parts[1:2] == ("src",) else name
         )
-        if not is_index:
+        expected = PACKAGE_DATA_HASHES.get(package_name)
+        if expected is None:
             check_paths([name])
             continue
         if sha256(payload).hexdigest() != expected:
-            message = "Generated dependency index differs from reviewed source bytes"
+            message = "Packaged structural data differs from reviewed source bytes"
             raise ValueError(message)
         classified = PurePosixPath(*parts[:-2], "generated_code", parts[-1])
         check_paths([str(classified)])
@@ -89,6 +102,9 @@ def check_distributions(root: Path, dist_dir: Path) -> str:
         raise ValueError(message)
     with ZipFile(wheels[0]) as archive:
         wheel = {name: archive.read(name) for name in archive.namelist()}
+        if len(wheel) != len(archive.namelist()):
+            message = "Wheel contains duplicate members"
+            raise ValueError(message)
     sdist = _read_sdist(sdists[0])
     check_distribution_paths(wheel)
     check_distribution_paths(sdist)
@@ -97,23 +113,42 @@ def check_distributions(root: Path, dist_dir: Path) -> str:
     licence = (root / "LICENSE").read_bytes()
     _require_single_payload(wheel, "/licenses/LICENSE", licence)
     _require_single_payload(sdist, "/LICENSE", licence)
-    package = root / "src" / "genomics_microcosting"
     expected_names: set[str] = set()
-    for path in package.rglob("*"):
-        if not path.is_file() or "__pycache__" in path.parts:
-            continue
-        relative = path.relative_to(root / "src").as_posix()
-        expected_names.add(relative)
-        expected = path.read_bytes()
-        if wheel.get(relative) != expected:
-            message = f"Wheel source differs: {relative}"
+    packaged_files = {
+        path.relative_to(root / "src").as_posix(): path
+        for package in ("genomics_microcosting", "dapane_genomics")
+        for path in (root / "src" / package).rglob("*")
+        if path.is_file()
+        and path.name != "ruff.toml"
+        and not {"__pycache__", ".ruff_cache", ".pytest_cache"}.intersection(path.parts)
+    }
+    packaged_files.update(
+        {
+            "genomics_microcosting/config.yaml": root / "config.yaml",
+            "genomics_microcosting/CITATION.cff": root / "CITATION.cff",
+        },
+    )
+    for source, target in (
+        ("config", "configuration"),
+        ("configs", "analysis_defaults"),
+    ):
+        directory = root / source
+        packaged_files.update(
+            {
+                f"genomics_microcosting/{target}/{path.relative_to(directory).as_posix()}": path
+                for path in directory.rglob("*")
+                if path.is_file()
+            },
+        )
+    for name, source_path in packaged_files.items():
+        expected_names.add(name)
+        expected = source_path.read_bytes()
+        if wheel.get(name) != expected:
+            message = f"Wheel source differs: {name}"
             raise ValueError(message)
-        _require_single_payload(sdist, "/src/" + relative, expected)
-    packaged_config = "genomics_microcosting/config.yaml"
-    if wheel.get(packaged_config) != (root / "config.yaml").read_bytes():
-        message = "Wheel configuration differs from maintained source"
-        raise ValueError(message)
-    expected_names.add(packaged_config)
+        _require_single_payload(
+            sdist, "/" + source_path.relative_to(root).as_posix(), expected
+        )
     _check_wheel_allowlist(wheel, expected_names)
     marker = "genomics_microcosting/py.typed"
     if marker not in wheel:
@@ -144,7 +179,6 @@ def _check_sdist_sources(root: Path, sdist: dict[str, bytes]) -> None:
     paths = set((root / "tests").rglob("*.py"))
     paths.update(root / name for name in SDIST_HELPERS)
     metadata_paths = (
-        ".gitignore",
         "README.md",
         "LICENSE",
         "CITATION.cff",
@@ -154,6 +188,7 @@ def _check_sdist_sources(root: Path, sdist: dict[str, bytes]) -> None:
         "uv.lock",
     )
     paths.update(root / name for name in metadata_paths)
+    paths.add(root / "src/genomics_microcosting/ruff.toml")
     for path in paths:
         relative = path.relative_to(root).as_posix()
         _require_single_payload(sdist, "/" + relative, path.read_bytes())
@@ -201,6 +236,9 @@ def _read_sdist(path: Path) -> dict[str, bytes]:
                 continue
             if not member.isfile():
                 message = f"Nonregular source archive member: {member.name}"
+                raise ValueError(message)
+            if member.name in sdist:
+                message = "Source archive contains duplicate members"
                 raise ValueError(message)
             stream = archive.extractfile(member)
             if stream is None:

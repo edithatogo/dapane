@@ -7,6 +7,7 @@ __lazy_modules__ = (
     "reportlab.pdfgen",
 )
 
+import argparse
 import io
 import zipfile
 from functools import partial
@@ -14,6 +15,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import polars as pl
+from dapane_genomics.model_web import models
 from flask import Flask, Response, abort, jsonify, render_template, request
 from openpyxl import Workbook
 from reportlab.lib.pagesizes import letter
@@ -103,7 +105,25 @@ def create_app(data_dir: str | Path | None = None) -> ResearchFlask:
     _register_monitoring_routes(app)
     _register_dashboard_routes(app)
     _register_export_routes(app)
+    app.register_blueprint(models)
     return app
+
+
+def main() -> int:
+    """Serve the installed application locally."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--data-dir", type=Path)
+    parser.add_argument("--port", type=int, default=5000)
+    options = parser.parse_args()
+    app = create_app(options.data_dir)
+    app.run(
+        host="127.0.0.1",
+        port=options.port,
+        debug=False,
+        use_debugger=False,
+        use_reloader=False,
+    )
+    return 0
 
 
 def _register_table_routes(app: ResearchFlask) -> None:
@@ -946,13 +966,5 @@ def _export_parquet(
     )
 
 
-def main() -> None:
-    """Run the web application."""
-    app = create_app()
-
-    # Run the app
-    app.run(debug=False, host="127.0.0.1", port=5000)
-
-
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

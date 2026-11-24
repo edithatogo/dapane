@@ -328,3 +328,68 @@ dynamic-batch, allocation, checkpoint/recovery, security, configuration,
 monitoring, quality and scenario tests. The remaining planned outcomes
 and legacy source commands are still being reconciled against installed
 behaviour.
+
+The optional lab profile extends template categories and recognizes local
+labels in the model audit. The installed Flask flow generated and reopened
+an Excel template containing a synthetic uploaded label and rejected an
+invalid profile. The CLI and web form use the same validation and template
+code. The profile never changes historical workbook costs.
+
+The Codex internal browser downloaded a Panel CSV with synthetic local labels.
+Reopening the file verified the labels and the blank unit cost. The installed
+performance command measured workloads at 1,000, 5,000 and 10,000 rows.
+Each run checked the real contribution totals, recorded elapsed time and RSS,
+and rejected an intentionally slower candidate in the automated comparison.
+
+## Standalone installed artifacts
+
+A locked CPython 3.15.1 environment built the wheel from a source
+distribution. The distribution verifier checked allowed paths, structural
+asset digests, source-to-package bytes, Apache-2.0 licence, attribution
+and Python version metadata. Research workbooks, notebooks and prepared
+tables are supplied separately.
+
+The clean installed wheel passed all 151 packaged synthetic tests with
+sockets disabled. The frozen interface inventory matched 109 module
+paths, 1,129 declared signatures and 21 legacy route registrations.
+This structural comparison and the runtime tests measure different
+parts of feature coverage. Both legacy console commands ran from a
+separate consumer directory and again reproduced all 70 exports
+byte-for-byte and passed all 2,894 selected validation comparisons.
+
+The native ports of the legacy all-sheet preparation and validation scripts
+prepared and validated all 35 workbook sheets from a separate consumer
+directory. They retain original sheet names for formula lookups, use the
+Parquet schema when reading CSV, and preserve the text of mixed Excel cells.
+The separate legacy reporting command produced both Markdown reports and
+three linked charts using an installed Polars-backed runtime.
+
+The clean successor replayed the restored workbook with sockets disabled.
+The workbook inventory, formula results and pathway results matched the
+previous installed receipts byte-for-byte.
+
+## Preservation and restoration
+
+The restricted source bundle contains all four public branch heads and the
+v0.2.0 tag from the frozen refs receipt, with complete Git history. Its SHA-256
+is `8175e779ae51148c6778e0841f31a70bd561d334a81709af8f215bb7e543c1e7`.
+The hosted release has zero separately attached files. The source archive
+and bundle preserve the catalogue, original workbook, notebooks, manuscript,
+software citation, licence and published source history. The private freeze
+records the file inventory and source digests. Workbook and study-data
+redistribution requires its own rights evidence.
+
+A new local clone restored the pinned commit and tag from the bundle.
+`git bundle verify` and `git fsck --full` passed. The restored workbook bytes
+matched the frozen SHA-256. A legacy wheel built in the restored checkout
+using the original lock and CPython 3.15.1 was installed into a new environment
+with the retained Dapane 0.1.0 build. With sockets disabled, its Panel
+library-preparation request and native result matched both frozen records.
+
+To migrate, use the [installation instructions](../../../adapters/genomics/README.md)
+from a separate consumer directory. Supply the original workbook and any
+supplemental research assets from the authorised store. For rollback,
+restore the verified bundle and tag locally, sync the recorded lock and
+repeat the frozen replay from an installed wheel. Retain the legacy
+repository while full feature verification and the separate retirement
+decision remain open.

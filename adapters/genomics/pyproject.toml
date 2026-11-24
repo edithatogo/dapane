@@ -50,6 +50,8 @@ dapane-genomics-replay = "dapane_genomics.v15_replay:main"
 dapane-genomics-pathways = "dapane_genomics.v15_pathways:main"
 genomics-report = "dapane_genomics.reporting:main"
 genomics-model = "dapane_genomics.model_tables:main"
+genomics-web = "genomics_microcosting.web:main"
+genomics-benchmark = "dapane_genomics.benchmark:main"
 
 [tool.hatch.build]
 exclude = ["**/*.xlsx", "**/*.xlsm", "**/*.parquet", "**/*.pkl", "**/*.docx", "**/*.ipynb", "/conductor", "/.private-runs"]
@@ -66,8 +68,14 @@ exclude = ["/src/genomics_microcosting/ruff.toml"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/src", "/scripts", "/tools", "/tests", "/config", "/configs", "/config.yaml",
-    "/pyproject.toml", "/README.md", "/LICENSE", "/CITATION.cff", "/uv.lock",
+    "/src", "/tests", "/config", "/configs", "/config.yaml",
+    "/pyproject.toml", "/README.md", "/LICENSE", "/CITATION.cff", "/SECURITY.md", "/uv.lock",
+    "/scripts/__init__.py", "/scripts/convert_to_csv.py", "/scripts/parse_cost_tables.py",
+    "/scripts/parse_additional_tables.py", "/scripts/generate_report.py",
+    "/scripts/generate_comprehensive_report.py", "/scripts/run_web.py",
+    "/scripts/prepare_all_sheets.py", "/scripts/validate_all_sheets.py",
+    "/tools/__init__.py", "/tools/select_tests.py", "/tools/check_package.py",
+    "/tools/build_t1_scenario.py",
 ]
 
 [tool.pytest.ini_options]
