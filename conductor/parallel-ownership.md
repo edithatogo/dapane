@@ -246,10 +246,10 @@ templates. The provider and the preserved workbook remain read-only inputs.
 
 After PR #86 merged, the same chat owns
 `codex/genomics-qualify-main-20261125` in the implementation checkout.
-Its companion scanner update is PR #188 in the `standards-full` checkout
-above. The work covers the four verified CPython download hashes, the
-immutable scanner pin and the hosted qualification record. The next
-operation is to verify the official offline job for the resulting `main`
+Its companion scanner updates are PRs #188 and #189 in the `standards-full`
+checkout above. The work covers the four verified CPython download hashes,
+the locked Expat update, the immutable scanner pin and hosted qualification.
+The next operation is to verify the official offline job for the resulting `main`
 revision before pruning the merged branches.
 
 ## Main integration reconciliation — 19 November 2026
