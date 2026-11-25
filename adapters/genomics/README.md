@@ -33,6 +33,15 @@ write a receipt-based check next to the transferred tables.
 Missing historical inputs remain blank and are reported by the quality
 check. Use the exact workbook replay for reproducing past costing results.
 
+The installed `prepare-data` command uses the reference sheet reader with
+the data pipeline's CSV and Parquet loaders. Its configured and supporting
+sheet filenames follow the legacy conventions. For a caller-managed JSON
+API, add `genomics_microcosting.extractors.APIExtractor` to a
+`DataPipeline`. Supply a read-only response function and the output Polars
+schema. Its version `0.1` response has a `records` list with the declared
+column names. JSON decimal values retain their precision. A value that
+cannot fit a declared Decimal column fails validation.
+
 ## Original workbook replay
 
 `dapane-genomics-inventory` takes the original workbook, its catalogue and a
@@ -71,9 +80,10 @@ include starting taxonomy rows and empty cost fields. Use
 normalize documented labels, preserve numeric fields and audit consistency
 across models.
 
-Add `--profile <profile.json>` to either model command to include lab-specific
-categories. The **Model templates** page also accepts this profile as text or a
-JSON file and returns the selected template.
+Add `--profile <profile.json|config.yaml>` to either model command to include
+lab-specific categories. The YAML input can supply a project
+`user_customizations` mapping with the same properties. The **Model
+templates** page accepts the JSON profile and returns the selected template.
 
 ```json
 {
@@ -92,6 +102,9 @@ read-only price source that returns quotes in the
 applicable volume tier and uses Dapane's valuation and shared-cost
 allocation. Retain the resulting request and price-release digest to
 reproduce a valuation without querying the source again.
+For a retained release file, use `FilePriceRelease(path, expected_sha256)`
+as the reader. Each read verifies the original bytes and native valuation
+checks the quotation's effective dates.
 
 Pass the profile and explicit `labour_quote_ids` to apply its multiplier to
 labour-only quotes. The valuation receipt retains the source amount, source
@@ -105,6 +118,29 @@ remains available for comparison.
 named numeric predictors and a cost response. Its statistical estimates
 are separate from exact valuation. Train and validate it on the relevant
 data before adopting predictions for a study.
+
+A project YAML file can define typed resource requirements under `models`.
+`dapane_genomics.pricing.value_configured_model` selects one model, scales
+its per-case quantities by the model's multiplier and case count, and
+supplies the resulting exact quantities for native valuation. The caller
+supplies the service date, source access and price reader. Keep the config
+digest and resulting request to reproduce the calculation.
+
+```yaml
+models:
+  synthetic_model:
+    efficiency_multiplier: "0.8"
+    resources:
+      compute:
+        quantity_per_case: "2.5"
+        unit: hour
+        quote_id: quoted-compute
+```
+
+`genomics_microcosting.compute_cost.calculate_compute_cost_breakdown`
+retains each source-bound meter's exact cost and assigned share alongside
+the existing total, allocation and bill reconciliation. Use separate
+meter identities for independently observed stages.
 
 ## Dashboard deployment
 

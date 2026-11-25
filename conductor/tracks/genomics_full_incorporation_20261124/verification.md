@@ -449,6 +449,42 @@ changes, a rights decision or user acceptance. The command register records
 44 verified behaviors and 30 command-level evidence gaps. G3.4 and G4
 retain the implementation and qualification work.
 
+## Input and costing gaps
+
+The installed preparation command now uses the data pipeline with its
+historical sheet reader and CSV and Parquet loaders. From the authorised
+v15 source, all 35 CSV and 35 Parquet exports had the same bytes as the
+previous installed command. The export manifest SHA-256 is
+`1fc0340621ad07a86c58428ed1c92be23be802df5a24c05ff65067d876956e92`.
+
+An API table fixture retained all digits in `1234567890123456.0123`
+through extraction and Parquet readback. The extractor rejected an
+unsupported response version, unknown columns, nonfinite values, repeated
+fields and values outside the declared Decimal scale. Its read-only
+response function is supplied by the caller.
+
+The installed YAML reader applied the declared exact lab multiplier and
+retained the original quote. A typed model specified 2.5 hours per case
+and a resource multiplier of 0.8. Ten cases produced 20 exact hours and
+AUD 225 at the declared volume tier. The returned request retains the
+configuration digest and the source locator. A digest-pinned price file
+replayed identical reports. Changed and missing files failed, and native
+valuation rejected a quote outside its dated window.
+
+Five separate compute observations produced stage charges of AUD 20, 8,
+6, 4 and 2. The detailed result reconciled to the existing AUD 40 aggregate,
+AUD 20 allocated and a signed bill residual of AUD −15. Separate raw,
+processed and archive storage records produced 12, 10 and 10 byte-seconds.
+Dapane priced them at AUD 3, 4 and 1 using synthetic quotations.
+
+The noneditable wheel and extracted source distribution passed the package
+checks and all 186 packaged tests with Python 3.15.1 and sockets disabled.
+The same installed wheel passed all 1,339 inherited tests in a separate
+frozen harness.
+The wheel SHA-256 is
+`7180be054c22e58a554e63b7c14282182a7ecf99ca7ab74881160e795dc796c9`.
+The changed runtime modules passed Ruff and strict type checking.
+
 ## Hosted qualification
 
 The official GitHub-hosted offline check passed for the frozen baseline

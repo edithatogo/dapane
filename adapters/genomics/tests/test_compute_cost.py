@@ -14,6 +14,7 @@ from genomics_microcosting.compute_cost import (
     ComputeMeter,
     ComputePricing,
     calculate_compute_cost,
+    calculate_compute_cost_breakdown,
 )
 from genomics_microcosting.provenance_ledger import (
     Parameter,
@@ -30,6 +31,7 @@ def inputs(
     tmp_path: Path,
     quantity: str = "10",
     bill: str = "25",
+    stage_quantities: tuple[tuple[str, str], ...] = (),
 ) -> tuple[ComputePricing, ComputeCostContext]:
     """Build synthetic retained numeric sources, with no real rate claim."""
     parameters: list[Parameter] = []
@@ -41,6 +43,7 @@ def inputs(
         ("rate", "2", "AUD/core_s"),
         ("share", "0.5", "fraction"),
         ("bill", bill, "AUD"),
+        *((stage, value, "core_s") for stage, value in stage_quantities),
     ):
         path = tmp_path / f"{name}.txt"
         path.write_text(value + "\n", encoding="utf-8")
@@ -138,6 +141,39 @@ def test_compute_cost_reconciles_total_allocation_and_bill_residual(
     context.snapshots["rate"].write_text("3\n", encoding="utf-8")
     with pytest.raises(ValueError, match="hash"):
         calculate_compute_cost(pricing, context)
+
+
+def test_compute_breakdown_keeps_each_source_bound_stage(tmp_path: Path) -> None:
+    """Distinct synthetic usage observations reconcile to the legacy aggregate."""
+    stages = (("alignment", "4"), ("calling", "3"), ("annotation", "2"), ("qc", "1"))
+    pricing, context = inputs(tmp_path, stage_quantities=stages)
+    sequence = pricing.meters[0].model_copy(update={"meter_id": "sequencing"})
+    meters = (
+        sequence,
+        *(
+            sequence.model_copy(
+                update={"meter_id": name, "quantity_parameter_id": name}
+            )
+            for name, _ in stages
+        ),
+    )
+    pricing = pricing.model_copy(update={"meters": meters})
+
+    detailed = calculate_compute_cost_breakdown(pricing, context)
+
+    assert detailed.summary == calculate_compute_cost(pricing, context)
+    assert detailed.summary.modeled_total == Decimal("40")
+    assert detailed.summary.allocated_cost == Decimal("20")
+    assert detailed.summary.bill_residual == Decimal("-15")
+    assert [
+        (row.meter_id, row.modeled_cost, row.allocated_cost) for row in detailed.meters
+    ] == [
+        ("sequencing", Decimal("20"), Decimal("10")),
+        ("alignment", Decimal("8"), Decimal("4")),
+        ("calling", Decimal("6"), Decimal("3")),
+        ("annotation", Decimal("4"), Decimal("2")),
+        ("qc", Decimal("2"), Decimal("1")),
+    ]
 
 
 def test_compute_cost_rejects_implicit_basis_conversion_and_invalid_date(

@@ -8,7 +8,9 @@ from pathlib import Path
 import polars as pl
 from openpyxl import load_workbook
 
-from genomics_microcosting.config import load_config
+from genomics_microcosting.config import SheetConfig, load_config
+from genomics_microcosting.data_pipeline import DataPipeline, Extractor
+from genomics_microcosting.loaders import CSVLoader, ParquetLoader
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +69,34 @@ def parse_reference_sheet(
 _parse_generic_sheet = parse_reference_sheet
 
 
+class _ReferenceSheetExtractor(Extractor):
+    def __init__(self, source: Path, sheet: str, configuration: SheetConfig) -> None:
+        super().__init__(sheet, source)
+        self.configuration = configuration
+
+    def extract(self) -> pl.DataFrame:
+        return _parse_generic_sheet(
+            self.source_path,
+            self.name,
+            header_rows=self.configuration.get("header_rows", 1),
+            skip_rows=self.configuration.get("skip_rows", 0),
+        )
+
+
+def _prepare_sheet(
+    source: Path,
+    sheet: str,
+    configuration: SheetConfig,
+    destination: Path,
+    basename: str,
+) -> None:
+    pipeline = DataPipeline(sheet)
+    pipeline.add_extractor(_ReferenceSheetExtractor(source, sheet, configuration))
+    pipeline.add_loader(ParquetLoader("parquet", destination / f"{basename}.parquet"))
+    pipeline.add_loader(CSVLoader("csv", destination / f"{basename}.csv"))
+    pipeline.run()
+
+
 def main() -> None:
     """Create cleaned Parquet datasets used for validation."""
     config = load_config()
@@ -104,29 +134,19 @@ def main() -> None:
             )
             continue
 
-        df = _parse_generic_sheet(
-            source_file,
-            sheet_name,
-            header_rows=sheet_config.get("header_rows", 1),
-            skip_rows=sheet_config.get("skip_rows", 0),
-        )
-
         # Use a sanitized version of the sheet name for the file name
         sanitized_name = "".join(
             c for c in sheet_name if c.isalnum() or c in (" ", "_")
         ).rstrip()
         sanitized_name = sanitized_name.lower().replace(" ", "_")
 
-        # Save as Parquet
-        output_path = prepared_dir / f"{sanitized_name}.parquet"
-        df.write_parquet(output_path)
-        logger.info("%s", f"Saved {output_path}")
-
-        # Save as CSV
-        csv_output_path = prepared_dir / f"{sanitized_name}.csv"
-        df.write_csv(csv_output_path)
-        logger.info("%s", f"Saved {csv_output_path}")
-
+        _prepare_sheet(
+            source_file,
+            sheet_name,
+            sheet_config,
+            prepared_dir,
+            sanitized_name,
+        )
         processed_sheets.add(sheet_name)
 
     # Process additional supporting tables not in config
@@ -165,14 +185,6 @@ def main() -> None:
     for sheet_name in supporting_tables:
         if sheet_name in sheet_names and sheet_name not in processed_sheets:
             try:
-                # Try to auto-detect header structure
-                df = _parse_generic_sheet(
-                    source_file,
-                    sheet_name,
-                    header_rows=1,  # Default to 1 header row for supporting tables
-                    skip_rows=0,
-                )
-
                 # Use a sanitized version of the sheet name for the file name
                 sanitized_name = "".join(
                     c
@@ -187,15 +199,13 @@ def main() -> None:
                     .replace(")", "")
                 )
 
-                # Save as Parquet
-                output_path = prepared_dir / f"{sanitized_name}.parquet"
-                df.write_parquet(output_path)
-                logger.info("%s", f"Saved supporting table: {output_path}")
-
-                # Save as CSV
-                csv_output_path = prepared_dir / f"{sanitized_name}.csv"
-                df.write_csv(csv_output_path)
-                logger.info("%s", f"Saved supporting table: {csv_output_path}")
+                _prepare_sheet(
+                    source_file,
+                    sheet_name,
+                    {},
+                    prepared_dir,
+                    sanitized_name,
+                )
 
             except (OSError, ValueError, StopIteration, pl.exceptions.PolarsError) as e:
                 logger.info(

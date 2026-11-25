@@ -109,6 +109,27 @@ class ComputeCostResult:
     bill_residual: Decimal | None
 
 
+@dataclass(frozen=True)
+class ComputeMeterCost:
+    """Retain one priced meter and its explicitly allocated cost."""
+
+    meter_id: str
+    unit: str
+    quantity: Decimal
+    rate: Decimal
+    allocation_share: Decimal
+    modeled_cost: Decimal
+    allocated_cost: Decimal
+
+
+@dataclass(frozen=True)
+class ComputeCostBreakdown:
+    """Keep detailed meter amounts together with the existing reconciliation."""
+
+    summary: ComputeCostResult
+    meters: tuple[ComputeMeterCost, ...]
+
+
 class CoreHourMeter(BaseModel):
     """Select sourced core-hours without converting or relabeling seconds."""
 
@@ -288,8 +309,16 @@ def calculate_compute_cost(
     context: ComputeCostContext,
 ) -> ComputeCostResult:
     """Price declared inputs with exact units and no missing-to-zero conversions."""
-    pricing = ComputePricing.model_validate(pricing.model_dump())
-    return _calculate_metered_cost(pricing, context)
+    return calculate_compute_cost_breakdown(pricing, context).summary
+
+
+def calculate_compute_cost_breakdown(
+    pricing: ComputePricing,
+    context: ComputeCostContext,
+) -> ComputeCostBreakdown:
+    """Price the existing source-bound meters and retain each declared segment."""
+    validated = ComputePricing.model_validate(pricing.model_dump())
+    return _calculate_metered_cost(validated, context)
 
 
 def calculate_core_hour_cost(
@@ -312,13 +341,13 @@ def calculate_core_hour_cost(
 
     """
     pricing = CoreHourPricing.model_validate(pricing.model_dump())
-    return _calculate_metered_cost(pricing, context)
+    return _calculate_metered_cost(pricing, context).summary
 
 
 def _calculate_metered_cost(
     pricing: ComputePricing | CoreHourPricing,
     context: ComputeCostContext,
-) -> ComputeCostResult:
+) -> ComputeCostBreakdown:
     values = verify_numeric_source_values(context)
     required = {
         p
@@ -336,6 +365,7 @@ def _calculate_metered_cost(
         raise ValueError(msg)
     quantities = {q.parameter.parameter_id: q for q in context.ledger.qualifications}
     native_counters: set[tuple[str, str]] = set()
+    breakdown: list[ComputeMeterCost] = []
     with localcontext() as decimal_context:
         decimal_context.prec = 50
         decimal_context.traps[Inexact] = True
@@ -363,8 +393,20 @@ def _calculate_metered_cost(
                 msg = "Compute quantity, rate or allocation is outside valid bounds"
                 raise ValueError(msg)
             cost = quantity * rate
+            allocated_cost = cost * share
             total += cost
-            allocated += cost * share
+            allocated += allocated_cost
+            breakdown.append(
+                ComputeMeterCost(
+                    meter.meter_id,
+                    meter.unit,
+                    quantity,
+                    rate,
+                    share,
+                    cost,
+                    allocated_cost,
+                ),
+            )
         bill = (
             None
             if pricing.bill_parameter_id is None
@@ -385,4 +427,5 @@ def _calculate_metered_cost(
     digest = sha256(
         json.dumps(identity, sort_keys=True, separators=(",", ":")).encode(),
     ).hexdigest()
-    return ComputeCostResult(digest, total, allocated, unallocated, residual)
+    summary = ComputeCostResult(digest, total, allocated, unallocated, residual)
+    return ComputeCostBreakdown(summary, tuple(breakdown))

@@ -86,6 +86,12 @@ The [completed G3.5 audit](feature-audit.md) maps individual roadmap rows to
 observed results. G3.4 addresses its implementation findings. G4.2 and G4.3
 retain the outstanding installed and native qualification.
 
+The [installed input and costing results](verification.md#input-and-costing-gaps)
+close the preparation migration, API extraction, YAML profile and typed
+model-configuration findings. That receipt also covers pinned price files,
+stage-level compute reconciliation and native valuation of separate storage
+stages.
+
 The planned pricing, shared allocation, template and prediction paths have
 synthetic installed evidence. Lab profiles apply exact multipliers to selected
 labour-only quotes and override equipment useful lives with separate
