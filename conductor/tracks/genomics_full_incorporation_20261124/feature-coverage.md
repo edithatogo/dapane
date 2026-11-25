@@ -84,6 +84,10 @@ close implementation gaps in role enforcement, request limits, the lab setup
 wizard and the nine operational API routes. The evidence includes installed
 diagnostic, benchmark and quality results and an interactive template download.
 
+The [delivery changes](verification.md#delivery-and-remaining-acceptance)
+add protected promotion, opt-in Codecov OIDC and a reproducible lab setup
+tutorial. Read the outstanding acceptance items against the original audit.
+
 The inventory retains overlapping source rows so a shared implementation
 can refer back to every relevant commitment. The rows below state the
 behaviour to test even where the provider describes the task as complete.

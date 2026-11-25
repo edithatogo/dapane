@@ -1,0 +1,105 @@
+name: Genomics dashboard promotion
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: Existing cloud runtime
+        type: choice
+        options: [aws, azure]
+        required: true
+      image:
+        description: Qualified image reference including its SHA-256 digest
+        type: string
+        required: true
+      ecs_task:
+        description: Existing ECS task definition revision ARN for AWS
+        type: string
+      deploy:
+        description: Promote to the configured runtime
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: genomics-deployment-${{ inputs.provider }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      IMAGE: ${{ inputs.image }}
+    steps:
+      - uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+      - name: Verify exact main evidence and image reference
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$IMAGE" =~ ^[a-z0-9][a-z0-9./:_-]+@sha256:[0-9a-f]{64}$ ]] || exit 2
+          installed="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow genomics-package.yml \
+            --branch main --commit "$GITHUB_SHA" --status success --limit 1 \
+            --json databaseId --jq '.[0].databaseId // empty')"
+          offline="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow offline-ai-security.yml \
+            --branch main --commit "$GITHUB_SHA" --status success --limit 1 \
+            --json databaseId --jq '.[0].databaseId // empty')"
+          [[ -n "$installed" && -n "$offline" ]] || exit 2
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$installed/jobs" | jq -e '
+            any(.jobs[]; .name == "installed-genomics" and .conclusion == "success"
+              and any(.steps[]; .name == "Exercise the dashboard image without network access" and .conclusion == "success"))
+          ' >/dev/null
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$offline/jobs" | jq -e '
+            any(.jobs[]; .conclusion == "success" and (.runner_name | startswith("GitHub Actions"))
+              and any(.steps[]; .name == "Scan the exact source without container networking" and .conclusion == "success")
+              and any(.steps[]; .name == "Enforce the Wolfi vulnerability review" and .conclusion == "success"))
+          ' >/dev/null
+
+  promote:
+    needs: qualify
+    if: inputs.deploy && vars.GENOMICS_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: genomics-${{ inputs.provider }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        if: inputs.provider == 'aws'
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        if: inputs.provider == 'azure'
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Promote the vetted image and verify readiness
+        env:
+          PROVIDER: ${{ inputs.provider }}
+          IMAGE: ${{ inputs.image }}
+          IMAGE_REPOSITORY: ${{ vars.IMAGE_REPOSITORY }}
+          ECS_TASK: ${{ inputs.ecs_task }}
+          ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ vars.ECS_SERVICE }}
+          AWS_PAGER: ''
+          AZURE_APP: ${{ vars.AZURE_APP }}
+          AZURE_GROUP: ${{ vars.AZURE_GROUP }}
+        run: bash adapters/genomics/deploy/promote.sh "$PROVIDER"

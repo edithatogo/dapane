@@ -515,6 +515,9 @@ A Node test of the installed drag handler checked that it preserves the
 exact source text and retains the previous profile after an oversized
 or invalid file. The complete packaged suite passed 194 tests on CPython
 3.15.1 from outside the checkout with sockets disabled.
+The clean wheel from `ad0200d1aeb955e4e8000425ffa5602f02c82cda` also passed
+all 1,339 inherited tests. Its SHA-256 was
+`68a744698434b216485c21e5652b4ad3c8ea771296257094963814ba826268f7`.
 
 These results cover `secured-web`, `rate-limits`, `drag-and-drop`,
 `setup-wizard`, `configuration-builder`, `test-service-api`,
@@ -522,7 +525,52 @@ These results cover `secured-web`, `rate-limits`, `drag-and-drop`,
 `quality-service-api` in the frozen audit. The operator instructions and
 API parameter contracts are packaged with the source. [Operator guide](../../../adapters/genomics/deploy/README.md)
 
+## Delivery and remaining acceptance
+
+The new GitHub Actions workflow qualifies exact `main` evidence and can
+promote a digest-pinned dashboard image to an existing AWS ECS service
+or an Azure Container App. Local CLI fixtures verified both promotion
+paths, exact task or ready-revision readback, repeat behaviour and rejection
+of a changed task definition, public ingress and a mutable image tag.
+`actionlint` and ShellCheck passed. The hosted workflow and its credentialed
+execution have separate evidence. The AWS and Azure runtime environments
+and identities are operator inputs.
+[Promotion workflow](../../../.github/workflows/genomics-deployment.yml)
+
+The optional Codecov job uses OIDC for a `main` dispatch and passes one
+XML report with repository-relative source files. The same local commands
+ran the full installed suite, combined its result and found 4,766 of
+16,739 measured lines covered. That is the packaged synthetic suite's
+scope. The scoped inherited coverage measurements above use a different
+test set. The live Codecov readback remains open.
+[Coverage job](../../../.github/workflows/genomics-package.yml)
+
+The source distribution includes a decodable 38-second lab setup video
+and a text walkthrough. The terminal walkthrough reproduced the
+browser's CSV byte for byte. The tutorial video SHA-256 was
+`895197cfc970c8b63d01a538aa8136a93ce8f55b2afaa7bb75a5f67be4cd4de7`.
+[Lab setup tutorial](../../../adapters/genomics/deploy/lab-setup.md)
+
+The delivered artefacts cover the audit's missing deployment automation,
+training and Codecov workflow code. The legacy taxonomy overlap thresholds
+still need a representative source. The historical Detailed Table has
+1,336 rows and the entire `Sub-Category` field is unpopulated. The
+original-workbook replay retains those missing values.
+
 ## Hosted qualification
+
+[PR #88](https://github.com/edithatogo/dapane/pull/88) merged the frozen
+feature audit. The [official main-push run](https://github.com/edithatogo/dapane/actions/runs/45607215884)
+passed the source scan and image advisory review for
+`03dfea6486f2c308aa4fd2143d9aec94675dc6a4`.
+
+[PR #89](https://github.com/edithatogo/dapane/pull/89) initially stopped
+at OpenGrep's parser in the [official run](https://github.com/edithatogo/dapane/actions/runs/45607299806).
+The next candidate used existing collection annotations for the taxonomy
+helper and retained the same overlap calculation. The
+[official retry on the corrected head](https://github.com/edithatogo/dapane/actions/runs/45609867720)
+passed the network-disabled source scan and image advisory review for
+`1e7171a16fd8c80c84eb7e8828591c4c490b92b7`.
 
 The official GitHub-hosted offline check passed for the frozen baseline
 and full workbook replay, both before and after merge. The full replay
