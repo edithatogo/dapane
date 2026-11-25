@@ -6,13 +6,17 @@ for various data source types used in the genomics microcosting project.
 """
 
 __lazy_modules__ = (
+    "collections.abc",
     "genomics_microcosting.reader_options",
     "openpyxl.worksheet.worksheet",
 )
 
+import json
 import re
+from collections.abc import Callable
+from decimal import Decimal
 from pathlib import Path
-from typing import Unpack
+from typing import Unpack, cast
 
 import openpyxl
 import polars as pl
@@ -204,6 +208,76 @@ class ParquetExtractor(Extractor):
         df = pl.read_parquet(self.source_path, **self.kwargs)
         self.logger.info("Extracted %s rows from Parquet", len(df))
         return df
+
+
+class APIExtractor(Extractor):
+    """Load versioned records through a caller-supplied read-only API client."""
+
+    def __init__(
+        self,
+        name: str,
+        source: str,
+        fetch: Callable[[], object],
+        schema: pl.Schema,
+    ) -> None:
+        """Bind an API response reader, source identity and expected table schema."""
+        super().__init__(name, source)
+        self.fetch = fetch
+        self.schema = pl.Schema(schema)
+
+    def extract(self) -> pl.DataFrame:
+        """Validate the versioned response and preserve decimal precision."""
+        payload = self.fetch()
+        if not isinstance(payload, bytes):
+            message = "API readers must return JSON bytes"
+            raise TypeError(message)
+        document: object = json.loads(
+            payload,
+            parse_float=Decimal,
+            parse_constant=_invalid_api_number,
+            object_pairs_hook=_unique_api_fields,
+        )
+        if (
+            not isinstance(document, dict)
+            or cast("dict[str, object]", document).get("schema_version") != "0.1"
+        ):
+            message = "Unknown API table response schema"
+            raise ValueError(message)
+        raw_records = cast("dict[str, object]", document).get("records")
+        columns = set(self.schema)
+        if not isinstance(raw_records, list) or any(
+            not isinstance(row, dict)
+            or cast("dict[str, object]", row).keys() != columns
+            for row in cast("list[object]", raw_records)
+        ):
+            message = "API records must match the declared table columns"
+            raise ValueError(message)
+        records = cast("list[dict[str, object]]", raw_records)
+        frame = pl.from_dicts(records, schema=self.schema, strict=True)
+        for column, dtype in self.schema.items():
+            if isinstance(dtype, pl.Decimal) and any(
+                (row[column] is not None and type(row[column]) not in {int, Decimal})
+                or row[column] != observed
+                for row, observed in zip(records, frame[column], strict=True)
+            ):
+                message = f"Decimal column {column!r} exceeds its precision or scale"
+                raise ValueError(message)
+        return frame
+
+
+def _invalid_api_number(value: str) -> None:
+    message = f"API JSON does not support nonfinite numbers: {value}"
+    raise ValueError(message)
+
+
+def _unique_api_fields(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    fields: dict[str, object] = {}
+    for name, value in pairs:
+        if name in fields:
+            message = "Duplicate API JSON field"
+            raise ValueError(message)
+        fields[name] = value
+    return fields
 
 
 class MultiSourceExtractor(Extractor):

@@ -257,6 +257,12 @@ The official job passed on Dapane `8125597`. The same integration chat owns
 G3.5. Its scope is the frozen feature crosswalk, installed receipts and
 Conductor disposition. The legacy source and workbook are read-only inputs.
 
+The same chat continues G3.4 on
+`codex/genomics-input-and-costing-gaps-20261125` in the implementation
+checkout. The first changes cover the input pipeline, typed YAML, source
+pricing and detailed stage costs. The legacy and authorised workbook
+inputs are used for read-only comparisons.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

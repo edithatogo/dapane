@@ -9,7 +9,10 @@ from copy import deepcopy
 from dataclasses import dataclass
 from fractions import Fraction
 from hashlib import sha256
-from typing import TYPE_CHECKING, Any
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, cast
+
+from pydantic import BaseModel, ConfigDict, Field, TypeAdapter
 
 from genomics_microcosting.dapane_adapter import evaluate_native_request
 from genomics_microcosting.onprem_cost import (
@@ -19,9 +22,11 @@ from genomics_microcosting.onprem_cost import (
     calculate_onprem_cost_with_life,
 )
 
-from .model_tables import LabProfile
+from .model_tables import LabProfile, load_model_yaml
 
 if TYPE_CHECKING:
+    from datetime import date
+
     from genomics_microcosting.compute_cost import ComputeCostContext
 
 type FetchPrices = Callable[[tuple[str, ...]], bytes]
@@ -35,12 +40,52 @@ class VolumeDiscount:
     fraction: str
 
 
-def _fraction(value: str | dict[str, str]) -> Fraction:
+@dataclass(frozen=True)
+class FilePriceRelease:
+    """Read a retained quotation release with an independently supplied digest."""
+
+    path: Path
+    expected_sha256: str
+
+    def __call__(self, _identifiers: tuple[str, ...]) -> bytes:
+        """Return only the original, verified release bytes for native replay."""
+        payload = self.path.read_bytes()
+        if sha256(payload).hexdigest() != self.expected_sha256:
+            raise ValueError("Price release bytes differ from the expected SHA-256")
+        return payload
+
+
+class ModelResource(BaseModel):
+    """Select an exact per-case resource quantity and its valuation quote."""
+
+    model_config = ConfigDict(extra="forbid", strict=True, frozen=True)
+
+    quantity_per_case: str = Field(min_length=1, max_length=64)
+    unit: str = Field(min_length=1)
+    quote_id: str = Field(min_length=1)
+
+
+class ConfiguredModel(BaseModel):
+    """Describe a named resource model with a multiplier on resource usage."""
+
+    model_config = ConfigDict(extra="forbid", strict=True, frozen=True)
+
+    efficiency_multiplier: str = Field(default="1", min_length=1, max_length=64)
+    resources: dict[str, ModelResource] = Field(min_length=1)
+
+
+_MODEL_REGISTRY = TypeAdapter(dict[str, ConfiguredModel])
+
+
+def _fraction(value: object) -> Fraction:
     if isinstance(value, str):
         return Fraction(value)
-    if isinstance(value, dict) and set(value) == {"numerator", "denominator"}:
-        if all(isinstance(part, str) for part in value.values()):
-            return Fraction(int(value["numerator"]), int(value["denominator"]))
+    if isinstance(value, dict):
+        pair = cast("dict[str, object]", value)
+        if pair.keys() == {"numerator", "denominator"}:
+            numerator, denominator = pair["numerator"], pair["denominator"]
+            if isinstance(numerator, str) and isinstance(denominator, str):
+                return Fraction(int(numerator), int(denominator))
     raise ValueError("Quote amounts must use exact strings or rational pairs")
 
 
@@ -49,7 +94,7 @@ def _exact(value: Fraction) -> dict[str, str]:
 
 
 def _select_tier(tiers: Sequence[VolumeDiscount], units: int) -> VolumeDiscount | None:
-    thresholds = set()
+    thresholds: set[int] = set()
     for tier in tiers:
         if type(tier.minimum_units) is not int or tier.minimum_units < 1:
             raise ValueError("Volume tiers require positive integer thresholds")
@@ -65,18 +110,21 @@ def _select_tier(tiers: Sequence[VolumeDiscount], units: int) -> VolumeDiscount 
     )
 
 
-def _external_quotes(payload: bytes, wanted: tuple[str, ...]) -> list[dict[str, Any]]:
+def _external_quotes(payload: object, wanted: tuple[str, ...]) -> list[dict[str, Any]]:
     if not isinstance(payload, bytes):
         raise ValueError("Price providers must return versioned JSON bytes")
-    catalog = json.loads(payload)
-    if not isinstance(catalog, dict) or catalog.get("schema_version") != "0.1":
+    document: object = json.loads(payload)
+    catalog = cast("dict[str, object]", document) if isinstance(document, dict) else {}
+    if catalog.get("schema_version") != "0.1":
         raise ValueError("Unknown external price release schema")
-    quotes = catalog.get("quotes")
-    if not isinstance(quotes, list) or any(
-        not isinstance(quote, dict) or not isinstance(quote.get("id"), str)
-        for quote in quotes
+    records = catalog.get("quotes")
+    if not isinstance(records, list) or any(
+        not isinstance(quote, dict)
+        or not isinstance(cast("dict[str, object]", quote).get("id"), str)
+        for quote in cast("list[object]", records)
     ):
         raise ValueError("External price release requires an identified quotation list")
+    quotes = cast("list[dict[str, Any]]", records)
     identifiers = [quote["id"] for quote in quotes]
     if len(set(identifiers)) != len(identifiers) or set(identifiers) != set(wanted):
         raise ValueError(
@@ -177,6 +225,67 @@ def value_with_prices(
         "request": prepared,
         "report": evaluate_native_request(prepared),
     }
+
+
+def value_configured_model(
+    request: dict[str, Any],
+    *,
+    configuration: Path,
+    model_name: str,
+    volume: int,
+    service_date: date,
+    source_access: str,
+    fetch: FetchPrices,
+    discounts: Mapping[str, Sequence[VolumeDiscount]] | None = None,
+) -> dict[str, Any]:
+    """Turn a source-pinned YAML resource model into native valuation lines."""
+    if type(volume) is not int or volume < 1:
+        raise ValueError("Volume must be a positive integer")
+    payload = configuration.read_bytes()
+    digest = sha256(payload).hexdigest()
+    document = load_model_yaml(payload)
+    registry = _MODEL_REGISTRY.validate_python(document.get("models"))
+    model = registry.get(model_name)
+    if model is None:
+        raise ValueError(f"Unknown configured genomics model: {model_name}")
+    efficiency = _fraction(model.efficiency_multiplier)
+    if efficiency <= 0:
+        raise ValueError("Model efficiency multiplier must be positive")
+    prepared = deepcopy(request)
+    for target, resource in model.resources.items():
+        quantity = _fraction(resource.quantity_per_case)
+        if quantity < 0:
+            raise ValueError("Model resource quantity cannot be negative")
+        use_id = f"{model_name}:{target}"
+        prepared["usage"].append(
+            {
+                "id": use_id,
+                "use_id": use_id,
+                "kind": "resource_use",
+                "target": target,
+                "unit": resource.unit,
+                "quantity": _exact(quantity * efficiency * volume),
+                "service_date": service_date.isoformat(),
+                "quote_id": resource.quote_id,
+                "source": {
+                    "id": "genomics-configured-resources",
+                    "version": digest,
+                    "content_digest": f"sha256:{digest}",
+                    "evidence": "derived",
+                    "access": source_access,
+                    "validation": "unvalidated",
+                    "locator": f"models/{model_name}/resources/{target}",
+                },
+            }
+        )
+    result = value_with_prices(
+        prepared,
+        fetch=fetch,
+        volume=volume,
+        discounts=discounts,
+    )
+    result["model_configuration_sha256"] = digest
+    return result
 
 
 def calculate_lab_equipment_cost(

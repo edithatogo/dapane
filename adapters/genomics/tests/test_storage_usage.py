@@ -8,6 +8,8 @@ from typing import Any
 
 import pytest
 
+from dapane_genomics.pricing import value_with_prices
+from genomics_microcosting.dapane_workbook import historical_use, new_historical_request
 from genomics_microcosting.storage_usage import (
     StorageContext,
     calculate_storage_usage,
@@ -125,6 +127,113 @@ def test_replication_clipping_sharing_and_replay() -> None:
         calculate_storage_usage(sizes, times, workload, context),
         result,
     )
+
+
+def test_raw_processed_and_archive_storage_flow_into_exact_native_costs() -> None:
+    """Use explicit stage observations, retention periods and price releases."""
+    sizes, times, workload, context = storage_inputs()
+    size_document, time_document = json.loads(sizes), json.loads(times)
+    inputs = (("raw", "4", "3"), ("processed", "2", "5"), ("archive", "1", "10"))
+    size_document["objects"] = [
+        {
+            **size_document["objects"][0],
+            "observation_id": stage,
+            "object_id": stage,
+            "copy_id": stage,
+            "resource_id": stage,
+            "object_sha256": None,
+            "size_value": size,
+            "size_unit": "bytes",
+        }
+        for stage, size, _ in inputs
+    ]
+    time_document["lifetimes"] = [
+        {
+            **time_document["lifetimes"][0],
+            "observation_id": stage,
+            "start_seconds": "0",
+            "end_seconds": seconds,
+            "shares": [{"workload_id": "w", "share": "1"}],
+        }
+        for stage, _, seconds in inputs
+    ]
+    sizes, times = (
+        json.dumps(size_document).encode(),
+        json.dumps(time_document).encode(),
+    )
+    context = context.model_copy(
+        update={
+            "size_source_sha256": sha256(sizes).hexdigest(),
+            "lifetime_source_sha256": sha256(times).hexdigest(),
+        }
+    )
+    storage = calculate_storage_usage(sizes, times, workload, context)
+    assert {
+        row.observation.resource_id: row.target_byte_seconds for row in storage.rows
+    } == {"raw": 12, "processed": 10, "archive": 10}
+
+    request = new_historical_request("synthetic-storage-stages")
+    quotes = []
+    rates = {"raw": "0.25", "processed": "0.4", "archive": "0.1"}
+    for row in storage.rows:
+        stage = row.observation.resource_id
+        quantity = row.target_byte_seconds
+        assert quantity is not None
+        source = {
+            "id": "synthetic-storage-rate",
+            "version": "1",
+            "evidence": "synthetic",
+            "access": "public",
+            "validation": "unvalidated",
+        }
+        quote = {
+            "id": f"price-{stage}",
+            "target": stage,
+            "unit": "byte_s",
+            "kind": "resource_use",
+            "amount": rates[stage],
+            "per_quantity": "1",
+            "currency": "AUD",
+            "price_year": 2023,
+            "basis": "financial_cost",
+            "components": ["storage"],
+            "valid_from": "2023-09-02",
+            "valid_to": "2023-09-03",
+            "known_from": "2023-09-02",
+            "source": source,
+        }
+        use = historical_use(
+            stage,
+            {
+                "numerator": str(quantity.numerator),
+                "denominator": str(quantity.denominator),
+            },
+            quote,
+            locator=row.observation.observation_id,
+        )
+        use["source"] = {
+            **use["source"],
+            "id": "synthetic-storage-observation",
+            "version": storage.input_sha256,
+            "content_digest": f"sha256:{storage.input_sha256}",
+        }
+        request["usage"].append(use)
+        quotes.append(quote)
+
+    result = value_with_prices(
+        request,
+        fetch=lambda _: json.dumps(
+            {"schema_version": "0.1", "quotes": quotes}
+        ).encode(),
+        volume=1,
+    )
+
+    assert result["report"]["totals"]["rounded"] == "8.00"
+    assert {line["use_id"]: line["rounded"] for line in result["report"]["lines"]} == {
+        "raw": "3.00",
+        "processed": "4.00",
+        "archive": "1.00",
+    }
 
 
 def test_gib_and_gb_and_evidence_bases_are_separate() -> None:

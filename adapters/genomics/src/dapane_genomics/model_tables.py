@@ -6,17 +6,17 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-from collections.abc import Mapping
+from collections.abc import Hashable, Mapping, Sequence, Set
 from fractions import Fraction
 from importlib.resources import files
 from io import BytesIO, StringIO
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import polars as pl
 import yaml
 from openpyxl import Workbook
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, field_validator
 
 MODELS = ("base", "panel", "wes_p", "wes_t", "wgs", "wgs_t")
 FORMATS = ("json", "csv", "xlsx")
@@ -91,6 +91,55 @@ class LabProfile(BaseModel):
         return labels
 
 
+class _ExactYaml(yaml.SafeLoader):
+    """Keep decimal scalars in their original exact representation."""
+
+
+_ExactYaml.add_constructor("tag:yaml.org,2002:float", _ExactYaml.construct_scalar)
+
+
+class _NamedCategory(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+
+    name: str
+    subcategories: list[str]
+
+
+_NAMED_CATEGORIES = TypeAdapter(list[_NamedCategory])
+
+
+def load_model_yaml(payload: bytes) -> dict[str, Any]:
+    """Parse project model configuration with unrounded YAML decimal scalars."""
+    loader = _ExactYaml(payload)
+    try:
+        document: object = loader.get_single_data()
+    finally:
+        loader.dispose()
+    if not isinstance(document, dict):
+        raise ValueError("Genomics configuration must be a mapping")
+    return cast("dict[str, Any]", document)
+
+
+def load_lab_profile(path: Path) -> LabProfile:
+    """Read the existing JSON profile or the project's YAML customization block."""
+    payload = path.read_bytes()
+    if path.suffix.lower() not in {".yaml", ".yml"}:
+        return LabProfile.model_validate_json(payload)
+    document = load_model_yaml(payload)
+    selected: object = document.get("user_customizations", document)
+    if not isinstance(selected, dict):
+        return LabProfile.model_validate(selected)
+    profile = cast("dict[str, Any]", selected)
+    custom = profile.get("custom_categories")
+    if not isinstance(custom, list):
+        return LabProfile.model_validate(profile)
+    entries = _NAMED_CATEGORIES.validate_python(custom)
+    categories = {entry.name: entry.subcategories for entry in entries}
+    if len(categories) != len(entries):
+        raise ValueError("Lab configuration repeats a custom category")
+    return LabProfile.model_validate({**profile, "custom_categories": categories})
+
+
 def _configuration():
     return files("genomics_microcosting").joinpath("configuration")
 
@@ -146,9 +195,9 @@ def standardize_models(
     allowed = _merge_taxonomy(taxonomy["standard_subcategories"], profile)
     model_specific = taxonomy["model_specific_subcategories"]
     rules = taxonomy["validation_rules"]
-    counts = []
-    model_categories = []
-    model_subcategories = []
+    counts: list[dict[str, Any]] = []
+    model_categories: list[set[str]] = []
+    model_subcategories: list[set[tuple[str, str]]] = []
     for (model,), rows in result.select(_IDENTITY).group_by(
         "Test", maintain_order=True
     ):
@@ -196,10 +245,15 @@ def standardize_models(
     }
 
 
-def _overlap(groups: list[set]) -> dict[str, int]:
-    shared = set.intersection(*groups) if groups else set()
-    seen = set.union(*groups) if groups else set()
-    return {"common": len(shared), "total": len(seen)}
+def _overlap(groups: Sequence[Set[Hashable]]) -> dict[str, int]:
+    if not groups:
+        return {"common": 0, "total": 0}
+    first, *others = groups
+    observed = set(first)
+    return {
+        "common": len(observed.intersection(*others)),
+        "total": len(observed.union(*others)),
+    }
 
 
 def _write_json(path: Path, data: dict[str, Any]) -> None:
@@ -276,19 +330,19 @@ def main() -> int:
     template = commands.add_parser("template", help="Write a shipped model template")
     template.add_argument("model", choices=MODELS)
     template.add_argument("output", type=Path)
-    template.add_argument("--profile", type=Path, help="Optional lab profile JSON")
+    template.add_argument(
+        "--profile", type=Path, help="Optional lab profile JSON or YAML"
+    )
     standardize = commands.add_parser(
         "standardize", help="Normalize labels and audit a model table"
     )
     standardize.add_argument("source", type=Path)
     standardize.add_argument("output_directory", type=Path)
-    standardize.add_argument("--profile", type=Path, help="Optional lab profile JSON")
-    args = parser.parse_args()
-    profile = (
-        LabProfile.model_validate_json(args.profile.read_bytes())
-        if args.profile
-        else None
+    standardize.add_argument(
+        "--profile", type=Path, help="Optional lab profile JSON or YAML"
     )
+    args = parser.parse_args()
+    profile = load_lab_profile(args.profile) if args.profile else None
     if args.command == "template":
         write_model_template(args.model, args.output, profile)
         return 0
