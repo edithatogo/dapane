@@ -97,6 +97,9 @@ DEPLOYMENT_FILES = {
     "deploy/README.md",
     "deploy/container-app.bicep",
     "deploy/ecs-task.yml",
+    "deploy/lab-setup.md",
+    "deploy/lab-setup.mp4",
+    "deploy/promote.sh",
 }
 PACKAGE_DATA_HASHES = {
     "genomics_microcosting/data/t1_known_zero_lineage.json": (

@@ -80,3 +80,40 @@ The lab template page at `/models` walks through model selection, a
 profile and a final download. Enter JSON, choose or drop a file, or build a
 profile with the on-page editor. The downloaded input template includes
 the selected local categories and leaves cost values for the lab to supply.
+Follow the [38-second lab setup tutorial](lab-setup.mp4) or its
+[text walkthrough](lab-setup.md) using the synthetic panel example.
+
+## Promote a dashboard image
+
+The Genomics dashboard promotion workflow accepts a vetted image reference
+with a SHA-256 digest. A dispatch from `main` confirms that the installed
+package and dashboard image smoke test passed at that commit and that the
+official GitHub-hosted workflow passed the offline source scan and image
+advisory review. Keep the image digest and its source commit together in
+the deployment record.
+
+The default dispatch is evidence-only. An authorised operator selects
+`deploy` after configuring the repository's `GENOMICS_DEPLOY_ENABLED` flag
+and the applicable GitHub environment. The environment sets
+`IMAGE_REPOSITORY` to the permitted image repository without a tag or
+digest and supplies the scoped OIDC identity and runtime variables below.
+
+| Environment | Identity and target |
+| --- | --- |
+| `genomics-aws` | `AWS_ROLE_ARN`, `AWS_REGION`, `ECS_CLUSTER` and `ECS_SERVICE`. Supply the prepared task definition revision ARN. The candidate must match the running revision's task settings and carry the selected image. |
+| `genomics-azure` | `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_GROUP` and `AZURE_APP`. Update the existing internal single-revision app and read the latest ready revision. |
+
+The workflow checks service stability and the selected image after
+promotion. Keep the previous ECS task revision or Azure image digest for
+recovery. Restore it using the existing provider deployment procedure,
+then check readiness and read the expected prepared table list.
+
+## Installed coverage
+
+The Installed genomics package workflow can produce a Codecov report
+from the installed wheel and the full packaged synthetic suite. For an
+authorised `main` dispatch set `upload_coverage` after enabling
+`GENOMICS_CODECOV_ENABLED` in the repository. The upload job uses an OIDC
+token and one explicit XML input with repository-relative source paths.
+It reports the `genomics-installed` flag. The inherited private suite
+retains its separate local coverage evidence.
