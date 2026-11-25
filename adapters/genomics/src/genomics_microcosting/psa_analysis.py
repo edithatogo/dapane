@@ -6,18 +6,16 @@ using Monte Carlo simulation to quantify uncertainty in cost outcomes.
 """
 
 __lazy_modules__ = (
-    "matplotlib.figure",
     "numpy.typing",
     "polars",
 )
 
 import logging
 from pathlib import Path
-from typing import Protocol, TypedDict, cast
+from typing import TYPE_CHECKING, Protocol, TypedDict, cast
 
 import numpy as np
 import polars as pl
-from matplotlib.figure import Figure
 from numpy.typing import NDArray
 
 from .sensitivity_evidence import archived_draws, markdown_table
@@ -32,6 +30,9 @@ except ImportError, AttributeError:
 
 from .data_manager import DataManager
 from .logging_config import get_logger
+
+if TYPE_CHECKING:
+    from matplotlib.figure import Figure
 
 logger = get_logger(__name__)
 HAS_MATPLOTLIB = plt is not None

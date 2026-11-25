@@ -485,6 +485,43 @@ The wheel SHA-256 is
 `7180be054c22e58a554e63b7c14282182a7ecf99ca7ab74881160e795dc796c9`.
 The changed runtime modules passed Ruff and strict type checking.
 
+## Dashboard and operational controls
+
+The installed dashboard accepts an operator-owned login file with the
+existing admin, analyst and viewer policies. An authenticated test held a
+viewer to read access, blocked export and diagnostic execution, and allowed
+an analyst to run both. It also verified the per-account rate limit and
+recovery after one minute. The readiness route returned a status, and
+the authenticated health route returned the component checks.
+
+All nine planned `/api/microcosting` routes have installed tests. The
+synthetic diagnostics passed across cost drivers, DSA, PSA and VOI for
+the integration, end-to-end and performance selections. The benchmark
+measured 37 cost-driver rows and ran 321 seeded Monte Carlo draws.
+Quality validation detected a negative cost, a CSV identifier mismatch
+and a missing CSV companion in separate cases. The SQLite receipts
+survived app recreation and matched the test-type, module, sheet and UTC
+date filters. The response request ID matched both the saved receipt and
+the audit entry. The response and audit omitted the original cost values
+and test passwords. [Installed tests](../../../adapters/genomics/tests/test_web_operations.py)
+
+The Codex internal browser exercised the model wizard at 390 by 844
+pixels. The editor preserved an exact multiplier of `"1.125"` and an
+equipment life of six years. The downloaded Panel CSV had 22 rows,
+including both requested shipping entries, and left input prices blank.
+Its SHA-256 was
+`37ff3ebfb2e0c1664ac0e7b6ac44daa992731551bbf7e22e662f40190eb6e180`.
+A Node test of the installed drag handler checked that it preserves the
+exact source text and retains the previous profile after an oversized
+or invalid file. The complete packaged suite passed 194 tests on CPython
+3.15.1 from outside the checkout with sockets disabled.
+
+These results cover `secured-web`, `rate-limits`, `drag-and-drop`,
+`setup-wizard`, `configuration-builder`, `test-service-api`,
+`benchmark-service-api`, `monitoring-api-contract` and
+`quality-service-api` in the frozen audit. The operator instructions and
+API parameter contracts are packaged with the source. [Operator guide](../../../adapters/genomics/deploy/README.md)
+
 ## Hosted qualification
 
 The official GitHub-hosted offline check passed for the frozen baseline

@@ -263,6 +263,12 @@ checkout. The first changes cover the input pipeline, typed YAML, source
 pricing and detailed stage costs. The legacy and authorised workbook
 inputs are used for read-only comparisons.
 
+The same chat owns the narrow scanner compatibility correction for PR #89
+in the adjacent CLI worktree `genomics-input-ci`, and the dashboard and
+operational API changes in `codex/genomics-dashboard-controls-20261125`
+in the implementation checkout. The next operation is to qualify the PR
+heads and integrate the input changes before the dashboard changes.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

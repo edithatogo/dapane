@@ -24,6 +24,32 @@ body {
 }
 
 /* Header and Navigation */
+.model-templates {
+  max-width: 44rem;
+  margin: 1rem auto;
+  padding: 0 1rem;
+}
+
+.model-templates fieldset {
+  min-inline-size: 0;
+  padding: 1rem;
+}
+
+.model-templates :is(input, select, textarea) {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.model-templates textarea {
+  width: 100%;
+}
+
+.model-templates .profile-drop {
+  border: 2px dashed var(--secondary-color);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
 .navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,.1);
   margin-bottom: 20px;

@@ -5,24 +5,22 @@ This module provides functionality to perform deterministic sensitivity analysis
 by systematically varying key parameters and observing the impact on cost outcomes.
 """
 
-__lazy_modules__ = (
-    "collections.abc",
-    "matplotlib.figure",
-    "matplotlib.patches",
-)
+__lazy_modules__ = ("collections.abc",)
 
 import logging
 from collections.abc import Iterable, Sequence
 from pathlib import Path
-from typing import Protocol, TypedDict, Unpack, cast
+from typing import TYPE_CHECKING, Protocol, TypedDict, Unpack, cast
 
 import polars as pl
-from matplotlib.figure import Figure
-from matplotlib.patches import Rectangle
 
 from .data_manager import DataManager
 from .logging_config import get_logger
 from .sensitivity_evidence import markdown_table, scenario_costs
+
+if TYPE_CHECKING:
+    from matplotlib.figure import Figure
+    from matplotlib.patches import Rectangle
 
 try:
     import matplotlib as mpl
