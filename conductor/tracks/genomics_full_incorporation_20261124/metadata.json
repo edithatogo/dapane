@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-24T21:56:42Z",
+  "updated_at": "2026-11-25T11:14:55Z",
   "description": "Incorporate the full v15 genomics workbook and every existing and planned legacy feature into an independently installable Dapane successor.",
   "repositories": [
     ".",
@@ -61,11 +61,15 @@
       "Generate native JSON, CSV and Excel model templates and validate standardized Polars output.",
       "Run native source commands against authorised v15 inputs and synthetic template and pricing cases from the installed package.",
       "Build and check the locked source distribution, and run the packaged and inherited tests with sockets disabled.",
-      "Compare the same-host genomics-benchmark receipts, verify checkpoint restart, and validate both dashboard deployment templates."
+      "Compare the same-host genomics-benchmark receipts, verify checkpoint restart, and validate both dashboard deployment templates.",
+      "Capture per-test JUnit and ctrace execution contexts from the installed packaged and inherited suites with sockets disabled.",
+      "Reconcile frozen roadmap rows, declared package surfaces and installed assertions with the restricted audit scripts and focused probes."
     ],
     "evidence": [
       "verification.md",
-      "feature-coverage.md"
+      "feature-coverage.md",
+      "feature-audit.md",
+      "feature-audit-crosswalk.tsv"
     ]
   }
 }

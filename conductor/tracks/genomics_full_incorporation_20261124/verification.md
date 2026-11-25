@@ -437,6 +437,18 @@ harness, the independent inherited suite also passed all 1,339 cases in
 one run. The installed replay produced the same workbook, formula and
 pathway JSON bytes as the retained prior receipts.
 
+## Feature audit and disposition
+
+The [G3.5 audit](feature-audit.md) assigns all 812 frozen plan and issue rows
+and 18 additional design and example ranges to the installed comparison or a
+named gap. With sockets disabled, the exact installed wheel passed 1,339
+inherited tests and 173 packaged tests. Its 114 distinct outcome
+dispositions comprise 71 with evidence for the recorded scope, 16 needing
+implementation, 23 needing further evidence and four requiring native
+changes, a rights decision or user acceptance. The command register records
+44 verified behaviors and 30 command-level evidence gaps. G3.4 and G4
+retain the implementation and qualification work.
+
 ## Hosted qualification
 
 The official GitHub-hosted offline check passed for the frozen baseline
@@ -496,6 +508,11 @@ vendor packages and fails on unresolved or ignored advisories.
 The [official image run](https://github.com/edithatogo/repository-standards/actions/runs/45593458868)
 installed the fixed version and returned no Expat matches or ignored records.
 The update merged at `d017756afed01cdaae63e5493a57b6bee0dcb7c3`.
+
+[Dapane PR #87](https://github.com/edithatogo/dapane/pull/87) passed the updated
+scanner on its exact head. The [official main-push run](https://github.com/edithatogo/dapane/actions/runs/45596868242)
+passed network-disabled scanning and image advisory review on merge commit
+`8125597034a8f87a4d788212b011ab88ee7263a9`.
 
 ## Preservation and restoration
 
