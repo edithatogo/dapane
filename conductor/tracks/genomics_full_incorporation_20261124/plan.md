@@ -34,4 +34,4 @@ Status: in_progress
 
 - [x] G5.1 Inventory unique code, refs, tags, scholarly citations, study sources and workbook assets. Record preservation location, digest, rights, successor links and consumer migration steps. [Preservation and restoration](verification.md#preservation-and-restoration)
 - [x] G5.2 Rehearse clean restoration and rollback. Compare representative restored historical outputs and check that the successor runs with the provider checkout and public fetch unavailable. [Preservation and restoration](verification.md#preservation-and-restoration)
-- [~] G5.3 Record the repository retirement decision and any remaining rights or consumer dependencies. Prepare the evidence for a later authorised archive or visibility change. [Preservation and restoration](verification.md#preservation-and-restoration)
+- [x] G5.3 Record the repository retirement decision and any remaining rights or consumer dependencies. Prepare the evidence for a later authorised archive or visibility change. [Retention decision](verification.md#retirement-decision)

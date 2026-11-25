@@ -3,6 +3,7 @@
 """Script to run advanced scenario analysis with sophisticated comparison features."""
 
 import argparse
+import json
 import logging
 import sys
 import traceback
@@ -105,48 +106,38 @@ def _compare_scenarios(
     output_dir: Path,
     args: argparse.Namespace,
 ) -> None:
-    # Compare scenarios if requested
-    if args.compare:
-        sys.stdout.write(f"Comparing scenarios: {args.compare}" + "\n")
-        # Compare scenarios for the detailed table
-        if "detailed_table" in data_dict:
-            try:
-                detailed_comparison = scenario_manager.compare_scenarios_detailed(
-                    args.compare,
-                    "detailed_table",
-                )
-
-                # Save detailed comparison to files
-                comparison_dir = output_dir / "detailed_comparisons"
-                comparison_dir.mkdir(exist_ok=True)
-
-                for column, df in detailed_comparison.items():
-                    # Sanitize column name for filename
-                    safe_column = "".join(
-                        c for c in column if c.isalnum() or c in (" ", "-", "_")
-                    ).rstrip()
-                    safe_column = safe_column.replace(" ", "_").replace(
-                        "/",
-                        "_per_",
-                    )
-
-                    # Save as CSV
-                    csv_file = comparison_dir / f"detailed_comparison_{safe_column}.csv"
-                    df.to_csv(csv_file)
-
-                    # Save as JSON
-                    json_file = (
-                        comparison_dir / f"detailed_comparison_{safe_column}.json"
-                    )
-                    df.to_json(json_file, indent=2)
-
-                sys.stdout.write(
-                    f"Saved detailed comparisons to {comparison_dir}" + "\n",
-                )
-
-            except Exception as e:
-                logger.exception("Could not complete run advanced scenario analysis")
-                sys.stdout.write(f"Error in detailed comparison: {e}" + "\n")
+    if not args.compare:
+        return
+    if "detailed_table" not in data_dict:
+        raise ValueError("Scenario comparison requires the prepared detailed table")
+    detailed = scenario_manager.compare_scenarios_detailed(
+        args.compare, "detailed_table"
+    )
+    if not detailed:
+        raise ValueError("No comparable numeric scenario columns")
+    directory = output_dir / "detailed_comparisons"
+    directory.mkdir(exist_ok=True)
+    names = {
+        column: "".join(
+            char for char in column if char.isalnum() or char in (" ", "-", "_")
+        )
+        .strip()
+        .replace(" ", "_")
+        for column in detailed
+    }
+    if len(set(names.values())) != len(names):
+        raise ValueError("Comparison columns generate duplicate export filenames")
+    for column, frame in detailed.items():
+        prefix = directory / f"detailed_comparison_{names[column]}"
+        frame.write_csv(prefix.with_suffix(".csv"))
+        with prefix.with_suffix(".json").open("w", encoding="utf-8") as output:
+            values = frame.to_dict(as_series=False)
+            json.dump(
+                {name: dict(enumerate(items)) for name, items in values.items()},
+                output,
+                indent=2,
+            )
+    sys.stdout.write(f"Saved detailed comparisons to {directory}\n")
 
 
 def _export_results(

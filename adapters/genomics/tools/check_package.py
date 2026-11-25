@@ -16,7 +16,10 @@ if TYPE_CHECKING:
 FORBIDDEN_SUFFIXES = {".xlsx", ".xlsm", ".parquet", ".pkl", ".docx", ".ipynb"}
 FORBIDDEN_PARTS = {"conductor", ".private-runs", "data", "manuscripts", "reports"}
 SDIST_ROOTS = {
+    ".dockerignore",
     ".gitignore",
+    "Dockerfile",
+    "deploy",
     "src",
     "tests",
     "scripts",
@@ -49,10 +52,51 @@ SDIST_HELPERS = {
     "scripts/replicate_equipment_costs.py",
     "scripts/replicate_labour_costs.py",
     "scripts/validate_labour_usage.py",
+    "scripts/advanced_validation.py",
+    "scripts/analyze_model_consistency.py",
+    "scripts/analyze_scenarios.py",
+    "scripts/automated_standardization.py",
+    "scripts/compare_performance.py",
+    "scripts/create_ground_truth.py",
+    "scripts/demonstrate_plugins.py",
+    "scripts/enhanced_reporting.py",
+    "scripts/manage_data.py",
+    "scripts/run_scenario_analysis.py",
+    "scripts/run_advanced_scenario_analysis.py",
+    "scripts/validate_process_sheet.py",
+    "scripts/validate_data_consistency.py",
+    "scripts/visualize_costs.py",
+    "scripts/establish_performance_baselines.py",
+    "scripts/excel_data_extractor.py",
+    "scripts/extract_excel_comprehensive.py",
+    "scripts/extract_excel_data_properly.py",
+    "scripts/generate_templates.py",
+    "scripts/model_transformation.py",
+    "scripts/phase3_data_enhancement.py",
+    "scripts/prepare_reference_tables.py",
+    "scripts/profile_and_optimize.py",
+    "scripts/replicate_calculations.py",
+    "scripts/replicate_detailed_table.py",
+    "scripts/transfer_validate_tables.py",
+    "scripts/validate_bi_comp_stor_costs.py",
+    "scripts/validate_calculation_engine.py",
+    "scripts/validate_calculations.py",
+    "scripts/validate_data_integrity.py",
+    "scripts/validate_excel_comparison.py",
+    "scripts/validate_simple_tables.py",
+    "scripts/validate_standardization.py",
+    "scripts/validation_pipeline.py",
     "tools/__init__.py",
     "tools/select_tests.py",
     "tools/check_package.py",
     "tools/build_t1_scenario.py",
+}
+DEPLOYMENT_FILES = {
+    ".dockerignore",
+    "Dockerfile",
+    "deploy/README.md",
+    "deploy/container-app.bicep",
+    "deploy/ecs-task.yml",
 }
 PACKAGE_DATA_HASHES = {
     "genomics_microcosting/data/t1_known_zero_lineage.json": (
@@ -183,8 +227,10 @@ def _check_metadata(wheel_metadata: Message, source_metadata: Message) -> None:
 
 def _check_sdist_sources(root: Path, sdist: dict[str, bytes]) -> None:
     """Compare included tests, helpers and maintained package metadata exactly."""
+    source_root = next(iter(sdist)).partition("/")[0]
     paths = set((root / "tests").rglob("*.py"))
     paths.update(root / name for name in SDIST_HELPERS)
+    paths.update(root / name for name in DEPLOYMENT_FILES)
     metadata_paths = (
         "README.md",
         "LICENSE",
@@ -198,7 +244,9 @@ def _check_sdist_sources(root: Path, sdist: dict[str, bytes]) -> None:
     paths.add(root / "src/genomics_microcosting/ruff.toml")
     for path in paths:
         relative = path.relative_to(root).as_posix()
-        _require_single_payload(sdist, "/" + relative, path.read_bytes())
+        if sdist.get(f"{source_root}/{relative}") != path.read_bytes():
+            message = f"Missing or changed source file: {relative}"
+            raise ValueError(message)
 
 
 def _check_wheel_allowlist(wheel: dict[str, bytes], expected_names: set[str]) -> None:
@@ -228,6 +276,10 @@ def _check_source_allowlist(sdist: dict[str, bytes]) -> None:
             or (
                 relative.parts[0] in {"scripts", "tools"}
                 and relative.as_posix() not in SDIST_HELPERS
+            )
+            or (
+                relative.parts[0] in {"deploy", "Dockerfile", ".dockerignore"}
+                and relative.as_posix() not in DEPLOYMENT_FILES
             )
         ):
             message = f"Unexpected source distribution member: {name}"

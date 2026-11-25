@@ -12,7 +12,7 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
-from scripts.establish_performance_baselines import (
+from dapane_genomics.legacy_performance import (
     compare_baselines,
     establish_performance_baselines,
     load_baselines,
@@ -137,6 +137,8 @@ def print_comparison_results(results: dict) -> None:
         )
 
         if time_comparison.get("performance_regression", False):
+            workloads = time_comparison["timing_regression_rows"]
+            sys.stdout.write(f"Regressed workload sizes: {workloads}\n")
             sys.stdout.write("  ⚠️  PERFORMANCE REGRESSION DETECTED" + "\n")
             regressions_found = True
         else:

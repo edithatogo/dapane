@@ -37,9 +37,9 @@ def _load(
     if output:
         output_path = Path(output)
         if output_path.suffix.lower() == ".csv":
-            df.to_csv(output_path, index=False)
+            df.write_csv(output_path)
         else:
-            df.to_parquet(output_path, index=False)
+            df.write_parquet(output_path)
         sys.stdout.write(f"Saved to {output_path}\n")
     else:
         sys.stdout.write(f"{df.head()}\n")

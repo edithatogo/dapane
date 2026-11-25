@@ -13,12 +13,16 @@ Models analyzed:
 - WGS (T) (Whole Genome Sequencing - Trio)
 """
 
+import argparse
 import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 
-import pandas as pd
+import polars as pl
+
+from dapane_genomics.legacy_models import model_rows, read_model_source
 
 HIGH_CONSISTENCY = 0.8
 MODERATE_CONSISTENCY = 0.5
@@ -49,75 +53,36 @@ class ModelConsistencyAnalyzer:
             "WGS (T)",  # Whole Genome Sequencing - Trio
         ]
 
-    def load_data(self) -> pd.DataFrame:
+    def load_data(self) -> pl.DataFrame:
         """Load the detailed table data."""
-        if not self.data_path.exists():
-            message = f"Data file not found: {self.data_path}"
-            raise FileNotFoundError(message)
+        return read_model_source(self.data_path)
 
-        # Read the CSV with proper header handling
-        df = pd.read_csv(self.data_path, header=None)
-
-        # Find the actual header row (should contain 'Test', 'Category', 'Sub-Category')
-        header_row_idx = None
-        for i, row in df.iterrows():
-            if "Test" in str(row.values) and "Category" in str(row.values):
-                header_row_idx = i
-                break
-
-        if header_row_idx is None:
-            message = "Could not find header row with 'Test' and 'Category' columns"
-            raise ValueError(
-                message,
-            )
-
-        # Read again with the correct header
-        return pd.read_csv(self.data_path, header=header_row_idx)
-
-    def extract_model_data(self, df: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    def extract_model_data(self, df: pl.DataFrame) -> dict[str, pl.DataFrame]:
         """Extract data for each model."""
-        model_data = {}
+        grouped = model_rows(df).group_by("Test", maintain_order=True)
+        return {name: frame for (name,), frame in grouped}
 
-        # Find all rows with non-empty Test values
-        test_rows = df[df["Test"].notna()].index.tolist()
-
-        for i, row_idx in enumerate(test_rows):
-            test_value = df.loc[row_idx, "Test"]
-
-            if test_value in self.models:
-                # Collect all rows for this test until the next test or end
-                start_idx = row_idx
-                end_idx = test_rows[i + 1] if i + 1 < len(test_rows) else len(df)
-
-                # Get all rows between this test and the next
-                test_df = df.loc[start_idx : end_idx - 1].copy()
-
-                # Fill forward the Test value for rows that belong to this test
-                test_df["Test"] = test_df["Test"].fillna(test_value)
-
-                model_data[test_value] = test_df
-
-        return model_data
-
-    def analyze_model_categories(self, model_df: pd.DataFrame) -> ModelAnalysis:
+    def analyze_model_categories(self, model_df: pl.DataFrame) -> ModelAnalysis:
         """Analyze categories and subcategories for a single model."""
         # Get unique categories
-        categories = set(model_df["Category"].dropna().unique())
+        categories = set(model_df["Category"].drop_nulls().unique())
 
         # Get subcategories by category
         subcategories = defaultdict(set)
-        for _, row in model_df.iterrows():
+        for row in model_df.iter_rows(named=True):
             category = row["Category"]
             subcategory = row["Sub-Category"]
-            if pd.notna(category) and pd.notna(subcategory):
+            if category is not None and subcategory is not None:
                 subcategories[category].add(subcategory)
 
         # Calculate metrics
         total_rows = len(model_df)
-        unique_combinations = len(model_df.groupby(["Category", "Sub-Category"]).size())
+        unique_combinations = (
+            model_df.select("Category", "Sub-Category").drop_nulls().unique().height
+        )
 
         return ModelAnalysis(
-            name=model_df["Test"].iloc[0] if not model_df.empty else "Unknown",
+            name=model_df["Test"][0] if not model_df.is_empty() else "Unknown",
             categories=categories,
             subcategories=dict(subcategories),
             total_rows=total_rows,
@@ -227,7 +192,7 @@ class ModelConsistencyAnalyzer:
         """Generate a comprehensive analysis report."""
         report = []
         report.append("# Model Consistency Analysis Report")
-        report.append(f"Generated: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        report.append(f"Generated: {datetime.now(UTC).isoformat()}")
         report.append("")
 
         # Summary section
@@ -320,44 +285,18 @@ class ModelConsistencyAnalyzer:
         sys.stdout.write(f"Report saved to: {output_file}" + "\n")
 
 
-def main() -> None:
-    """Run consistency checks on the available models."""
-    analyzer = ModelConsistencyAnalyzer()
-
-    try:
-        # Analyze all models
-        sys.stdout.write("Loading data..." + "\n")
-        analyses = analyzer.analyze_all_models()
-
-        if not analyses:
-            sys.stdout.write(
-                "No model data found. Please check the data file and model names.\n",
-            )
-            return
-
-        sys.stdout.write(
-            f"Found {len(analyses)} models: {', '.join(analyses.keys())}" + "\n",
-        )
-
-        # Calculate consistency metrics
-        sys.stdout.write("Calculating consistency metrics..." + "\n")
-        metrics = analyzer.calculate_consistency_metrics(analyses)
-
-        # Generate and save report
-        sys.stdout.write("Generating report..." + "\n")
-        report = analyzer.generate_report(analyses, metrics)
-        analyzer.save_report(report)
-
-        sys.stdout.write("Analysis complete!" + "\n")
-        sys.stdout.write(f"Models analyzed: {len(analyses)}" + "\n")
-        sys.stdout.write(
-            f"Total categories found: {metrics.get('total_categories', 0)}" + "\n",
-        )
-
-    except Exception as e:
-        sys.stdout.write(f"Error during analysis: {e}" + "\n")
-        raise
+def main() -> int:
+    """Write a reproducible cross-model consistency report."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source", default="data/Detailed Table.csv")
+    parser.add_argument("--report", default="docs/model_standardization.md")
+    args = parser.parse_args()
+    analyzer = ModelConsistencyAnalyzer(args.source)
+    analyses = analyzer.analyze_all_models()
+    metrics = analyzer.calculate_consistency_metrics(analyses)
+    analyzer.save_report(analyzer.generate_report(analyses, metrics), args.report)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

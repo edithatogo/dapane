@@ -1,102 +1,41 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
-"""Replicate detailed worksheet costs from prepared tables."""
+"""Replicate detailed worksheet costs from the original formula inputs."""
 
+import argparse
 import sys
+from pathlib import Path
 
-import openpyxl
-import pandas as pd
+import polars as pl
 
-from genomics_microcosting.calculation_engine import CalculationEngine
-from genomics_microcosting.formula_parser import parse_formula
+from dapane_genomics.legacy_workbooks import (
+    DETAILED_SHEET,
+    evaluate_sheet,
+    replicate_cost_rows,
+)
 
 
-def main() -> None:
-    """Replicate detailed-table costs and save the calculated values to Parquet."""
-    sys.stdout.write("Starting calculation replication..." + "\n")
-
-    # Initialize the calculation engine
-    engine = CalculationEngine()
-    sheet_name = "Detailed Table"
-
-    # Load the ground truth data for comparison
-    ground_truth_df = pd.read_parquet("data/prepared/ground_truth.parquet")
-
-    # Find the column index for the 'Unit Cost' estimate from the cleaned headers
-    unit_cost_col_name = "Estimates Estimate_3"
-    try:
-        unit_cost_col_idx = ground_truth_df.columns.get_loc(unit_cost_col_name)
-    except KeyError:
-        sys.stdout.write(
-            "Error: The ground truth data does not have the expected "
-            "column: "
-            f"{unit_cost_col_name}"
-            "\n",
-        )
-        return
-
-    results_data = []
-    # Iterate through each row of our ground truth data
-    for index, row in ground_truth_df.iterrows():
-        # The Excel row is the DataFrame index + 3 (1-based index, plus 2 header rows)
-        excel_row = index + 3
-
-        # The Excel column is the DataFrame column index + 1 (1-based index)
-        excel_col_letter = openpyxl.utils.get_column_letter(unit_cost_col_idx + 1)
-
-        cell_ref = f"{excel_col_letter}{excel_row}"
-
-        # Get the formula from the raw excel file using our engine's method
-        formula = engine.get_cell_formula(sheet_name, cell_ref)
-
-        calculated_value = 0
-        if isinstance(formula, str) and formula.startswith("="):
-            # If we have a formula, execute it
-            parsed_formula = parse_formula(formula)
-            if parsed_formula["type"] == "unknown":
-                sys.stdout.write(f"Unknown formula: {formula}" + "\n")
-                calculated_value = "UNSUPPORTED"
-            else:
-                calculated_value = engine.execute_formula(
-                    parsed_formula,
-                    sheet_name,
-                    cell_ref,
-                )
-        else:
-            # If there's no formula, the value is just the value
-            calculated_value = formula
-
-        cost_category = row.get("Cost_Category", "Unknown")
-
-        result_row = {
-            "Test_Type": row.get("Test_Type", ""),
-            "Cost_Category": cost_category,
-            "Cost_Sub_Category": row.get("Cost_Sub_Category", ""),
-            "Cost_Step": row.get("Cost_Step", ""),
-            "unit_cost_labour": 0,
-            "unit_cost_equipment": 0,
-            "unit_cost_consumables": 0,
-        }
-
-        if cost_category == "Labour":
-            result_row["unit_cost_labour"] = calculated_value
-        elif cost_category == "Equipment":
-            result_row["unit_cost_equipment"] = calculated_value
-        elif cost_category == "Consumables":
-            result_row["unit_cost_consumables"] = calculated_value
-
-        results_data.append(result_row)
-
-    # Create a DataFrame from the results
-    calculated_df = pd.DataFrame(results_data)
-
-    # Save the calculated costs to a parquet file
-    calculated_df.to_parquet("data/calculated_costs_tidy.parquet", index=False)
-
-    sys.stdout.write(
-        "\nCalculations replicated and saved to 'data/calculated_costs_tidy.parquet'."
-        "\n",
+def main() -> int:
+    """Calculate all reference rows and save the cost columns to Parquet."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--workbook", type=Path)
+    parser.add_argument("--sheet", default=DETAILED_SHEET)
+    parser.add_argument("--first-row", type=int)
+    parser.add_argument("--column", default="N")
+    parser.add_argument(
+        "--reference", type=Path, default=Path("data/ground_truth/ground_truth.parquet")
     )
+    parser.add_argument(
+        "--output", type=Path, default=Path("data/calculated_costs_tidy.parquet")
+    )
+    args = parser.parse_args()
+    reference = pl.read_parquet(args.reference)
+    _, evaluated, start = evaluate_sheet(args.workbook, args.sheet, args.first_row)
+    result = replicate_cost_rows(reference, evaluated, start, args.column)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    result.write_parquet(args.output)
+    sys.stdout.write(f"Calculated {result.height} detailed-table rows\n")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

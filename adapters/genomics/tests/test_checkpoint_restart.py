@@ -10,11 +10,14 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from time import perf_counter
 
+from genomics_microcosting.data_manager import DataManager
 from genomics_microcosting.error_handling import (
     CheckpointManager,
     setup_standard_error_handling,
 )
+from genomics_microcosting.monte_carlo_optimizer import MonteCarloOptimizer
 from tests.checks import require_equal, require_runtime_instance
 
 
@@ -249,6 +252,33 @@ class TestCheckpointRestart(unittest.TestCase):
             restored_data = self.error_handler.restore_checkpoint(checkpoint_id)
             if not ((restored_data) == (error_context_data)):
                 raise AssertionError from e
+
+
+def test_resume_seeded_draws_after_checkpoint_write_failure(tmp_path, monkeypatch):
+    """Resume the same independent batches from the last valid disk checkpoint."""
+    monkeypatch.chdir(tmp_path)
+    parameters = {
+        "cost": {"distribution": "uniform", "parameters": {"low": 1, "high": 2}}
+    }
+    manager = DataManager(tmp_path / "data")
+    checkpoints = CheckpointManager(checkpoint_dir=str(tmp_path / "checkpoints"))
+    first = MonteCarloOptimizer(manager, seed=72).sample_chunk(parameters, 1000)["cost"]
+    checkpoints.create_checkpoint("synthetic-psa", {"draws": first, "next_seed": 73})
+    checkpoints.create_checkpoint("synthetic-psa", {"interrupted": object()})
+    start = perf_counter()
+    restored = CheckpointManager(checkpoint_dir=str(tmp_path / "checkpoints"))
+    previous = restored.restore_checkpoint("synthetic-psa", from_disk=True)
+    resumed = MonteCarloOptimizer(manager, seed=previous["next_seed"]).sample_chunk(
+        parameters, 1000
+    )["cost"]
+    elapsed = perf_counter() - start
+    expected = (
+        first
+        + MonteCarloOptimizer(manager, seed=73).sample_chunk(parameters, 1000)["cost"]
+    )
+    assert previous["draws"] + resumed == expected
+    assert len(previous["draws"] + resumed) == 2000
+    assert elapsed < 30
 
 
 if __name__ == "__main__":

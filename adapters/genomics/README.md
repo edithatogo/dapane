@@ -22,6 +22,17 @@ separately through authorised access. Run the legacy commands from a consumer
 directory with its own `config.yaml` or with the workbook at the configured
 relative path.
 
+## Legacy source commands
+
+Run the scripts shipped in the source distribution with the installed
+CPython environment. Pass the workbook, prepared tables and a local output
+directory explicitly. `transfer_validate_tables.py --emit-test` can also
+write a receipt-based check next to the transferred tables.
+`phase3_data_enhancement.py` produces the model template exports, and
+`validation_pipeline.py` records their validation and source digests.
+Missing historical inputs remain blank and are reported by the quality
+check. Use the exact workbook replay for reproducing past costing results.
+
 ## Original workbook replay
 
 `dapane-genomics-inventory` takes the original workbook, its catalogue and a
@@ -94,6 +105,12 @@ remains available for comparison.
 named numeric predictors and a cost response. Its statistical estimates
 are separate from exact valuation. Train and validate it on the relevant
 data before adopting predictions for a study.
+
+## Dashboard deployment
+
+Use the [dashboard deployment templates](deploy/README.md) to build a
+non-root container and connect a read-only prepared data volume. The AWS
+and Azure templates use private service boundaries and the same image.
 
 ## Performance measurements
 

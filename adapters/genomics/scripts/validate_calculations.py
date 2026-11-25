@@ -1,127 +1,90 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
-"""Validate calculated costs against the original Excel data."""
+"""Validate the tidy calculated output against original workbook cells."""
 
+import argparse
 import sys
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
+import polars as pl
+from openpyxl.utils import column_index_from_string
+
+from dapane_genomics.legacy_workbooks import (
+    DETAILED_SHEET,
+    UNIT_COST_COLUMNS,
+    same_value,
+)
+from genomics_microcosting.sheet_manager import SheetManager
 
 
-def validate_calculations() -> None:
-    """Validate the calculated costs against the original Excel sheet."""
-    # Load the calculated data
+def validate_calculations(
+    source: Path = Path("data/calculated_costs_tidy.parquet"),
+    workbook: Path | None = None,
+    sheet: str = DETAILED_SHEET,
+    column: str = "N",
+) -> int:
+    """Compare numeric and marker outputs using retained one-based row IDs."""
+    computed = pl.read_parquet(source)
+    if computed.is_empty() or computed["Source_Row"].n_unique() != computed.height:
+        raise ValueError("Expected distinct, nonempty calculated source rows")
+    sheets = SheetManager(workbook)
+    disagreements = []
+    numeric_count = 0
     try:
-        calculated_df = pd.read_parquet(
-            Path(__file__).resolve().parents[0]
-            / "data"
-            / "calculated_costs_tidy.parquet",
+        reference = sheets.get_ground_truth(sheet)
+        first = sheets.sheet_configs[sheet].get("data_starts_at", 2)
+        col = column_index_from_string(column) - 1
+        for record in computed.select(
+            "Source_Row", *UNIT_COST_COLUMNS, "Source_Marker"
+        ).iter_rows(named=True):
+            row = record["Source_Row"]
+            if not 0 <= row - first < reference.height:
+                raise ValueError(
+                    f"Calculated source row {row} is outside the worksheet"
+                )
+            expected = reference[row - first, col]
+            expected_numeric = type(expected) in (int, float)
+            amounts = [record[key] for key in UNIT_COST_COLUMNS]
+            numeric_count += expected_numeric
+            if expected_numeric:
+                agrees = all(amount is not None for amount in amounts) and same_value(
+                    float(expected), sum(amounts)
+                )
+                agrees = agrees and record["Source_Marker"] is None
+            else:
+                agrees = (
+                    amounts.count(None) == 1
+                    and all(amount == 0 for amount in amounts if amount is not None)
+                    and same_value(expected, record["Source_Marker"])
+                )
+            if not agrees:
+                disagreements.append(str(row))
+    finally:
+        sheets.close()
+    if disagreements:
+        sys.stderr.write(
+            "Mismatched worksheet rows: " + ", ".join(disagreements) + "\n"
         )
-    except FileNotFoundError:
-        sys.stdout.write("Error: calculated_costs_tidy.parquet not found." + "\n")
-        sys.stdout.write(
-            "Please run replicate_calculations.py to generate the file." + "\n",
-        )
-        return
-
-    # Load the original data from the Excel sheet
-    file_path = (
-        Path(__file__).resolve().parents[0]
-        / "data"
-        / "Microcosting - Study 1 - Utilisation and Microcosts v15 (20230902).xlsm"
+    sys.stdout.write(
+        f"Compared {computed.height} retained rows ({numeric_count} numeric), "
+        f"{len(disagreements)} differences\n"
     )
-    try:
-        original_df_raw = pd.read_excel(
-            file_path,
-            sheet_name="1. Detailed Table",
-            header=None,
-        )
-    except FileNotFoundError:
-        sys.stdout.write(f"Error: {file_path} not found." + "\n")
-        return
+    return int(not numeric_count or bool(disagreements))
 
-    # Data cleaning and preparation for the original data
-    header = original_df_raw.iloc[0].astype(str).str.replace("nan", "")
-    sub_header = original_df_raw.iloc[1].astype(str).str.replace("nan", "")
-    new_header = [
-        f"{h}_{sh}".strip("_") if h or sh else f"Unnamed_{i}"
-        for i, (h, sh) in enumerate(zip(header, sub_header, strict=False))
-    ]
-    original_df = original_df_raw[2:].copy()
-    original_df.columns = new_header
-    original_df = original_df.rename(
-        columns={
-            "Test": "Test_Type",
-            "Category": "Cost_Category",
-            "Sub-Category": "Cost_Sub_Category",
-            "Step": "Cost_Step",
-            "Unit Cost (AUD $/unit)": "original_cost",
-        },
+
+def main() -> int:
+    """Validate the output produced by replicate_calculations.py."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--workbook", type=Path)
+    parser.add_argument("--sheet", default=DETAILED_SHEET)
+    parser.add_argument("--column", default="N")
+    parser.add_argument(
+        "--input", type=Path, default=Path("data/calculated_costs_tidy.parquet")
     )
-
-    # Sum the calculated costs
-    calculated_df["calculated_total_cost"] = calculated_df[
-        ["unit_cost_labour", "unit_cost_equipment", "unit_cost_consumables"]
-    ].sum(axis=1)
-
-    # Merge the two dataframes for comparison
-    comparison_df = original_df.merge(
-        calculated_df,
-        on=["Test_Type", "Cost_Category", "Cost_Sub_Category", "Cost_Step"],
-        how="left",
+    options = parser.parse_args()
+    return validate_calculations(
+        options.input, options.workbook, options.sheet, options.column
     )
-
-    # Convert cost columns to numeric, coercing errors
-    comparison_df["original_cost"] = pd.to_numeric(
-        comparison_df["Unit Cost (AUD $/unit)"],
-        errors="coerce",
-    )
-    comparison_df["calculated_total_cost"] = pd.to_numeric(
-        comparison_df["calculated_total_cost"],
-        errors="coerce",
-    )
-
-    # Fill NaN values for comparison
-    comparison_df = comparison_df.fillna(0)
-
-    # --- Validation ---
-    discrepancies = []
-    tolerance = 1e-6  # Tolerance for floating point comparison
-
-    for index, row in comparison_df.iterrows():
-        original_cost = row["original_cost"]
-        calculated_cost = row["calculated_total_cost"]
-
-        if not np.isclose(original_cost, calculated_cost, atol=tolerance):
-            discrepancy = {
-                "row": index + 2,  # Account for header rows
-                "Test_Type": row["Test_Type"],
-                "Cost_Category": row["Cost_Category"],
-                "Cost_Sub_Category": row["Cost_Sub_Category"],
-                "Cost_Step": row["Cost_Step"],
-                "original_cost": original_cost,
-                "calculated_cost": calculated_cost,
-                "difference": original_cost - calculated_cost,
-            }
-            discrepancies.append(discrepancy)
-
-    # --- Reporting ---
-    sys.stdout.write("--- Validation Report ---" + "\n")
-    if discrepancies:
-        sys.stdout.write(f"Found {len(discrepancies)} discrepancies:" + "\n")
-        discrepancies_df = pd.DataFrame(discrepancies)
-        sys.stdout.write(str(discrepancies_df.to_string()) + "\n")
-    else:
-        sys.stdout.write(
-            "No discrepancies found. All calculations match the original Excel sheet."
-            "\n",
-        )
-
-    sys.stdout.write("\n--- Summary ---" + "\n")
-    sys.stdout.write(f"Total rows validated: {len(comparison_df)}" + "\n")
-    sys.stdout.write(f"Total discrepancies found: {len(discrepancies)}" + "\n")
-    sys.stdout.write("---------------------" + "\n")
 
 
 if __name__ == "__main__":
-    validate_calculations()
+    raise SystemExit(main())
