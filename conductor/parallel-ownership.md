@@ -252,6 +252,11 @@ the locked Expat update, the immutable scanner pin and hosted qualification.
 The next operation is to verify the official offline job for the resulting `main`
 revision before pruning the merged branches.
 
+The official job passed on Dapane `8125597`. The same integration chat owns
+`codex/genomics-feature-audit-20261125` in the implementation checkout for
+G3.5. Its scope is the frozen feature crosswalk, installed receipts and
+Conductor disposition. The legacy source and workbook are read-only inputs.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

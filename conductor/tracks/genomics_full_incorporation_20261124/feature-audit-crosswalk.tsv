@@ -1,0 +1,1136 @@
+scope	source	coordinate	surface_check	behaviors
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-015		package signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-016		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-017		base-cost-components
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-018		compute-breakdown storage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-019		schema-extension
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-031		package signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-032		base-cost-components
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-033		compute-breakdown storage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-034		schema-extension
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-038		package signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-039		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-040		base-cost-components
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-041		compute-breakdown storage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-042		coverage-targets deterministic-ci
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-043		historical-replay detailed-parity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-051		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-052		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-053		formula-evaluation
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-054		workbook-headers
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-055		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-059		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-060		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-061		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-062		model-identity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-066		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-067		base-cost-components native-pipeline compute-breakdown
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-079		package signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-080		package signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-081		package signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-082		deterministic-ci signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-086		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-087		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-099		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-100		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-101		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-102		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-103		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-107		model-identity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-108		model-identity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-116		base-cost-components
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-117		base-cost-components
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-121		compute-breakdown storage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-122		compute-breakdown storage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-123		storage-stage-coverage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-124		compute-stage-coverage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-128		advanced-allocation volume-scaling
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-129		advanced-allocation volume-scaling
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-137		model-config config-schema
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-138		model-config config-schema
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-142		model-config config-schema
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-143		model-config config-schema
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-147		model-config config-schema
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-148		model-config config-schema
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-156		native-pipeline
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-157		native-pipeline
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-161		native-pipeline api-extraction
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-162		native-pipeline api-extraction
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-166		native-pipeline
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-167		native-pipeline
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-171		prepare-migration prepare-tables
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-172		prepare-migration prepare-tables
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-180		storage-stage-coverage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-181		storage-stage-coverage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-185		compute-stage-coverage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-186		compute-stage-coverage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-190		volume-scaling dynamic-batches
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-191		volume-scaling dynamic-batches
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-199		schema-extension
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-200		schema-extension
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-204		price-provider price-provider-operation
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-205		price-provider price-provider-operation
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-209		advanced-allocation cost-prediction scenario-analysis
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-210		advanced-allocation cost-prediction scenario-analysis
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-218		guides package
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-219		api-docs
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-220		api-docs
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-221		guides package
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-229		coverage-targets deterministic-ci
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-230		historical-replay detailed-parity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-231		benchmark analysis-performance
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-232		end-to-end full-analysis-chain
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-240		deterministic-ci
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-241		coverage-targets deterministic-ci
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-242		deployment-templates deployment-pipeline
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-243		operational-monitoring
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-251		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-252		base-cost-components
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-253		api-docs
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-254		coverage-targets deterministic-ci
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-258		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-259		signatures source-command-behavior
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-260		historical-replay detailed-parity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-261		retention
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-265		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-266		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-267		historical-replay detailed-parity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-271		coverage-targets deterministic-ci
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-272		benchmark analysis-performance
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-273		base-cost-components
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-274		schema-extension
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-282		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-283		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-287		standard-labels
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-288		base-cost-components
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-289		model-config config-schema
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-290		native-pipeline
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-291		compute-breakdown storage
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-292		schema-extension
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-293		deterministic-ci coverage-targets guides
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-297		coverage-targets deterministic-ci
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-298		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-299		historical-replay detailed-parity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-307		coverage-targets deterministic-ci
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-308		retention
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-309		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-310		guides package
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-314		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-315		historical-replay detailed-parity
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-316		package signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-317		deterministic-ci signatures
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-333		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-334		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-338		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-339		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-340		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-344		roadmap-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-345		guides repo-context
+roadmap	GENOMICS_REFACTORING_PLAN.md	R-346		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-011		model-identity
+roadmap	docs/STANDARDIZATION_PLAN.md	S-012		model-identity
+roadmap	docs/STANDARDIZATION_PLAN.md	S-013		model-identity
+roadmap	docs/STANDARDIZATION_PLAN.md	S-014		model-identity
+roadmap	docs/STANDARDIZATION_PLAN.md	S-015		model-identity
+roadmap	docs/STANDARDIZATION_PLAN.md	S-029		standard-labels taxonomy
+roadmap	docs/STANDARDIZATION_PLAN.md	S-030		standard-labels taxonomy
+roadmap	docs/STANDARDIZATION_PLAN.md	S-031		standard-labels taxonomy
+roadmap	docs/STANDARDIZATION_PLAN.md	S-073		historical-replay detailed-parity
+roadmap	docs/STANDARDIZATION_PLAN.md	S-074		historical-replay detailed-parity
+roadmap	docs/STANDARDIZATION_PLAN.md	S-075		analysis-performance
+roadmap	docs/STANDARDIZATION_PLAN.md	S-083		standard-labels
+roadmap	docs/STANDARDIZATION_PLAN.md	S-084		standard-labels
+roadmap	docs/STANDARDIZATION_PLAN.md	S-085		standard-labels
+roadmap	docs/STANDARDIZATION_PLAN.md	S-210		incomplete-data error-runtime logging
+roadmap	docs/STANDARDIZATION_PLAN.md	S-211		incomplete-data error-runtime logging
+roadmap	docs/STANDARDIZATION_PLAN.md	S-212		incomplete-data error-runtime logging
+roadmap	docs/STANDARDIZATION_PLAN.md	S-216		parallel-cache benchmark
+roadmap	docs/STANDARDIZATION_PLAN.md	S-217		parallel-cache benchmark
+roadmap	docs/STANDARDIZATION_PLAN.md	S-218		parallel-cache benchmark
+roadmap	docs/STANDARDIZATION_PLAN.md	S-222		data-quality distribution-quality table-comparison
+roadmap	docs/STANDARDIZATION_PLAN.md	S-223		data-quality distribution-quality table-comparison
+roadmap	docs/STANDARDIZATION_PLAN.md	S-224		data-quality distribution-quality table-comparison
+roadmap	docs/STANDARDIZATION_PLAN.md	S-309		profile-upload
+roadmap	docs/STANDARDIZATION_PLAN.md	S-310		drag-and-drop
+roadmap	docs/STANDARDIZATION_PLAN.md	S-311		setup-wizard
+roadmap	docs/STANDARDIZATION_PLAN.md	S-312		configuration-builder
+roadmap	docs/STANDARDIZATION_PLAN.md	S-316		strategy-plugin plugins
+roadmap	docs/STANDARDIZATION_PLAN.md	S-317		strategy-plugin plugins
+roadmap	docs/STANDARDIZATION_PLAN.md	S-318		strategy-plugin plugins
+roadmap	docs/STANDARDIZATION_PLAN.md	S-324		standard-labels
+roadmap	docs/STANDARDIZATION_PLAN.md	S-325		taxonomy
+roadmap	docs/STANDARDIZATION_PLAN.md	S-326		profile-upload lab-adjustments
+roadmap	docs/STANDARDIZATION_PLAN.md	S-327		benchmark
+roadmap	docs/STANDARDIZATION_PLAN.md	S-331		guides
+roadmap	docs/STANDARDIZATION_PLAN.md	S-332		training
+roadmap	docs/STANDARDIZATION_PLAN.md	S-333		api-docs
+roadmap	docs/STANDARDIZATION_PLAN.md	S-334		guides
+roadmap	docs/STANDARDIZATION_PLAN.md	S-340		config-history config-rollback
+roadmap	docs/STANDARDIZATION_PLAN.md	S-341		provenance table-comparison
+roadmap	docs/STANDARDIZATION_PLAN.md	S-342		config-rollback retention
+roadmap	docs/STANDARDIZATION_PLAN.md	S-343		data-quality
+roadmap	docs/STANDARDIZATION_PLAN.md	S-347		dashboard-container
+roadmap	docs/STANDARDIZATION_PLAN.md	S-348		lab-management-api
+roadmap	docs/STANDARDIZATION_PLAN.md	S-349		end-to-end
+roadmap	docs/STANDARDIZATION_PLAN.md	S-350		deployment-templates
+roadmap	docs/STANDARDIZATION_PLAN.md	S-354		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-355		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-356		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-362		taxonomy
+roadmap	docs/STANDARDIZATION_PLAN.md	S-363		taxonomy
+roadmap	docs/STANDARDIZATION_PLAN.md	S-364		historical-replay detailed-parity
+roadmap	docs/STANDARDIZATION_PLAN.md	S-368		template-time
+roadmap	docs/STANDARDIZATION_PLAN.md	S-369		template-time
+roadmap	docs/STANDARDIZATION_PLAN.md	S-370		template-time
+roadmap	docs/STANDARDIZATION_PLAN.md	S-376		config-rollback retention
+roadmap	docs/STANDARDIZATION_PLAN.md	S-377		benchmark
+roadmap	docs/STANDARDIZATION_PLAN.md	S-378		signatures historical-replay
+roadmap	docs/STANDARDIZATION_PLAN.md	S-382		guides
+roadmap	docs/STANDARDIZATION_PLAN.md	S-383		pilot-acceptance
+roadmap	docs/STANDARDIZATION_PLAN.md	S-384		guides
+roadmap	docs/STANDARDIZATION_PLAN.md	S-390		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-391		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-392		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-393		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-394		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-398		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-399		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-400		roadmap-context
+roadmap	docs/STANDARDIZATION_PLAN.md	S-401		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-012		end-to-end
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-013		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-014		cost-drivers
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-015		psa-voi
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-016		end-to-end
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-017		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-020		end-to-end full-analysis-chain
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-021		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-022		end-to-end full-analysis-chain
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-023		end-to-end full-analysis-chain
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-024		end-to-end
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-025		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-028		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-029		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-030		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-031		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-032		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-033		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-034		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-039		error-runtime input-sanitization
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-040		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-041		incomplete-data
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-042		logging
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-043		checkpoint-recovery
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-044		error-runtime input-sanitization
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-045		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-048		data-quality
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-049		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-050		data-quality
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-051		table-comparison
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-052		incomplete-data
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-053		data-quality
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-054		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-059		config-schema
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-060		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-061		config-schema
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-062		config-environment
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-063		config-history
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-064		config-update
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-065		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-068		input-sanitization role-controls security-audit secured-web
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-069		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-070		input-sanitization
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-071		role-controls secured-web
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-072		security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-073		security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-074		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-079		research-reporting
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-080		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-081		api-docs
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-082		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-083		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-084		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-085		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-088		operational-monitoring
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-089		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-090		health
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-091		metrics
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-092		usage-analytics
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-093		alerts
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-094		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-099		end-to-end
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-100		cost-drivers
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-101		psa-voi
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-102		end-to-end
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-103		end-to-end
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-104		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-107		end-to-end full-analysis-chain
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-108		end-to-end full-analysis-chain
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-109		coverage-targets
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-110		end-to-end full-analysis-chain
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-111		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-114		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-115		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-116		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-117		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-118		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-119		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-122		incomplete-data
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-123		logging
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-124		checkpoint-recovery
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-125		error-runtime input-sanitization
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-126		error-runtime input-sanitization
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-127		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-130		data-quality
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-131		table-comparison
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-132		incomplete-data
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-133		data-quality
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-134		distribution-quality
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-135		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-138		config-schema
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-139		config-environment
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-140		config-history
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-141		config-update
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-142		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-145		input-sanitization
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-146		role-controls secured-web
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-147		security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-148		security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-149		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-152		api-docs
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-153		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-154		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-155		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-156		research-reporting
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-159		health
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-160		metrics
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-161		usage-analytics
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-162		alerts
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-163		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-168		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-169		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-170		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-173		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-174		benchmark
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-175		operational-monitoring
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-176		api-docs
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-181		coverage-targets
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-182		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-183		checkpoint-recovery
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-184		distribution-quality
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-187		api-docs
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-188		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-189		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-190		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-193		input-sanitization
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-194		role-controls secured-web
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-195		security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-196		security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-210		benchmark analysis-performance
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-211		end-to-end
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-212		input-sanitization role-controls security-audit secured-web
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-215		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-216		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-217		deployment-templates
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-220		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-221		roadmap-context
+roadmap	ROBUSTNESS_IMPROVEMENT_PLAN.md	Q-222		deterministic-ci
+roadmap	TODO.md	T-003		roadmap-context
+roadmap	TODO.md	T-004		package
+roadmap	TODO.md	T-005		deterministic-ci
+roadmap	TODO.md	T-006		deterministic-ci
+roadmap	TODO.md	T-007		deterministic-ci
+roadmap	TODO.md	T-008		guides
+roadmap	TODO.md	T-009		package
+roadmap	TODO.md	T-013		prepare-tables
+roadmap	TODO.md	T-014		workbook-headers
+roadmap	TODO.md	T-015		formula-evaluation
+roadmap	TODO.md	T-016		detailed-parity
+roadmap	TODO.md	T-020		workbook-dependencies guides
+roadmap	TODO.md	T-021		prepare-tables
+roadmap	TODO.md	T-022		prepare-tables
+roadmap	TODO.md	T-023		package
+roadmap	TODO.md	T-024		deterministic-ci
+roadmap	TODO.md	T-025		deterministic-ci
+roadmap	TODO.md	T-026		deterministic-ci
+roadmap	TODO.md	T-027		guides
+roadmap	TODO.md	T-028		prepare-tables
+roadmap	TODO.md	T-029		workbook-dependencies guides
+roadmap	TODO.md	T-030		prepare-tables
+roadmap	TODO.md	T-031		workbook-dependencies guides
+roadmap	TODO.md	T-032		publication-export publication-rights
+roadmap	TODO.md	T-033		detailed-parity
+roadmap	TODO.md	T-034		roadmap-context
+roadmap	TODO.md	T-035		workbook-dependencies guides
+roadmap	TODO.md	T-036		workbook-dependencies guides
+roadmap	.qoder/quests/implementation_plan.md	I-016		workbook-dependencies
+roadmap	.qoder/quests/implementation_plan.md	I-017		prepare-tables table-comparison
+roadmap	.qoder/quests/implementation_plan.md	I-018		prepare-tables table-comparison
+roadmap	.qoder/quests/implementation_plan.md	I-019		prepare-tables table-comparison
+roadmap	.qoder/quests/implementation_plan.md	I-022		prepare-tables table-comparison
+roadmap	.qoder/quests/implementation_plan.md	I-023		prepare-tables table-comparison
+roadmap	.qoder/quests/implementation_plan.md	I-024		guides
+roadmap	.qoder/quests/implementation_plan.md	I-033		api-docs
+roadmap	.qoder/quests/implementation_plan.md	I-034		api-docs
+roadmap	.qoder/quests/implementation_plan.md	I-035		guides
+roadmap	.qoder/quests/implementation_plan.md	I-036		guides
+roadmap	.qoder/quests/implementation_plan.md	I-039		api-docs
+roadmap	.qoder/quests/implementation_plan.md	I-040		api-docs
+roadmap	.qoder/quests/implementation_plan.md	I-041		guides
+roadmap	.qoder/quests/implementation_plan.md	I-050		workbook-dependencies guides
+roadmap	.qoder/quests/implementation_plan.md	I-051		workbook-dependencies guides
+roadmap	.qoder/quests/implementation_plan.md	I-052		workbook-dependencies guides
+roadmap	.qoder/quests/implementation_plan.md	I-053		guides
+roadmap	.qoder/quests/implementation_plan.md	I-056		workbook-dependencies guides
+roadmap	.qoder/quests/implementation_plan.md	I-065		formula-evaluation
+roadmap	.qoder/quests/implementation_plan.md	I-066		formula-evaluation
+roadmap	.qoder/quests/implementation_plan.md	I-067		error-runtime checkpoint-recovery
+roadmap	.qoder/quests/implementation_plan.md	I-068		end-to-end deterministic-ci
+roadmap	.qoder/quests/implementation_plan.md	I-071		end-to-end deterministic-ci
+roadmap	.qoder/quests/implementation_plan.md	I-072		coverage-targets
+roadmap	.qoder/quests/implementation_plan.md	I-081		static-visuals
+roadmap	.qoder/quests/implementation_plan.md	I-082		static-visuals
+roadmap	.qoder/quests/implementation_plan.md	I-083		static-visuals
+roadmap	.qoder/quests/implementation_plan.md	I-084		guides
+roadmap	.qoder/quests/implementation_plan.md	I-087		static-visuals
+roadmap	.qoder/quests/implementation_plan.md	I-088		static-visuals
+roadmap	.qoder/quests/implementation_plan.md	I-101		roadmap-context
+roadmap	.qoder/quests/implementation_plan.md	I-102		dashboard
+roadmap	.qoder/quests/implementation_plan.md	I-103		profile-upload dashboard
+roadmap	.qoder/quests/implementation_plan.md	I-104		secured-web
+roadmap	.qoder/quests/implementation_plan.md	I-107		dashboard
+roadmap	.qoder/quests/implementation_plan.md	I-108		guides
+roadmap	.qoder/quests/implementation_plan.md	I-117		report-formats
+roadmap	.qoder/quests/implementation_plan.md	I-118		report-formats
+roadmap	.qoder/quests/implementation_plan.md	I-119		report-formats
+roadmap	.qoder/quests/implementation_plan.md	I-120		full-analysis-chain
+roadmap	.qoder/quests/implementation_plan.md	I-123		report-formats
+roadmap	.qoder/quests/implementation_plan.md	I-124		report-formats
+roadmap	.qoder/quests/implementation_plan.md	I-133		scenario-analysis
+roadmap	.qoder/quests/implementation_plan.md	I-134		scenario-analysis
+roadmap	.qoder/quests/implementation_plan.md	I-135		scenario-analysis
+roadmap	.qoder/quests/implementation_plan.md	I-136		interactive-visuals
+roadmap	.qoder/quests/implementation_plan.md	I-139		scenario-analysis
+roadmap	.qoder/quests/implementation_plan.md	I-140		scenario-analysis
+roadmap	.qoder/quests/implementation_plan.md	I-149		roadmap-context
+roadmap	.qoder/quests/implementation_plan.md	I-150		error-runtime
+roadmap	.qoder/quests/implementation_plan.md	I-151		logging
+roadmap	.qoder/quests/implementation_plan.md	I-152		checkpoint-recovery error-runtime
+roadmap	.qoder/quests/implementation_plan.md	I-155		error-runtime
+roadmap	.qoder/quests/implementation_plan.md	I-156		logging
+roadmap	.qoder/quests/implementation_plan.md	I-165		roadmap-context
+roadmap	.qoder/quests/implementation_plan.md	I-166		deterministic-ci
+roadmap	.qoder/quests/implementation_plan.md	I-167		deterministic-ci deployment-pipeline
+roadmap	.qoder/quests/implementation_plan.md	I-168		deterministic-ci
+roadmap	.qoder/quests/implementation_plan.md	I-171		deterministic-ci
+roadmap	.qoder/quests/implementation_plan.md	I-172		deterministic-ci deployment-pipeline
+roadmap	.qoder/quests/implementation_plan.md	I-181		roadmap-context
+roadmap	.qoder/quests/implementation_plan.md	I-182		publication-export publication-rights
+roadmap	.qoder/quests/implementation_plan.md	I-183		publication-export publication-rights
+roadmap	.qoder/quests/implementation_plan.md	I-184		publication-export publication-rights
+roadmap	.qoder/quests/implementation_plan.md	I-187		publication-export publication-rights
+roadmap	.qoder/quests/implementation_plan.md	I-188		guides
+roadmap	.qoder/quests/implementation_plan.md	I-201		roadmap-context
+roadmap	.qoder/quests/implementation_plan.md	I-202		data-history provenance
+roadmap	.qoder/quests/implementation_plan.md	I-203		data-history provenance
+roadmap	.qoder/quests/implementation_plan.md	I-204		data-governance
+roadmap	.qoder/quests/implementation_plan.md	I-207		data-history provenance
+roadmap	.qoder/quests/implementation_plan.md	I-208		guides
+roadmap	.qoder/quests/implementation_plan.md	I-217		benchmark analysis-performance
+roadmap	.qoder/quests/implementation_plan.md	I-218		benchmark analysis-performance
+roadmap	.qoder/quests/implementation_plan.md	I-219		parallel-cache
+roadmap	.qoder/quests/implementation_plan.md	I-220		parallel-cache
+roadmap	.qoder/quests/implementation_plan.md	I-223		benchmark analysis-performance
+roadmap	.qoder/quests/implementation_plan.md	I-224		benchmark analysis-performance
+roadmap	.qoder/quests/implementation_plan.md	I-233		roadmap-context
+roadmap	.qoder/quests/implementation_plan.md	I-234		plugins
+roadmap	.qoder/quests/implementation_plan.md	I-235		plugins
+roadmap	.qoder/quests/implementation_plan.md	I-236		plugins
+roadmap	.qoder/quests/implementation_plan.md	I-239		plugins
+roadmap	.qoder/quests/implementation_plan.md	I-240		guides
+roadmap	.qoder/quests/implementation_plan.md	I-249		roadmap-context
+roadmap	.qoder/quests/implementation_plan.md	I-250		workbook-history
+roadmap	.qoder/quests/implementation_plan.md	I-251		workbook-history
+roadmap	.qoder/quests/implementation_plan.md	I-252		workbook-migration
+roadmap	.qoder/quests/implementation_plan.md	I-255		workbook-history
+roadmap	.qoder/quests/implementation_plan.md	I-256		guides
+roadmap	.qoder/quests/implementation_plan.md	I-265		roadmap-context
+roadmap	.qoder/quests/implementation_plan.md	I-266		detailed-parity
+roadmap	.qoder/quests/implementation_plan.md	I-267		detailed-parity
+roadmap	.qoder/quests/implementation_plan.md	I-268		detailed-parity
+roadmap	.qoder/quests/implementation_plan.md	I-271		detailed-parity
+roadmap	.qoder/quests/implementation_plan.md	I-272		detailed-parity
+roadmap	.qoder/quests/implementation_plan.md	I-285		end-to-end deterministic-ci
+roadmap	.qoder/quests/implementation_plan.md	I-286		guides
+roadmap	.qoder/quests/implementation_plan.md	I-287		coverage-targets
+roadmap	.qoder/quests/implementation_plan.md	I-288		pilot-acceptance
+roadmap	.qoder/quests/implementation_plan.md	I-289		benchmark analysis-performance
+roadmap	.qoder/quests/execute-plan.md	E-011		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-012		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-013		error-runtime
+roadmap	.qoder/quests/execute-plan.md	E-014		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-015		config-schema
+roadmap	.qoder/quests/execute-plan.md	E-016		input-sanitization role-controls security-audit
+roadmap	.qoder/quests/execute-plan.md	E-017		api-docs
+roadmap	.qoder/quests/execute-plan.md	E-018		operational-monitoring
+roadmap	.qoder/quests/execute-plan.md	E-061		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-062		cost-drivers
+roadmap	.qoder/quests/execute-plan.md	E-063		psa-voi
+roadmap	.qoder/quests/execute-plan.md	E-064		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-065		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-068		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-069		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-070		coverage-targets
+roadmap	.qoder/quests/execute-plan.md	E-071		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-076		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-077		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-078		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-079		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-080		analysis-performance
+roadmap	.qoder/quests/execute-plan.md	E-085		incomplete-data
+roadmap	.qoder/quests/execute-plan.md	E-086		logging
+roadmap	.qoder/quests/execute-plan.md	E-087		checkpoint-recovery
+roadmap	.qoder/quests/execute-plan.md	E-088		error-runtime
+roadmap	.qoder/quests/execute-plan.md	E-093		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-094		table-comparison
+roadmap	.qoder/quests/execute-plan.md	E-095		incomplete-data
+roadmap	.qoder/quests/execute-plan.md	E-096		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-101		config-schema
+roadmap	.qoder/quests/execute-plan.md	E-102		config-environment
+roadmap	.qoder/quests/execute-plan.md	E-103		config-history
+roadmap	.qoder/quests/execute-plan.md	E-104		config-update
+roadmap	.qoder/quests/execute-plan.md	E-109		input-sanitization
+roadmap	.qoder/quests/execute-plan.md	E-110		role-controls secured-web
+roadmap	.qoder/quests/execute-plan.md	E-111		security-audit
+roadmap	.qoder/quests/execute-plan.md	E-112		security-audit
+roadmap	.qoder/quests/execute-plan.md	E-117		api-docs
+roadmap	.qoder/quests/execute-plan.md	E-118		guides
+roadmap	.qoder/quests/execute-plan.md	E-119		guides
+roadmap	.qoder/quests/execute-plan.md	E-120		guides
+roadmap	.qoder/quests/execute-plan.md	E-125		health operational-monitoring
+roadmap	.qoder/quests/execute-plan.md	E-126		metrics
+roadmap	.qoder/quests/execute-plan.md	E-127		usage-analytics
+roadmap	.qoder/quests/execute-plan.md	E-128		alerts
+roadmap	.qoder/quests/execute-plan.md	E-319		error-runtime
+roadmap	.qoder/quests/execute-plan.md	E-320		request-tracing
+roadmap	.qoder/quests/execute-plan.md	E-321		metrics
+roadmap	.qoder/quests/execute-plan.md	E-324		input-sanitization
+roadmap	.qoder/quests/execute-plan.md	E-325		role-controls secured-web
+roadmap	.qoder/quests/execute-plan.md	E-326		rate-limits
+roadmap	.qoder/quests/execute-plan.md	E-329		logging
+roadmap	.qoder/quests/execute-plan.md	E-330		request-tracing
+roadmap	.qoder/quests/execute-plan.md	E-331		metrics
+roadmap	.qoder/quests/execute-plan.md	E-334		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-335		table-comparison
+roadmap	.qoder/quests/execute-plan.md	E-336		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-341		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-342		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-343		coverage-targets
+roadmap	.qoder/quests/execute-plan.md	E-346		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-347		cost-drivers psa-voi
+roadmap	.qoder/quests/execute-plan.md	E-348		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-351		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-352		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-353		analysis-performance
+roadmap	.qoder/quests/execute-plan.md	E-356		input-sanitization
+roadmap	.qoder/quests/execute-plan.md	E-357		role-controls secured-web
+roadmap	.qoder/quests/execute-plan.md	E-358		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-361		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-362		table-comparison
+roadmap	.qoder/quests/execute-plan.md	E-363		incomplete-data
+roadmap	.qoder/quests/execute-plan.md	E-368		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-369		cost-drivers
+roadmap	.qoder/quests/execute-plan.md	E-370		psa-voi
+roadmap	.qoder/quests/execute-plan.md	E-371		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-372		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-373		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-374		end-to-end full-analysis-chain
+roadmap	.qoder/quests/execute-plan.md	E-375		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-376		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-377		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-378		benchmark
+roadmap	.qoder/quests/execute-plan.md	E-379		analysis-performance
+roadmap	.qoder/quests/execute-plan.md	E-382		incomplete-data
+roadmap	.qoder/quests/execute-plan.md	E-383		logging
+roadmap	.qoder/quests/execute-plan.md	E-384		checkpoint-recovery
+roadmap	.qoder/quests/execute-plan.md	E-385		error-runtime
+roadmap	.qoder/quests/execute-plan.md	E-386		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-387		table-comparison
+roadmap	.qoder/quests/execute-plan.md	E-388		incomplete-data
+roadmap	.qoder/quests/execute-plan.md	E-389		data-quality
+roadmap	.qoder/quests/execute-plan.md	E-390		error-runtime
+roadmap	.qoder/quests/execute-plan.md	E-391		guides
+roadmap	.qoder/quests/execute-plan.md	E-394		config-schema
+roadmap	.qoder/quests/execute-plan.md	E-395		config-environment
+roadmap	.qoder/quests/execute-plan.md	E-396		config-history
+roadmap	.qoder/quests/execute-plan.md	E-397		config-update
+roadmap	.qoder/quests/execute-plan.md	E-398		input-sanitization
+roadmap	.qoder/quests/execute-plan.md	E-399		role-controls secured-web
+roadmap	.qoder/quests/execute-plan.md	E-400		security-audit
+roadmap	.qoder/quests/execute-plan.md	E-401		security-audit
+roadmap	.qoder/quests/execute-plan.md	E-402		guides
+roadmap	.qoder/quests/execute-plan.md	E-405		api-docs
+roadmap	.qoder/quests/execute-plan.md	E-406		guides
+roadmap	.qoder/quests/execute-plan.md	E-407		guides
+roadmap	.qoder/quests/execute-plan.md	E-408		guides
+roadmap	.qoder/quests/execute-plan.md	E-409		research-reporting
+roadmap	.qoder/quests/execute-plan.md	E-410		health operational-monitoring
+roadmap	.qoder/quests/execute-plan.md	E-411		metrics
+roadmap	.qoder/quests/execute-plan.md	E-412		usage-analytics
+roadmap	.qoder/quests/execute-plan.md	E-413		alerts
+roadmap	.qoder/quests/execute-plan.md	E-414		operational-monitoring
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-033		package
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-034		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-035		config-schema
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-036		workbook-headers workbook-selection
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-037		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-038		workbook-headers workbook-selection
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-039		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-040		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-046		source-command-behavior detailed-parity
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-047		source-command-behavior detailed-parity
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-048		prepare-tables
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-049		source-command-behavior detailed-parity
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-050		source-command-behavior detailed-parity
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-056		retention report-formats
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-057		retention report-formats
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-058		retention report-formats
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-064		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-065		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-066		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-067		workbook-headers workbook-selection
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-068		source-command-behavior detailed-parity
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-074		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-075		prepare-tables
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-076		config-schema
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-077		detailed-parity
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-078		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-079		workbook-headers workbook-selection
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-080		deterministic-ci
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-081		prepare-tables
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-082		workbook-headers workbook-selection
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-083		workbook-headers workbook-selection
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-084		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-085		prepare-tables
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-089		guides
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-090		prepare-tables
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-091		repo-context
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-092		detailed-parity
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-093		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-099		api-docs
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-100		guides
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-101		guides
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-102		guides
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-103		workbook-dependencies
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-107		end-to-end full-analysis-chain
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-108		benchmark analysis-performance
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-109		extended-ci
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-110		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-111		error-runtime checkpoint-recovery
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-115		static-visuals
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-116		report-formats
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-117		dashboard
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-118		scenario-analysis
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-119		prepare-tables
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-120		prepare-tables
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-124		deterministic-ci deployment-pipeline
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-125		workbook-history
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-126		data-history data-governance
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-127		publication-export publication-rights
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-131		signatures api-docs
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-132		error-runtime checkpoint-recovery
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-133		logging
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-134		base-cost-components source-command-behavior
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-140		prepare-tables
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-141		guides
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-142		workbook-dependencies
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-143		formula-evaluation
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-144		static-visuals
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-148		dashboard
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-149		report-formats
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-150		scenario-analysis
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-151		error-runtime logging
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-152		deterministic-ci deployment-pipeline
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-153		publication-export publication-rights
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-157		data-history data-governance
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-158		benchmark analysis-performance
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-159		plugins
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-160		workbook-history
+roadmap	.qoder/quests/repo-mapping-and-gap-analysis.md	A-161		detailed-parity
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-014		report-formats
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-015		report-formats
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-016		report-formats
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-017		report-customization
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-022		scenario-analysis
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-023		cost-drivers
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-024		monte-carlo
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-025		scenario-analysis
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-030		benchmark
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-031		parallel-cache
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-032		parallel-cache
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-033		benchmark
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-038		plugins
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-039		plugins
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-040		plugins
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-041		plugins
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-046		workbook-history
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-047		workbook-history
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-048		workbook-history
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-049		workbook-history
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-054		interactive-visuals advanced-chart-variants
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-055		interactive-visuals advanced-chart-variants
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-056		interactive-visuals advanced-chart-variants
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-057		interactive-visuals advanced-chart-variants
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-062		dashboard
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-063		dashboard
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-064		dashboard
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-065		dashboard
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-066		dashboard
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-067		responsive-ui
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-073		deterministic-ci end-to-end
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-074		plugins
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-075		error-runtime
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-076		guides
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-082		deterministic-ci end-to-end
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-083		deterministic-ci end-to-end
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-084		dashboard
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-085		benchmark
+roadmap	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	C-086		source-command-behavior
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-010		end-to-end cost-drivers psa-voi
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-011		end-to-end cost-drivers psa-voi
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-012		benchmark
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-015		error-runtime incomplete-data
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-016		data-quality table-comparison
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-019		config-schema config-history config-update
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-020		input-sanitization role-controls security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-023		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-024		health metrics usage-analytics alerts
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-029		input-sanitization role-controls security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-030		health metrics usage-analytics alerts
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-031		data-quality table-comparison
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-032		config-schema config-history config-update
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-033		error-runtime incomplete-data
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-036		coverage-targets
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-037		coverage-targets
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-038		end-to-end cost-drivers psa-voi
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-039		input-sanitization role-controls security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-042		api-docs
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-043		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-044		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-045		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-046		research-reporting
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-047		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-048		guides
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-052		error-runtime incomplete-data
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-053		benchmark
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-054		data-quality table-comparison
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-055		input-sanitization role-controls security-audit
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-056		guides config-history config-update
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-057		health metrics usage-analytics alerts
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-058		research-reporting
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-063		coverage-targets
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-064		coverage-targets
+roadmap	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	B-065		coverage-targets
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/163	GH163-003		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/163	GH163-004		extended-ci
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/163	GH163-005		deterministic-ci extended-ci dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/163	GH163-009		extended-ci
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/163	GH163-010		deterministic-ci
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/163	GH163-011		deterministic-ci extended-ci dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/163	GH163-012		extended-ci
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-003		branch-controls
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-004		repo-context secret-push-controls
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-005		secret-push-controls
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-009		branch-controls
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-010		branch-controls
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-011		repo-context secret-push-controls
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-016		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-017		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-018		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-019		coverage-oidc coverage-targets
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/164	GH164-020		branch-controls
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/165	GH165-015		deterministic-ci extended-ci
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/165	GH165-016		branch-controls repo-context dependency-updates coverage-oidc
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-011		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-017		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-018		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-019		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-025		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-026		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-027		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-028		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-029		dependency-updates
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-049		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-050		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-051		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-052		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-053		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-054		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-055		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-056		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-057		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-058		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-059		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-060		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-061		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-062		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-063		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-064		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-065		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-066		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-067		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-068		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-069		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-070		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-071		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-072		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-073		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-074		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-080		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-086		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-087		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-099		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-111		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-112		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-113		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-114		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-115		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-116		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-117		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-118		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-119		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-120		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-121		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-122		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-123		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-124		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-125		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-126		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-127		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-128		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-140		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-141		roadmap-context
+roadmap	https://github.com/edithatogo/microcosting_genomics/issues/170	GH170-150		roadmap-context
+roadmap example or design	docs/STANDARDIZATION_PLAN.md	S lines 33-70		taxonomy standard-labels
+roadmap example or design	docs/STANDARDIZATION_PLAN.md	S lines 87-119		model-identity model-config
+roadmap example or design	docs/STANDARDIZATION_PLAN.md	S lines 120-203		standard-labels
+roadmap example or design	docs/STANDARDIZATION_PLAN.md	S lines 228-243		lab-adjustments schema-extension profile-yaml
+roadmap example or design	docs/STANDARDIZATION_PLAN.md	S lines 244-306		templates data-quality
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 132-144		end-to-end
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 145-155		metrics analysis-performance
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 156-168		error-runtime logging request-tracing
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 169-180		config-environment config-schema config-history
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 181-191		data-quality table-comparison
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 194-207		end-to-end deterministic-ci
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 208-220		metrics benchmark
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 221-238		error-runtime incomplete-data checkpoint-recovery
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 239-252		data-quality table-comparison
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 255-270		test-service-api
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 271-285		benchmark-service-api
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 286-301		monitoring-api-contract
+roadmap example or design	.qoder/quests/execute-plan.md	E lines 302-315		quality-service-api
+Python module	src/genomics_microcosting/__init__.py	genomics_microcosting	Installed	package signatures
+Python module	src/genomics_microcosting/advanced_scenario_modeling.py	genomics_microcosting.advanced_scenario_modeling	Installed	scenario-analysis
+Python module	src/genomics_microcosting/advanced_visualization.py	genomics_microcosting.advanced_visualization	Installed	interactive-visuals advanced-chart-variants
+Python module	src/genomics_microcosting/alternative_research.py	genomics_microcosting.alternative_research	Installed	analysis-tools
+Python module	src/genomics_microcosting/analysis_config.py	genomics_microcosting.analysis_config	Installed	config-schema
+Python module	src/genomics_microcosting/arithmetic_parser.py	genomics_microcosting.arithmetic_parser	Installed	formula-evaluation
+Python module	src/genomics_microcosting/baseline_repairs.py	genomics_microcosting.baseline_repairs	Installed	historical-replay detailed-parity
+Python module	src/genomics_microcosting/batch_compute_search.py	genomics_microcosting.batch_compute_search	Installed	batch-search
+Python module	src/genomics_microcosting/batch_policy_search.py	genomics_microcosting.batch_policy_search	Installed	batch-search
+Python module	src/genomics_microcosting/batch_uncertainty.py	genomics_microcosting.batch_uncertainty	Installed	monte-carlo
+Python module	src/genomics_microcosting/benchmarking_analysis.py	genomics_microcosting.benchmarking_analysis	Installed	analysis-tools
+Python module	src/genomics_microcosting/break_even_analysis.py	genomics_microcosting.break_even_analysis	Installed	analysis-tools
+Python module	src/genomics_microcosting/budget_impact_analysis.py	genomics_microcosting.budget_impact_analysis	Installed	analysis-tools
+Python module	src/genomics_microcosting/calculation_engine.py	genomics_microcosting.calculation_engine	Installed	formula-evaluation
+Python module	src/genomics_microcosting/candidate_dispositions.py	genomics_microcosting.candidate_dispositions	Installed	resource-ledgers
+Python module	src/genomics_microcosting/cloud_billing.py	genomics_microcosting.cloud_billing	Installed	compute-breakdown
+Python module	src/genomics_microcosting/component_allocations.py	genomics_microcosting.component_allocations	Installed	base-cost-components
+Python module	src/genomics_microcosting/component_contracts.py	genomics_microcosting.component_contracts	Installed	base-cost-components
+Python module	src/genomics_microcosting/comprehensive_reporting.py	genomics_microcosting.comprehensive_reporting	Installed	report-formats
+Python module	src/genomics_microcosting/compute_cost.py	genomics_microcosting.compute_cost	Installed	compute-breakdown
+Python module	src/genomics_microcosting/config.py	genomics_microcosting.config	Installed	config-schema
+Python module	src/genomics_microcosting/config_validation.py	genomics_microcosting.config_validation	Installed	config-schema config-environment config-history config-update
+Python module	src/genomics_microcosting/cost_components.py	genomics_microcosting.cost_components	Installed	base-cost-components
+Python module	src/genomics_microcosting/cost_denominators.py	genomics_microcosting.cost_denominators	Installed	denominators
+Python module	src/genomics_microcosting/cost_driver_analysis.py	genomics_microcosting.cost_driver_analysis	Installed	cost-drivers
+Python module	src/genomics_microcosting/cost_driver_tables.py	genomics_microcosting.cost_driver_tables	Installed	cost-drivers
+Python module	src/genomics_microcosting/cost_effectiveness_analysis.py	genomics_microcosting.cost_effectiveness_analysis	Installed	analysis-tools
+Python module	src/genomics_microcosting/dapane_adapter.py	genomics_microcosting.dapane_adapter	Installed	exact-valuation
+Python module	src/genomics_microcosting/dapane_release.py	genomics_microcosting.dapane_release	Installed	exact-valuation
+Python module	src/genomics_microcosting/dapane_stage_replay.py	genomics_microcosting.dapane_stage_replay	Installed	historical-replay detailed-parity
+Python module	src/genomics_microcosting/dapane_workbook.py	genomics_microcosting.dapane_workbook	Installed	historical-replay detailed-parity
+Python module	src/genomics_microcosting/data_consistency_validator.py	genomics_microcosting.data_consistency_validator	Installed	table-comparison
+Python module	src/genomics_microcosting/data_management.py	genomics_microcosting.data_management	Installed	data-history data-governance
+Python module	src/genomics_microcosting/data_manager.py	genomics_microcosting.data_manager	Installed	prepare-tables
+Python module	src/genomics_microcosting/data_pipeline.py	genomics_microcosting.data_pipeline	Installed	native-pipeline
+Python module	src/genomics_microcosting/data_quality_assurance.py	genomics_microcosting.data_quality_assurance	Installed	data-quality distribution-quality
+Python module	src/genomics_microcosting/dsa_analysis.py	genomics_microcosting.dsa_analysis	Installed	cost-drivers
+Python module	src/genomics_microcosting/dynamic_batch.py	genomics_microcosting.dynamic_batch	Installed	dynamic-batches
+Python module	src/genomics_microcosting/enhanced_plugin_system.py	genomics_microcosting.enhanced_plugin_system	Installed	plugins
+Python module	src/genomics_microcosting/error_handling.py	genomics_microcosting.error_handling	Installed	error-runtime
+Python module	src/genomics_microcosting/excel_utils.py	genomics_microcosting.excel_utils	Installed	workbook-headers
+Python module	src/genomics_microcosting/excel_version_control.py	genomics_microcosting.excel_version_control	Installed	workbook-history workbook-migration
+Python module	src/genomics_microcosting/execution_contracts.py	genomics_microcosting.execution_contracts	Installed	resource-ledgers
+Python module	src/genomics_microcosting/execution_reconciliation.py	genomics_microcosting.execution_reconciliation	Installed	resource-ledgers
+Python module	src/genomics_microcosting/extensibility_framework.py	genomics_microcosting.extensibility_framework	Installed	plugins
+Python module	src/genomics_microcosting/extractors.py	genomics_microcosting.extractors	Installed	native-pipeline
+Python module	src/genomics_microcosting/formula_contracts.py	genomics_microcosting.formula_contracts	Installed	formula-evaluation
+Python module	src/genomics_microcosting/formula_parser.py	genomics_microcosting.formula_parser	Installed	formula-evaluation
+Python module	src/genomics_microcosting/input_validation.py	genomics_microcosting.input_validation	Installed	error-runtime
+Python module	src/genomics_microcosting/inventory_ledger.py	genomics_microcosting.inventory_ledger	Installed	resource-ledgers
+Python module	src/genomics_microcosting/loader_options.py	genomics_microcosting.loader_options	Installed	workbook-selection
+Python module	src/genomics_microcosting/loaders.py	genomics_microcosting.loaders	Installed	workbook-selection
+Python module	src/genomics_microcosting/logging_config.py	genomics_microcosting.logging_config	Installed	logging
+Python module	src/genomics_microcosting/monitoring.py	genomics_microcosting.monitoring	Installed	health metrics alerts usage-analytics
+Python module	src/genomics_microcosting/monitoring_contracts.py	genomics_microcosting.monitoring_contracts	Installed	health metrics alerts usage-analytics
+Python module	src/genomics_microcosting/monte_carlo_optimizer.py	genomics_microcosting.monte_carlo_optimizer	Installed	monte-carlo
+Python module	src/genomics_microcosting/native_usage.py	genomics_microcosting.native_usage	Installed	trace-input
+Python module	src/genomics_microcosting/nextflow_trace.py	genomics_microcosting.nextflow_trace	Installed	trace-input
+Python module	src/genomics_microcosting/onprem_cost.py	genomics_microcosting.onprem_cost	Installed	compute-breakdown
+Python module	src/genomics_microcosting/parameter_provenance.py	genomics_microcosting.parameter_provenance	Installed	provenance
+Python module	src/genomics_microcosting/parameter_units.py	genomics_microcosting.parameter_units	Installed	provenance
+Python module	src/genomics_microcosting/performance.py	genomics_microcosting.performance	Installed	benchmark parallel-cache
+Python module	src/genomics_microcosting/plugin_system.py	genomics_microcosting.plugin_system	Installed	plugins
+Python module	src/genomics_microcosting/plugins/__init__.py	genomics_microcosting.plugins	Installed	plugins
+Python module	src/genomics_microcosting/plugins/enhanced_cost_analysis.py	genomics_microcosting.plugins.enhanced_cost_analysis	Installed	plugins
+Python module	src/genomics_microcosting/plugins/example_cost_analysis.py	genomics_microcosting.plugins.example_cost_analysis	Installed	plugins
+Python module	src/genomics_microcosting/plugins/sample_enhanced_plugin.py	genomics_microcosting.plugins.sample_enhanced_plugin	Installed	plugins
+Python module	src/genomics_microcosting/polars_costing.py	genomics_microcosting.polars_costing	Installed	base-cost-components
+Python module	src/genomics_microcosting/prepare_data.py	genomics_microcosting.prepare_data	Installed	prepare-tables
+Python module	src/genomics_microcosting/provenance_ledger.py	genomics_microcosting.provenance_ledger	Installed	provenance
+Python module	src/genomics_microcosting/psa_analysis.py	genomics_microcosting.psa_analysis	Installed	psa-voi
+Python module	src/genomics_microcosting/reader_options.py	genomics_microcosting.reader_options	Installed	workbook-selection
+Python module	src/genomics_microcosting/resource_accounting.py	genomics_microcosting.resource_accounting	Installed	resource-ledgers
+Python module	src/genomics_microcosting/resource_comparison.py	genomics_microcosting.resource_comparison	Installed	analysis-tools
+Python module	src/genomics_microcosting/sample_allocations.py	genomics_microcosting.sample_allocations	Installed	advanced-allocation
+Python module	src/genomics_microcosting/scenario_comparison.py	genomics_microcosting.scenario_comparison	Installed	scenario-analysis
+Python module	src/genomics_microcosting/scenario_modeling.py	genomics_microcosting.scenario_modeling	Installed	scenario-analysis
+Python module	src/genomics_microcosting/security.py	genomics_microcosting.security	Installed	input-sanitization role-controls security-audit
+Python module	src/genomics_microcosting/sensitivity_evidence.py	genomics_microcosting.sensitivity_evidence	Installed	provenance
+Python module	src/genomics_microcosting/sheet_manager.py	genomics_microcosting.sheet_manager	Installed	workbook-selection
+Python module	src/genomics_microcosting/static_batch.py	genomics_microcosting.static_batch	Installed	dynamic-batches
+Python module	src/genomics_microcosting/static_batch_cost.py	genomics_microcosting.static_batch_cost	Installed	dynamic-batches
+Python module	src/genomics_microcosting/storage_usage.py	genomics_microcosting.storage_usage	Installed	storage
+Python module	src/genomics_microcosting/strategies.py	genomics_microcosting.strategies	Installed	formula-evaluation
+Python module	src/genomics_microcosting/strategy_contracts.py	genomics_microcosting.strategy_contracts	Installed	formula-evaluation
+Python module	src/genomics_microcosting/subtotal_audit.py	genomics_microcosting.subtotal_audit	Installed	historical-replay detailed-parity
+Python module	src/genomics_microcosting/t1_baseline_lineage.py	genomics_microcosting.t1_baseline_lineage	Installed	provenance
+Python module	src/genomics_microcosting/t1_workbook_builder.py	genomics_microcosting.t1_workbook_builder	Installed	historical-replay detailed-parity
+Python module	src/genomics_microcosting/trace_capacity_reference.py	genomics_microcosting.trace_capacity_reference	Installed	trace-input
+Python module	src/genomics_microcosting/trace_registry.py	genomics_microcosting.trace_registry	Installed	trace-input
+Python module	src/genomics_microcosting/trace_workload.py	genomics_microcosting.trace_workload	Installed	trace-input
+Python module	src/genomics_microcosting/transformers.py	genomics_microcosting.transformers	Installed	native-pipeline
+Python module	src/genomics_microcosting/type_specifications.py	genomics_microcosting.type_specifications	Installed	config-schema
+Python module	src/genomics_microcosting/uncertainty_provenance.py	genomics_microcosting.uncertainty_provenance	Installed	provenance
+Python module	src/genomics_microcosting/utils.py	genomics_microcosting.utils	Installed	formula-evaluation
+Python module	src/genomics_microcosting/validate_engine.py	genomics_microcosting.validate_engine	Installed	detailed-parity
+Python module	src/genomics_microcosting/visualization.py	genomics_microcosting.visualization	Installed	static-visuals
+Python module	src/genomics_microcosting/voi_analysis.py	genomics_microcosting.voi_analysis	Installed	psa-voi
+Python module	src/genomics_microcosting/web.py	genomics_microcosting.web	Installed	dashboard health lab-management-api
+Python module	src/genomics_microcosting/web_viz.py	genomics_microcosting.web_viz	Installed	dashboard health lab-management-api
+Python module	src/genomics_microcosting/workflow_allocations.py	genomics_microcosting.workflow_allocations	Installed	workflow-costs
+Python module	src/genomics_microcosting/workflow_baseline.py	genomics_microcosting.workflow_baseline	Installed	workflow-costs
+Python module	src/genomics_microcosting/workflow_cost.py	genomics_microcosting.workflow_cost	Installed	workflow-costs
+Python module	src/genomics_microcosting/workflow_events.py	genomics_microcosting.workflow_events	Installed	workflow-costs
+Python module	src/genomics_microcosting/workflow_mdt.py	genomics_microcosting.workflow_mdt	Installed	workflow-costs
+Python module	src/genomics_microcosting/workflow_pilot.py	genomics_microcosting.workflow_pilot	Installed	workflow-costs
+Python module	src/genomics_microcosting/workflow_schedule.py	genomics_microcosting.workflow_schedule	Installed	workflow-costs
+Python module	src/genomics_microcosting/workflow_uncertainty.py	genomics_microcosting.workflow_uncertainty	Installed	workflow-costs
+Python module	src/genomics_microcosting/workload_contract.py	genomics_microcosting.workload_contract	Installed	workflow-costs
+source command	scripts/advanced_validation.py	Source distribution	Passed	detailed-parity
+source command	scripts/analyze_benchmarking.py	Repository source	Evidence	analysis-tools
+source command	scripts/analyze_break_even.py	Repository source	Evidence	analysis-tools
+source command	scripts/analyze_budget_impact.py	Repository source	Evidence	analysis-tools
+source command	scripts/analyze_cost_drivers.py	Repository source	Evidence	cost-drivers
+source command	scripts/analyze_cost_effectiveness.py	Repository source	Evidence	analysis-tools
+source command	scripts/analyze_dsa.py	Repository source	Evidence	cost-drivers
+source command	scripts/analyze_model_consistency.py	Source distribution	Passed	standard-labels
+source command	scripts/analyze_psa.py	Repository source	Evidence	psa-voi
+source command	scripts/analyze_scenarios.py	Source distribution	Passed	psa-voi scenario-analysis
+source command	scripts/analyze_voi.py	Repository source	Evidence	psa-voi
+source command	scripts/automated_standardization.py	Source distribution	Passed	standard-labels
+source command	scripts/compare_performance.py	Source distribution	Passed	benchmark
+source command	scripts/convert_to_csv.py	Source distribution	Evidence	prepare-tables
+source command	scripts/create_ground_truth.py	Source distribution	Passed	detailed-parity
+source command	scripts/debug_engine.py	Repository source	Evidence	formula-evaluation workbook-headers
+source command	scripts/debug_excel.py	Repository source	Evidence	formula-evaluation workbook-headers
+source command	scripts/debug_excel_cells.py	Repository source	Evidence	formula-evaluation workbook-headers
+source command	scripts/debug_parser.py	Repository source	Evidence	formula-evaluation workbook-headers
+source command	scripts/demonstrate_analysis_config.py	Repository source	Evidence	config-schema
+source command	scripts/demonstrate_excel_version_control.py	Source distribution	Passed	workbook-history
+source command	scripts/demonstrate_extensibility.py	Repository source	Evidence	plugins schema-extension
+source command	scripts/demonstrate_plugins.py	Source distribution	Passed	plugins
+source command	scripts/enhanced_reporting.py	Source distribution	Passed	report-formats
+source command	scripts/establish_performance_baselines.py	Source distribution	Passed	benchmark
+source command	scripts/excel_data_extractor.py	Source distribution	Passed	historical-replay
+source command	scripts/extract_excel_comprehensive.py	Source distribution	Passed	historical-replay
+source command	scripts/extract_excel_data_properly.py	Source distribution	Passed	prepare-tables
+source command	scripts/generate_advanced_visualizations.py	Repository source	Evidence	interactive-visuals
+source command	scripts/generate_comprehensive_report.py	Source distribution	Evidence	report-formats
+source command	scripts/generate_report.py	Source distribution	Evidence	report-formats
+source command	scripts/generate_templates.py	Source distribution	Passed	templates
+source command	scripts/generate_test_coverage_report.py	Repository source	Evidence	coverage-targets
+source command	scripts/list_excel_sheets.py	Repository source	Evidence	formula-evaluation workbook-headers
+source command	scripts/manage_data.py	Source distribution	Passed	data-history
+source command	scripts/model_transformation.py	Source distribution	Passed	standard-labels
+source command	scripts/optimize_monte_carlo.py	Repository source	Evidence	monte-carlo
+source command	scripts/parse_additional_tables.py	Source distribution	Evidence	prepare-tables
+source command	scripts/parse_cost_tables.py	Source distribution	Evidence	prepare-tables
+source command	scripts/phase3_data_enhancement.py	Source distribution	Passed	standard-labels
+source command	scripts/prepare_all_sheets.py	Source distribution	Evidence	prepare-tables
+source command	scripts/prepare_publication_tables.py	Source distribution	Passed	publication-export
+source command	scripts/prepare_reference_tables.py	Source distribution	Passed	detailed-parity
+source command	scripts/profile_and_optimize.py	Source distribution	Passed	benchmark
+source command	scripts/replicate_bi_comp_stor_costs.py	Source distribution	Passed	detailed-parity
+source command	scripts/replicate_calculations.py	Source distribution	Passed	detailed-parity
+source command	scripts/replicate_consumable_costs.py	Source distribution	Passed	detailed-parity
+source command	scripts/replicate_detailed_table.py	Source distribution	Passed	detailed-parity
+source command	scripts/replicate_equipment_costs.py	Source distribution	Passed	detailed-parity
+source command	scripts/replicate_labour_costs.py	Source distribution	Passed	detailed-parity
+source command	scripts/run_advanced_scenario_analysis.py	Source distribution	Passed	scenario-analysis
+source command	scripts/run_scenario_analysis.py	Source distribution	Passed	scenario-analysis
+source command	scripts/run_web.py	Source distribution	Evidence	dashboard
+source command	scripts/test_web_ui.py	Repository source	Evidence	dashboard
+source command	scripts/transfer_validate_tables.py	Source distribution	Passed	prepare-tables
+source command	scripts/validate_all_sheets.py	Source distribution	Evidence	prepare-tables
+source command	scripts/validate_bi_comp_stor_costs.py	Source distribution	Passed	detailed-parity
+source command	scripts/validate_calculation_engine.py	Source distribution	Passed	detailed-parity
+source command	scripts/validate_calculations.py	Source distribution	Passed	detailed-parity
+source command	scripts/validate_data_consistency.py	Source distribution	Passed	table-comparison
+source command	scripts/validate_data_integrity.py	Source distribution	Passed	historical-replay
+source command	scripts/validate_engine.py	Repository source	Passed	detailed-parity
+source command	scripts/validate_excel_comparison.py	Source distribution	Passed	table-comparison
+source command	scripts/validate_labour_usage.py	Source distribution	Passed	detailed-parity
+source command	scripts/validate_process_sheet.py	Source distribution	Passed	detailed-parity
+source command	scripts/validate_simple_tables.py	Source distribution	Passed	detailed-parity
+source command	scripts/validate_standardization.py	Source distribution	Passed	data-quality
+source command	scripts/validation_pipeline.py	Source distribution	Passed	data-quality
+source command	scripts/visualize_costs.py	Source distribution	Passed	static-visuals
+source command	tools/build_t1_scenario.py	Source distribution	Evidence	trace-input historical-replay
+source command	tools/check_package.py	Source distribution	Passed	package
+source command	tools/run_installed.py	Repository source	Evidence	package source-command-behavior
+source command	tools/screen_release.py	Repository source	Evidence	retention publication-rights
+source command	tools/select_tests.py	Source distribution	Passed	deterministic-ci
+legacy web route	src/genomics_microcosting/web.py	GET /	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /table/<table_name>	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/tables	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/table/<table_name>	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/table_info/<table_name>	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /visualize	Registered	dashboard static-visuals
+legacy web route	src/genomics_microcosting/web.py	GET /visualize/table/<table_name>	Registered	dashboard static-visuals
+legacy web route	src/genomics_microcosting/web.py	GET /api/visualize/<table_name>	Registered	dashboard static-visuals
+legacy web route	src/genomics_microcosting/web.py	GET /api/generate_viz/<table_name>	Registered	dashboard static-visuals
+legacy web route	src/genomics_microcosting/web.py	GET /health	Registered	health
+legacy web route	src/genomics_microcosting/web.py	GET /metrics	Registered	metrics
+legacy web route	src/genomics_microcosting/web.py	GET /alerts	Registered	alerts
+legacy web route	src/genomics_microcosting/web.py	GET /dashboard	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/dashboard/cost-distribution	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/dashboard/top-categories	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/export/all/zip	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/generate-report	Registered	dashboard report-formats
+legacy web route	src/genomics_microcosting/web.py	GET /api/export/<table_name>/csv	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/export/<table_name>/excel	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/export/<table_name>/json	Registered	dashboard
+legacy web route	src/genomics_microcosting/web.py	GET /api/export/<table_name>/parquet	Registered	dashboard
+documentation reference	ANALYTICAL_FRAMEWORK.md	Frozen source		analysis-tools psa-voi cost-drivers
+documentation reference	CHANGELOG.md	Frozen source		guides repo-context
+documentation reference	CONTRIBUTING.md	Frozen source		guides repo-context
+documentation reference	QUICK_START.md	Frozen source		guides repo-context
+documentation reference	README.md	Frozen source		guides repo-context
+documentation reference	docs/DEVELOPMENT_GUIDE.md	Frozen source		guides repo-context
+documentation reference	docs/README.md	Frozen source		guides repo-context
+documentation reference	docs/REPOSITORY_STRUCTURE.md	Frozen source		guides repo-context
+documentation reference	docs/contribution_guidelines.md	Frozen source		guides repo-context
+documentation reference	docs/troubleshooting_guide.md	Frozen source		guides repo-context
+documentation reference	docs/tutorial_series.md	Frozen source		guides repo-context
+documentation reference	CONSISTENT_SHEET_HANDLING_APPROACH.md	Frozen source		workbook-headers workbook-selection
+documentation reference	docs/DATA_MANAGER.md	Frozen source		workbook-headers workbook-selection
+documentation reference	DATA_INTEGRITY_VALIDATION_REPORT.md	Frozen source		table-comparison data-quality
+documentation reference	PHASE3_VALIDATION_SUMMARY.md	Frozen source		table-comparison data-quality
+documentation reference	SHEET_TRANSLATION_VALIDATION_SUMMARY.md	Frozen source		table-comparison data-quality
+documentation reference	TABLE_TRANSFER_SUMMARY.md	Frozen source		table-comparison data-quality
+documentation reference	docs/data_quality_assurance_procedures.md	Frozen source		table-comparison data-quality
+documentation reference	docs/validation_pipeline.md	Frozen source		table-comparison data-quality
+documentation reference	FINAL_IMPLEMENTATION_SUMMARY.md	Frozen source		historical-replay source-command-behavior
+documentation reference	IMPLEMENTATION_SUMMARY.md	Frozen source		historical-replay source-command-behavior
+documentation reference	SUMMARY_OF_IMPLEMENTATION.md	Frozen source		historical-replay source-command-behavior
+documentation reference	agents.md	Frozen source		repo-context
+documentation reference	GEMINI.md	Frozen source		repo-context
+documentation reference	GENOMICS_REFACTORING_PLAN.md	Frozen source		roadmap-context
+documentation reference	IMPLEMENTATION_PLAN_COMPLETION_SUMMARY.md	Frozen source		roadmap-context
+documentation reference	ROBUSTNESS_IMPROVEMENT_COMPLETION_SUMMARY.md	Frozen source		roadmap-context
+documentation reference	ROBUSTNESS_IMPROVEMENT_PLAN.md	Frozen source		roadmap-context
+documentation reference	TODO.md	Frozen source		roadmap-context
+documentation reference	docs/STANDARDIZATION_PLAN.md	Frozen source		roadmap-context
+documentation reference	temporary_exclude_list.md	Frozen source		roadmap-context
+documentation reference	LAB_BOOK.md	Frozen source		retention research-reporting
+documentation reference	SESSIONS.md	Frozen source		retention research-reporting
+documentation reference	docs/FAIR_SOFTWARE_ASSESSMENT.md	Frozen source		retention research-reporting
+documentation reference	docs/bmj_open_compliance.md	Frozen source		retention research-reporting
+documentation reference	PHASE2_COMPLETION_SUMMARY.md	Frozen source		standard-labels templates data-quality
+documentation reference	PHASE2_SUMMARY.md	Frozen source		standard-labels templates data-quality
+documentation reference	PHASE3_SUMMARY.md	Frozen source		standard-labels templates data-quality
+documentation reference	docs/automated_standardization.md	Frozen source		standard-labels templates data-quality
+documentation reference	docs/model_standardization.md	Frozen source		standard-labels templates data-quality
+documentation reference	docs/model_transformation.md	Frozen source		standard-labels templates data-quality
+documentation reference	docs/standardization_validation.md	Frozen source		standard-labels templates data-quality
+documentation reference	docs/standardized_templates.md	Frozen source		standard-labels templates data-quality
+documentation reference	SECURITY.md	Frozen source		input-sanitization security-audit repo-context
+documentation reference	docs/input_validation_procedures.md	Frozen source		input-sanitization security-audit repo-context
+documentation reference	docs/security_procedures.md	Frozen source		input-sanitization security-audit repo-context
+documentation reference	WEB_UI_IMPROVEMENTS_SUMMARY.md	Frozen source		dashboard responsive-ui
+documentation reference	docs/WEB_INTERFACE.md	Frozen source		dashboard responsive-ui
+documentation reference	docs/API_REFERENCE.md	Frozen source		api-docs
+documentation reference	docs/DOCUMENTATION_ORGANIZATION_SUMMARY.md	Frozen source		api-docs
+documentation reference	docs/FINAL_DOCUMENTATION_SUMMARY.md	Frozen source		api-docs
+documentation reference	docs/CALCULATION_ENGINE.md	Frozen source		formula-evaluation
+documentation reference	docs/CONFIG.md	Frozen source		config-schema config-history config-environment
+documentation reference	docs/configuration_management_procedures.md	Frozen source		config-schema config-history config-environment
+documentation reference	docs/DATA_MANAGEMENT.md	Frozen source		data-history data-governance
+documentation reference	docs/MODELS.md	Frozen source		model-identity
+documentation reference	docs/PLUGIN_SYSTEM.md	Frozen source		plugins strategy-plugin
+documentation reference	docs/SCENARIO_ANALYSIS.md	Frozen source		scenario-analysis
+documentation reference	docs/checkpoint_restart_procedures.md	Frozen source		checkpoint-recovery error-runtime
+documentation reference	docs/comprehensive_error_handling.md	Frozen source		checkpoint-recovery error-runtime
+documentation reference	docs/error_handling_procedures.md	Frozen source		checkpoint-recovery error-runtime
+documentation reference	docs/error_recovery_scenarios.md	Frozen source		checkpoint-recovery error-runtime
+documentation reference	docs/dapane_manual_extraction.md	Frozen source		exact-valuation historical-replay
+documentation reference	docs/end_to_end_testing_procedures.md	Frozen source		end-to-end full-analysis-chain
+documentation reference	docs/integration_testing_procedures.md	Frozen source		end-to-end full-analysis-chain
+documentation reference	docs/monitoring_procedures.md	Frozen source		operational-monitoring
+documentation reference	docs/performance_benchmarking.md	Frozen source		benchmark analysis-performance
+documentation reference	docs/table_overview.md	Frozen source		workbook-dependencies workbook-headers
+legacy console command	validate-engine	genomics_microcosting.validate_engine:validate_engine	Installed	detailed-parity
+legacy console command	prepare-data	genomics_microcosting.prepare_data:main	Installed	prepare-tables
+configuration	config.yaml	genomics_microcosting/config.yaml	Packaged	config-schema package
+configuration	config/standard_categories.yaml	genomics_microcosting/configuration/standard_categories.yaml	Packaged	taxonomy standard-labels
+configuration	config/templates/base_template.json	genomics_microcosting/configuration/templates/base_template.json	Packaged	templates
+configuration	config/templates/panel_template.json	genomics_microcosting/configuration/templates/panel_template.json	Packaged	templates
+configuration	config/templates/template_examples.csv	genomics_microcosting/configuration/templates/template_examples.csv	Packaged	templates
+configuration	config/templates/wes_p_template.json	genomics_microcosting/configuration/templates/wes_p_template.json	Packaged	templates
+configuration	config/templates/wes_t_template.json	genomics_microcosting/configuration/templates/wes_t_template.json	Packaged	templates
+configuration	config/templates/wgs_t_template.json	genomics_microcosting/configuration/templates/wgs_t_template.json	Packaged	templates
+configuration	config/templates/wgs_template.json	genomics_microcosting/configuration/templates/wgs_template.json	Packaged	templates
+configuration	configs/benchmarking_analysis.yaml	genomics_microcosting/analysis_defaults/benchmarking_analysis.yaml	Packaged	config-schema package
+configuration	configs/break_even_analysis.yaml	genomics_microcosting/analysis_defaults/break_even_analysis.yaml	Packaged	config-schema package
+configuration	configs/budget_impact_analysis.yaml	genomics_microcosting/analysis_defaults/budget_impact_analysis.yaml	Packaged	config-schema package
+configuration	configs/cost_driver_analysis.yaml	genomics_microcosting/analysis_defaults/cost_driver_analysis.yaml	Packaged	config-schema package
+configuration	configs/cost_effectiveness_analysis.yaml	genomics_microcosting/analysis_defaults/cost_effectiveness_analysis.yaml	Packaged	config-schema package
+configuration	configs/dsa_analysis.yaml	genomics_microcosting/analysis_defaults/dsa_analysis.yaml	Packaged	config-schema package
+configuration	configs/psa_analysis.yaml	genomics_microcosting/analysis_defaults/psa_analysis.yaml	Packaged	config-schema package
+configuration	configs/voi_analysis.yaml	genomics_microcosting/analysis_defaults/voi_analysis.yaml	Packaged	config-schema package
+configuration	pyproject.toml	Source distribution	Packaged	config-schema package
+configuration	uv.lock	Source distribution	Packaged	config-schema package
+package resource	src/genomics_microcosting/data/t1_known_zero_lineage.json	genomics_microcosting/data/t1_known_zero_lineage.json	Installed	package provenance
+package resource	src/genomics_microcosting/py.typed	genomics_microcosting/py.typed	Installed	package provenance
+package resource	src/genomics_microcosting/static/scripts.js	genomics_microcosting/static/scripts.js	Installed	dashboard
+package resource	src/genomics_microcosting/static/style.css	genomics_microcosting/static/style.css	Installed	dashboard
+package resource	src/genomics_microcosting/templates/base.html	genomics_microcosting/templates/base.html	Installed	dashboard
+package resource	src/genomics_microcosting/templates/dashboard.html	genomics_microcosting/templates/dashboard.html	Installed	dashboard
+package resource	src/genomics_microcosting/templates/index.html	genomics_microcosting/templates/index.html	Installed	dashboard
+package resource	src/genomics_microcosting/templates/table.html	genomics_microcosting/templates/table.html	Installed	dashboard
+package resource	src/genomics_microcosting/templates/visualize.html	genomics_microcosting/templates/visualize.html	Installed	dashboard
+package extra	reporting	Package metadata	Exercised	report-formats
+package extra	security	Package metadata	Exercised	security-audit
+package extra	visualization	Package metadata	Exercised	static-visuals interactive-visuals

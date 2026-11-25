@@ -72,16 +72,19 @@ All 37 legacy commands with Pandas imports are present in the source
 distribution with native implementations. The Dapane source tree retains
 all 74 registered command paths, including development and diagnostic
 commands.
-Some frozen feature rows, including repository controls and operational
-acceptance, still need individual disposition for G3.5.
+The [G3.5 audit](feature-audit.md) records 44 qualified command outcomes and
+30 command rows that need further evidence. The
+[source crosswalk](feature-audit-crosswalk.tsv) identifies each command and
+its installed counterpart or follow-up.
 
 ## Planned deliverables
 
 The inventory retains overlapping source rows so a shared implementation
 can refer back to every relevant commitment. The rows below state the
 behaviour to test even where the provider describes the task as complete.
-Existing modules are reuse candidates. G3.4 closes gaps found by G3.1–G3.3,
-then G3.5 reconciles the leaf rows and executable evidence.
+The [completed G3.5 audit](feature-audit.md) maps individual roadmap rows to
+observed results. G3.4 addresses its implementation findings. G4.2 and G4.3
+retain the outstanding installed and native qualification.
 
 The planned pricing, shared allocation, template and prediction paths have
 synthetic installed evidence. Lab profiles apply exact multipliers to selected
