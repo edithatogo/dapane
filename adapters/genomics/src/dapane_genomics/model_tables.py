@@ -7,6 +7,7 @@ import argparse
 import csv
 import json
 from collections.abc import Hashable, Mapping, Sequence, Set
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from importlib.resources import files
 from io import BytesIO, StringIO
@@ -48,8 +49,12 @@ class LabCostAdjustments(BaseModel):
     def check_multiplier(cls, value: str) -> str:
         """Require a positive exact amount represented as text."""
         try:
+            if "/" not in value:
+                amount = Decimal(value)
+                if not amount.is_finite() or abs(amount.adjusted()) > 128:
+                    raise ValueError("Labour multiplier is outside the supported range")
             multiplier = Fraction(value)
-        except (ValueError, ZeroDivisionError) as exc:
+        except (InvalidOperation, ValueError, ZeroDivisionError) as exc:
             raise ValueError(
                 "Labour multiplier must be a positive exact number"
             ) from exc

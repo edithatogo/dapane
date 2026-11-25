@@ -4,13 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Genomics model templates</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script defer src="{{ url_for('static', filename='model_templates.js') }}"></script>
 </head>
 <body>
-<main>
+<main class="model-templates">
     <p><a href="{{ url_for('index') }}">Back to costing tables</a></p>
     <h1>Genomics model templates</h1>
-    <form method="post" enctype="multipart/form-data" action="{{ url_for('models.download_template') }}">
-        <p>
+    <form id="model-template-form" method="post" enctype="multipart/form-data" action="{{ url_for('models.download_template') }}">
+        <fieldset data-step>
+            <legend>Template</legend>
             <label for="model">Model</label>
             <select id="model" name="model">
                 {% for model in models %}<option value="{{ model }}">{{ model }}</option>{% endfor %}
@@ -19,8 +22,8 @@
             <select id="format" name="format">
                 {% for format in formats %}<option value="{{ format }}">{{ format }}</option>{% endfor %}
             </select>
-        </p>
-        <fieldset>
+        </fieldset>
+        <fieldset data-step>
             <legend>Optional lab profile</legend>
             <p>Enter a profile or choose a JSON file that adds local categories.</p>
             <p>
@@ -32,8 +35,40 @@
                 <label for="profile_file">Profile file</label>
                 <input id="profile_file" type="file" name="profile_file" accept=".json,application/json">
             </p>
+            <p id="profile-drop" class="profile-drop" hidden>Drop a profile JSON file here.</p>
+            <details id="profile-builder" hidden>
+                <summary>Build a profile</summary>
+                <p>
+                    <label for="lab-name">Lab name</label>
+                    <input id="lab-name" maxlength="100">
+                </p>
+                <p>
+                    <label for="labour-multiplier">Labour multiplier</label>
+                    <input id="labour-multiplier" inputmode="decimal" value="1">
+                </p>
+                <p>
+                    <label for="equipment-life">Equipment life in years</label>
+                    <input id="equipment-life" type="number" min="1" step="1">
+                </p>
+                <p>
+                    <label for="local-categories">Local categories and subcategories</label>
+                    <textarea id="local-categories" rows="3"
+                        placeholder="Shipping: Courier, Packaging"></textarea>
+                </p>
+                <p>Use one category per line, with subcategories separated by commas.</p>
+                <button id="build-profile" type="button">Use this profile</button>
+            </details>
+            <p id="profile-status" role="status" aria-live="polite"></p>
         </fieldset>
-        <p><button type="submit">Download template</button></p>
+        <fieldset data-step id="template-review" hidden>
+            <legend>Review and download</legend>
+            <p id="template-summary"></p>
+        </fieldset>
+        <p>
+            <button id="template-back" type="button" hidden>Back</button>
+            <button id="template-next" type="button" hidden>Next</button>
+            <button id="template-download" type="submit">Download template</button>
+        </p>
     </form>
 </main>
 </body>

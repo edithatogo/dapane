@@ -2,6 +2,7 @@
 """Web interface for microcosting analysis."""
 
 __lazy_modules__ = (
+    "dapane_genomics.web_operations",
     "genomics_microcosting",
     "reportlab.lib.pagesizes",
     "reportlab.pdfgen",
@@ -9,6 +10,7 @@ __lazy_modules__ = (
 
 import argparse
 import io
+import os
 import zipfile
 from functools import partial
 from pathlib import Path
@@ -16,6 +18,8 @@ from typing import TYPE_CHECKING
 
 import polars as pl
 from dapane_genomics.model_web import models
+from dapane_genomics.web_access import install_web_access
+from dapane_genomics.web_operations import operations
 from flask import Flask, Response, abort, jsonify, render_template, request
 from openpyxl import Workbook
 from reportlab.lib.pagesizes import letter
@@ -102,10 +106,23 @@ def create_app(data_dir: str | Path | None = None) -> ResearchFlask:
 
     _register_table_routes(app)
     _register_visualization_routes(app)
-    _register_monitoring_routes(app)
+    secured = bool(os.environ.get("GENOMICS_WEB_ACCESS_FILE"))
+    _register_monitoring_routes(app, readiness_only=secured)
     _register_dashboard_routes(app)
     _register_export_routes(app)
     app.register_blueprint(models)
+    install_web_access(app)
+    store = os.environ.get("GENOMICS_OPERATIONS_STORE")
+    if store and secured:
+        app.register_blueprint(
+            operations(
+                Path(store),
+                prepared_dir,
+                app.data,
+                partial(_health_check, app),
+                app.metrics_collector,
+            ),
+        )
     return app
 
 
@@ -161,8 +178,16 @@ def _register_visualization_routes(app: ResearchFlask) -> None:
     )
 
 
-def _register_monitoring_routes(app: ResearchFlask) -> None:
-    app.add_url_rule("/health", "health_check", partial(_health_check, app))
+def _register_monitoring_routes(
+    app: ResearchFlask,
+    *,
+    readiness_only: bool,
+) -> None:
+    app.add_url_rule(
+        "/health",
+        "health_check",
+        partial(_health_check, app, readiness_only=readiness_only),
+    )
     app.add_url_rule("/metrics", "metrics", partial(_metrics, app))
     app.add_url_rule("/alerts", "alerts", partial(_alerts, app))
 
@@ -505,7 +530,11 @@ def _api_table_info(
     )
 
 
-def _health_check(app: ResearchFlask) -> Response | tuple[Response, int] | str:
+def _health_check(
+    app: ResearchFlask,
+    *,
+    readiness_only: bool = False,
+) -> Response | tuple[Response, int]:
     """Health check endpoint."""
     if not app.health_checker:
         return jsonify(
@@ -515,6 +544,8 @@ def _health_check(app: ResearchFlask) -> Response | tuple[Response, int] | str:
     try:
         health_results = app.health_checker.run_health_check()
         status_code = 200 if health_results["status"] == "healthy" else 503
+        if readiness_only:
+            return jsonify(status=health_results["status"]), status_code
         return jsonify(health_results), status_code
     except Exception:
         app.logger.exception("Health check failed")

@@ -69,11 +69,17 @@ class DataManager:
 
     """
 
-    def __init__(self, data_dir: Path | None = None) -> None:
+    def __init__(
+        self,
+        data_dir: Path | None = None,
+        *,
+        create_directories: bool = True,
+    ) -> None:
         """Initialize the DataManager.
 
         Args:
             data_dir (Path, optional): Base directory, or the existing default.
+            create_directories: Create the working directories for writable use.
 
         """
         self.logger = get_logger(f"{__name__}.{self.__class__.__name__}")
@@ -99,8 +105,9 @@ class DataManager:
         self.publication_dir = workspace / "publication"
 
         # Create directories if they don't exist
-        self.prepared_dir.mkdir(parents=True, exist_ok=True)
-        self.publication_dir.mkdir(parents=True, exist_ok=True)
+        if create_directories:
+            self.prepared_dir.mkdir(parents=True, exist_ok=True)
+            self.publication_dir.mkdir(parents=True, exist_ok=True)
 
         # Supported formats for consistent handling
         self.supported_formats = ["parquet", "csv"]
