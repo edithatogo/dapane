@@ -469,6 +469,23 @@ The merge commit is `9a63e7d7d8f313b49ffcb76963e8e1bb3b1c800f`.
 Its [main-push qualification](https://github.com/edithatogo/dapane/actions/runs/45491086666)
 passed on that exact merge revision.
 
+[PR #86](https://github.com/edithatogo/dapane/pull/86) promoted the remaining
+compatibility commands, dashboard images and deployment templates. Eighteen
+applicable checks passed on the PR head, including the
+[official offline scan](https://github.com/edithatogo/dapane/actions/runs/45496313649).
+The [installed package check](https://github.com/edithatogo/dapane/actions/runs/45581128943)
+also passed on merge commit `463cad0944eeb0c97d977babdf0fda056b378a50`.
+On that commit the official offline workflow stopped during scanner image
+preparation on [both attempts](https://github.com/edithatogo/dapane/actions/runs/45581129433/attempts/2).
+The four CPython patch downloads had changed bytes. The scanner's locked
+Wolfi packages, original standard-library files and patched standard-library
+files all matched their existing hashes. The
+[scanner policy update](https://github.com/edithatogo/repository-standards/pull/188)
+refreshes the four download hashes and retains the original and patched
+file checks and the network-disabled source scan. The
+[official image qualification](https://github.com/edithatogo/repository-standards/actions/runs/45585316412)
+passed before the update merged at `14566821013181e3b2396d6d4fb09ba6d07a8b99`.
+
 ## Preservation and restoration
 
 The restricted source bundle contains all four public branch heads and the
