@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-from collections.abc import Mapping
+from collections.abc import Hashable, Mapping, Sequence, Set
 from fractions import Fraction
 from importlib.resources import files
 from io import BytesIO, StringIO
@@ -245,13 +245,14 @@ def standardize_models(
     }
 
 
-def _overlap[Value](groups: list[set[Value]]) -> dict[str, int]:
+def _overlap(groups: Sequence[Set[Hashable]]) -> dict[str, int]:
     if not groups:
         return {"common": 0, "total": 0}
     first, *others = groups
+    observed = set(first)
     return {
-        "common": len(first.intersection(*others)),
-        "total": len(first.union(*others)),
+        "common": len(observed.intersection(*others)),
+        "total": len(observed.union(*others)),
     }
 
 
