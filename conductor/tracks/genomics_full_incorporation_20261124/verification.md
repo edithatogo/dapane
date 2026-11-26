@@ -315,6 +315,19 @@ ratio. The report's receipt digest and totals matched the corresponding
 native output. The default native command reproduced the earlier historical
 receipt byte for byte. [Consumer commands](../../../adapters/genomics/README.md#original-workbook-replay)
 
+### Legacy average reuse
+
+The original range and explicit-cell strategies now share one average over
+the existing numeric cell resolver. The range supplies cells in
+row and column order, and an explicit list supplies its own order. The
+installed calculation engine reproduced the expected results for both
+formula spellings, including reversed bounds, formula references, blanks,
+text and an empty list. The strategy module is 36 lines smaller.
+
+The maintained verifier on the final clean wheel matched all 218,466
+workbook results across the six scenarios, including all 63 Excel error
+observations and the previous replay digests.
+
 ## Detailed pathway and resource costing
 
 The [pathway adapter](../../../adapters/genomics/src/dapane_genomics/v15_pathways.py)

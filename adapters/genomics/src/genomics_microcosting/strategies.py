@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING, ClassVar, TypeVar
 import numpy_financial as npf
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from .calculation_engine import CalculationEngine
 
 from . import strategy_contracts as contracts
@@ -627,13 +629,22 @@ class NumberDivisionMultiplicationStrategy(DivisionParenthesesMultiplicationStra
     """Evaluate the unparenthesized spelling of the same scaled quotient."""
 
 
-class AverageRangeStrategy(CalculationStrategy):
-    """Strategy for handling AVERAGE function with range notation.
+def _average_cells(
+    engine: CalculationEngine,
+    sheet_name: str,
+    cells: Iterable[str],
+) -> float | None:
+    values: list[int | float] = []
+    for cell in cells:
+        value = _resolve_formula_or_cached_cell(engine, sheet_name, cell)
+        if value is None:
+            return None
+        values.append(value)
+    return sum(values) / len(values) if values else None
 
-    This strategy handles formulas like =AVERAGE(L44:N44).
-    It calculates the average of all cells in the specified range.
-    Returns None if any cell cannot be evaluated.
-    """
+
+class AverageRangeStrategy(CalculationStrategy):
+    """Average the cells in a worksheet range."""
 
     def execute(
         self,
@@ -643,51 +654,22 @@ class AverageRangeStrategy(CalculationStrategy):
         cell_ref: str,
     ) -> object:
         """Evaluate the validated expression in its worksheet context."""
+        del cell_ref
         parsed_formula = contracts.SUM_RANGE_ARGUMENTS.validate_python(parsed_formula)
-        start_cell = parsed_formula["start_cell"]
-        end_cell = parsed_formula["end_cell"]
-
-        # Parse cell references to get coordinates
-        start_coords = cell_to_coords(start_cell)
-        end_coords = cell_to_coords(end_cell)
-
-        start_row, start_col = start_coords
-        end_row, end_col = end_coords
-
-        # Ensure we have valid integers
+        start_row, start_col = cell_to_coords(parsed_formula["start_cell"])
+        end_row, end_col = cell_to_coords(parsed_formula["end_cell"])
         if start_row is None or start_col is None or end_row is None or end_col is None:
             return None
-
-        # Collect all values in the range
-        values: list[int | float] = []
-        for row in range(min(start_row, end_row), max(start_row, end_row) + 1):
-            for col in range(min(start_col, end_col), max(start_col, end_col) + 1):
-                cell_ref_name = coords_to_cell(row, col)
-                value = _evaluate_operand(
-                    engine,
-                    {"type": "reference", "sheet": None, "cell": cell_ref_name},
-                    sheet_name,
-                    f"{cell_ref}_{cell_ref_name}",
-                )
-                if isinstance(value, int | float):
-                    values.append(value)
-                else:
-                    return None  # Invalid value in range
-
-        if not values:
-            return None
-
-        # Calculate average
-        return sum(values) / len(values)
+        cells = (
+            coords_to_cell(row, col)
+            for row in range(min(start_row, end_row), max(start_row, end_row) + 1)
+            for col in range(min(start_col, end_col), max(start_col, end_col) + 1)
+        )
+        return _average_cells(engine, sheet_name, cells)
 
 
 class AverageCellsStrategy(CalculationStrategy):
-    """Strategy for handling AVERAGE function with individual cells.
-
-    This strategy handles formulas like =AVERAGE(L44,N44).
-    It calculates the average of the specified cells.
-    Returns None if any cell cannot be evaluated.
-    """
+    """Average an explicit list of worksheet cells."""
 
     def execute(
         self,
@@ -697,29 +679,11 @@ class AverageCellsStrategy(CalculationStrategy):
         cell_ref: str,
     ) -> object:
         """Evaluate the validated expression in its worksheet context."""
+        del cell_ref
         parsed_formula = contracts.AVERAGE_CELLS_ARGUMENTS.validate_python(
             parsed_formula,
         )
-        cells = parsed_formula["cells"]
-        values: list[int | float] = []
-
-        for i, cell in enumerate(cells):
-            value = _evaluate_operand(
-                engine,
-                {"type": "reference", "sheet": None, "cell": cell},
-                sheet_name,
-                f"{cell_ref}_cell{i}",
-            )
-            if isinstance(value, int | float):
-                values.append(value)
-            else:
-                return None  # Invalid value
-
-        if not values:
-            return None
-
-        # Calculate average
-        return sum(values) / len(values)
+        return _average_cells(engine, sheet_name, parsed_formula["cells"])
 
 
 class CrossSheetMultiplicationThreeStrategy(CalculationStrategy):

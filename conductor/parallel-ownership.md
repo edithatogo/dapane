@@ -340,6 +340,9 @@ The same chat owns G6.6 on `codex/genomics-native-adjustment-scenarios`.
 Its scope covers the shared adjustment-rate recipe, the native pathway
 adapter and the resulting private workbook and report comparisons.
 
+The same chat owns G6.7 on `codex/genomics-share-legacy-averages`. Its scope
+covers the legacy average strategies and their installed regression test.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:
