@@ -7,6 +7,7 @@ import logging
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 import polars as pl
 
@@ -194,7 +195,7 @@ class DataManager:
         dataset_name = self._get_dataset_name(file_path)
         checksum = self._get_file_checksum(file_path)
         timestamp = datetime.now(UTC).astimezone()
-        version_id = f"{dataset_name}_{timestamp.strftime('%Y%m%d_%H%M%S')}"
+        version_id = f"{dataset_name}_{timestamp:%Y%m%d_%H%M%S}_{uuid4().hex}"
 
         # Create metadata
         file_metadata = {
@@ -250,7 +251,7 @@ class DataManager:
         versions = self.get_dataset_versions(dataset_name)
         if not versions:
             return None
-        return max(versions, key=lambda v: v.timestamp.astimezone(UTC))
+        return max(reversed(versions), key=lambda v: v.timestamp.astimezone(UTC))
 
     def load_dataset(
         self,
