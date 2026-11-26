@@ -1,6 +1,7 @@
 # Copyright 2026 Dylan. SPDX-License-Identifier: Apache-2.0
 """Independent synthetic checks for the original workbook's formula dialect."""
 
+from collections import Counter
 from fractions import Fraction
 from hashlib import sha256
 from io import BytesIO
@@ -518,3 +519,72 @@ def test_rule_variations_keep_precedence_argument_order_and_error_handling():
         CellError("#DIV/0!"),
         1100,
     ]
+
+
+def test_shared_calculations_bind_ordered_sources_per_replay(monkeypatch):
+    calls = Counter()
+    compute = v15_replay._compute
+
+    def count(operation, operands):
+        calls[operation] += 1
+        return compute(operation, operands)
+
+    monkeypatch.setattr(v15_replay, "_compute", count)
+    inputs = [
+        {"coordinate": f"A{row}", "stored_type": "n", "stored_value": value}
+        for row, value in enumerate(("12", "2", "6"), 1)
+    ]
+    formulas = {
+        "B1": "=SUM(A1,A2,A3)*0.1",
+        "B2": "=SUM($A$1,$A$2,$A$3,B1)",
+        "B3": "=A1/A2",
+        "B4": "=(A1/A2)*3",
+        "B5": "=PMT(10%,2,-(A1/A2))",
+        "B6": "=PMT(10%,2,-(A1/A2))",
+        "B7": "=A2",
+        "C1": "=SUM(A1,#REF!,A3,#DIV/0!)",
+        "C2": "=SUM(A1,#DIV/0!,A3,#REF!)",
+    }
+    ledger = {
+        "sheets": [
+            {
+                "catalogue": {"sheet": "Costs"},
+                "cells": [
+                    *inputs,
+                    *(
+                        {"coordinate": address, "formula": formula}
+                        for address, formula in formulas.items()
+                    ),
+                ],
+            },
+            {
+                "catalogue": {"sheet": "Other"},
+                "cells": [
+                    *inputs,
+                    {"coordinate": "B1", "formula": "=('Costs'!$A$1/Costs!A2)*4"},
+                    {"coordinate": "B2", "formula": "=A1/A2"},
+                ],
+            },
+        ],
+    }
+    book = WorkbookReplay(ledger)
+    assert [book.value("Costs", f"B{row}") for row in range(1, 8)] == [
+        2,
+        22,
+        6,
+        18,
+        Fraction(121, 35),
+        Fraction(121, 35),
+        2,
+    ]
+    assert (calls["SUM"], calls["/"], calls["PMT"]) == (2, 1, 1)
+    assert book.value("Other", "B1") == 24 and calls["/"] == 1
+    assert book.value("Other", "B2") == 6 and calls["/"] == 2
+    assert book.value("Costs", "C1") == CellError("#REF!")
+    assert book.value("Costs", "C2") == CellError("#DIV/0!")
+
+    changed = WorkbookReplay(ledger, overrides={("Costs", "A2"): "0"})
+    assert changed.value("Costs", "B2") == Fraction(99, 5)
+    assert changed.value("Costs", "B5") == CellError("#DIV/0!")
+    assert changed.value("Costs", "B7") == 0
+    assert changed.value("Other", "B2") == 6

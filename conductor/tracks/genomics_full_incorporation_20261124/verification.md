@@ -226,6 +226,61 @@ The installed `dapane-genomics-inventory`, `dapane-genomics-replay`,
 `dapane-genomics-pathways` and `genomics-report --pathways` commands
 reproduced the restricted outputs from outside the checkout. [Consumer commands](../../../adapters/genomics/README.md#original-workbook-replay)
 
+### Nested calculations and six-scenario parity
+
+The four families use the same bound inputs and calculation cache. A binding
+identifies a source cell, range, literal or error. An operation reuses a result
+when both its operation and ordered input bindings match in the same replay.
+The cache belongs to one workbook instance with its own overrides.
+
+```text
+Workbook formula
+├── Value      → source cell or literal, including a typed error
+├── Arithmetic → add, subtract, multiply or divide bound inputs
+│   └── Percentage and sign → multiplication by an exact factor
+├── Aggregate  → SUM or AVERAGE over bound cells, ranges or expressions
+│   └── Total = SUM(subtotal, adjustment)
+│       ├── Subtotal = SUM(three ordered inputs)
+│       └── Adjustment = subtotal × rate
+└── Annuity    → PMT of rate, periods and signed present value
+    └── Percentage and sign → the same multiplication operation
+```
+
+The adjustment and total share the same ordered three-input subtotal in 2,927
+pairs over 13 sheets. On the original workbook the installed replay reused
+3,527 SUM results, including those 2,927 prefixes, and 927 division results.
+It reused a further 621 multiplication, addition and subtraction results.
+The 29 annuities each have their own payment binding and share the PMT
+implementation and its operand calculations. Both legacy scaled quotient names
+now use one implementation. The two production files together add 77 lines and
+remove 93 lines relative to `b7095ae`, a net reduction of 16 lines.
+
+On 27 November 2026, the CPython 3.15.1 clean installation re-inventoried the
+frozen workbook. The installed `dapane-genomics-replay` commands from the
+candidate and `b7095ae` packages emitted identical JSON bytes in every scenario.
+Each comparison includes all original addresses, exact rationals and error
+codes. Both rate cases replace the rate in all 2,927 adjustment formulas in an
+isolated ledger.
+
+| Scenario | Original formula cells matched | Results changed from original | Matching Excel errors |
+| --- | ---: | ---: | ---: |
+| Original inputs | 36,411 | 0 | 7 |
+| Double one consumable quantity | 36,411 | 2,962 | 7 |
+| Increase its unit price by 25% | 36,411 | 2,964 | 7 |
+| Halve the AUD-to-USD exchange rate | 36,411 | 215 | 7 |
+| Set adjustment rates to zero | 36,411 | 10,010 | 28 |
+| Set adjustment rates to 13.75% | 36,411 | 9,999 | 7 |
+
+Each seven-error result has four `#DIV/0!` and three `#REF!` cells. The
+zero-rate result has 25 `#DIV/0!` and three `#REF!` cells. All codes and
+locations matched across the 218,466 formula result comparisons. The installed
+`dapane-genomics-pathways` outputs for the original, quantity, price and FX
+cases also matched byte for byte for all ten native pathway reports per case.
+The frozen formula and pathway outputs retained their recorded digests.
+The clean wheel passed all 272 packaged tests with sockets disabled, including
+an independent synthetic test for subtotal and quotient reuse, distinct
+source bindings, annuity inputs and ordered error propagation.
+
 ## Detailed pathway and resource costing
 
 The [pathway adapter](../../../adapters/genomics/src/dapane_genomics/v15_pathways.py)

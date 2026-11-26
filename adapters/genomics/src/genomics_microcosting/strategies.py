@@ -623,59 +623,8 @@ class DivisionParenthesesMultiplicationStrategy(CalculationStrategy):
         return (number / cell1_value) * cell2_value
 
 
-class NumberDivisionMultiplicationStrategy(CalculationStrategy):
-    """Strategy for handling number division and multiplication formulas.
-
-    This strategy handles formulas like =1/F44*P44.
-    It performs (number/cell1) * cell2 operation.
-    Returns None if any operand cannot be evaluated or if division by zero occurs.
-    """
-
-    def execute(
-        self,
-        engine: CalculationEngine,
-        parsed_formula: object,
-        sheet_name: str,
-        cell_ref: str,
-    ) -> object:
-        """Evaluate the validated expression in its worksheet context."""
-        parsed_formula = (
-            contracts.DIVISION_PARENTHESES_MULTIPLICATION_ARGUMENTS.validate_python(
-                parsed_formula,
-            )
-        )
-        number = parsed_formula["number"]
-        cell1 = parsed_formula["cell1"]
-        cell2 = parsed_formula["cell2"]
-
-        # Get value from cell1
-        cell1_value = _evaluate_operand(
-            engine,
-            {"type": "reference", "sheet": None, "cell": cell1},
-            sheet_name,
-            f"{cell_ref}_cell1",
-        )
-
-        # Get value from cell2
-        cell2_value = _evaluate_operand(
-            engine,
-            {"type": "reference", "sheet": None, "cell": cell2},
-            sheet_name,
-            f"{cell_ref}_cell2",
-        )
-
-        # Check for valid numeric values
-        if not isinstance(cell1_value, int | float) or not isinstance(
-            cell2_value,
-            int | float,
-        ):
-            return None
-
-        # Check for division by zero
-        if cell1_value == 0:
-            return None
-
-        return (number / cell1_value) * cell2_value
+class NumberDivisionMultiplicationStrategy(DivisionParenthesesMultiplicationStrategy):
+    """Evaluate the unparenthesized spelling of the same scaled quotient."""
 
 
 class AverageRangeStrategy(CalculationStrategy):

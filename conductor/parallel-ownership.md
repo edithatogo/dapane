@@ -325,6 +325,12 @@ on `codex/genomics-shared-formulas-20261126`. It owns the genomics adapter
 and its Phase 6 records, private workbook comparisons, and verification of
 the candidate and merged revision on GitHub.
 
+On 27 November 2026 the same chat owns G6.4 on
+`codex/genomics-shared-subexpressions-20261127` in that checkout. The write
+scope covers the historical evaluator, the legacy scaled quotient, their tests
+and the Phase 6 records. The workbook is a read-only input. The next native
+operation is GitHub qualification of the reviewed source.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

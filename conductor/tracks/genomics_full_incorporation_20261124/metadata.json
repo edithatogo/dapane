@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "completed",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-26",
+  "updated_at": "2026-11-27",
   "description": "Incorporate the full v15 genomics workbook and all active legacy features into an independently installable Dapane successor.",
   "repositories": [
     ".",
