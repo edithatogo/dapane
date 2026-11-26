@@ -1,0 +1,329 @@
+{
+  "protocol": "cms-funding-calibration-v1",
+  "source_url": "https://data.cms.gov/data-api/v1/dataset/2941ab09-8cee-49d8-9703-f3c5b854e388/data?size=200&filter%5BDRG_Cd%5D=470",
+  "source_sha256": "73019bb07a322643b09859d1239f038a777c525a9953d91e0931f24e7138b8a7",
+  "retrieved_on": "2026-11-20",
+  "cli_sha256": "2ab00ed0649945c6fa06abc870ad0d517e78674c361e3dde2d4cd56219d5ace9",
+  "eligible_geographies": 51,
+  "tested_geographies": 51,
+  "absent_geographies": [],
+  "excluded_fields": {},
+  "discharges": 64419,
+  "local_payment_cents": 92258657800,
+  "held_out_payment_cents": 91776138152,
+  "sum_absolute_state_error_cents": 15944594754,
+  "sum_absolute_relative_error": {
+    "numerator": 15944594754,
+    "denominator": 92258657800
+  },
+  "local_report_sha256": "a6e551523cc7660ed6151860d38174e89d7f5ae7a9c368502e176a11033ebbb3",
+  "held_out_report_sha256": "b62b0e961a921cba9d0258aacc8b500ca778397b577a5f4752b23fc7102d682a",
+  "folds": [
+    {
+      "geography": "01",
+      "reference_cents": 1186224400,
+      "prediction_cents": 1671489696,
+      "error_cents": 485265296
+    },
+    {
+      "geography": "02",
+      "reference_cents": 518297800,
+      "prediction_cents": 378950578,
+      "error_cents": -139347222
+    },
+    {
+      "geography": "04",
+      "reference_cents": 1918513200,
+      "prediction_cents": 2034804209,
+      "error_cents": 116291009
+    },
+    {
+      "geography": "05",
+      "reference_cents": 425596500,
+      "prediction_cents": 543484232,
+      "error_cents": 117887732
+    },
+    {
+      "geography": "06",
+      "reference_cents": 13697301700,
+      "prediction_cents": 10136682679,
+      "error_cents": -3560619021
+    },
+    {
+      "geography": "08",
+      "reference_cents": 895396400,
+      "prediction_cents": 937059091,
+      "error_cents": 41662691
+    },
+    {
+      "geography": "09",
+      "reference_cents": 1169293500,
+      "prediction_cents": 1013692659,
+      "error_cents": -155600841
+    },
+    {
+      "geography": "10",
+      "reference_cents": 156113600,
+      "prediction_cents": 153236911,
+      "error_cents": -2876689
+    },
+    {
+      "geography": "11",
+      "reference_cents": 223546000,
+      "prediction_cents": 194713613,
+      "error_cents": -28832387
+    },
+    {
+      "geography": "12",
+      "reference_cents": 4944488800,
+      "prediction_cents": 5637500963,
+      "error_cents": 693012163
+    },
+    {
+      "geography": "13",
+      "reference_cents": 1040435000,
+      "prediction_cents": 1091918968,
+      "error_cents": 51483968
+    },
+    {
+      "geography": "15",
+      "reference_cents": 237513300,
+      "prediction_cents": 216207021,
+      "error_cents": -21306279
+    },
+    {
+      "geography": "16",
+      "reference_cents": 253680600,
+      "prediction_cents": 275039401,
+      "error_cents": 21358801
+    },
+    {
+      "geography": "17",
+      "reference_cents": 3423293800,
+      "prediction_cents": 3639028630,
+      "error_cents": 215734830
+    },
+    {
+      "geography": "18",
+      "reference_cents": 1910591400,
+      "prediction_cents": 2202455011,
+      "error_cents": 291863611
+    },
+    {
+      "geography": "19",
+      "reference_cents": 791357900,
+      "prediction_cents": 948271358,
+      "error_cents": 156913458
+    },
+    {
+      "geography": "20",
+      "reference_cents": 2296348500,
+      "prediction_cents": 2817128172,
+      "error_cents": 520779672
+    },
+    {
+      "geography": "21",
+      "reference_cents": 687179400,
+      "prediction_cents": 817487238,
+      "error_cents": 130307838
+    },
+    {
+      "geography": "22",
+      "reference_cents": 535774900,
+      "prediction_cents": 698696177,
+      "error_cents": 162921277
+    },
+    {
+      "geography": "23",
+      "reference_cents": 168185200,
+      "prediction_cents": 164692777,
+      "error_cents": -3492423
+    },
+    {
+      "geography": "24",
+      "reference_cents": 2351191700,
+      "prediction_cents": 1398957451,
+      "error_cents": -952234249
+    },
+    {
+      "geography": "25",
+      "reference_cents": 5649736800,
+      "prediction_cents": 5327606072,
+      "error_cents": -322130728
+    },
+    {
+      "geography": "26",
+      "reference_cents": 1698252500,
+      "prediction_cents": 1828590472,
+      "error_cents": 130337972
+    },
+    {
+      "geography": "27",
+      "reference_cents": 1294747900,
+      "prediction_cents": 1368815926,
+      "error_cents": 74068026
+    },
+    {
+      "geography": "28",
+      "reference_cents": 747534100,
+      "prediction_cents": 948725693,
+      "error_cents": 201191593
+    },
+    {
+      "geography": "29",
+      "reference_cents": 1345274200,
+      "prediction_cents": 1577918645,
+      "error_cents": 232644445
+    },
+    {
+      "geography": "30",
+      "reference_cents": 310752200,
+      "prediction_cents": 353910314,
+      "error_cents": 43158114
+    },
+    {
+      "geography": "31",
+      "reference_cents": 438883100,
+      "prediction_cents": 514569140,
+      "error_cents": 75686040
+    },
+    {
+      "geography": "32",
+      "reference_cents": 474627600,
+      "prediction_cents": 481242048,
+      "error_cents": 6614448
+    },
+    {
+      "geography": "33",
+      "reference_cents": 391779300,
+      "prediction_cents": 421190835,
+      "error_cents": 29411535
+    },
+    {
+      "geography": "34",
+      "reference_cents": 1921657500,
+      "prediction_cents": 1821160507,
+      "error_cents": -100496993
+    },
+    {
+      "geography": "35",
+      "reference_cents": 408500200,
+      "prediction_cents": 383717202,
+      "error_cents": -24782998
+    },
+    {
+      "geography": "36",
+      "reference_cents": 12162711000,
+      "prediction_cents": 9437114626,
+      "error_cents": -2725596374
+    },
+    {
+      "geography": "37",
+      "reference_cents": 2978566300,
+      "prediction_cents": 3280327811,
+      "error_cents": 301761511
+    },
+    {
+      "geography": "38",
+      "reference_cents": 104940000,
+      "prediction_cents": 121756241,
+      "error_cents": 16816241
+    },
+    {
+      "geography": "39",
+      "reference_cents": 2389540600,
+      "prediction_cents": 2863201572,
+      "error_cents": 473660972
+    },
+    {
+      "geography": "40",
+      "reference_cents": 1317860000,
+      "prediction_cents": 1582778072,
+      "error_cents": 264918072
+    },
+    {
+      "geography": "41",
+      "reference_cents": 704044300,
+      "prediction_cents": 632526364,
+      "error_cents": -71517936
+    },
+    {
+      "geography": "42",
+      "reference_cents": 4816215800,
+      "prediction_cents": 5391116641,
+      "error_cents": 574900841
+    },
+    {
+      "geography": "44",
+      "reference_cents": 376175100,
+      "prediction_cents": 363720885,
+      "error_cents": -12454215
+    },
+    {
+      "geography": "45",
+      "reference_cents": 786511800,
+      "prediction_cents": 939625112,
+      "error_cents": 153113312
+    },
+    {
+      "geography": "46",
+      "reference_cents": 836316400,
+      "prediction_cents": 1004341546,
+      "error_cents": 168025146
+    },
+    {
+      "geography": "47",
+      "reference_cents": 1616553900,
+      "prediction_cents": 1934334372,
+      "error_cents": 317780472
+    },
+    {
+      "geography": "48",
+      "reference_cents": 4963719400,
+      "prediction_cents": 6012498993,
+      "error_cents": 1048779593
+    },
+    {
+      "geography": "49",
+      "reference_cents": 782276400,
+      "prediction_cents": 810856684,
+      "error_cents": 28580284
+    },
+    {
+      "geography": "50",
+      "reference_cents": 60339600,
+      "prediction_cents": 95992157,
+      "error_cents": 35652557
+    },
+    {
+      "geography": "51",
+      "reference_cents": 1584576200,
+      "prediction_cents": 1827955941,
+      "error_cents": 243379741
+    },
+    {
+      "geography": "53",
+      "reference_cents": 1332008600,
+      "prediction_cents": 1330459239,
+      "error_cents": -1549361
+    },
+    {
+      "geography": "54",
+      "reference_cents": 529164300,
+      "prediction_cents": 652506403,
+      "error_cents": 123342103
+    },
+    {
+      "geography": "55",
+      "reference_cents": 1108320600,
+      "prediction_cents": 1290052789,
+      "error_cents": 181732189
+    },
+    {
+      "geography": "56",
+      "reference_cents": 296748500,
+      "prediction_cents": 206029015,
+      "error_cents": -90719485
+    }
+  ]
+}

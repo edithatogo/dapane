@@ -36,6 +36,11 @@ Check a task only when its acceptance evidence is available. Provider capabiliti
   - No external archive is selected. Existing owner links are retained; no cutover, deletion or repository archival is performed.
 - [-] L3.4 Verify consumer reproduction and preserved scholarly/source assets before removing duplicated machinery or recording an archive as complete.
   - No machinery removal or external archive is selected. The qualified workforce/manual-extraction subset does not establish full reproduction, rights or successor behaviour for those external archive candidates.
+  - The [24 November follow-up](../../../docs/release-consolidation.md#successor-and-recovery-follow-up--24-november-2026)
+    records successor and preservation evidence, an executed Dapane source
+    restore and the installed consumer replay. Full predecessor parity and an
+    authorised restore of candidate-specific research/source assets remain
+    prerequisites for any later cutover.
 
 ## Review, fixes and archival
 

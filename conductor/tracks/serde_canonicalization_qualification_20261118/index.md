@@ -6,4 +6,5 @@ Potential replacement is custom canonical JSON writer, not Serde itself; Serde i
 
 Status: completed
 
-Implementation, tests and external acceptance remain pending.
+The [optional v2 crate](../../../adapters/canonicalization_v2/README.md) is locally
+qualified for detached fingerprints. Historical receipts use the retained v1 writer.

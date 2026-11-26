@@ -1,4 +1,4 @@
-"""Replay the preregistered CMS aggregate funding transport benchmark."""
+"""Replay the CMS aggregate funding transport and held-out calibration benchmarks."""
 
 from __future__ import annotations
 
@@ -130,58 +130,54 @@ def request(rows: dict[str, tuple[str, str]], pooled: bool) -> dict:
     }
 
 
-def check(cli: Path, rows: dict[str, tuple[str, str]], pooled: bool) -> tuple[dict[str, int], str]:
-    national = rows["national"][1]
-    geographies = {key: val for key, val in rows.items() if key != "national"}
-    mapped = request(rows, pooled)
+def exact_amount(value: dict[str, str]) -> Fraction:
+    return Fraction(f"{value['numerator']}/{value['denominator']}")
+
+
+def verify_valuation(
+    cli: Path, mapped: dict, expected: dict[str, Fraction]
+) -> tuple[dict[str, int], str]:
     payload = json.dumps(mapped, sort_keys=True, separators=(",", ":")).encode()
     output = subprocess.run(
         [cli, "evaluate", "-"], input=payload, check=True, capture_output=True, timeout=30
     ).stdout
     report = json.loads(output)
-    expected = {
-        f"state-{key}": round(Fraction(count) * Fraction(national if pooled else amount) * 100)
-        for key, (count, amount) in geographies.items()
-    }
-    actual = {row["id"]: Fraction(row["rounded"]) * 100 for row in report["lines"]}
-    if (
-        report["status"] != "complete"
-        or len(report["lines"]) != len(expected)
-        or expected != actual
-    ):
-        raise ValueError("native state amounts differ from the independent exact oracle")
-    if Fraction(report["totals"]["rounded"]) * 100 != sum(expected.values()):
+    lines = report["lines"]
+    if report["status"] != "complete" or len(lines) != len(expected):
+        raise ValueError("native report does not contain all expected state amounts")
+
+    actual_exact = {row["id"]: exact_amount(row["exact"]) for row in lines}
+    if actual_exact != expected:
+        raise ValueError("native unrounded state amounts differ from the independent exact oracle")
+    if exact_amount(report["totals"]["exact"]) != sum(expected.values()):
+        raise ValueError("native unrounded total differs from the sum of independent state amounts")
+
+    expected_cents = {key: round(amount * 100) for key, amount in expected.items()}
+    actual_cents = {row["id"]: Fraction(row["rounded"]) * 100 for row in lines}
+    if actual_cents != expected_cents:
+        raise ValueError("native rounded state amounts differ from independent half-even rounding")
+    if Fraction(report["totals"]["rounded"]) * 100 != sum(expected_cents.values()):
         raise ValueError("native total differs from the sum of independent rounded state amounts")
-    return expected, digest(output)
+    return expected_cents, digest(output)
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", type=Path, required=True)
-    parser.add_argument("--cli", type=Path, required=True)
-    parser.add_argument("--out", type=Path, required=True)
-    args = parser.parse_args()
-    if args.source.stat().st_size > 2_000_000:
-        raise ValueError("CMS input exceeds the bounded replay budget")
-    rows, excluded = rows_from(args.source.read_bytes())
-    local, local_report = check(args.cli, rows, False)
-    pooled, pooled_report = check(args.cli, rows, True)
+def check(cli: Path, rows: dict[str, tuple[str, str]], pooled: bool) -> tuple[dict[str, int], str]:
+    expected = {
+        f"state-{key}": Fraction(count) * Fraction(rows["national"][1] if pooled else amount)
+        for key, (count, amount) in rows.items()
+        if key != "national"
+    }
+    return verify_valuation(cli, request(rows, pooled), expected)
+
+
+def transport(cli: Path, rows: dict[str, tuple[str, str]]) -> dict:
+    local, local_report = check(cli, rows, False)
+    pooled, pooled_report = check(cli, rows, True)
     total = sum(local.values())
-    difference = {key: pooled[key] - value for key, value in local.items()}
     if not local or total <= 0:
         raise ValueError("the aggregate benchmark requires positive funding in disclosed states")
-    missing = STATES - rows.keys() - excluded.keys()
-    payload = {
-        "protocol": "cms-funding-transport-v1",
-        "source_url": ENDPOINT,
-        "source_sha256": PIN,
-        "retrieved_on": AS_OF,
-        "cli_sha256": digest(args.cli.read_bytes()),
-        "eligible_geographies": len(STATES),
-        "tested_geographies": len(local),
-        "absent_geographies": sorted(missing),
-        "excluded_fields": excluded,
-        "discharges": sum(int(values[0]) for key, values in rows.items() if key in STATES),
+    difference = {key: pooled[key] - value for key, value in local.items()}
+    return {
         "local_payment_cents": total,
         "national_rate_payment_cents": sum(pooled.values()),
         "sum_absolute_state_error_cents": sum(map(abs, difference.values())),
@@ -194,6 +190,88 @@ def main() -> None:
         },
         "local_report_sha256": local_report,
         "national_rate_report_sha256": pooled_report,
+    }
+
+
+def calibration_request(states: dict[str, tuple[str, str]]) -> dict:
+    if len(states) < 2:
+        raise ValueError("calibration requires at least two usable geographies")
+    contributions = {
+        key: (int(count), Fraction(amount) * int(count)) for key, (count, amount) in states.items()
+    }
+    total_count = sum(count for count, _ in contributions.values())
+    total_amount = sum(amount for _, amount in contributions.values())
+    mapped = request(states, pooled=False)
+    mapped["run_id"] = "cms-held-out-state-rate-calibration"
+    for quote in mapped["quotes"]:
+        key = quote["id"].removeprefix("rate-")
+        count, amount = contributions[key]
+        rate = (total_amount - amount) / (total_count - count)
+        quote["amount"] = {"numerator": str(rate.numerator), "denominator": str(rate.denominator)}
+        quote["source"]["id"] = f"cms-2024-drg470-calibration-excluding-{key}"
+    return mapped
+
+
+def calibrate(cli: Path, rows: dict[str, tuple[str, str]]) -> dict:
+    states = {key: value for key, value in rows.items() if key != "national"}
+    mapped = calibration_request(states)
+    local, local_report = check(cli, rows, False)
+    total = sum(local.values())
+    if total <= 0:
+        raise ValueError("the aggregate benchmark requires positive funding in disclosed states")
+
+    expected = {}
+    for key, (count, _) in sorted(states.items()):
+        training = [values for other, values in states.items() if other != key]
+        training_payment = sum(Fraction(size) * Fraction(mean) for size, mean in training)
+        training_count = sum(int(size) for size, _ in training)
+        expected[f"state-{key}"] = training_payment * int(count) / training_count
+    predictions, fitted_report = verify_valuation(cli, mapped, expected)
+    folds = [
+        {
+            "geography": key.removeprefix("state-"),
+            "reference_cents": local[key],
+            "prediction_cents": prediction,
+            "error_cents": prediction - local[key],
+        }
+        for key, prediction in predictions.items()
+    ]
+    absolute_error = sum(abs(fold["error_cents"]) for fold in folds)
+    return {
+        "local_payment_cents": total,
+        "held_out_payment_cents": sum(predictions.values()),
+        "sum_absolute_state_error_cents": absolute_error,
+        "sum_absolute_relative_error": {"numerator": absolute_error, "denominator": total},
+        "local_report_sha256": local_report,
+        "held_out_report_sha256": fitted_report,
+        "folds": folds,
+    }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source", type=Path, required=True)
+    parser.add_argument("--cli", type=Path, required=True)
+    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--calibrate", action="store_true", help="Fit and score held-out states")
+    args = parser.parse_args()
+    if args.source.stat().st_size > 2_000_000:
+        raise ValueError("CMS input exceeds the bounded replay budget")
+    rows, excluded = rows_from(args.source.read_bytes())
+    outcome = calibrate(args.cli, rows) if args.calibrate else transport(args.cli, rows)
+    states = STATES & rows.keys()
+    payload = {
+        "protocol": "cms-funding-calibration-v1" if args.calibrate else "cms-funding-transport-v1",
+        "source_url": ENDPOINT,
+        "source_sha256": PIN,
+        "retrieved_on": AS_OF,
+        "cli_sha256": digest(args.cli.read_bytes()),
+        "eligible_geographies": len(STATES),
+        "tested_geographies": len(states),
+        "absent_geographies": sorted(STATES - rows.keys() - excluded.keys()),
+        "excluded_fields": excluded,
+        "discharges": sum(int(rows[key][0]) for key in states),
+        **outcome,
     }
     with args.out.open("x", encoding="utf-8") as stream:
         json.dump(payload, stream, indent=2)

@@ -3,22 +3,34 @@
   "type": "evaluation",
   "status": "completed",
   "created_at": "2026-11-18T00:00:00Z",
-  "updated_at": "2026-11-19T00:00:00Z",
+  "updated_at": "2026-11-23T18:42:34Z",
   "description": "Potential replacement is custom canonical JSON writer, not Serde itself; Serde is already used.",
   "verification": {
     "status": "passed",
-    "commands": []
+    "commands": [
+      "cargo test --manifest-path adapters/canonicalization_v2/Cargo.toml --locked --offline",
+      "cargo clippy --manifest-path adapters/canonicalization_v2/Cargo.toml --locked --offline --all-targets -- -D warnings",
+      "cargo deny --manifest-path adapters/canonicalization_v2/Cargo.toml --locked --config deny.toml check -s"
+    ],
+    "scope": "Isolated Rust 1.99.1 adapter and six independent v2 fingerprints from matching CLI and installed CPython 3.15.1 reports.",
+    "evidence": [
+      "adapters/canonicalization_v2/README.md",
+      "adapters/canonicalization_v2/tests/fingerprints.rs"
+    ]
   },
   "dependencies": [],
   "owners": [
     "edithatogo"
   ],
-  "capability_status": "evaluated_no_go_serde_json_canonicalizer_not_byte_compatible",
+  "capability_status": "optional_v2_report_fingerprint_locally_verified",
   "external_dependencies": [],
   "repositories": [
     "."
   ],
-  "decisions": [],
+  "decisions": [
+    "Keep the original byte-incompatibility no-go for replacing the v1 writer.",
+    "Use explicit dapane-canonical-v2 selection and a distinct domain for detached fingerprints."
+  ],
   "requirement_ids": [
     "RQ-01",
     "RQ-02",

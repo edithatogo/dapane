@@ -3,7 +3,7 @@
   "type": "research",
   "status": "archived",
   "created_at": "2026-11-08T03:52:45Z",
-  "updated_at": "2026-11-20T13:17:58Z",
+  "updated_at": "2026-11-23T18:37:09Z",
   "description": "Test whether evidence-linked, object-centric costing provides measurable advantages over strong current alternatives. Treat novelty and frontier claims as empirical questions.",
   "repositories": [
     "."
@@ -34,12 +34,15 @@
     "status": "passed",
     "commands": [
       "DAPANE_BENCH_CLI=<CLI> DAPANE_CLI=<CLI> DAPANE_PROCESS_CLI=<PNML/BPMN CLI> .venv/bin/python -m unittest discover -s benchmarks/static/tests -q",
-      ".venv/bin/python benchmarks/static/cms_funding_transport.py --source <public CMS snapshot> --cli <CLI> --out <receipt>"
+      ".venv/bin/python benchmarks/static/cms_funding_transport.py --source <public CMS snapshot> --cli <CLI> --out <receipt>",
+      ".venv/bin/python -I -B benchmarks/static/cms_funding_transport.py --calibrate --source <pinned CMS snapshot> --cli <restored CLI> --out <receipt>",
+      "DAPANE_BENCH_CLI=<restored CLI> .venv/bin/python -B -m unittest discover -s benchmarks/static/tests -p test_cms_funding.py -v"
     ],
-    "scope": "Synthetic static and native pathway baselines plus external CMS aggregate funding across 51 state/DC geographies.",
+    "scope": "Synthetic static and native pathway baselines plus CMS aggregate funding transport and held-out calibration across 51 state/DC geographies.",
     "evidence": [
       "benchmarks/static/evidence/external/cms-funding-v1.json",
-      "conductor/tracks/frontier_benchmarks_20261108/external-review.md"
+      "conductor/tracks/frontier_benchmarks_20261108/external-review.md",
+      "benchmarks/static/evidence/external/cms-funding-calibration-v1.json"
     ]
   },
   "completion_evidence": [
