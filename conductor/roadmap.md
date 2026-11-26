@@ -194,11 +194,10 @@ any later archive or removal of duplicated machinery.
 
 ## Current status and next action
 
-The numerical candidate and synthetic consumers now have scoped runtime evidence.
-The next tranche is [full genomics workbook and feature incorporation](tracks/genomics_full_incorporation_20261124/index.md).
-Both the complete v15 workbook and all existing and planned legacy features are
-required. Start by freezing the two coverage ledgers. Use the [registry](tracks.md)
-for status and the [workflow](workflow.md) for execution.
+The [genomics successor](tracks/genomics_full_incorporation_20261124/index.md)
+qualified the complete v15 workbook and all 112 active feature outcomes for
+local use. The lab pilot and live dashboard promotion remain available for
+future use. See the [registry](tracks.md) for track status.
 
 ## Representative genomics lab pilot
 
@@ -208,3 +207,14 @@ participant set up the application, generate a custom template, validate inputs
 and retrieve a report. Record setup, template and validation timings against the
 original 30-, 10- and 5-minute targets, respectively. Retain observed issues
 and the laboratory's dated acceptance decision. [Original outcome](tracks/genomics_full_incorporation_20261124/feature-audit.md#findings)
+
+## Live genomics dashboard promotion
+
+Moved to the roadmap on 26 November 2026. Revisit when a lab needs shared
+private access to the dashboard. Use an authorised existing Azure Container
+App or AWS ECS service and its approved image registry. Start with the
+synthetic data revision. Promote the exact image whose manifest was verified
+against the GitHub-hosted smoke test. Record the cloud revision and running
+digest, readiness, authenticated readback and access restrictions. Restore
+the previous revision and verify readiness and the expected table list.
+[Deployment guide](../adapters/genomics/deploy/README.md#promote-a-dashboard-image)

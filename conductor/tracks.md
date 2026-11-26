@@ -28,17 +28,17 @@ A completed planning task does not change a runtime capability from planned to q
 | [x] | [Regulatory public-finance and health-system valuation handoff for tobac](./tracks/tobac_regulatory_fiscal_valuation_20261110/index.md) | completed | RQ-01, RQ-02, RQ-07, RQ-11 |
 | [x] | [Serde and canonicalization equivalence qualification](./tracks/serde_canonicalization_qualification_20261118/index.md) | completed | RQ-01, RQ-02, RQ-03 |
 | [-] | [Genomics legacy quality-control costing](./tracks/genomics_legacy_qc_20261124/index.md) | archived | RQ-02, RQ-03, RQ-04 |
-| [~] | [Full genomics workbook and feature incorporation](./tracks/genomics_full_incorporation_20261124/index.md) | in_progress | RQ-02, RQ-03, RQ-04, RQ-07, RQ-11, RQ-12 |
+| [x] | [Full genomics workbook and feature incorporation](./tracks/genomics_full_incorporation_20261124/index.md) | completed | RQ-02, RQ-03, RQ-04, RQ-07, RQ-11, RQ-12 |
 
-## Next implementation tranche
+## Genomics incorporation
 
-Start with the [full genomics incorporation plan](tracks/genomics_full_incorporation_20261124/plan.md).
-The workbook replay is complete. The next phase delivers and verifies the
-remaining legacy and planned features in the installed successor.
+The installed successor reproduces the complete v15 workbook and qualifies all
+112 active outcomes. The [acceptance record](tracks/genomics_full_incorporation_20261124/g4-closeout.md)
+links the workbook and feature receipts and the two roadmap outcomes.
 
 ## Track disposition
 
-Ten tracks are archived, six are completed and one is in progress. The [ownership map](parallel-ownership.md) records the integrator and lane assignments.
+Ten tracks are archived and seven are completed. The [ownership map](parallel-ownership.md) records the integrator and lane assignments.
 
 The [installed core and two-provider qualification](../docs/python-provider-verification.md), [fiscal handoff](tracks/tobac_regulatory_fiscal_valuation_20261110/plan.md), [decision-provider runs](tracks/decision_integrations_20261108/plan.md) and [canonicalization qualification](tracks/serde_canonicalization_qualification_20261118/plan.md) record the delivered numerical and integration scopes. The latest fiscal comparisons cover New Zealand and Australian synthetic policy cases. The decision runs include an installed adoption model.
 
