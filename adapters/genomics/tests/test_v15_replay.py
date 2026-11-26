@@ -8,8 +8,9 @@ from zipfile import ZipFile
 
 import pytest
 from openpyxl import Workbook
+from openpyxl.formula import Tokenizer
 
-from dapane_genomics import v15_pathways, workbook_ledger
+from dapane_genomics import v15_pathways, v15_replay, workbook_ledger
 from dapane_genomics.v15_replay import CellError, WorkbookReplay, replay_workbook
 from dapane_genomics.workbook_ledger import inventory_workbook
 
@@ -168,6 +169,7 @@ def test_formula_transport_keeps_types_errors_and_exact_text_inputs():
         ("=A1", "Circular reference"),
         ("=SUM('Unlinked'!A:A)", "bounded v15 cell range"),
         ("=ABS(1)", "Unsupported v15 function"),
+        ("=SUM(1 2)", "Expected close of v15 func"),
         ('="unknown"', "Unsupported v15 token"),
         ("=", "Unexpected end of v15 formula"),
         ("=1 2", "Unconsumed tokens"),
@@ -238,6 +240,22 @@ def test_replay_rejects_binary_float_overrides_and_keeps_broken_sheet_references
         WorkbookReplay(inputs, overrides={("Costs", "A1"): 0.2})
 
 
+def test_replay_rejects_an_unrecognised_postfix_token(monkeypatch):
+    tokens = Tokenizer("=1%")
+    tokens.items[-1].value = "#"
+    monkeypatch.setattr(v15_replay, "Tokenizer", lambda _: tokens)
+    ledger = {
+        "sheets": [
+            {
+                "catalogue": {"sheet": "Costs"},
+                "cells": [{"coordinate": "A1", "formula": "=1#"}],
+            }
+        ]
+    }
+    with pytest.raises(ValueError, match="Unsupported v15 postfix operation"):
+        WorkbookReplay(ledger).value("Costs", "A1")
+
+
 def test_ledger_detects_inconsistent_archive_layout(monkeypatch):
     output = BytesIO()
     book = Workbook()
@@ -276,6 +294,53 @@ def test_ledger_detects_inconsistent_archive_layout(monkeypatch):
     monkeypatch.setattr(workbook_ledger, "_sheet_parts", lambda _: {})
     with pytest.raises(ValueError, match="reader and raw sheet relationships differ"):
         inventory_workbook(payload, catalogue)
+
+
+def test_sheet_relationship_must_point_to_an_internal_worksheet():
+    workbook = Workbook()
+    output = BytesIO()
+    workbook.save(output)
+    workbook.close()
+    layout = BytesIO()
+    with ZipFile(output) as original, ZipFile(layout, "w") as changed:
+        for name in original.namelist():
+            item = original.read(name)
+            if name == "xl/_rels/workbook.xml.rels":
+                assert b"/xl/worksheets/sheet1.xml" in item
+                item = item.replace(
+                    b"/xl/worksheets/sheet1.xml",
+                    b"/xl/not-a-worksheet.xml",
+                )
+            changed.writestr(name, item)
+    with ZipFile(layout) as archive:
+        with pytest.raises(ValueError, match="internal worksheet part"):
+            workbook_ledger._sheet_parts(archive)
+
+
+def test_pathway_sources_reject_an_incomplete_component_breakdown(monkeypatch):
+    workbook = WorkbookReplay(
+        {
+            "sheets": [
+                {
+                    "catalogue": {"sheet": "Detailed Table"},
+                    "cells": [
+                        {"coordinate": "N5", "formula": "=N6+N7", "references": ["N6"]},
+                        {"coordinate": "N6", "formula": "=10", "references": []},
+                        {"coordinate": "N7", "formula": "=20", "references": []},
+                    ],
+                },
+                {
+                    "catalogue": {"sheet": "Summary Table"},
+                    "cells": [{"coordinate": "B5", "formula": "='Detailed Table'!N5"}],
+                },
+            ],
+        }
+    )
+    with pytest.raises(ValueError, match="Detailed booked charges do not reconcile"):
+        v15_pathways._component_charges(workbook, "B5")
+    monkeypatch.setattr(v15_pathways, "_detail_charges", lambda *_: [])
+    with pytest.raises(ValueError, match="Summary component and detail disagree"):
+        v15_pathways._component_charges(workbook, "B5")
 
 
 @pytest.mark.parametrize(

@@ -302,6 +302,13 @@ The three external outcomes have evidence requirements recorded in the
 The same chat owns the full-model quality and expanded coverage readback
 on `codex/genomics-quality-evidence-20261126` in this checkout.
 
+The same chat continues the three local qualification items on
+`codex/genomics-qualification-20261126` at
+`/private/tmp/dapane-genomics-runtime.GIfcSc/delivery`, a Git worktree
+created on 26 November 2026 after external drive reads stalled. It owns
+the changed genomics adapter, track records and its Dapane PR readback.
+The external drive checkout retains the earlier commit and its local edits.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

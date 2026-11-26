@@ -39,7 +39,7 @@ from dapane_genomics.legacy_workbooks import (
     ground_truth,
     replicate_cost_rows,
 )
-from genomics_microcosting import data_management
+from genomics_microcosting import data_management, monitoring
 
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 
@@ -243,6 +243,9 @@ def test_governed_dataset_registration_rejects_a_changed_source(tmp_path):
 def test_legacy_web_launcher_loads_consumer_prepared_data(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     monkeypatch.delenv("GENOMICS_WEB_ACCESS_FILE", raising=False)
+    monkeypatch.setattr(
+        monitoring.psutil, "cpu_percent", lambda *_args, **_kwargs: 20.0
+    )
     prepared = tmp_path / "data" / "prepared"
     prepared.mkdir(parents=True)
     pl.DataFrame({"Cost": [10]}).write_parquet(prepared / "synthetic.parquet")
