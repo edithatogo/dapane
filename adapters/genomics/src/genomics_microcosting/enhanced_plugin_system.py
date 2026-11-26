@@ -313,32 +313,14 @@ class EnhancedPluginManager:
 
         class ConvertedPlugin(EnhancedPlugin):
             def __init__(self) -> None:
-                # Try to initialize with existing parameters or use defaults
-                try:
-                    # Create a temporary instance to get attributes
-                    temp_instance = cast("Callable[[], Plugin]", plugin_class)()
-                    super().__init__(
-                        name=getattr(temp_instance, "name", plugin_class.__name__),
-                        version=getattr(temp_instance, "version", "1.0.0"),
-                        description=getattr(
-                            temp_instance,
-                            "description",
-                            "Converted plugin",
-                        ),
-                    )
-                except AttributeError, TypeError, ValueError:
-                    super().__init__(
-                        name=plugin_class.__name__,
-                        version="1.0.0",
-                        description="Converted plugin",
-                    )
-
-                # Copy methods from the original plugin
-                for attr_name in dir(plugin_class):
-                    if not attr_name.startswith("_"):
-                        attr = getattr(plugin_class, attr_name)
-                        if callable(attr):
-                            setattr(self, attr_name, attr)
+                instance = cast("Callable[[], Plugin]", plugin_class)()
+                super().__init__(instance.name, instance.version, instance.description)
+                self.enabled = instance.enabled
+                for name in dir(plugin_class):
+                    if name.startswith("_"):
+                        continue
+                    if callable(getattr(plugin_class, name)):
+                        setattr(self, name, getattr(instance, name))
 
         ConvertedPlugin.__name__ = plugin_class.__name__
         return ConvertedPlugin

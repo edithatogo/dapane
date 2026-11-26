@@ -9,6 +9,7 @@ import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
+from hashlib import sha256
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -17,11 +18,19 @@ import pytest
 from flask import Flask
 from openpyxl import Workbook
 
-from dapane_genomics.legacy_models import model_rows, read_model_source, verify_model
+from dapane_genomics.legacy_models import (
+    MODEL_KEYS,
+    model_rows,
+    read_model_source,
+    verify_model,
+)
 from dapane_genomics.legacy_performance import (
     compare_baselines,
     load_baselines,
     save_baselines,
+)
+from dapane_genomics.legacy_performance import (
+    main as measure_performance,
 )
 from dapane_genomics.legacy_workbooks import (
     compare_sheet,
@@ -478,6 +487,130 @@ def test_quality_history_reports_a_value_changed_after_model_export(tmp_path):
     assert second["valid"] is False
     assert second["cost_issues"] == 1
     assert second["data_quality_score"] == 7 / 8
+    assert second["cost_issue_counts"] == {
+        "missing_or_nonfinite_cost": 0,
+        "outside_editable_bounds": 0,
+        "extended_cost_disagrees": 1,
+    }
+
+
+def test_workbook_validation_keeps_source_cost_bases_and_rejects_changed_rows(tmp_path):
+    source = tmp_path / "historical-source.csv"
+    pl.DataFrame(
+        {
+            "Test": ["Panel", "Panel", "Panel"],
+            "Category": ["Labour", "Equipment", "Equipment"],
+            "Sub-Category": ["Sequencing"] * 3,
+            "Step": ["Minutes of labour", "Annualized equipment", "Workflow total"],
+            "Estimates Price (AUD $/unit) Estimate": [60.0, 24000.0, None],
+            "Estimates Quantity of Use per Test Estimate": [2, 100, None],
+            "Estimates Unit Cost (AUD $/unit) Estimate": [2.0, 24.0, 26.0],
+        }
+    ).write_csv(source)
+    output = tmp_path / "enhanced"
+    profile = tmp_path / "profile.json"
+    profile.write_text('{"lab_name":"Synthetic Historical Lab"}', encoding="utf-8")
+    run_command(
+        tmp_path,
+        "phase3_data_enhancement",
+        "--source",
+        source,
+        "--output-dir",
+        output,
+        "--profile",
+        profile,
+    )
+    history = tmp_path / "history.json"
+    options = ("--data-dir", output, "--model", "Panel", "--history", history)
+    workbook_options = (*options, "--workbook", source, "--profile", profile)
+    run_command(tmp_path, "validation_pipeline", *workbook_options)
+    with pytest.raises(subprocess.CalledProcessError):
+        run_command(tmp_path, "validation_pipeline", *options)
+    receipts = json.loads(history.read_bytes())
+    assert receipts[0]["workbook_sha256"] == sha256(source.read_bytes()).hexdigest()
+    record = receipts[0]["models"][0]
+    assert record["matching_rows"] == record["expected_rows"] == 3
+    assert record["different_cells"] == 0
+    assert receipts[1]["models"][0]["cost_issue_counts"] == {
+        "missing_or_nonfinite_cost": 1,
+        "outside_editable_bounds": 1,
+        "extended_cost_disagrees": 2,
+    }
+
+    export = output / "Panel_enhanced.csv"
+    tables = pl.read_csv(export)
+    tables.with_columns(pl.col("Total Cost (AUD)") + 1).write_csv(export)
+    with pytest.raises(subprocess.CalledProcessError):
+        run_command(tmp_path, "validation_pipeline", *workbook_options)
+    tables.head(2).write_csv(export)
+    with pytest.raises(subprocess.CalledProcessError):
+        run_command(tmp_path, "validation_pipeline", *workbook_options)
+    export.unlink()
+    with pytest.raises(subprocess.CalledProcessError):
+        run_command(tmp_path, "validation_pipeline", *workbook_options)
+
+    changed, incomplete, missing = json.loads(history.read_bytes())[2:]
+    assert changed["models"][0]["different_cells"] == 3
+    assert incomplete["models"][0]["schema_and_count_match"] is False
+    assert missing["models"][0]["missing_file"] == export.name
+
+
+def test_strict_quality_checks_five_complete_editable_models_at_workbook_size(tmp_path):
+    rows = (
+        ("Labour", "Specimen Collection"),
+        ("Labour", "Specimen Receipt"),
+        ("Labour", "DNA Extraction"),
+        ("Equipment", "DNA Extraction"),
+        ("Equipment", "Library Preparation"),
+        ("Equipment", "Sequencing"),
+        ("Consumables", "DNA Extraction"),
+        ("Consumables", "Sequencing"),
+    )
+    counts = (214, 221, 250, 200, 206)
+    source = tmp_path / "synthetic-validated-models.csv"
+    with source.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.writer(stream)
+        writer.writerow(
+            [
+                "Test",
+                "Category",
+                "Sub-Category",
+                "Step",
+                "Unit Cost (AUD $/unit)",
+                "Units",
+            ]
+        )
+        for name, count in zip(MODEL_KEYS, counts, strict=True):
+            for index in range(count):
+                category, stage = rows[index % len(rows)]
+                writer.writerow(
+                    [name, category, stage, f"Synthetic item {index}", 3 + index % 4, 2]
+                )
+    exports = tmp_path / "enhanced"
+    run_command(
+        tmp_path, "phase3_data_enhancement", "--source", source, "--output-dir", exports
+    )
+    history = tmp_path / "quality.json"
+    options = ("--data-dir", exports, "--history", history)
+    run_command(tmp_path, "validation_pipeline", *options)
+    models = json.loads(history.read_bytes())[0]["models"]
+    assert [item["rows"] for item in models] == list(counts)
+    assert all(item["valid"] and item["data_quality_score"] == 1 for item in models)
+    path = exports / "WGS_P_enhanced.csv"
+    frame = pl.read_csv(path)
+    assert frame.height == 200
+    frame.with_columns(
+        pl.when(pl.col("Source_Row") == frame["Source_Row"][0])
+        .then(None)
+        .otherwise(pl.col("Unit Cost (AUD $/unit)"))
+        .alias("Unit Cost (AUD $/unit)")
+    ).write_csv(path)
+    with pytest.raises(subprocess.CalledProcessError) as failed:
+        run_command(tmp_path, "validation_pipeline", *options)
+    assert failed.value.returncode == 1
+    model = json.loads(history.read_bytes())[-1]["models"][3]
+    assert model["data_quality_score"] == 0.995
+    assert model["data_quality_target_passed"] is False
 
 
 def test_reference_extraction_preserves_row_addresses_and_detects_missing_inputs():
@@ -623,3 +756,19 @@ def test_legacy_performance_receipt_flags_a_six_percent_regression(
     current["threads"] = 2
     with pytest.raises(ValueError, match="threads"):
         compare_baselines(current, baseline)
+
+
+def test_performance_command_records_every_default_workload(
+    tmp_path, monkeypatch, capsys
+):
+    receipt = tmp_path / "baseline.json"
+    monkeypatch.setattr(
+        sys, "argv", ["establish_performance_baselines", "--output", str(receipt)]
+    )
+    assert measure_performance() == 0
+    assert [item["rows"] for item in load_baselines(str(receipt))["measurements"]] == [
+        1000,
+        5000,
+        10000,
+    ]
+    assert "10000 rows:" in capsys.readouterr().out

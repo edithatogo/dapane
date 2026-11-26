@@ -3,6 +3,7 @@
 
 import pytest
 
+from dapane_genomics import benchmark
 from dapane_genomics.benchmark import compare, measure
 
 
@@ -22,3 +23,23 @@ def test_benchmark_measures_the_workload_and_detects_a_regression():
     assert compare(result, changed) == [5]
     with pytest.raises(ValueError, match="platform"):
         compare(result, changed.model_copy(update={"platform": "other"}))
+
+
+def test_benchmark_rejects_unsupported_workloads_and_failed_reference(monkeypatch):
+    with pytest.raises(ValueError, match="distinct positive integers"):
+        measure((10, 10))
+    with pytest.raises(ValueError, match="three samples"):
+        measure((10,), repeats=2)
+    reference = measure((10,), repeats=3)
+    with pytest.raises(ValueError, match="timing ratio"):
+        compare(reference, reference, time_ratio=0.9)
+    with pytest.raises(ValueError, match="sizes must match"):
+        compare(reference, measure((20,), repeats=3))
+    measured = benchmark.summarise_cost_drivers
+
+    def remove_contributions(*args, **kwargs):
+        return measured(*args, **kwargs).clear()
+
+    monkeypatch.setattr(benchmark, "summarise_cost_drivers", remove_contributions)
+    with pytest.raises(RuntimeError, match="differs from its reference"):
+        measure((10,), repeats=3)

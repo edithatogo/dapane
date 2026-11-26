@@ -108,6 +108,22 @@ promotion. Keep the previous ECS task revision or Azure image digest for
 recovery. Restore it using the existing provider deployment procedure,
 then check readiness and read the expected prepared table list.
 
+### Promotion options
+
+| Option | Use when | Work to qualify |
+| --- | --- | --- |
+| Evidence-only dispatch | The repository has a candidate and deployment authority is pending. | Retain the installed-package and official offline-security results for the exact commit. Before live use, establish the link between the built, scanned and published image digest. The existing dispatch checks the digest format and the commit's jobs. |
+| Azure Container Apps | An authorised private Container Apps environment, registry and Azure Files share are already available. | Verify managed-identity image pull, internal TLS access and the read-only prepared-data mount. Record the ready revision, running digest and previous image for rollback. [Managed identity image pull](https://learn.microsoft.com/azure/container-apps/managed-identity-image-pull) [Revisions](https://learn.microsoft.com/azure/container-apps/revisions) |
+| Amazon ECS on Fargate | An authorised private ECS service, ECR repository and EFS access point are already available. | Prepare the exact task revision and scoped task roles. Verify private connectivity, the running digest and restart behaviour. Retain the previous task revision and verify rollback. [Fargate networking](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html) [ECS deployment](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html) |
+
+Keep promotion evidence-only while deployment is pending. When an authorised
+target exists, choose the provider whose private environment and durable
+storage are already maintained. Use a synthetic data revision for the first
+staging run. With an immutable digest and the existing OIDC workflow, check
+readiness, authenticated readback, role restrictions, persisted receipts
+and rollback. Carry the same qualified digest into any separately authorised
+production promotion.
+
 ## Installed coverage
 
 The Installed genomics package workflow can produce a Codecov report

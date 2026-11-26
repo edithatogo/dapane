@@ -321,13 +321,17 @@ def verify_model(frame: pl.DataFrame, model: str) -> dict:
         pl.col(name).cast(pl.Float64, strict=False) for name in _REQUIRED_COSTS
     )
     price, units, total = (pl.col(name) for name in _REQUIRED_COSTS)
-    available = pl.all_horizontal(pl.all().is_finite()).fill_null(False)
-    bad_cost = (
-        ~available
-        | ~price.is_between(0, 10000)
-        | ~units.is_between(0, 10000)
-        | ((total - price * units).abs() > 1e-8)
-    ).fill_null(True)
+    cost_checks = amounts.select(
+        (~pl.all_horizontal(pl.all().is_finite()).fill_null(False)).alias(
+            "missing_or_nonfinite_cost"
+        ),
+        (~(price.is_between(0, 10000) & units.is_between(0, 10000)))
+        .fill_null(False)
+        .alias("outside_editable_bounds"),
+        ((total - price * units).abs() > 1e-8)
+        .fill_null(False)
+        .alias("extended_cost_disagrees"),
+    )
     bad_identity = (pl.col("Test") != model).fill_null(True) | pl.any_horizontal(
         pl.col("Category", "Sub-Category", "Item")
         .cast(pl.String)
@@ -335,7 +339,7 @@ def verify_model(frame: pl.DataFrame, model: str) -> dict:
         .replace("", None)
         .is_null()
     )
-    cost_failures = amounts.select(bad_cost).to_series()
+    cost_failures = cost_checks.select(pl.any_horizontal(pl.all())).to_series()
     identity_failures = frame.select(bad_identity).to_series()
     cost_issues = cost_failures.sum()
     identity_issues = identity_failures.sum()
@@ -360,11 +364,34 @@ def verify_model(frame: pl.DataFrame, model: str) -> dict:
         "rows": frame.height,
         "cost_issues": cost_issues,
         "identity_issues": identity_issues,
+        "cost_issue_counts": cost_checks.sum().row(0, named=True),
         "data_quality_score": complete_rows / frame.height,
         "data_quality_target_passed": quality_target_passed,
         "taxonomy": model_entry,
         "valid": quality_target_passed
         and not (cost_issues or identity_issues or taxonomy_issues),
+    }
+
+
+def _compare_model_rows(expected: pl.DataFrame, actual: pl.DataFrame) -> dict:
+    comparable = disagreements = matching_rows = 0
+    same_shape = actual.columns == expected.columns and actual.height == expected.height
+    if same_shape:
+        for left, right in zip(expected.iter_rows(), actual.iter_rows(), strict=True):
+            differences = 0
+            for saved, observed in zip(left, right, strict=True):
+                if saved is not None or observed is not None:
+                    comparable += 1
+                    differences += not same_value(saved, observed)
+            disagreements += differences
+            matching_rows += differences == 0
+    return {
+        "schema_and_count_match": same_shape,
+        "expected_rows": expected.height,
+        "matching_rows": matching_rows,
+        "compared_cells": comparable,
+        "different_cells": disagreements,
+        "valid": bool(comparable and not disagreements),
     }
 
 
@@ -379,23 +406,70 @@ def quality_main(report: str, *, history: str | None = None) -> int:
     )
     parser.add_argument("--model", action="append", choices=tuple(MODEL_KEYS))
     parser.add_argument("--report", type=Path, default=Path(report))
+    parser.add_argument(
+        "--workbook",
+        type=Path,
+        help="Validate enhanced historical exports against the selected workbook",
+    )
+    parser.add_argument(
+        "--profile", type=Path, help="Profile used to enhance the export"
+    )
     if history is not None:
         parser.add_argument("--history", type=Path, default=Path(history))
     args = parser.parse_args()
+    reference = {}
+    workbook_digest = None
+    selected = args.model or MODEL_KEYS
+    if args.workbook:
+        if args.suffix != "enhanced":
+            parser.error("Workbook-backed validation requires enhanced model exports")
+        payload = args.workbook.read_bytes()
+        workbook_digest = sha256(payload).hexdigest()
+        profile = (
+            LabProfile.model_validate_json(args.profile.read_bytes())
+            if args.profile
+            else None
+        )
+        # Read the same bytes that identify this receipt.
+        with TemporaryDirectory() as directory:
+            workbook = Path(directory) / args.workbook.name
+            workbook.write_bytes(payload)
+            source = model_rows(read_model_source(workbook))
+        source, _ = _normalise(source, profile)
+        reference = {
+            name: apply_template(frame, MODEL_KEYS[name])
+            for (name,), frame in source.group_by("Test")
+        }
+    elif args.profile:
+        parser.error("A profile requires workbook-backed validation")
     findings = []
-    for name in args.model or MODEL_KEYS:
+    for name in selected:
         path = args.data_dir / _model_filename(name, args.suffix)
         if path.is_file():
             data = path.read_bytes()
-            finding = verify_model(pl.read_csv(data, infer_schema_length=None), name)
+            if args.workbook:
+                expected = reference.get(name)
+                if expected is None:
+                    finding = {"model": name, "valid": False, "missing_reference": True}
+                else:
+                    actual = pl.read_csv(data, schema_overrides=expected.schema)
+                    finding = {"model": name, **_compare_model_rows(expected, actual)}
+            else:
+                finding = verify_model(
+                    pl.read_csv(data, infer_schema_length=None), name
+                )
             finding["sha256"] = sha256(data).hexdigest()
         else:
             finding = {"model": name, "valid": False, "missing_file": path.name}
         findings.append(finding)
     receipt = {"timestamp": datetime.now(UTC).isoformat(), "models": findings}
+    scope = "Editable model validation"
+    if workbook_digest:
+        receipt["workbook_sha256"] = workbook_digest
+        scope = f"Historical workbook export validation for SHA-256 `{workbook_digest}`"
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(
-        "# Model validation\n\n"
+        f"# Model validation\n\n{scope}\n\n"
         + "\n".join(f"- {item['model']}: {json.dumps(item)}" for item in findings)
         + "\n",
         encoding="utf-8",
@@ -438,20 +512,16 @@ def compare_models_main(default_dir: str, suffix: str) -> int:
             failed = True
             continue
         actual = pl.read_csv(path, schema_overrides=expected.schema)
-        if actual.columns != expected.columns or actual.height != expected.height:
+        comparison = _compare_model_rows(expected, actual)
+        if not comparison["schema_and_count_match"]:
             comparisons.append(f"{name}: schema or row count mismatch")
             failed = True
             continue
-        comparable = disagreements = 0
-        for left, right in zip(expected, actual, strict=True):
-            for saved, observed in zip(left, right, strict=True):
-                if saved is not None or observed is not None:
-                    comparable += 1
-                    disagreements += not same_value(saved, observed)
         comparisons.append(
-            f"{name}: {comparable} cells checked, {disagreements} differences"
+            f"{name}: {comparison['compared_cells']} cells checked, "
+            f"{comparison['different_cells']} differences"
         )
-        failed |= bool(disagreements or not comparable)
+        failed |= not comparison["valid"]
     output = "\n".join(comparisons) + "\n"
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
