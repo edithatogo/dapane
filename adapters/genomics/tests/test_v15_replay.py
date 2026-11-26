@@ -432,7 +432,9 @@ def test_native_pathways_require_the_expected_revision_and_reconcile_all_stages(
         },
     }
     monkeypatch.setattr(
-        v15_pathways, "pathway_requests", lambda _: {"pathways": {"x": pathway}}
+        v15_pathways,
+        "pathway_requests",
+        lambda _, **kwargs: {"pathways": {"x": pathway}},
     )
     report = {
         "status": "complete",
@@ -447,6 +449,26 @@ def test_native_pathways_require_the_expected_revision_and_reconcile_all_stages(
         v15_pathways.evaluate_pathways({})
     report["lines"][0]["exact"] = exact
     assert v15_pathways.evaluate_pathways({})["pathways"]["x"]["report"] == report
+
+
+def test_adjustment_rate_requires_the_complete_set_before_editing():
+    formula = "=SUM(1,2,3)*0.27"
+    cells = [{"coordinate": "A1", "formula": formula}]
+    ledger = {"sheets": [{"catalogue": {"sheet": "Synthetic"}, "cells": cells}]}
+    with pytest.raises(ValueError, match="nonnegative exact decimal string"):
+        v15_replay.apply_adjustment_rate(ledger, "-1")
+    with pytest.raises(ValueError, match="Expected 2,927 adjustment formulas"):
+        v15_replay.apply_adjustment_rate(ledger, "0.1375")
+    assert cells[0]["formula"] == formula
+
+    cells.extend(
+        {"coordinate": f"A{row}", "formula": formula} for row in range(2, 2928)
+    )
+    cells.append({"coordinate": "B1", "formula": "=SUM(1,2)*0.27"})
+    assert v15_replay.apply_adjustment_rate(ledger, "0.1375") == Fraction(11, 80)
+    assert all(cell["formula"] == "=SUM(1,2,3)*0.1375" for cell in cells[:-1])
+    assert cells[-1]["formula"] == "=SUM(1,2)*0.27"
+    assert WorkbookReplay(ledger).value("Synthetic", "A1") == Fraction(33, 40)
 
 
 def test_one_calculation_pattern_uses_each_sheet_and_each_literal():

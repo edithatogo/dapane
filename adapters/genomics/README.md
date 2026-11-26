@@ -56,6 +56,16 @@ same ledger and writes native AUD and USD pathway reports, including source
 coordinates, stage amounts and recorded overlaps. Keep these outputs in
 restricted storage and use a new file for each run.
 
+For an adjustment-rate scenario, pass an exact decimal fraction of direct
+cost to the pathway command. For example, `0.1375` applies 13.75% and `0`
+applies zero. The command recalculates the workbook scenario and reconciles
+the resulting stages and totals to the native valued lines. The scenario
+receipt records the exact rate and labels the overhead price assumption.
+
+```sh
+dapane-genomics-pathways /restricted/v15-ledger.json /restricted/rate-report.json --adjustment-rate 0.1375
+```
+
 The v15 formulas use four calculation families. A cell can return a value,
 combine values with arithmetic, aggregate values with `SUM` or `AVERAGE`,
 or calculate an annuity with `PMT`. These operations compose. For example,
@@ -75,7 +85,8 @@ checks the original formula at every target.
 
 From the checkout or unpacked source distribution, compare two installed
 genomics wheels on the authorised v15 workbook. Use separate Python 3.15.1
-environments for the baseline and candidate.
+environments for the baseline and candidate. Run the comparison script with
+the wheel built alongside it.
 
 ```sh
 /path/to/candidate/bin/python -I tools/verify_v15_scenarios.py \

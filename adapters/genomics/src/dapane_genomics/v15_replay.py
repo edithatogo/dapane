@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import operator
+import re
 from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -49,6 +50,27 @@ _BINARY = {
     "*": (2, operator.mul),
     "/": (2, operator.truediv),
 }
+_ADJUSTMENT_FORMULA = re.compile(
+    r"^(=SUM\([^(),]+,[^(),]+,[^(),]+\)\s*\*\s*)[0-9]+(?:\.[0-9]+)?\s*$", re.IGNORECASE
+)
+
+
+def apply_adjustment_rate(ledger: dict[str, Any], rate: str) -> Fraction:
+    """Apply one exact rate to the adjustment formulas in a disposable v15 ledger."""
+    if not isinstance(rate, str) or re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", rate) is None:
+        raise ValueError("Adjustment rate must be a nonnegative exact decimal string")
+    fraction = Fraction(rate)
+    formulas = [
+        (cell, match[1])
+        for sheet in ledger["sheets"]
+        for cell in sheet["cells"]
+        if (match := _ADJUSTMENT_FORMULA.fullmatch(cell.get("formula", ""))) is not None
+    ]
+    if len(formulas) != 2_927:
+        raise ValueError(f"Expected 2,927 adjustment formulas, found {len(formulas):,}")
+    for cell, subtotal in formulas:
+        cell["formula"] = subtotal + rate
+    return fraction
 
 
 def _numeric(value: Expression) -> Fraction | CellError:

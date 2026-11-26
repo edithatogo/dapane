@@ -298,6 +298,23 @@ Synthetic cases detect changed rational values, changed JSON types, changed
 error codes and missing cells. The local success receipt contains evaluator
 and source fingerprints plus scenario counts and digests.
 
+### Native adjustment scenarios
+
+The installed `dapane-genomics-pathways --adjustment-rate` option applies
+the same 2,927 substitutions as the workbook verifier. Each rate is an exact
+decimal fraction of direct cost. The native receipt and the derived
+`genomics-report --pathways` summary carry the exact scenario rate. The
+overhead quotes identify the rate as an assumption.
+
+On CPython 3.15.1 both the zero and 13.75% cases reconciled **ten AUD/USD
+pathway totals, 100 stages and 1,610 valued lines per case** to the
+recalculated workbook. An independent comparison with the historical
+native receipt checked every direct-cost line against its original amount
+and every overhead line against the exact scenario-to-historical rate
+ratio. The report's receipt digest and totals matched the corresponding
+native output. The default native command reproduced the earlier historical
+receipt byte for byte. [Consumer commands](../../../adapters/genomics/README.md#original-workbook-replay)
+
 ## Detailed pathway and resource costing
 
 The [pathway adapter](../../../adapters/genomics/src/dapane_genomics/v15_pathways.py)

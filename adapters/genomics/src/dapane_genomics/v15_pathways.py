@@ -7,6 +7,7 @@ import argparse
 import json
 import re
 from collections import Counter, defaultdict
+from copy import deepcopy
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
@@ -18,7 +19,7 @@ from genomics_microcosting.dapane_adapter import (
 )
 from genomics_microcosting.dapane_workbook import historical_use, new_historical_request
 
-from .v15_replay import WorkbookReplay
+from .v15_replay import WorkbookReplay, apply_adjustment_rate
 
 _SUMMARY = "Summary Table"
 _DETAIL = "Detailed Table"
@@ -137,11 +138,17 @@ def _append_charge(
     component: str,
     summary_cell: str,
     fx: Fraction,
+    *,
+    adjustment_rate: str | None = None,
 ) -> None:
     currency = request["policy"]["currency"]
     locator = f"{charge.sheet}!{charge.coordinate} booked at {_SUMMARY}!{summary_cell}"
     if currency == "USD":
         locator += f" with {_SUMMARY}!B81"
+    validation = "source_verified"
+    if component == "overhead" and adjustment_rate is not None:
+        locator += f" with scenario adjustment rate {adjustment_rate}"
+        validation = "unvalidated"
     quote = {
         "id": line_id,
         "kind": "resource_use",
@@ -161,7 +168,7 @@ def _append_charge(
             "version": "preserved-v15",
             "evidence": "derived",
             "access": "restricted",
-            "validation": "source_verified",
+            "validation": validation,
             "content_digest": f"sha256:{WORKBOOK_SHA256}",
             "locator": locator,
         },
@@ -175,6 +182,7 @@ def _append_charge(
 def _stage_bookings(
     book: WorkbookReplay,
     row: int,
+    rate: Fraction,
 ) -> tuple[list[_Booking], Fraction]:
     bookings = []
     direct = Fraction(0)
@@ -193,7 +201,6 @@ def _stage_bookings(
 
     overhead_cell = f"K{row}"
     overhead = _number(book, _SUMMARY, overhead_cell)
-    rate = Fraction("0.27")
     if overhead != direct * rate:
         raise ValueError(f"Historical overhead base differs at {overhead_cell}")
     bookings.append(
@@ -207,16 +214,22 @@ def _stage_bookings(
     return bookings, direct + overhead
 
 
-def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
+def pathway_requests(
+    ledger: dict[str, Any], *, adjustment_rate: str | None = None
+) -> dict[str, Any]:
     """Return exact AUD and USD inputs with source links for each booked charge."""
     if ledger["source_sha256"] != WORKBOOK_SHA256:
         raise ValueError("Pathway mapping requires the original v15 workbook ledger")
+    rate = Fraction("0.27")
+    if adjustment_rate is not None:
+        ledger = deepcopy(ledger)
+        rate = apply_adjustment_rate(ledger, adjustment_rate)
     book = WorkbookReplay(ledger)
     fx = _number(book, _SUMMARY, "B81")
     pathways = {}
     for pathway, start in _PATHWAYS.items():
         stage_bookings = {
-            row: _stage_bookings(book, row) for row in range(start, start + 10)
+            row: _stage_bookings(book, row, rate) for row in range(start, start + 10)
         }
         for currency, conversion, total_col in (
             ("AUD", Fraction(1), "N"),
@@ -241,6 +254,7 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
                         booking.component,
                         booking.summary_cell,
                         conversion,
+                        adjustment_rate=adjustment_rate,
                     )
                 expected = _number(book, _SUMMARY, f"{total_col}{row}")
                 if expected != stage_cost * conversion:
@@ -277,7 +291,7 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
     sheets = {
         source["catalogue"]["id"]: source["catalogue"] for source in ledger["sheets"]
     }
-    return {
+    result = {
         "source_sha256": WORKBOOK_SHA256,
         "aud_to_usd": _exact(fx),
         "pathways": pathways,
@@ -285,6 +299,9 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
         "resource_tables": [sheets[f"WB{index}"] for index in range(28, 36)],
         "sensitivity_views": [sheets[identifier] for identifier in _SENSITIVITY],
     }
+    if adjustment_rate is not None:
+        result["scenario"] = {"adjustment_rate": _exact(rate)}
+    return result
 
 
 def _validated_stages(
@@ -316,9 +333,11 @@ def _validated_stages(
     return stage_values
 
 
-def evaluate_pathways(ledger: dict[str, Any]) -> dict[str, Any]:
+def evaluate_pathways(
+    ledger: dict[str, Any], *, adjustment_rate: str | None = None
+) -> dict[str, Any]:
     """Value each request in the native kernel and reconcile every recorded stage."""
-    result = pathway_requests(ledger)
+    result = pathway_requests(ledger, adjustment_rate=adjustment_rate)
     for pathway in result["pathways"].values():
         report = evaluate_native_request(pathway["request"])
         _validated_stages(pathway, report)
@@ -358,7 +377,10 @@ def summarise_pathways(result: dict[str, Any]) -> dict[str, Any]:
                 for component, amount in sorted(components.items())
             ],
         }
-    return {"source_sha256": result["source_sha256"], "pathways": views}
+    summary = {"source_sha256": result["source_sha256"], "pathways": views}
+    if "scenario" in result:
+        summary["scenario"] = result["scenario"]
+    return summary
 
 
 def main() -> None:
@@ -368,8 +390,14 @@ def main() -> None:
     parser.add_argument(
         "output", type=Path, help="New restricted file for the exact reports"
     )
+    parser.add_argument(
+        "--adjustment-rate",
+        help="Nonnegative exact decimal fraction of direct cost, such as 0.1375",
+    )
     args = parser.parse_args()
-    result = evaluate_pathways(json.loads(args.ledger.read_bytes()))
+    result = evaluate_pathways(
+        json.loads(args.ledger.read_bytes()), adjustment_rate=args.adjustment_rate
+    )
     args.output.touch(mode=0o600, exist_ok=False)
     args.output.write_text(
         json.dumps(result, separators=(",", ":")) + "\n", encoding="utf-8"

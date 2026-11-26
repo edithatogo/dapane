@@ -336,6 +336,10 @@ The same chat owns G6.5 in this checkout on
 verification runner, its tests, and the Phase 6 evidence. The two installed
 comparators and authorised workbook are read-only inputs.
 
+The same chat owns G6.6 on `codex/genomics-native-adjustment-scenarios`.
+Its scope covers the shared adjustment-rate recipe, the native pathway
+adapter and the resulting private workbook and report comparisons.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:
