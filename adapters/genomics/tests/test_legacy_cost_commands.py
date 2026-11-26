@@ -3,9 +3,11 @@
 
 import csv
 import json
+import os
 import runpy
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import Mock
@@ -195,6 +197,37 @@ def test_same_second_dataset_versions_reopen_with_distinct_values(
         assert reopened.verify_integrity("costs", version)
         assert reopened.load_dataset("costs", version)["amount"].item() == amount
     assert reopened.load_dataset("costs")["amount"].item() == 7
+
+
+def test_governed_dataset_registration_rejects_a_changed_source(tmp_path):
+    sources = [tmp_path / edition / "costs.parquet" for edition in ("first", "second")]
+    managers = [data_management.DataManager(tmp_path) for _ in sources]
+    labels = {"owner": "synthetic laboratory", "access": "restricted"}
+    for path, amount in zip(sources, (4, 7), strict=True):
+        path.parent.mkdir()
+        pl.DataFrame({"amount": [amount]}).write_parquet(path)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        writes = [
+            pool.submit(manager.register_dataset, path, labels)
+            for manager, path in zip(managers, sources, strict=True)
+        ]
+        ids = [write.result(timeout=15) for write in writes]
+
+    reader = data_management.DataManager(tmp_path)
+    assert {
+        version.version_id for version in reader.get_dataset_versions("costs")
+    } == set(ids)
+    assert all(
+        version.metadata["access"] == "restricted"
+        for version in reader.get_dataset_versions("costs")
+    )
+    if os.name == "posix":
+        assert (tmp_path / "metadata" / "datasets.json").stat().st_mode & 0o777 == 0o600
+    assert reader.load_dataset("costs", ids[0])["amount"].item() == 4
+    pl.DataFrame({"amount": [99]}).write_parquet(sources[0])
+    with pytest.raises(ValueError, match="registered checksum"):
+        reader.load_dataset("costs", ids[0])
+    assert reader.load_dataset("costs", ids[1])["amount"].item() == 7
 
 
 def test_legacy_web_launcher_loads_consumer_prepared_data(tmp_path, monkeypatch):

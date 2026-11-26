@@ -64,6 +64,9 @@ PR retains the exact hosted run and provider links for this checkpoint.
 
 ## Remaining acceptance
 
+The [next acceptance checkpoint](g4-closeout.md) records the disposition
+of the 15 outstanding outcomes listed here.
+
 The twelve local or evidence outcomes are data governance, template
 setup time, the complete source-fed analysis chain, distribution quality,
 lab-management exchange, workbook migration, analysis performance, API

@@ -261,6 +261,57 @@ def _overlap(groups: Sequence[Set[Hashable]]) -> dict[str, int]:
     }
 
 
+def _distribution_audit(frame: pl.DataFrame, cost_column: str) -> dict[str, Any]:
+    from genomics_microcosting.data_quality_assurance import DataAnomalyDetector
+
+    if (
+        frame.is_empty()
+        or not (dtype := frame.schema.get(cost_column))
+        or not dtype.is_numeric()
+    ):
+        raise ValueError("Distribution audit requires rows and a numeric cost column")
+    detector = DataAnomalyDetector()
+    models = []
+    valid_rows = 0
+    for (name,), model in frame.group_by("Test", maintain_order=True):
+        values = model[cost_column].cast(pl.Float64)
+        missing = values.null_count()
+        finite = values.filter(values.is_finite())
+        priced = finite.filter(finite >= 0)
+        numeric = model.select(
+            pl.when(pl.col(cost_column).is_finite() & (pl.col(cost_column) >= 0))
+            .then(pl.col(cost_column).cast(pl.Float64))
+            .alias(cost_column),
+        )
+        valid_rows += len(priced)
+        models.append(
+            {
+                "model": name,
+                "rows": model.height,
+                "valid_rows": len(priced),
+                "missing": missing,
+                "nonfinite": model.height - len(finite) - missing,
+                "negative": len(finite) - len(priced),
+                "median": priced.median(),
+                "quartile_1": priced.quantile(0.25, "linear"),
+                "quartile_3": priced.quantile(0.75, "linear"),
+                "anomalies": detector.detect_cost_anomalies(
+                    numeric,
+                    [cost_column],
+                ),
+            }
+        )
+    return {
+        "cost_column": cost_column,
+        "criterion": "finite nonnegative cost on each supplied row",
+        "rows": frame.height,
+        "valid_rows": valid_rows,
+        "valid_percentage": 100 * valid_rows / frame.height,
+        "above_99_5_percent": 200 * valid_rows > 199 * frame.height,
+        "models": models,
+    }
+
+
 def _write_json(path: Path, data: dict[str, Any]) -> None:
     with path.open("x", encoding="utf-8") as output:
         json.dump(data, output, indent=2)
@@ -330,6 +381,7 @@ def write_model_template(
 
 
 def main() -> int:
+    """Generate a template, audit a prepared table or migrate workbook inputs."""
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     template = commands.add_parser("template", help="Write a shipped model template")
@@ -346,12 +398,33 @@ def main() -> int:
     standardize.add_argument(
         "--profile", type=Path, help="Optional lab profile JSON or YAML"
     )
+    standardize.add_argument(
+        "--cost-column",
+        help="Also audit cross-model cost distributions",
+    )
+    migrate = commands.add_parser(
+        "migrate", help="Carry declared inputs to a new workbook layout"
+    )
+    migrate.add_argument("source", type=Path)
+    migrate.add_argument("template", type=Path)
+    migrate.add_argument("mapping", type=Path)
+    migrate.add_argument("output", type=Path)
     args = parser.parse_args()
+    if args.command == "migrate":
+        from .workbook_migration import migrate_workbook
+
+        try:
+            migrate_workbook(args.source, args.template, args.mapping, args.output)
+        except (OSError, KeyError, ValueError) as error:
+            parser.error(str(error))
+        return 0
     profile = load_lab_profile(args.profile) if args.profile else None
     if args.command == "template":
         write_model_template(args.model, args.output, profile)
         return 0
     frame, audit = standardize_models(pl.read_parquet(args.source), profile)
+    if args.cost_column:
+        audit["cost_distribution"] = _distribution_audit(frame, args.cost_column)
     args.output_directory.mkdir(mode=0o700)
     frame.write_parquet(args.output_directory / "standardized.parquet")
     _write_json(args.output_directory / "taxonomy-audit.json", audit)

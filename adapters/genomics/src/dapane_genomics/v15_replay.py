@@ -247,6 +247,7 @@ class WorkbookReplay:
         return result
 
     def reference(self, sheet: str, reference: str) -> Expression:
+        """Resolve a single cell or range, including references to another sheet."""
         if "!" in reference:
             target, reference = reference.rsplit("!", 1)
             sheet = target.strip("'").replace("''", "'")
@@ -300,6 +301,7 @@ def replay_workbook(ledger: dict[str, Any]) -> dict[str, Any]:
 
 
 def main() -> None:
+    """Write replayed V15 formula results to a new restricted file."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ledger", type=Path)
     parser.add_argument(

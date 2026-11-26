@@ -28,7 +28,7 @@ Status: in_progress
 
 - [x] G4.1 Package the optional genomics component and legacy entry points under Dapane ownership. Verify its dependencies and notices and preserve ingestion of authorised, versioned sources. [Standalone installed artifacts](verification.md#standalone-installed-artifacts)
 - [~] G4.2 Run the full workbook and feature ledgers from clean installed artifacts with the legacy checkout absent. Require reproducible evidence for every shipped and planned outcome. Reconcile any historical or statistical differences against their recorded oracle and keep all restricted source data outside public artifacts. [Clean-install qualification and remaining outcomes](g4-2-qualification.md)
-- [~] G4.3 Review and fix the candidate, run the normal release and exact-head GitHub-hosted offline-security gates, and record both verified coverage counts with their supporting evidence. [Acceptance counts and GitHub controls](g4-3-acceptance.md)
+- [~] G4.3 Review and fix the candidate, run the normal release and exact-head GitHub-hosted offline-security gates, and record both verified coverage counts with their supporting evidence. [Acceptance counts and GitHub controls](g4-3-acceptance.md) and [remaining outcome verification](g4-closeout.md)
 
 ## Phase 5 — Preserve assets and rehearse cutover
 
