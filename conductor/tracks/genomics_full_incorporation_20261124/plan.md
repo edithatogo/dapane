@@ -50,6 +50,7 @@ moved to the roadmap on 26 November 2026. Both remain in the frozen
 - [x] G6.4 Reuse ordered subexpressions across formula families and qualify six workbook scenarios with exact error parity. [Nested calculations and six-scenario parity](verification.md#nested-calculations-and-six-scenario-parity)
 - [x] G6.5 Reproduce all six comparisons in a maintained local runner using two installed versions. [Repeatable scenario verification](verification.md#repeatable-scenario-verification)
 - [x] G6.6 Carry the zero and 13.75% adjustment-rate scenarios through native costing and the pathway report. [Native adjustment scenarios](verification.md#native-adjustment-scenarios)
+- [x] G6.7 Share the legacy average calculation across ranges and explicit cell lists. [Legacy average reuse](verification.md#legacy-average-reuse)
 
 Integration requires the official offline-security check on the exact PR head
 and the receiving `main` revision. GitHub Actions retains the run for each

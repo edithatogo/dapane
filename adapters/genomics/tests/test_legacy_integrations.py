@@ -18,6 +18,7 @@ from genomics_microcosting.advanced_scenario_modeling import (
     AdvancedScenarioManager,
 )
 from genomics_microcosting.analysis_config import AnalysisConfigurationManager
+from genomics_microcosting.calculation_engine import CalculationEngine
 from genomics_microcosting.config_validation import (
     ConfigurationValidator,
     ConfigurationVersionManager,
@@ -31,6 +32,49 @@ from genomics_microcosting.enhanced_plugin_system import (
 )
 from genomics_microcosting.excel_version_control import WorkbookVersionControl
 from genomics_microcosting.extensibility_framework import ExtensibilityFramework
+from genomics_microcosting.formula_parser import parse_formula
+from genomics_microcosting.sheet_manager import SheetManager
+
+
+def test_legacy_averages_preserve_range_and_cell_behaviour(tmp_path):
+    source = tmp_path / "synthetic.xlsx"
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Synthetic"
+    worksheet.append(("Number", "Label"))
+    worksheet.append((2, "text"))
+    worksheet.append((8, None))
+    worksheet.append((None, "row marker"))
+    worksheet.append(("=A2*2", None))
+    workbook.save(source)
+    workbook.close()
+    engine = CalculationEngine(
+        SheetManager(
+            source, sheet_configs={"Synthetic": {"header_rows": 1, "data_starts_at": 2}}
+        )
+    )
+
+    cases = (
+        ("=AVERAGE(A3:A2)", "average_range", 5.0),
+        ("=AVERAGE(A2,A3)", "average_cells", 5.0),
+        ("=AVERAGE(A3:A4)", "average_range", None),
+        ("=AVERAGE(A3,A4)", "average_cells", None),
+        ("=AVERAGE(A2:B2)", "average_range", None),
+        ("=AVERAGE(A2,B2)", "average_cells", None),
+        ("=AVERAGE(A5:A5)", "average_range", 4.0),
+        ("=AVERAGE(A5,A3)", "average_cells", 6.0),
+    )
+    for row, (formula, kind, expected) in enumerate(cases, 2):
+        parsed = parse_formula(formula)
+        assert parsed is not None and parsed["type"] == kind
+        assert engine.execute_formula(formula, "Synthetic", f"D{row}") == expected
+
+    assert (
+        engine.execute_formula(
+            {"type": "average_cells", "cells": []}, "Synthetic", "D10"
+        )
+        is None
+    )
 
 
 def test_local_plugin_discovery_lifecycle_and_legacy_conversion(tmp_path):
