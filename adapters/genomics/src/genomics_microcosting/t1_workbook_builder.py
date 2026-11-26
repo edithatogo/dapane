@@ -12,12 +12,82 @@ from zipfile import ZipFile
 
 from defusedxml import ElementTree
 from openpyxl import load_workbook
-from openpyxl.utils.cell import column_index_from_string, coordinate_from_string
+from openpyxl.formula.translate import Translator
+from openpyxl.utils.cell import (
+    column_index_from_string,
+    coordinate_from_string,
+    range_boundaries,
+    rows_from_range,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
 
     from openpyxl.workbook import Workbook
+
+
+_EXCEL_MAX_COLUMN = 16_384
+_EXCEL_MAX_ROW = 1_048_576
+
+
+def _expand_ranges(
+    changes: Sequence[Mapping[str, Any]],
+) -> list[Mapping[str, Any]]:
+    edits: list[Mapping[str, Any]] = []
+    for change in changes:
+        if "ranges" not in change:
+            edits.append(change)
+            continue
+
+        ranges = change["ranges"]
+        original = change["original"]
+        replacement = change["replacement"]
+        if (
+            not isinstance(ranges, (list, tuple))
+            or not ranges
+            or not isinstance(replacement, str)
+            or not replacement.startswith("=")
+        ):
+            msg = "Formula range changes require target ranges and a formula"
+            raise ValueError(msg)
+        source = (
+            Translator(original, origin=change["cell"])
+            if isinstance(original, str) and original.startswith("=")
+            else None
+        )
+        seed = Translator(replacement, origin=change["cell"])
+        for target in ranges:
+            if not isinstance(target, str):
+                msg = "Formula targets must be Excel range strings"
+                raise TypeError(msg)
+            left, top, right, bottom = range_boundaries(target)
+            if (
+                left is None
+                or top is None
+                or right is None
+                or bottom is None
+                or not (
+                    1 <= left <= right <= _EXCEL_MAX_COLUMN
+                    and 1 <= top <= bottom <= _EXCEL_MAX_ROW
+                )
+            ):
+                msg = "Formula targets must be bounded Excel ranges"
+                raise ValueError(msg)
+            edits.extend(
+                {
+                    "sheet": change["sheet"],
+                    "cell": coordinate,
+                    "original": (
+                        original
+                        if source is None
+                        else source.translate_formula(coordinate)
+                    ),
+                    "replacement": seed.translate_formula(coordinate),
+                }
+                for row in rows_from_range(target)
+                for coordinate in row
+            )
+    return edits
 
 
 def build_workbook_copy(
@@ -29,6 +99,9 @@ def build_workbook_copy(
     selected_version: str,
 ) -> str:
     """Apply explicit cell changes to a new workbook after all preconditions pass.
+
+    A formula change may name several target A1 ranges in "ranges". The
+    "cell" then anchors the original and replacement formulas for translation.
 
     Returns the output file SHA-256. A workbook writer does not recalculate formulas.
     The caller must separately qualify calculation, rights, and scientific validity.
@@ -42,6 +115,7 @@ def build_workbook_copy(
     if sha256(source.read_bytes()).hexdigest() != source_sha256:
         msg = "Source workbook hash mismatch"
         raise ValueError(msg)
+    changes = _expand_ranges(changes)
     if not changes:
         msg = "A scenario must specify changes"
         raise ValueError(msg)

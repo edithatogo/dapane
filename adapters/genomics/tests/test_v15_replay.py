@@ -446,3 +446,75 @@ def test_native_pathways_require_the_expected_revision_and_reconcile_all_stages(
         v15_pathways.evaluate_pathways({})
     report["lines"][0]["exact"] = exact
     assert v15_pathways.evaluate_pathways({})["pathways"]["x"]["report"] == report
+
+
+def test_one_calculation_pattern_uses_each_sheet_and_each_literal():
+    inputs = [
+        {"coordinate": "A1", "stored_type": "n", "stored_value": "4"},
+        {"coordinate": "B2", "stored_type": "n", "stored_value": "3"},
+        {"coordinate": "C1", "formula": "=A1*1.25"},
+        {"coordinate": "C2", "formula": "=B2*0.5"},
+        {"coordinate": "C3", "formula": "=12/A1"},
+        {"coordinate": "C4", "formula": "=A1/#REF!"},
+    ]
+    ledger = {
+        "sheets": [
+            {"catalogue": {"sheet": "First"}, "cells": inputs},
+            {
+                "catalogue": {"sheet": "Second"},
+                "cells": [inputs[0] | {"stored_value": "8"}, *inputs[1:]],
+            },
+        ]
+    }
+    book = WorkbookReplay(ledger)
+    assert book.value("First", "C1") == 5
+    assert book.value("First", "C2") == Fraction(3, 2)
+    assert book.value("First", "C3") == 3
+    assert book.value("First", "C4") == CellError("#REF!")
+    assert book.value("Second", "C1") == 10
+    assert len(book._rules) == 1
+    changed = WorkbookReplay(ledger, overrides={("First", "A1"): "2.8"})
+    assert changed.value("First", "C1") == Fraction(7, 2)
+    assert changed.value("Second", "C1") == 10
+
+
+def test_rule_variations_keep_precedence_argument_order_and_error_handling():
+    formulas = (
+        "=SUM(2,4)",
+        "=AVERAGE(2,4)",
+        "=PMT(2,4)",
+        "=12/3*2",
+        "=12/(3*2)",
+        "=1+3*2",
+        "=1*3+2",
+        "=#REF!+#DIV/0!",
+        "=#DIV/0!+#REF!",
+        "=" + "+".join(["1"] * 1100),
+    )
+    book = WorkbookReplay(
+        {
+            "sheets": [
+                {
+                    "catalogue": {"sheet": "Cases"},
+                    "cells": [
+                        {"coordinate": f"A{i}", "formula": formula}
+                        for i, formula in enumerate(formulas, 1)
+                    ],
+                }
+            ]
+        }
+    )
+    assert book.value("Cases", "A1") == 6
+    assert book.value("Cases", "A2") == 3
+    with pytest.raises(ValueError, match="Unsupported v15 function: PMT"):
+        book.value("Cases", "A3")
+    assert len(book._rules) == 1
+    assert [book.value("Cases", f"A{i}") for i in range(4, 11)] == [
+        8,
+        2,
+        7,
+        5,
+        CellError("#REF!"),
+        CellError("#DIV/0!"),
+        1100,
+    ]

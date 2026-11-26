@@ -7,8 +7,10 @@ import argparse
 import json
 from datetime import UTC, datetime
 from functools import partial
+from hashlib import sha256
 from os.path import relpath
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Any
 
 import jinja2
@@ -221,6 +223,48 @@ def create_cost_analysis_plots(
     return [name for name, _ in figures]
 
 
+def _write_pathway_report(receipt: Path, output: Path) -> None:
+    from .v15_pathways import _fraction, summarise_pathways
+
+    payload = receipt.read_bytes()
+    summary = summarise_pathways(json.loads(payload))
+    summary["receipt_sha256"] = sha256(payload).hexdigest()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(dir=output.parent, prefix=".pathway-report-") as staged:
+        staging = Path(staged)
+        try:
+            plotter = plotting_backend()
+        except VisualizationUnavailableError:
+            plotter = None
+        if plotter is not None:
+            for number, (name, pathway) in enumerate(summary["pathways"].items(), 1):
+                currency = pathway["currency"]
+                amounts = pl.DataFrame(
+                    {
+                        "Component": [
+                            row["component"] for row in pathway["by_component"]
+                        ],
+                        currency: [
+                            float(_fraction(row["exact"]))
+                            for row in pathway["by_component"]
+                        ],
+                    }
+                )
+                figure = plot_category_costs(amounts, "Component", currency, title=name)
+                chart = f"pathway-{number:02}.png"
+                try:
+                    figure.savefig(staging / chart, bbox_inches="tight", dpi=150)
+                finally:
+                    plotter.close(figure)
+                pathway["chart"] = chart
+        (staging / "pathway-report.json").write_text(
+            json.dumps(summary, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+        )
+        output.mkdir(mode=0o700)
+        for file in staging.iterdir():
+            file.rename(output / file.name)
+
+
 def main() -> int:
     """Write a prepared-data report or a source-linked planning receipt."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -228,12 +272,26 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, default=Path("reports"))
     parser.add_argument("--template", type=Path)
     parser.add_argument("--pdf", action="store_true", help="Require PDF rendering")
-    parser.add_argument(
+    source = parser.add_mutually_exclusive_group()
+    source.add_argument(
         "--planning",
         type=Path,
         help="Generate a source-linked planning JSON report",
     )
+    source.add_argument(
+        "--pathways",
+        type=Path,
+        help="Summarise a valued v15 pathway receipt by stage and component",
+    )
     args = parser.parse_args()
+    if args.pathways:
+        if args.pdf or args.template:
+            parser.error("Pathway reports provide exact JSON and charts")
+        try:
+            _write_pathway_report(args.pathways, args.output_dir)
+        except (OSError, KeyError, TypeError, ValueError, ZeroDivisionError) as error:
+            parser.error(str(error))
+        return 0
     if args.planning:
         from .planning_analysis import planning_analysis
 

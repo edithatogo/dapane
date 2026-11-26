@@ -7,8 +7,10 @@ import argparse
 import json
 import operator
 from collections import Counter
+from collections.abc import Callable
 from dataclasses import dataclass
 from fractions import Fraction
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +28,8 @@ class CellError:
 
 type CellValue = Fraction | bool | str | CellError | None
 type Expression = CellValue | tuple[CellValue, ...]
+type _Rule = Callable[[_Formula], Expression]
+type _Pattern = tuple[tuple[str, str | int], ...]
 
 _DIVISION_ERROR = CellError("#DIV/0!")
 _VALUE_ERROR = CellError("#VALUE!")
@@ -93,14 +97,60 @@ def _function(name: str, arguments: list[Expression]) -> CellValue:
     return total / len(numbers) if numbers else _DIVISION_ERROR
 
 
+def _syntax(token: Token) -> tuple[str, str | int]:
+    """Keep the grammar needed to parse the expression, with its data bound at use."""
+    if token.type == "OPERAND":
+        return token.type, ""
+    if token.type == "FUNC":
+        return token.type, token.subtype
+    if token.type == "OPERATOR-INFIX":
+        return token.type, _BINARY[token.value][0]
+    return token.type, token.value
+
+
+def _scale(rule: _Rule, factor: int | Fraction, formula: _Formula) -> Expression:
+    value = _numeric(rule(formula))
+    return value if isinstance(value, CellError) else value * factor
+
+
+def _combine(
+    operation: Callable[[Fraction, Fraction], Fraction],
+    left: Expression,
+    right: Expression,
+) -> Expression:
+    first = _numeric(left)
+    second = _numeric(right)
+    if isinstance(first, CellError):
+        return first
+    if isinstance(second, CellError):
+        return second
+    try:
+        return operation(first, second)
+    except ZeroDivisionError:
+        return _DIVISION_ERROR
+
+
 class _Formula:
-    def __init__(self, workbook: WorkbookReplay, sheet: str, formula: str) -> None:
-        self.workbook = workbook
-        self.sheet = sheet
-        self.tokens = [
-            token for token in Tokenizer(formula).items if token.type != "WHITE-SPACE"
-        ]
+    """Bind one cell's tokens and sheet to a reusable expression."""
+
+    def __init__(
+        self, tokens: tuple[Token, ...], reference: Callable[[str], Expression]
+    ) -> None:
+        self.tokens = tokens
+        self.reference = reference
         self.position = 0
+
+    def _operand(self, index: int) -> Expression:
+        token = self.tokens[index]
+        match token.subtype:
+            case "NUMBER":
+                return Fraction(token.value)
+            case "RANGE":
+                return self.reference(token.value)
+            case "ERROR":
+                return CellError(token.value)
+            case _:
+                raise ValueError(f"Unsupported v15 token: {token.type}/{token.subtype}")
 
     def _peek(self) -> Token | None:
         return self.tokens[self.position] if self.position < len(self.tokens) else None
@@ -117,15 +167,12 @@ class _Formula:
         if token.type != kind or token.subtype != "CLOSE":
             raise ValueError(f"Expected close of v15 {kind.lower()}")
 
-    def _atom(self) -> Expression:
+    def _atom(self) -> _Rule:
+        index = self.position
         token = self._take()
         match token.type, token.subtype:
-            case "OPERAND", "NUMBER":
-                return Fraction(token.value)
-            case "OPERAND", "RANGE":
-                return self.workbook.reference(self.sheet, token.value)
-            case "OPERAND", "ERROR":
-                return CellError(token.value)
+            case "OPERAND", _:
+                return lambda formula: formula._operand(index)
             case "PAREN", "OPEN":
                 value = self._expression()
                 self._close("PAREN")
@@ -138,11 +185,14 @@ class _Formula:
                     self._take()
                     arguments.append(self._expression())
                 self._close("FUNC")
-                return _function(token.value[:-1].upper(), arguments)
+                return lambda formula: _function(
+                    formula.tokens[index].value[:-1].upper(),
+                    [argument(formula) for argument in arguments],
+                )
             case _:
                 raise ValueError(f"Unsupported v15 token: {token.type}/{token.subtype}")
 
-    def _primary(self) -> Expression:
+    def _primary(self) -> _Rule:
         token = self._peek()
         if (
             token is not None
@@ -150,46 +200,45 @@ class _Formula:
             and token.value in ("-", "+")
         ):
             self._take()
-            number = _numeric(self._primary())
-            if isinstance(number, CellError) or token.value == "+":
-                return number
-            return -number
+            return partial(_scale, self._primary(), 1 if token.value == "+" else -1)
 
         value = self._atom()
+        percent_divisor = 1
         while (token := self._peek()) is not None and token.type == "OPERATOR-POSTFIX":
             if self._take().value != "%":
                 raise ValueError("Unsupported v15 postfix operation")
-            number = _numeric(value)
-            value = number if isinstance(number, CellError) else number / 100
+            percent_divisor *= 100
+        if percent_divisor != 1:
+            value = partial(_scale, value, Fraction(1, percent_divisor))
         return value
 
-    def _expression(self, minimum: int = 1) -> Expression:
-        value = self._primary()
+    def _expression(self, minimum: int = 1) -> _Rule:
+        first = self._primary()
+        steps: list[tuple[int, _Rule]] = []
         while (token := self._peek()) is not None and token.type == "OPERATOR-INFIX":
-            precedence, operation = _BINARY[token.value]
+            precedence, _ = _BINARY[token.value]
             if precedence < minimum:
                 break
+            index = self.position
             self._take()
-            left = _numeric(value)
-            right = _numeric(self._expression(precedence + 1))
-            if isinstance(left, CellError):
-                value = left
-            elif isinstance(right, CellError):
-                value = right
-            else:
-                try:
-                    value = operation(left, right)
-                except ZeroDivisionError:
-                    value = _DIVISION_ERROR
-        return value
+            steps.append((index, self._expression(precedence + 1)))
+        if not steps:
+            return first
 
-    def evaluate(self) -> CellValue:
+        def calculate(formula: _Formula) -> Expression:
+            result = first(formula)
+            for index, right in steps:
+                _, operation = _BINARY[formula.tokens[index].value]
+                result = _combine(operation, result, right(formula))
+            return result
+
+        return calculate
+
+    def compile(self) -> _Rule:
         value = self._expression()
         if self._peek() is not None:
             raise ValueError("Unconsumed tokens in v15 formula")
-        if isinstance(value, tuple):
-            return _VALUE_ERROR
-        return Fraction(0) if value is None else value
+        return value
 
 
 class WorkbookReplay:
@@ -209,6 +258,7 @@ class WorkbookReplay:
         }
         self._values: dict[tuple[str, str], CellValue] = {}
         self._active: set[tuple[str, str]] = set()
+        self._rules: dict[_Pattern, _Rule] = {}
         for (sheet, coordinate), value in (overrides or {}).items():
             cell = self.cells.get(sheet, {}).get(coordinate)
             if cell is None or "formula" in cell or cell["stored_type"] != "n":
@@ -236,7 +286,7 @@ class WorkbookReplay:
 
         self._active.add(key)
         try:
-            result = _Formula(self, sheet, cell["formula"]).evaluate()
+            result = self._evaluate(sheet, cell["formula"])
         except (KeyError, ValueError) as error:
             raise ValueError(
                 f"Unable to recalculate {sheet}!{coordinate}: {error}"
@@ -245,6 +295,21 @@ class WorkbookReplay:
             self._active.remove(key)
         self._values[key] = result
         return result
+
+    def _evaluate(self, sheet: str, formula: str) -> CellValue:
+        tokens = tuple(
+            token for token in Tokenizer(formula).items if token.type != "WHITE-SPACE"
+        )
+        pattern = tuple(map(_syntax, tokens))
+        expression = _Formula(tokens, partial(self.reference, sheet))
+        rule = self._rules.get(pattern)
+        if rule is None:
+            rule = expression.compile()
+            self._rules[pattern] = rule
+        value = rule(expression)
+        if isinstance(value, tuple):
+            return _VALUE_ERROR
+        return Fraction(0) if value is None else value
 
     def reference(self, sheet: str, reference: str) -> Expression:
         """Resolve a single cell or range, including references to another sheet."""

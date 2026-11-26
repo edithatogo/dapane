@@ -102,15 +102,14 @@ def main() -> None:
             *[
                 {
                     "sheet": "Detailed Table",
-                    "cell": target,
+                    "cell": first,
+                    "ranges": [first, second],
                     "original": None,
-                    "replacement": f"='BI - Comp Use - VCGS'!{source}{factor}",
+                    "replacement": f"='BI - Comp Use - VCGS'!U105{factor}",
                 }
-                for target, source, factor in [
-                    ("M1050", "U105", ""),
-                    ("O1050", "W105", ""),
-                    ("M1299", "U105", "*3"),
-                    ("O1299", "W105", "*3"),
+                for first, second, factor in [
+                    ("M1050", "O1050", ""),
+                    ("M1299", "O1299", "*3"),
                 ]
             ],
         ],

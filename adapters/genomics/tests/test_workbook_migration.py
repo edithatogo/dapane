@@ -3,11 +3,13 @@
 
 import json
 import sys
+from hashlib import sha256
 
 import pytest
 from openpyxl import Workbook, load_workbook
 
 from dapane_genomics.model_tables import main
+from genomics_microcosting.t1_workbook_builder import build_workbook_copy
 
 
 def test_migrate_preserves_the_source_template_and_formulas(tmp_path, monkeypatch):
@@ -71,3 +73,55 @@ def test_migrate_preserves_the_source_template_and_formulas(tmp_path, monkeypatc
             main()
         assert not invalid.exists()
     assert (source.read_bytes(), template.read_bytes()) == original
+
+
+def test_workbook_formula_seed_fills_disjoint_ranges_and_rejects_overlaps(tmp_path):
+    source = tmp_path / "source.xlsx"
+    workbook = Workbook()
+    sheet = workbook.active
+    for row in (2, 3, 6, 8):
+        sheet[f"D{row}"] = f"=B{row}*$C$1"
+    workbook.save(source)
+    workbook.close()
+    digest = sha256(source.read_bytes()).hexdigest()
+    change = {
+        "sheet": "Sheet",
+        "cell": "D2",
+        "ranges": ["D2:D3", "D6"],
+        "original": "=B2*$C$1",
+        "replacement": "=B2*$C$1+1",
+    }
+    output = tmp_path / "scenario.xlsx"
+    build_workbook_copy(
+        source,
+        output,
+        source_sha256=digest,
+        changes=[change],
+        selected_version="synthetic",
+    )
+    reopened = load_workbook(output)
+    try:
+        for row in (2, 3, 6):
+            assert reopened.active[f"D{row}"].value == f"=B{row}*$C$1+1"
+        assert reopened.active["D8"].value == "=B8*$C$1"
+    finally:
+        reopened.close()
+    rejected = tmp_path / "rejected.xlsx"
+    with pytest.raises(ValueError, match="Duplicate workbook target"):
+        build_workbook_copy(
+            source,
+            rejected,
+            source_sha256=digest,
+            selected_version="synthetic",
+            changes=[change | {"ranges": ["D2:D3", "D3"]}],
+        )
+    with pytest.raises(ValueError, match="Source precondition failed: Sheet!D4"):
+        build_workbook_copy(
+            source,
+            rejected,
+            source_sha256=digest,
+            selected_version="synthetic",
+            changes=[change | {"ranges": ["D2:D4"]}],
+        )
+    assert not rejected.exists()
+    assert sha256(source.read_bytes()).hexdigest() == digest
