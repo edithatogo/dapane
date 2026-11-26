@@ -28,7 +28,17 @@ class CellError:
 
 type CellValue = Fraction | bool | str | CellError | None
 type Expression = CellValue | tuple[CellValue, ...]
-type _Rule = Callable[[_Formula], Expression]
+
+
+@dataclass(frozen=True, slots=True, eq=False)
+class _BoundValue:
+    """Use identity to keep equal results from different sources distinct."""
+
+    value: Expression
+
+
+type _Binding = tuple[str | _BoundValue, ...]
+type _Rule = Callable[[_Formula], _BoundValue]
 type _Pattern = tuple[tuple[str, str | int], ...]
 
 _DIVISION_ERROR = CellError("#DIV/0!")
@@ -66,7 +76,7 @@ def _stored(cell: dict[str, Any]) -> CellValue:
     return cell.get("text", value)
 
 
-def _pmt(arguments: list[Expression]) -> Fraction | CellError:
+def _pmt(arguments: tuple[Expression, ...]) -> Fraction | CellError:
     rate, periods, present = map(_numeric, arguments)
     for number in (rate, periods, present):
         if isinstance(number, CellError):
@@ -79,7 +89,17 @@ def _pmt(arguments: list[Expression]) -> Fraction | CellError:
     return -present * rate * growth / (growth - 1)
 
 
-def _function(name: str, arguments: list[Expression]) -> CellValue:
+def _compute(name: str, arguments: tuple[Expression, ...]) -> CellValue:
+    if name in _BINARY:
+        first, second = map(_numeric, arguments)
+        if isinstance(first, CellError):
+            return first
+        if isinstance(second, CellError):
+            return second
+        try:
+            return _BINARY[name][1](first, second)
+        except ZeroDivisionError:
+            return _DIVISION_ERROR
     if name == "PMT" and len(arguments) == 3:
         return _pmt(arguments)
     if name not in {"SUM", "AVERAGE"}:
@@ -108,47 +128,30 @@ def _syntax(token: Token) -> tuple[str, str | int]:
     return token.type, token.value
 
 
-def _scale(rule: _Rule, factor: int | Fraction, formula: _Formula) -> Expression:
-    value = _numeric(rule(formula))
-    return value if isinstance(value, CellError) else value * factor
-
-
-def _combine(
-    operation: Callable[[Fraction, Fraction], Fraction],
-    left: Expression,
-    right: Expression,
-) -> Expression:
-    first = _numeric(left)
-    second = _numeric(right)
-    if isinstance(first, CellError):
-        return first
-    if isinstance(second, CellError):
-        return second
-    try:
-        return operation(first, second)
-    except ZeroDivisionError:
-        return _DIVISION_ERROR
+def _scale(rule: _Rule, factor: int | Fraction, formula: _Formula) -> _BoundValue:
+    return formula.book._apply("*", rule(formula), formula.book._number(str(factor)))
 
 
 class _Formula:
     """Bind one cell's tokens and sheet to a reusable expression."""
 
-    def __init__(
-        self, tokens: tuple[Token, ...], reference: Callable[[str], Expression]
-    ) -> None:
+    def __init__(self, tokens: tuple[Token, ...], book: WorkbookReplay, sheet: str):
         self.tokens = tokens
-        self.reference = reference
+        self.book = book
+        self.sheet = sheet
         self.position = 0
 
-    def _operand(self, index: int) -> Expression:
+    def _operand(self, index: int) -> _BoundValue:
         token = self.tokens[index]
         match token.subtype:
             case "NUMBER":
-                return Fraction(token.value)
+                return self.book._number(token.value)
             case "RANGE":
-                return self.reference(token.value)
+                return self.book._reference(self.sheet, token.value)
             case "ERROR":
-                return CellError(token.value)
+                return self.book._share(
+                    ("error", token.value), partial(CellError, token.value)
+                )
             case _:
                 raise ValueError(f"Unsupported v15 token: {token.type}/{token.subtype}")
 
@@ -185,9 +188,9 @@ class _Formula:
                     self._take()
                     arguments.append(self._expression())
                 self._close("FUNC")
-                return lambda formula: _function(
+                return lambda formula: formula.book._apply(
                     formula.tokens[index].value[:-1].upper(),
-                    [argument(formula) for argument in arguments],
+                    *(argument(formula) for argument in arguments),
                 )
             case _:
                 raise ValueError(f"Unsupported v15 token: {token.type}/{token.subtype}")
@@ -225,11 +228,12 @@ class _Formula:
         if not steps:
             return first
 
-        def calculate(formula: _Formula) -> Expression:
+        def calculate(formula: _Formula) -> _BoundValue:
             result = first(formula)
             for index, right in steps:
-                _, operation = _BINARY[formula.tokens[index].value]
-                result = _combine(operation, result, right(formula))
+                result = formula.book._apply(
+                    formula.tokens[index].value, result, right(formula)
+                )
             return result
 
         return calculate
@@ -259,6 +263,7 @@ class WorkbookReplay:
         self._values: dict[tuple[str, str], CellValue] = {}
         self._active: set[tuple[str, str]] = set()
         self._rules: dict[_Pattern, _Rule] = {}
+        self._calculations: dict[_Binding, _BoundValue] = {}
         for (sheet, coordinate), value in (overrides or {}).items():
             cell = self.cells.get(sheet, {}).get(coordinate)
             if cell is None or "formula" in cell or cell["stored_type"] != "n":
@@ -301,24 +306,54 @@ class WorkbookReplay:
             token for token in Tokenizer(formula).items if token.type != "WHITE-SPACE"
         )
         pattern = tuple(map(_syntax, tokens))
-        expression = _Formula(tokens, partial(self.reference, sheet))
+        expression = _Formula(tokens, self, sheet)
         rule = self._rules.get(pattern)
         if rule is None:
             rule = expression.compile()
             self._rules[pattern] = rule
-        value = rule(expression)
+        value = rule(expression).value
         if isinstance(value, tuple):
             return _VALUE_ERROR
         return Fraction(0) if value is None else value
 
+    def _share(self, key: _Binding, calculate: Callable[[], Expression]) -> _BoundValue:
+        if (result := self._calculations.get(key)) is None:
+            result = _BoundValue(calculate())
+            self._calculations[key] = result
+        return result
+
+    def _number(self, value: str) -> _BoundValue:
+        return self._share(("number", value), partial(Fraction, value))
+
+    def _apply(self, name: str, *operands: _BoundValue) -> _BoundValue:
+        # The leading three SUM inputs form the subtotal used by v15 adjustments.
+        if name == "SUM" and len(operands) > 3:
+            operands = (self._apply(name, *operands[:3]), *operands[3:])
+        return self._share(
+            (name, *operands),
+            lambda: _compute(name, tuple(node.value for node in operands)),
+        )
+
     def reference(self, sheet: str, reference: str) -> Expression:
         """Resolve a single cell or range, including references to another sheet."""
+        return self._reference(sheet, reference).value
+
+    def _reference(self, sheet: str, reference: str) -> _BoundValue:
         if "!" in reference:
             target, reference = reference.rsplit("!", 1)
             sheet = target.strip("'").replace("''", "'")
         if ":" not in reference:
-            return self.value(sheet, reference.replace("$", "").upper())
-        left, top, right, bottom = range_boundaries(reference.upper())
+            coordinate = reference.replace("$", "").upper()
+            return self._share(
+                ("cell", sheet, coordinate), partial(self.value, sheet, coordinate)
+            )
+        reference = reference.upper()
+        return self._share(
+            ("range", sheet, reference), partial(self._range, sheet, reference)
+        )
+
+    def _range(self, sheet: str, reference: str) -> tuple[CellValue, ...]:
+        left, top, right, bottom = range_boundaries(reference)
         if None in (left, top, right, bottom):
             raise ValueError("Expected a bounded v15 cell range")
         return tuple(
