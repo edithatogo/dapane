@@ -269,6 +269,13 @@ operational API changes in `codex/genomics-dashboard-controls-20261125`
 in the implementation checkout. The next operation is to qualify the PR
 heads and integrate the input changes before the dashboard changes.
 
+After PRs #89, #90 and #91 merged, the same chat owns
+`codex/genomics-clean-qualification-20261126` in the implementation
+checkout for G4.2. The scope is the clean installed ledger and its
+Conductor evidence. The legacy checkout is outside the consumer's read
+scope, and native controls are read-only. The next operation is to
+qualify the evidence commit on GitHub.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

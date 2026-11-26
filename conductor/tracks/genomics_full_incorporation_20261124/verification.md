@@ -552,10 +552,13 @@ browser's CSV byte for byte. The tutorial video SHA-256 was
 [Lab setup tutorial](../../../adapters/genomics/deploy/lab-setup.md)
 
 The delivered artefacts cover the audit's missing deployment automation,
-training and Codecov workflow code. The legacy taxonomy overlap thresholds
-still need a representative source. The historical Detailed Table has
-1,336 rows and the entire `Sub-Category` field is unpopulated. The
-original-workbook replay retains those missing values.
+training and Codecov workflow code. The prepared Detailed Table export
+left the `Sub-Category` field blank. The original workbook has 96
+nonempty subcategory label cells in its 1,336-row Detailed Table.
+The installed cost-driver reader recovered those labels for the overlap
+check. The [clean-install qualification](g4-2-qualification.md)
+records both denominator choices, the complete feature ledger
+disposition and the remaining acceptance criteria.
 
 ## Hosted qualification
 
