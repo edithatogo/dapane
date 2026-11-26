@@ -3,12 +3,16 @@
 
 import csv
 import json
+import runpy
 import subprocess
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
+from unittest.mock import Mock
 
 import polars as pl
 import pytest
+from flask import Flask
 from openpyxl import Workbook
 
 from dapane_genomics.legacy_models import model_rows, read_model_source, verify_model
@@ -23,6 +27,7 @@ from dapane_genomics.legacy_workbooks import (
     ground_truth,
     replicate_cost_rows,
 )
+from genomics_microcosting import data_management
 
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 
@@ -168,6 +173,53 @@ def test_manage_data_restores_version_and_exports_both_formats(tmp_path):
             target,
         )
         assert read(target).equals(original)
+
+
+def test_same_second_dataset_versions_reopen_with_distinct_values(
+    tmp_path, monkeypatch
+):
+    clock = Mock(wraps=datetime)
+    clock.now.return_value = datetime(2026, 11, 26, tzinfo=UTC)
+    monkeypatch.setattr(data_management, "datetime", clock)
+    manager = data_management.DataManager(tmp_path)
+    versions = []
+    for folder, amount in (("first", 4), ("second", 7)):
+        source = tmp_path / folder / "costs.parquet"
+        source.parent.mkdir()
+        pl.DataFrame({"amount": [amount]}).write_parquet(source)
+        versions.append(manager.register_dataset(source))
+
+    assert versions[0] != versions[1]
+    reopened = data_management.DataManager(tmp_path)
+    for version, amount in zip(versions, (4, 7), strict=True):
+        assert reopened.verify_integrity("costs", version)
+        assert reopened.load_dataset("costs", version)["amount"].item() == amount
+    assert reopened.load_dataset("costs")["amount"].item() == 7
+
+
+def test_legacy_web_launcher_loads_consumer_prepared_data(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("GENOMICS_WEB_ACCESS_FILE", raising=False)
+    prepared = tmp_path / "data" / "prepared"
+    prepared.mkdir(parents=True)
+    pl.DataFrame({"Cost": [10]}).write_parquet(prepared / "synthetic.parquet")
+
+    def run(app, **options):
+        assert options == {
+            "host": "127.0.0.1",
+            "port": 5000,
+            "debug": False,
+            "use_debugger": False,
+            "use_reloader": False,
+        }
+        with app.test_client() as client:
+            assert client.get("/health").status_code == 200
+            assert client.get("/api/tables").json == ["synthetic"]
+
+    monkeypatch.setattr(Flask, "run", run)
+    with pytest.raises(SystemExit) as result:
+        runpy.run_path(str(SCRIPTS / "run_web.py"), run_name="__main__")
+    assert result.value.code == 0
 
 
 @pytest.mark.parametrize(

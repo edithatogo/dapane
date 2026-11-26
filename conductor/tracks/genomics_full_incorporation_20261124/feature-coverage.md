@@ -9,6 +9,9 @@ interfaces. The private ledger also retains each source plan's heading,
 line, text and version. A test importing a module is a candidate for review.
 Completion requires a test of the installed behaviour.
 
+The [G4.3 acceptance record](g4-3-acceptance.md) gives the current workbook
+and feature coverage counts and the evidence for the GitHub controls below.
+
 ## Existing interfaces
 
 The successor keeps the `genomics-microcosting` distribution and the

@@ -219,6 +219,21 @@ def test_prediction_reproduces_independent_holdout_values():
     model = fit_cost_model(training, features=("orders", "hours"), response="cost")
     holdout = pl.DataFrame({"orders": [5, 6], "hours": [4, 1]})
     assert model.predict(holdout).to_list() == pytest.approx([51, 42])
+    assert model.predict(holdout.reverse()).to_list() == pytest.approx([42, 51])
+    scaled = fit_cost_model(
+        training.with_columns(pl.col("cost") * 2),
+        features=("orders", "hours"),
+        response="cost",
+    )
+    assert scaled.predict(holdout).to_list() == pytest.approx([102, 84])
+    zero = fit_cost_model(
+        training.with_columns(pl.lit(0).alias("cost")),
+        features=("orders", "hours"),
+        response="cost",
+    )
+    assert zero.predict(holdout).to_list() == [0, 0]
+    with pytest.raises(ValueError, match="identify the model"):
+        fit_cost_model(training.head(3), features=("orders", "hours"), response="cost")
     with pytest.raises(ValueError, match="identify the model"):
         fit_cost_model(
             training.with_columns(pl.col("orders").alias("hours")),

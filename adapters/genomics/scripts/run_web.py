@@ -4,6 +4,7 @@
 
 import logging
 import sys
+from pathlib import Path
 
 from genomics_microcosting.web import create_app
 
@@ -17,7 +18,8 @@ def main() -> int:
     sys.stdout.write("Press CTRL+C to stop the server." + "\n")
 
     try:
-        app = create_app()
+        prepared = Path("data/prepared")
+        app = create_app(prepared if prepared.is_dir() else None)
         app.run(
             host="127.0.0.1",
             port=5000,

@@ -284,6 +284,13 @@ the Dapane-hosted workflow. The official image check passed on
 which merged at `cf9019e`. The same chat owns the pin update and exact-head
 verification in [Dapane PR #92](https://github.com/edithatogo/dapane/pull/92).
 
+The same integration chat continues G4.3 in the implementation checkout on
+`codex/genomics-final-acceptance-20261126`. It owns the dataset and launcher
+fixes, installed qualification, Conductor acceptance record and Dapane's
+`Protect main` ruleset and OIDC coverage dispatch. GitHub and Codecov readback
+is scoped to Dapane and the tested commits. The other roadmap branches and
+legacy source remain in their assigned scopes.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:
