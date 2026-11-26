@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import subprocess
 from collections import Counter
 from fractions import Fraction
@@ -13,6 +12,8 @@ from hashlib import sha256
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
+
+from dapane_genomics.v15_replay import apply_adjustment_rate
 
 CATALOGUE = (
     Path(__file__).resolve().parents[1]
@@ -24,9 +25,6 @@ INPUT_CHANGES = {
     "halve_exchange_rate": ("WB02", "B81", "0.5"),
 }
 ADJUSTMENT_RATES = {"zero_adjustment": "0", "revised_adjustment": "0.1375"}
-ADJUSTMENT = re.compile(
-    r"^(=SUM\([^(),]+,[^(),]+,[^(),]+\)\s*\*\s*)[0-9.]+\s*$", re.IGNORECASE
-)
 EXPECTED_CHANGES = {
     "original": 0,
     "double_quantity": 2_962,
@@ -63,18 +61,7 @@ def _scenario(ledger: dict[str, Any], name: str) -> None:
             Fraction(cell["stored_value"]) * Fraction(multiplier)
         )
     if name in ADJUSTMENT_RATES:
-        rate = ADJUSTMENT_RATES[name]
-        changed = 0
-        for sheet in ledger["sheets"]:
-            for cell in sheet["cells"]:
-                match = ADJUSTMENT.fullmatch(cell.get("formula", ""))
-                if match is not None:
-                    cell["formula"] = match[1] + rate
-                    changed += 1
-        if changed != 2_927:
-            raise ValueError(
-                f"{name}: expected 2,927 adjustment formulas, found {changed:,}"
-            )
+        apply_adjustment_rate(ledger, ADJUSTMENT_RATES[name])
 
 
 def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
