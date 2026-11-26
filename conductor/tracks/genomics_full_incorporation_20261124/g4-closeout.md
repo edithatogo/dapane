@@ -1,10 +1,11 @@
 # Remaining genomics acceptance
 
 The [G4.3 record](g4-3-acceptance.md) established 99 of 114 verified
-outcomes. This checkpoint verifies nine additional outcomes, bringing
-the verified count to **108 of 114 frozen outcomes (94.74%)**. The
-representative lab pilot moved to the [roadmap](../../roadmap.md#representative-genomics-lab-pilot)
-on 26 November 2026. The active ledger now contains 113 outcomes.
+outcomes. The previous checkpoint brought the count to 108. The coverage
+targets now pass, bringing the total to **109 of 113 active outcomes
+(96.46%)** or **109 of 114 frozen outcomes (95.61%)**. The representative
+lab pilot moved to the [roadmap](../../roadmap.md#representative-genomics-lab-pilot)
+on 26 November 2026.
 The original workbook retains **35 of 35 worksheets, 36,411 of 36,411
 formula coordinates and 10 of 10 valuation pathways**.
 
@@ -23,17 +24,21 @@ formula coordinates and 10 of 10 valuation pathways**.
 | `guides` | Qualified | The installed commands executed the guide's standardization, planning and migration examples. The checks also exercised rejected inputs, authenticated HTTP readback and contribution verification from the source distribution. [Analyst guide](../../../adapters/genomics/deploy/analyst-guide.md) |
 | `research-reporting` | Audit completed with open findings | The published article, PDF supplement and table workbook were located and checked. The audit identifies which deterministic results reproduce and which uncertainty values still need their original run. [Reporting evidence](#study-reporting-evidence) |
 | `source-command-behavior` | Qualified | The updated source smoke command verified the installed home page, model wizard and client asset. The original repository-only release-screen command passed a numeric-only fixture and blocked a reserved-domain identifier fixture with exit 1. This brings the source-command audit to 74 of 74. |
-| `coverage-targets` | Open | Each of eight analytical modules exceeded 90%. Both modules added in this checkpoint reached 100%. The inherited library and full added-module targets remain open. [Coverage measurements](#coverage-measurements) |
+| `coverage-targets` | Qualified | The inherited library reached 85.71%. The added components covered all 1,941 executable statements. Each of eight analytical modules exceeded 90%. [Coverage measurements](#coverage-measurements) |
 
 ## Installed qualification
 
-The source archive was built at `cf67a08df41df76bcab138aecce3929a86015998`
-on CPython 3.15.1. The clean consumer could load both installed distributions.
-Source checkouts, the runtime source in the distribution archive and network
-access were denied for the installed suites. **201 packaged tests and 1,339
-inherited tests passed**. The independent lab client used an ephemeral
-loopback server with the installed wheel. The workbook inventory, formula
-results and native pathway output matched the retained files byte for byte.
+The clean source package at `6911ebbe6621126aa9487160619c8401e06662ca`
+passed **267 packaged tests** on CPython 3.15.1 with network and checkout
+reads denied. The byte-identical wheel passed **1,339 inherited tests**.
+The native Dapane 0.1.0 wheel was installed alongside the adapter.
+The inventory, exact formula results and all ten native valuation outputs
+matched the previous accepted receipts byte for byte. The corrected raw
+exports also reconciled 21,925 populated cells across the five models.
+
+Earlier acceptance at `cf67a08df41df76bcab138aecce3929a86015998` used
+201 packaged cases and the same 1,339 inherited cases. The separate
+independent lab client used an ephemeral loopback server.
 
 The seven other performance workloads had median elapsed changes from
 −1.35% to +3.43% against the prior installed candidate. Their numerical
@@ -59,7 +64,7 @@ values, omitted rows and missing models fail workbook validation. The separate
 exact replay qualifies the workbook's original formulas and cached totals.
 
 The editable-data check reports three cost failure counts alongside the
-strict multi-field score. The original exports have 293 multiplication
+strict multi-field score. The original exports have 355 multiplication
 disagreements, 62 rows outside the editable bounds, 170 missing or
 nonfinite amount rows and 29 identity failures. Counts can overlap. For
 example, labour quantity is in minutes while wages are hourly, and equipment
@@ -77,24 +82,20 @@ unresolved component inputs and a strict score above 99.5%.
 
 ## Coverage measurements
 
-The combined statement coverage includes the packaged and inherited suites,
-the exact workbook replay, the installed analytical and guard cases,
-workbook preparation, 2,894 passing unit-cost comparisons, model export
-validation, and standard report generation in four formats.
+The statement coverage combines installed packaged and inherited suites,
+the exact workbook replay and model export checks. Earlier analytical and
+report command measurements were reused for byte-identical runtime source
+files. The two changed runtime modules use fresh measurements.
 
 | Scope | Covered statements | Coverage | Frozen target |
 | --- | ---: | ---: | --- |
-| All 127 installed modules | 14,070 / 16,895 | 83.28% | Whole-package comparison |
-| 109 inherited modules | 12,344 / 14,998 | 82.30% | At least 85% |
-| 18 modules added since the predecessor | 1,726 / 1,897 | 90.99% | Greater than 90% for new components, with 100% under R-271 |
+| All 127 installed modules | 14,794 / 16,937 | 87.35% | Whole-package comparison |
+| 109 inherited modules | 12,853 / 14,996 | 85.71% | At least 85% |
+| 18 modules added since the predecessor | 1,941 / 1,941 | 100% | Greater than 90% for new components, with 100% under R-271 |
 | Eight analytical modules | 891 / 977 | 91.20% | Greater than 90% in every module. Observed 90.15% to 92.81%. |
-| Two modules added in this checkpoint | 105 / 105 | 100% | 100% for these new components |
 
-The retained coverage XML identifies the executable lines for the remaining
-tests. Reaching 85% in the inherited modules requires at least 405 more
-covered statements at the measured denominator. The added-module aggregate
-exceeds 90%. Individual coverage varies, and 171 statements remain
-uncovered across that group.
+The added group contains 17 modules with executable statements and one
+package initializer with none. All executable statements in the group ran.
 
 ## Study reporting evidence
 
@@ -116,7 +117,8 @@ separate source edition. [Results article](https://doi.org/10.1016/j.gim.2023.10
 The study reports cost per rare-disease test in 2023 AUD. Tables 1 and 2
 display five assay estimates. At published precision, the original
 `Summary Table` matches all five central AUD figures, 20 of 20 resource
-categories and 48 of 50 stage figures. Supplemental Table 3's unrounded
+categories and 48 of 50 stage figures. The exceptions are proband exome's
+storage and analysis stages. Supplemental Table 3's unrounded
 proband exome total differs from the workbook by AUD 0.25. The 14 scenarios
 for the five assays reproduce all 70 midpoint entries from `DSA - Summary`
 through Supplemental Tables 4–7 and article Table 3. The article intervals
@@ -150,8 +152,22 @@ PSA run remain outstanding for full reporting acceptance. [Genetics in Medicine 
 
 ## Retained receipts
 
-The 26 November 2026 qualification catalogue retains these artifacts and
+The 26 November 2026 qualification records retain the artifacts and
 their producing commands in authorised storage.
+
+| Latest artifact | SHA-256 |
+| --- | --- |
+| Genomics wheel | `f959d36107347fc51f35e3e54e4931495519e8aa293edb13168649a933f69d8e` |
+| Genomics source distribution | `ac084a8c753b0fb59083ebf222541c1c6a52c4003aa7cb5c57c9aafb2e924c86` |
+| Packaged JUnit | `560f1705f566710d2cc391ead661fad4607a09f6c4c93e1baecf1eaba6c45255` |
+| Inherited JUnit | `4e59a9c3275dd0913223d3e678378dfdd3ab9ea3dd5f470ddcadbc0d599a7303` |
+| Installed statement populations | `7ac6dba3047a081c712abbde99a012c379efa463b1bbc8f126449b44cfa9b88c` |
+| Coverage readback | `752a6fa49d015a2175cdecdd730f36a0526da8184641d96dbab45d522fb2423c` |
+| Historical model validation | `a658d0f29405981ca767639f880a8b002309cadc167d72dd20e92615c1c32f48` |
+| Full-model editable validation | `2febbba673f122e83003b5f2cf29844406a734b0e52f9d27d5daa00d3e365d94` |
+| Published results and supplement comparison | `f7351bab1e88834a3bdd98d015783b9c4c50ca8f7c002e9ade5ccbc77695a249` |
+
+Earlier receipts support the prior performance and workflow comparisons.
 
 | Artifact | Edition or content | SHA-256 |
 | --- | --- | --- |
