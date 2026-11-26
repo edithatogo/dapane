@@ -419,17 +419,18 @@ def quality_main(report: str, *, history: str | None = None) -> int:
     args = parser.parse_args()
     reference = {}
     workbook_digest = None
+    profile_digest = None
     selected = args.model or MODEL_KEYS
     if args.workbook:
         if args.suffix != "enhanced":
             parser.error("Workbook-backed validation requires enhanced model exports")
         payload = args.workbook.read_bytes()
         workbook_digest = sha256(payload).hexdigest()
-        profile = (
-            LabProfile.model_validate_json(args.profile.read_bytes())
-            if args.profile
-            else None
-        )
+        profile = None
+        if args.profile:
+            profile_bytes = args.profile.read_bytes()
+            profile = LabProfile.model_validate_json(profile_bytes)
+            profile_digest = sha256(profile_bytes).hexdigest()
         # Read the same bytes that identify this receipt.
         with TemporaryDirectory() as directory:
             workbook = Path(directory) / args.workbook.name
@@ -467,6 +468,9 @@ def quality_main(report: str, *, history: str | None = None) -> int:
     if workbook_digest:
         receipt["workbook_sha256"] = workbook_digest
         scope = f"Historical workbook export validation for SHA-256 `{workbook_digest}`"
+    if profile_digest:
+        receipt["profile_sha256"] = profile_digest
+        scope += f" and profile SHA-256 `{profile_digest}`"
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(
         f"# Model validation\n\n{scope}\n\n"

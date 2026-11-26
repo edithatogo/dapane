@@ -18,6 +18,7 @@ import pytest
 from flask import Flask
 from openpyxl import Workbook
 
+from dapane_genomics import legacy_models
 from dapane_genomics.legacy_models import (
     MODEL_KEYS,
     model_rows,
@@ -528,6 +529,7 @@ def test_workbook_validation_keeps_source_cost_bases_and_rejects_changed_rows(tm
         run_command(tmp_path, "validation_pipeline", *options)
     receipts = json.loads(history.read_bytes())
     assert receipts[0]["workbook_sha256"] == sha256(source.read_bytes()).hexdigest()
+    assert receipts[0]["profile_sha256"] == sha256(profile.read_bytes()).hexdigest()
     record = receipts[0]["models"][0]
     assert record["matching_rows"] == record["expected_rows"] == 3
     assert record["different_cells"] == 0
@@ -730,6 +732,80 @@ def test_model_comparison_fails_if_an_expected_export_changes(tmp_path):
     with pytest.raises(subprocess.CalledProcessError):
         run_command(tmp_path, "validate_excel_comparison", *options)
     assert "schema or row count mismatch" in report.read_text()
+
+
+def test_workbook_quality_rejects_a_model_absent_from_selected_reference(
+    tmp_path, monkeypatch
+):
+    source = tmp_path / "panel.csv"
+    tables = pl.DataFrame(
+        {
+            "Source_Row": [5],
+            "Test": ["Panel"],
+            "Category": ["Labour"],
+            "Sub-Category": ["DNA Extraction"],
+            "Item": ["Synthetic row"],
+            "Unit Cost (AUD $/unit)": [4],
+            "Units": [2],
+        }
+    )
+    tables.write_csv(source)
+    assert read_model_source(source)["Source_Row"].to_list() == [5]
+    parquet = source.with_suffix(".parquet")
+    tables.write_parquet(parquet)
+    assert read_model_source(parquet).equals(tables)
+    output = tmp_path / "model-exports"
+    output.mkdir()
+    tables.with_columns(pl.lit("WES (P)").alias("Test")).write_csv(
+        output / "WES_P_enhanced.csv"
+    )
+    report = tmp_path / "historical.md"
+    args = ["--report", str(report), "--data-dir", str(output), "--model", "WES (P)"]
+    monkeypatch.setattr(
+        sys, "argv", ["validate_standardization", *args, "--workbook", str(source)]
+    )
+    assert legacy_models.quality_main(str(report)) == 1
+    assert '"missing_reference": true' in report.read_text(encoding="utf-8")
+    for invalid in (
+        ["--profile", "profile.json"],
+        ["--workbook", str(source), "--suffix", "standardized"],
+    ):
+        monkeypatch.setattr(sys, "argv", ["validate_standardization", *args, *invalid])
+        with pytest.raises(SystemExit, match="2"):
+            legacy_models.quality_main(str(report))
+
+
+def test_labour_workbook_export_preserves_shared_model_labels(tmp_path, monkeypatch):
+    workbook = Workbook()
+    sheet = workbook.active
+    assert sheet is not None
+    sheet.title = legacy_models.LABOUR_SHEET
+    sheet.append([None, None, "Hours"])
+    sheet.append([None, None, "Input"])
+    sheet.append(["Test", "Stage", "Midpoint"])
+    sheet.append(["WES (S)", "Fixture stage", 7])
+    source = tmp_path / "labour.xlsx"
+    workbook.save(source)
+    monkeypatch.setattr(
+        legacy_models,
+        "load_config",
+        lambda: {
+            "default_workbook": "historical",
+            "workbooks": {"historical": {"path": str(source)}},
+        },
+    )
+    output = tmp_path / "labour-lines"
+    monkeypatch.setattr(sys, "argv", ["extract_labour", "--output-dir", str(output)])
+    assert legacy_models.extract_main(str(output), "labour", sheet=sheet.title) == 0
+    extracted = pl.read_csv(output / "WES_S_labour.csv")
+    assert extracted["Test"].to_list() == ["WES (S)"]
+    assert extracted["Source_Row"].to_list() == [4]
+    assert extracted["Category"].to_list() == ["Labour"]
+    sheet["A4"] = "Unknown"
+    workbook.save(source)
+    workbook.close()
+    with pytest.raises(ValueError, match="No identified labour-use rows"):
+        legacy_models.extract_main(str(output), "labour", sheet=sheet.title)
 
 
 def test_legacy_performance_receipt_flags_a_six_percent_regression(

@@ -3,15 +3,19 @@
 
 import json
 from base64 import b64decode
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from decimal import Decimal
 from io import BytesIO
+from threading import Event
 
+import numpy as np
 import polars as pl
 import pytest
+from flask import Blueprint, Flask
 from werkzeug.security import generate_password_hash
 
-from dapane_genomics import web_access
+from dapane_genomics import operational_checks, web_access, web_operations
 from genomics_microcosting.web import create_app
 
 PREFIX = "/api/microcosting"
@@ -320,6 +324,7 @@ def test_dashboard_charts_table_metadata_and_empty_state(dashboard, monkeypatch)
 
 def test_operational_filters_reject_invalid_choices_and_unreadable_paired_table(
     dashboard,
+    monkeypatch,
 ):
     prepared, _, _ = dashboard
     client = create_app(prepared).test_client()
@@ -345,15 +350,109 @@ def test_operational_filters_reject_invalid_choices_and_unreadable_paired_table(
         ).status_code
         == 404
     )
-    # A damaged companion CSV must be reported as a failed comparison.
-    (prepared / "assay.csv").write_bytes(b"\xff\xfe")
+
+    def unavailable_csv(*_args, **_kwargs):
+        raise OSError("Synthetic unavailable local volume")
+
+    monkeypatch.setattr(pl, "read_csv", unavailable_csv)
     report = client.post(
         f"{PREFIX}/data-quality/validate",
         json={"sheet_names": ["assay"], "validation_types": ["consistency"]},
         auth=ANALYST,
     )
     assert report.status_code == 200
-    assert report.json["sheets"][0]["consistency"]["passed"] is False
+    assert report.json["sheets"][0]["consistency"] == {
+        "available": True,
+        "passed": False,
+        "errors": 1,
+    }
+
+
+def test_local_operational_requests_serialize_and_recover(dashboard, monkeypatch):
+    prepared, _, _ = dashboard
+    started = Event()
+    released = Event()
+    diagnose = web_operations.diagnose
+
+    def blocking_check(*args):
+        started.set()
+        assert released.wait(10)
+        return diagnose(*args)
+
+    monkeypatch.setattr(web_operations, "diagnose", blocking_check)
+    app = create_app(prepared)
+    endpoint = f"{PREFIX}/tests/run"
+    body = {"test_type": "integration", "analysis_modules": ["dsa"]}
+
+    def run_check():
+        return app.test_client().post(endpoint, json=body, auth=ANALYST)
+
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        pending = pool.submit(run_check)
+        try:
+            assert started.wait(10)
+            assert run_check().status_code == 429
+        finally:
+            released.set()
+        assert pending.result(timeout=10).status_code == 200
+    assert run_check().json["passed"] is True
+
+
+def test_operational_diagnostics_report_failed_independent_checks(
+    dashboard, monkeypatch
+):
+    prepared, _, _ = dashboard
+    client = create_app(prepared).test_client()
+    monkeypatch.setattr(
+        operational_checks, "model_template_bytes", lambda *_: b"Test,Item\n"
+    )
+    monkeypatch.setattr(
+        operational_checks.VOIAnalyzer,
+        "calculate_evpi",
+        lambda *_: {"evpi": 999.0},
+    )
+    result = client.post(
+        f"{PREFIX}/tests/run",
+        json={"test_type": "end_to_end", "analysis_modules": ["cost_driver", "voi"]},
+        auth=ANALYST,
+    )
+    assert result.status_code == 200 and not result.json["passed"]
+    assert {
+        item["analysis_module"]: item["passed"] for item in result.json["checks"]
+    } == {
+        "cost_driver": False,
+        "voi": False,
+    }
+    monkeypatch.setattr(web_operations, "synthetic_psa", lambda *_: np.zeros(3))
+    failure = client.post(
+        f"{PREFIX}/performance/benchmark",
+        json={"data_set_size": 5, "iterations": 3},
+        auth=ANALYST,
+    )
+    assert failure.status_code == 500
+    assert (
+        client.get(f"{PREFIX}/performance/metrics", auth=VIEWER).json["benchmarks"]
+        == []
+    )
+
+
+def test_installed_access_checks_with_invalid_config_and_optional_routes(
+    dashboard, monkeypatch
+):
+    prepared, _, access = dashboard
+    access.write_text('{"users":[]}', encoding="utf-8")
+    with pytest.raises(ValueError, match="Invalid dashboard access configuration"):
+        create_app(prepared)
+
+    monkeypatch.delenv("GENOMICS_WEB_ACCESS_FILE")
+    app = Flask(__name__)
+    operations = Blueprint("operations", __name__)
+    operations.add_url_rule("/test-results", "results", lambda: "Operational content")
+    app.register_blueprint(operations)
+    web_access.install_web_access(app)
+    response = app.test_client().get("/test-results")
+    assert response.status_code == 404
+    assert b"Configure dashboard access" in response.data
 
 
 def test_template_request_rejects_ambiguous_invalid_or_oversized_profiles(tmp_path):

@@ -8,9 +8,10 @@ from decimal import Decimal
 
 import polars as pl
 import pytest
-from openpyxl import load_workbook
+from openpyxl import Workbook, load_workbook
 from pydantic import ValidationError
 
+from dapane_genomics import model_tables
 from dapane_genomics.model_tables import (
     LabProfile,
     load_lab_profile,
@@ -117,6 +118,16 @@ def test_model_standardization_requires_complete_typed_inputs(tmp_path, monkeypa
     with pytest.raises(ValueError, match="requires rows and a numeric cost"):
         main()
     assert not output.exists()
+
+
+def test_excel_template_fails_when_the_workbook_factory_has_no_active_sheet(
+    monkeypatch,
+):
+    workbook = Workbook(write_only=True)
+    with monkeypatch.context() as context:
+        context.setattr(model_tables, "Workbook", lambda: workbook)
+        with pytest.raises(RuntimeError, match="default workbook sheet is unavailable"):
+            model_template_bytes("panel", "xlsx")
 
 
 def test_standardization_preserves_costs_and_checks_cross_model_coverage():

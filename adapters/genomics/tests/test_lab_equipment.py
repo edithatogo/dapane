@@ -134,6 +134,7 @@ def test_lab_equipment_life_revalues_only_the_declared_capital_assumption(
         {"cost_adjustments": {"equipment_depreciation_years": 9}}
     )
     revised = calculate_lab_equipment_cost(pricing, context, profile)
+    assert calculate_lab_equipment_cost(pricing, context, LabProfile()) == baseline
 
     assert dict(baseline.annual_components)["capital"] == Fraction(180)
     assert dict(revised.annual_components)["capital"] == Fraction(100)

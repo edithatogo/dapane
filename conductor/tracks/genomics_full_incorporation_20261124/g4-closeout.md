@@ -66,7 +66,10 @@ example, labour quantity is in minutes while wages are hourly, and equipment
 rows pair purchase prices and throughput with annualized per-test values.
 Subtotals and headings can legitimately lack a standalone unit price. The
 original values, broken references and missing inputs retain their workbook
-lineage. The 839 priced amounts pass their separate distribution check.
+lineage. The 839 priced amounts pass their separate distribution check. A
+synthetic editable dataset at the original scale passed for all five models.
+Removing one price from a 200-row model yielded exactly 99.5% and failed
+the strict target.
 
 The Q-184 target applies to validated editable input datasets. A named
 operational dataset requires documented row roles, authorised values for
@@ -121,14 +124,19 @@ and Supplemental Table 8 percentiles differ for all five assays. A December
 2023 legacy notebook uses an unseeded sampler and references a separate final
 MLE input. Exact publication PSA reproduction requires the publication's
 original draws or a documented deterministic run with matching inputs.
+Across the 15-column public view of the detailed table, 11,747 of 11,756
+populated cells agreed with their frozen counterparts. The nine differences
+are assay and stage labels.
 
 The published edition includes a structured abstract, setting and test
 denominators, price date, process exclusions, methods and limitations. Its
 declarations cover ethics, funding, contributions, competing interests and
 data availability. The last identifies the public supplements and confidential
 price redactions. Version-of-record identity was reconciled to DOI metadata.
-Manual table and citation-callout inspection, SourceRight 0.1.20 and Textstat
-0.7.13 receipts are retained for the audited materials. Current author
+Manual table and citation-callout inspection, SourceRight 0.1.20 provenance
+diagnostics and Textstat 0.7.13 abstract scores are retained for the audited
+materials. The PDF text extraction splits some citations across lines, so
+the diagnostics require manual reconciliation. Current author
 guidance calls for CHEERS for new submissions in the economic-evaluation
 category. The original submitted checklist and the reproducible publication
 PSA run remain outstanding for full reporting acceptance. [Genetics in Medicine author guidance](https://www.gimjournal.org/content/authorinfo)

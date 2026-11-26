@@ -4,10 +4,12 @@
 from fractions import Fraction
 from hashlib import sha256
 from io import BytesIO
+from zipfile import ZipFile
 
 import pytest
 from openpyxl import Workbook
 
+from dapane_genomics import v15_pathways, workbook_ledger
 from dapane_genomics.v15_replay import CellError, WorkbookReplay, replay_workbook
 from dapane_genomics.workbook_ledger import inventory_workbook
 
@@ -217,3 +219,165 @@ def test_workbook_inventory_checks_identity_and_totals_before_acceptance():
         inventory_workbook(payload, {**catalogue, "sheets": [{**sheet, "formulas": 2}]})
     with pytest.raises(ValueError, match="Workbook totals disagree"):
         inventory_workbook(payload, {**catalogue, "formula_count": 2})
+
+
+def test_replay_rejects_binary_float_overrides_and_keeps_broken_sheet_references():
+    inputs = {
+        "sheets": [
+            {
+                "catalogue": {"sheet": "Costs"},
+                "cells": [
+                    {"coordinate": "A1", "stored_type": "n", "stored_value": "0.1"},
+                    {"coordinate": "A2", "formula": "=Removed!A1"},
+                ],
+            }
+        ]
+    }
+    assert WorkbookReplay(inputs).value("Costs", "A2") == CellError("#REF!")
+    with pytest.raises(ValueError, match="exact strings"):
+        WorkbookReplay(inputs, overrides={("Costs", "A1"): 0.2})
+
+
+def test_ledger_detects_inconsistent_archive_layout(monkeypatch):
+    output = BytesIO()
+    book = Workbook()
+    book.active.append([1, "=A1*10"])
+    book.save(output)
+    book.close()
+    payload = output.getvalue()
+    catalogue = {
+        "source_sha256": sha256(payload).hexdigest(),
+        "sheet_count": 1,
+        "formula_count": 1,
+        "sheets": [
+            {
+                "id": "Synthetic",
+                "sheet": "Sheet",
+                "state": "visible",
+                "nonempty_cells": 2,
+                "formulas": 1,
+            }
+        ],
+    }
+    rewritten = BytesIO()
+    with ZipFile(BytesIO(payload)) as original, ZipFile(rewritten, "w") as archive:
+        for part in original.namelist():
+            content = original.read(part)
+            if part == "xl/worksheets/sheet1.xml":
+                row = b'<c r="A1" t="n"><v>1</v></c>'
+                assert row in content
+                content = content.replace(row, row * 2)
+            archive.writestr(part, content)
+    invalid = rewritten.getvalue()
+    with pytest.raises(ValueError, match="Duplicate coordinate Synthetic:A1"):
+        inventory_workbook(
+            invalid, {**catalogue, "source_sha256": sha256(invalid).hexdigest()}
+        )
+    monkeypatch.setattr(workbook_ledger, "_sheet_parts", lambda _: {})
+    with pytest.raises(ValueError, match="reader and raw sheet relationships differ"):
+        inventory_workbook(payload, catalogue)
+
+
+@pytest.mark.parametrize(
+    ("coordinate", "replacement", "error"),
+    [
+        (
+            "B81",
+            {"stored_type": "str", "stored_value": "untagged"},
+            "numeric workbook value",
+        ),
+        (
+            "B5",
+            {"stored_type": "str", "stored_value": "unresolved"},
+            "summary component at B5",
+        ),
+        (
+            "B5",
+            {"stored_type": "n", "stored_value": "20"},
+            "booked charge reference at B5",
+        ),
+        (
+            "K5",
+            {"stored_type": "n", "stored_value": "4.9"},
+            "overhead base differs at K5",
+        ),
+        (
+            "N5",
+            {"stored_type": "n", "stored_value": "28"},
+            "workbook subtotal disagree at N5",
+        ),
+        (
+            "N15",
+            {"stored_type": "n", "stored_value": "28"},
+            "pathway subtotal disagree at N15",
+        ),
+    ],
+)
+def test_pathway_validation_rejects_disagreement_at_each_ledger_level(
+    monkeypatch, coordinate, replacement, error
+):
+    monkeypatch.setattr(v15_pathways, "WORKBOOK_SHA256", "synthetic")
+    summary = {
+        "B81": {"stored_type": "n", "stored_value": "0.7"},
+        "B5": {"formula": "='Detailed Table'!N5"},
+        "K5": {"stored_type": "n", "stored_value": "5.4"},
+        "N5": {"stored_type": "n", "stored_value": "25.4"},
+        "N15": {"stored_type": "n", "stored_value": "25.4"},
+        **{
+            f"{column}{row}": {"stored_type": "n", "stored_value": "0"}
+            for row in range(6, 15)
+            for column in ("K", "N")
+        },
+    }
+    summary[coordinate] = replacement
+    ledger = {
+        "source_sha256": "synthetic",
+        "sheets": [
+            {
+                "catalogue": {"sheet": "Summary Table"},
+                "cells": [
+                    {"coordinate": key, **fields} for key, fields in summary.items()
+                ],
+            },
+            {
+                "catalogue": {"sheet": "Detailed Table"},
+                "cells": [
+                    {"coordinate": "N5", "formula": "=20", "references": []},
+                ],
+            },
+        ],
+    }
+    with pytest.raises(ValueError, match=error):
+        v15_pathways.pathway_requests(ledger)
+
+
+def test_native_pathways_require_the_expected_revision_and_reconcile_all_stages(
+    monkeypatch,
+):
+    with pytest.raises(ValueError, match="original v15 workbook ledger"):
+        v15_pathways.pathway_requests({"source_sha256": "different"})
+    exact = {"numerator": "10", "denominator": "1"}
+    changed = {"numerator": "9", "denominator": "1"}
+    pathway = {
+        "request": {},
+        "expected_total": exact,
+        "stages": {
+            "x": {"lines": ["cost"], "exact": exact, "source": "Synthetic cell"}
+        },
+    }
+    monkeypatch.setattr(
+        v15_pathways, "pathway_requests", lambda _: {"pathways": {"x": pathway}}
+    )
+    report = {
+        "status": "complete",
+        "totals": {"exact": changed},
+        "lines": [{"id": "cost", "exact": changed}],
+    }
+    monkeypatch.setattr(v15_pathways, "evaluate_native_request", lambda _: report)
+    with pytest.raises(ValueError, match="original pathway"):
+        v15_pathways.evaluate_pathways({})
+    report["totals"]["exact"] = exact
+    with pytest.raises(ValueError, match="reconcile at Synthetic cell"):
+        v15_pathways.evaluate_pathways({})
+    report["lines"][0]["exact"] = exact
+    assert v15_pathways.evaluate_pathways({})["pathways"]["x"]["report"] == report
