@@ -19,9 +19,7 @@ def summarise_cost_drivers(frame: pl.DataFrame, *, cost_column: str) -> pl.DataF
     """
     keys = ["Test", "Category", "Sub-Category"]
     selected = frame.select(*keys, pl.col(cost_column).cast(pl.Float64).alias("cost"))
-    if selected.filter(
-        pl.col("cost").is_not_null() & ~pl.col("cost").is_finite(),
-    ).height:
+    if not selected["cost"].is_finite().all():
         message = "Nonfinite source costs cannot be aggregated"
         raise ValueError(message)
     grouped = selected.group_by(keys, maintain_order=True).agg(

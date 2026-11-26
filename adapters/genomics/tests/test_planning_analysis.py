@@ -9,6 +9,7 @@ import polars as pl
 import pytest
 
 from dapane_genomics.reporting import main
+from genomics_microcosting.cost_driver_tables import summarise_cost_drivers
 
 
 def test_planning_report_joins_the_declared_source_analyses(tmp_path, monkeypatch):
@@ -73,3 +74,22 @@ def test_planning_report_joins_the_declared_source_analyses(tmp_path, monkeypatc
         main()
     assert invalid.value.code == 2
     assert json.loads(path.read_text()) == receipt
+
+
+def test_cost_driver_check_retains_unpriced_rows_and_rejects_nonfinite_values():
+    ingredients = pl.DataFrame(
+        {
+            "Test": ["Panel", "Panel"],
+            "Category": ["Labour", "Equipment"],
+            "Sub-Category": ["Bench", "Compute"],
+            "cost": [5.0, None],
+        }
+    )
+    contributions = summarise_cost_drivers(ingredients, cost_column="cost")
+    assert contributions["Absolute_Value"].to_list() == [5, None]
+    assert contributions["Unpriced_Rows"].to_list() == [0, 1]
+    assert contributions["Percentage_of_Priced_Cost"].to_list() == [100, None]
+
+    nonfinite = ingredients.with_columns(pl.col("cost").fill_null(float("inf")))
+    with pytest.raises(ValueError, match="Nonfinite source costs"):
+        summarise_cost_drivers(nonfinite, cost_column="cost")
