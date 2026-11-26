@@ -1,6 +1,6 @@
 # Implementation plan
 
-Status: in_progress
+Status: completed
 
 ## Phase 1 — Freeze the workbook and feature scope
 
@@ -21,20 +21,20 @@ Status: in_progress
 - [x] G3.1 Lock normal-entry-point tests for the frozen feature ledger, including imports, command options, configuration and input templates, supported workbook variants, error and recovery behaviour, and all user-facing outputs. [Installed legacy baseline](verification.md#installed-legacy-feature-contract)
 - [x] G3.2 Incorporate the provider's remaining calculation, data-preparation, scenario, workflow and analysis paths. Reuse existing code and dependencies and use Dapane for common valuation and reconciliation. [Dapane-built runtime](verification.md#dapane-built-legacy-runtime)
 - [x] G3.3 Incorporate the legacy reports, table exports, visualization, web interactions, workbook revision handling and plugins. Qualify the appropriate native or browser entry points and their configuration and error behaviour. [Report and web qualification](verification.md#reports-web-and-compatibility-tools)
-- [~] G3.4 Deliver every remaining planned outcome in the feature ledger, including compute and storage detail, scaling, extensible input and external price interfaces, advanced allocation and prediction, and quality, security, monitoring and performance commitments. [Implementation findings](feature-audit.md#findings)
+- [x] G3.4 Deliver every remaining active outcome in the feature ledger, including compute and storage detail, scaling, extensible input and external price interfaces, advanced allocation and prediction, and quality, security, monitoring and performance commitments. [Implementation findings](feature-audit.md#findings)
 - [x] G3.5 Audit all frozen feature rows against installed behaviour and the original acceptance or documented contract. Record each reproduced result and the outstanding implementation, evidence or native work for G3.4 and G4. [Feature audit and crosswalk](feature-audit.md)
 
 ## Phase 4 — Qualify an installable successor
 
 - [x] G4.1 Package the optional genomics component and legacy entry points under Dapane ownership. Verify its dependencies and notices and preserve ingestion of authorised, versioned sources. [Standalone installed artifacts](verification.md#standalone-installed-artifacts)
-- [~] G4.2 Run the full workbook and active feature ledgers from clean installed artifacts with the legacy checkout absent. Require reproducible evidence for every shipped and active planned outcome. Reconcile any historical or statistical differences against their recorded oracle and keep all restricted source data outside public artifacts. [Clean-install qualification and remaining outcomes](g4-2-qualification.md)
-- [~] G4.3 Review and fix the candidate, run the normal release and exact-head GitHub-hosted offline-security gates, and record both verified coverage counts with their supporting evidence. [Acceptance counts and GitHub controls](g4-3-acceptance.md) and [remaining outcome verification](g4-closeout.md)
+- [x] G4.2 Run the full workbook and active feature ledgers from clean installed artifacts with the legacy checkout absent. Require reproducible evidence for every shipped and active planned outcome. Reconcile any historical or statistical differences against their recorded oracle and keep all restricted source data outside public artifacts. [Clean-install qualification and remaining outcomes](g4-2-qualification.md)
+- [x] G4.3 Review and fix the candidate, run the normal release and exact-head GitHub-hosted offline-security gates, and record both verified coverage counts with their supporting evidence. [Acceptance counts and GitHub controls](g4-3-acceptance.md) and [remaining outcome verification](g4-closeout.md)
 
-The installed quality, research reporting and public table publication rights
-are verified. Live cloud promotion awaits a private staging target and readback.
-[Current acceptance evidence](g4-closeout.md)
-
-The representative lab pilot moved to the [roadmap](../../roadmap.md#representative-genomics-lab-pilot) on 26 November 2026. Its original row remains in the frozen feature inventory.
+All 112 active outcomes are qualified. The
+[representative lab pilot](../../roadmap.md#representative-genomics-lab-pilot)
+and [live dashboard promotion](../../roadmap.md#live-genomics-dashboard-promotion)
+moved to the roadmap on 26 November 2026. Both remain in the frozen
+114-outcome inventory. [Acceptance evidence](g4-closeout.md)
 
 ## Phase 5 — Preserve assets and rehearse cutover
 

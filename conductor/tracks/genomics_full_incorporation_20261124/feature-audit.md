@@ -13,6 +13,9 @@ inventory.
 
 ## Findings
 
+The counts below record the initial audit. The [final acceptance record](g4-closeout.md)
+records the completed scope.
+
 | Disposition | Outcomes |
 | --- | ---: |
 | Passed for the recorded scope | 71 |
@@ -143,7 +146,7 @@ counts. Several source rows may point to a single outcome.
 | `data-history` | Passed | data_management.DataManager and manage_data | P:test_legacy_cost_commands.py, I:test_data_management.py. Versioned data is restored and exported as CSV and Parquet. Tested provenance includes version fingerprints and lineage. |
 | `data-governance` | Evidence | data_management.DataManager and provenance_ledger | I:test_data_management.py, I:test_provenance_ledger.py. Lineage and version operations have assertions. The full data-governance policy, permissions and ownership across operations need an end-to-end receipt. |
 | `publication-export` | Passed | prepare_publication_tables and packaged metadata | P:test_legacy_cost_commands.py, I:test_polars_publication.py. A synthetic export reopened with the expected records and metadata. |
-| `publication-rights` | External | Authorised workbook and generated publication tables | Retention decision. Restricted source tables are supplied independently. Actual publication of study data requires the source and citation permissions recorded by the track. |
+| `publication-rights` | Qualified | Publisher-hosted, redacted table workbook and attributed CSV edition | [Verified public edition](g4-closeout.md#publication-ready-public-tables). The original workbook and restricted sources retain authorised access. |
 | `base-cost-components` | Passed | CostComponent, formula strategies and component allocations | I:test_component_allocations.py, I:test_strategy_units.py, I:test_cost_properties.py. Installed component contracts preserve amounts, units and allocated residuals in tested cases. |
 | `resource-ledgers` | Passed | inventory_ledger, provenance and execution reconciliation | I:test_inventory_ledger.py, I:test_execution_reconciliation.py, I:test_resource_accounting.py. Quantity, source identity and accounting reconcile against independent ledger cases. |
 | `provenance` | Passed | Parameter provenance, price/quantity units and workbook lineage | I:test_parameter_provenance.py, I:test_parameter_units.py, I:test_t1_baseline_lineage.py, I:test_uncertainty_provenance.py. Tests check input identity, lineage and incompatible or missing inputs at the installed boundary. |
@@ -240,7 +243,7 @@ counts. Several source rows may point to a single outcome.
 | `parallel-cache` | Passed | performance, memoized calculation and data pipeline | P:test_performance.py, I:test_validation_cache_identity.py, Source command qualification. Installed cases check correct results across parallel/cache paths and changed source identity. |
 | `dashboard-container` | Passed | Genomics Dockerfile and the installed web app | Hosted package. The hosted package job verified the non-root process, read-only data mount, network isolation, health and table API. |
 | `deployment-templates` | Passed | AWS CloudFormation and Azure Bicep templates | Planned implementations. AWS lint and Azure compilation succeeded. The outputs keep private ingress and health readiness. |
-| `deployment-pipeline` | Code | Installed package workflow and deployment templates | Source review. The workflow builds and exercises the image. The roadmap's automatic deployment step is absent. |
+| `deployment-pipeline` | Roadmap | Protected promotion workflow and deployment templates | Hosted smoke test and image digest verification passed. The [roadmap](../../roadmap.md#live-genomics-dashboard-promotion) retains live staging and rollback. |
 | `api-docs` | Evidence | Installed README, docstrings and Dapane contract | Source review. Packaging, provider, model and report entry points have maintained guidance. Complete generated API and public-interface docstring coverage has not been demonstrated. |
 | `guides` | Evidence | Installed README and usage documentation | Source review. Quickstarts and runnable commands exist. Comprehensive tutorials for every major analysis, troubleshooting and contribution examples still need an inventory and readback. |
 | `training` | Code | Lab setup and user guides | Source review. The maintained written instructions exist. The promised lab setup video tutorials are absent. |

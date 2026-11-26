@@ -1,13 +1,13 @@
-# Remaining genomics acceptance
+# Genomics acceptance
 
 The [G4.3 record](g4-3-acceptance.md) established 99 of 114 verified
 outcomes. Subsequent verification brought the count to 109. The installed
-quality and research reporting checks brought it to 111. The qualified
-public table edition brings the total to **112 of 113 active outcomes
-(99.12%)**, or **112 of 114 frozen outcomes (98.25%)**. Live cloud
-promotion remains open.
-The representative lab pilot moved to the
-[roadmap](../../roadmap.md#representative-genomics-lab-pilot) on 26 November 2026.
+quality and research reporting checks brought it to 111. The public table
+edition brought it to 112. The completed local scope covers
+**112 of 112 active outcomes (100%)** and **112 of 114 frozen outcomes
+(98.25%)**. The owner moved the [representative lab pilot](../../roadmap.md#representative-genomics-lab-pilot)
+and [live dashboard promotion](../../roadmap.md#live-genomics-dashboard-promotion)
+to the roadmap on 26 November 2026.
 The original workbook retains **35 of 35 worksheets, 36,411 of 36,411
 formula coordinates and 10 of 10 valuation pathways**.
 
@@ -206,11 +206,19 @@ sources or a derivative that exposes restricted inputs requires separate
 written authority naming the exact artifact, destination, licence terms
 and applicable redactions.
 
-## External verification
+## Hosted package and image evidence
 
-| Outcome | Required evidence |
-| --- | --- |
-| `deployment-pipeline` | Identify the authorised target environment, existing AWS or Azure service, environment identity and immutable image digest. Retain the live promotion receipt, provider readback of the running digest, health and access results, and a rollback rehearsal. Record the execution and rollback authority for that target before a live operation. [Deployment instructions](../../../adapters/genomics/deploy/README.md) |
+The installed package workflow on `de164ee0437a38b4ed8bae99e580b7764f854db8`
+verified the package and offline dashboard smoke test. A separate hosted
+dispatch verified the OCI archive digest against the exercised image at
+the PR revision.
+[PR #100](https://github.com/edithatogo/dapane/pull/100)
+· [Installed package](https://github.com/edithatogo/dapane/actions/runs/45815868318)
+· [Image export](https://github.com/edithatogo/dapane/actions/runs/45814082747)
+· [Official offline security](https://github.com/edithatogo/dapane/actions/runs/45815868929)
+
+The [roadmap](../../roadmap.md#live-genomics-dashboard-promotion) retains the
+live promotion and rollback acceptance criteria for a future private service.
 
 ## Retained receipts
 

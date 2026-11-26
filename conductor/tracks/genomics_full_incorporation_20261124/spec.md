@@ -4,10 +4,13 @@
 
 Full workbook and full feature coverage are both minimum acceptance conditions.
 An installed Dapane successor must reproduce the original genomics workbook and
-deliver every existing feature and planned deliverable in the frozen legacy
-scope. It must run without cloning or fetching executable code from
-`microcosting_genomics`. The workbook and any rights-restricted study sources
-are explicit, versioned inputs supplied through authorised access.
+deliver every shipped feature and every active planned outcome in the frozen
+legacy scope. It must run without cloning or fetching executable code from
+`microcosting_genomics`. The workbook and rights-restricted study sources
+are explicit, versioned inputs supplied through authorised access. The
+[representative lab pilot](../../roadmap.md#representative-genomics-lab-pilot)
+and [live dashboard promotion](../../roadmap.md#live-genomics-dashboard-promotion)
+remain in the frozen inventory as roadmap outcomes.
 
 ## Source baselines
 
@@ -70,7 +73,7 @@ method or dependency only for a named coverage gap.
    representative branch changes with independent oracles. Require exact
    Dapane arithmetic and reconciliation. Record per-comparison precision
    rules where historical Excel caches use binary arithmetic.
-2. **100% feature coverage.** Each existing and planned item has an executable,
+2. **100% active feature coverage.** Each shipped or active planned item has an executable,
    qualified successor and traceable evidence. Test the supported imports,
    CLI, formats, UI and plugins through their normal entry points. For
    stochastic and prediction features use frozen inputs, declared seeds or

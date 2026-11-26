@@ -314,8 +314,10 @@ genomics promotion evidence on `codex/genomics-external-acceptance-20261126`
 in `/private/tmp/dapane-wolfi-qualification.jjPdWq/dapane`. Its write scope
 covers the active track records, the genomics deployment guide and the
 genomics package and promotion workflows. GitHub operations cover the
-candidate and its exact check runs. Live promotion needs a named private
-staging target and its operator identity.
+candidate and its exact check runs. PR #100 merged the public-table and
+image evidence changes. The same chat owns the Conductor closeout in this
+checkout on `codex/genomics-roadmap-closeout-20261126` and its exact-head
+qualification. The owner moved live promotion to the roadmap.
 
 ## Main integration reconciliation — 19 November 2026
 

@@ -1,10 +1,10 @@
 {
   "track_id": "genomics_full_incorporation_20261124",
   "type": "feature",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-26T03:25:11Z",
-  "description": "Incorporate the full v15 genomics workbook and every existing and planned legacy feature into an independently installable Dapane successor.",
+  "updated_at": "2026-11-26",
+  "description": "Incorporate the full v15 genomics workbook and all active legacy features into an independently installable Dapane successor.",
   "repositories": [
     ".",
     "edithatogo/microcosting_genomics"
@@ -34,8 +34,8 @@
     "RQ-12"
   ],
   "verification": {
-    "status": "pending",
-    "scope": "Full source-linked workbook and feature coverage, an installed successor independent of the legacy checkout, and reproduction and recovery evidence.",
+    "status": "passed",
+    "scope": "Complete v15 workbook replay, 112 active outcomes, independent installation and recovery. The frozen ledger retains the deferred lab pilot and live dashboard promotion.",
     "commands": [
       "git archive --format=tar.gz fc8d4178bc3f5ce67cfc0547f7417272562c18a8",
       "Compare the workbook digest and run historical_library_preparation_request and dapane.evaluate in the installed CPython 3.15.1 comparator.",
@@ -64,7 +64,8 @@
       "Compare the same-host genomics-benchmark receipts, verify checkpoint restart, and validate both dashboard deployment templates.",
       "Capture per-test JUnit and ctrace execution contexts from the installed packaged and inherited suites with sockets disabled.",
       "Reconcile frozen roadmap rows, declared package surfaces and installed assertions with the restricted audit scripts and focused probes.",
-      "Build the locked adapter offline, verify source and network denials, run both isolated installed suites, and reconcile all 114 outcomes with retained workbook and command receipts."
+      "Build the locked adapter offline, verify source and network denials, run both isolated installed suites, and reconcile all 114 outcomes with retained workbook and command receipts.",
+      "Verify all eight public supplement CSVs and read back the GitHub-hosted package, image export and exact-source offline-security results."
     ],
     "evidence": [
       "verification.md",
