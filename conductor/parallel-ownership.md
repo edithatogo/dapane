@@ -291,6 +291,15 @@ fixes, installed qualification, Conductor acceptance record and Dapane's
 is scoped to Dapane and the tested commits. The other roadmap branches and
 legacy source remain in their assigned scopes.
 
+Chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` continues the 15-outcome
+checkpoint in the implementation checkout on
+`codex/genomics-outcomes-closeout-20261126` at
+`/Volumes/PortableSSD/dapane-genomics-replay-20261124.ZZ910Z/dapane`. Its scope includes
+`adapters/genomics` and the active genomics track records. It owns the
+installed qualification and the Dapane PR and exact-main Actions readback.
+The three external outcomes have evidence requirements recorded in the
+[closeout](tracks/genomics_full_incorporation_20261124/g4-closeout.md).
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:
