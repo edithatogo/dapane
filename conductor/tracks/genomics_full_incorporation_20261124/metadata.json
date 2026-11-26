@@ -3,7 +3,7 @@
   "type": "feature",
   "status": "in_progress",
   "created_at": "2026-11-24T13:09:55Z",
-  "updated_at": "2026-11-25T11:14:55Z",
+  "updated_at": "2026-11-26T02:15:21Z",
   "description": "Incorporate the full v15 genomics workbook and every existing and planned legacy feature into an independently installable Dapane successor.",
   "repositories": [
     ".",
@@ -63,13 +63,15 @@
       "Build and check the locked source distribution, and run the packaged and inherited tests with sockets disabled.",
       "Compare the same-host genomics-benchmark receipts, verify checkpoint restart, and validate both dashboard deployment templates.",
       "Capture per-test JUnit and ctrace execution contexts from the installed packaged and inherited suites with sockets disabled.",
-      "Reconcile frozen roadmap rows, declared package surfaces and installed assertions with the restricted audit scripts and focused probes."
+      "Reconcile frozen roadmap rows, declared package surfaces and installed assertions with the restricted audit scripts and focused probes.",
+      "Build the locked adapter offline, verify source and network denials, run both isolated installed suites, and reconcile all 114 outcomes with retained workbook and command receipts."
     ],
     "evidence": [
       "verification.md",
       "feature-coverage.md",
       "feature-audit.md",
-      "feature-audit-crosswalk.tsv"
+      "feature-audit-crosswalk.tsv",
+      "g4-2-qualification.md"
     ]
   }
 }

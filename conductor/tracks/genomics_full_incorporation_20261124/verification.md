@@ -552,10 +552,13 @@ browser's CSV byte for byte. The tutorial video SHA-256 was
 [Lab setup tutorial](../../../adapters/genomics/deploy/lab-setup.md)
 
 The delivered artefacts cover the audit's missing deployment automation,
-training and Codecov workflow code. The legacy taxonomy overlap thresholds
-still need a representative source. The historical Detailed Table has
-1,336 rows and the entire `Sub-Category` field is unpopulated. The
-original-workbook replay retains those missing values.
+training and Codecov workflow code. The prepared Detailed Table export
+left the `Sub-Category` field blank. The original workbook has 96
+nonempty subcategory label cells in its 1,336-row Detailed Table.
+The installed cost-driver reader recovered those labels for the overlap
+check. The [clean-install qualification](g4-2-qualification.md)
+records both denominator choices, the complete feature ledger
+disposition and the remaining acceptance criteria.
 
 ## Hosted qualification
 
@@ -634,6 +637,21 @@ The update merged at `d017756afed01cdaae63e5493a57b6bee0dcb7c3`.
 scanner on its exact head. The [official main-push run](https://github.com/edithatogo/dapane/actions/runs/45596868242)
 passed network-disabled scanning and image advisory review on merge commit
 `8125597034a8f87a4d788212b011ab88ee7263a9`.
+
+The first [official run on PR #92](https://github.com/edithatogo/dapane/actions/runs/45741576903)
+stopped while building the scanner image. The four CPython patch downloads
+had different digests again. The retained copies matched all four prior
+pins. Their applied library diffs and the new downloads differed only in
+the abbreviated Git blob IDs. The
+[scanner follow-up](https://github.com/edithatogo/repository-standards/pull/190)
+retains the four reviewed library diffs with their CPython licence. The
+existing offline build checks each stored diff and the original and patched
+files by hash. A changed patch failed before replacing any file. The
+[official scanner image check](https://github.com/edithatogo/repository-standards/actions/runs/45743266838)
+passed at `c229cd4d8060629038f0b37ac7cddc984798f2b4`. The merged policy
+`cf9019ee135b980f9d12569258cf2fa536539e0d` has the same tree and is now
+pinned for the Dapane run. The Dapane runtime and the clean-install candidate
+retain the same code.
 
 ## Preservation and restoration
 
