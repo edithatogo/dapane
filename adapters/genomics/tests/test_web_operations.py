@@ -2,14 +2,20 @@
 """Verify roles, diagnostics, benchmarks and retained quality receipts."""
 
 import json
+from base64 import b64decode
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from decimal import Decimal
+from io import BytesIO
+from threading import Event
 
+import numpy as np
 import polars as pl
 import pytest
+from flask import Blueprint, Flask
 from werkzeug.security import generate_password_hash
 
-from dapane_genomics import web_access
+from dapane_genomics import operational_checks, web_access, web_operations
 from genomics_microcosting.web import create_app
 
 PREFIX = "/api/microcosting"
@@ -255,3 +261,228 @@ def test_operation_inputs_are_bounded_and_disabled_without_access(
     unconfigured = create_app(prepared).test_client()
     assert unconfigured.get("/api/tables").status_code == 200
     assert unconfigured.get(f"{PREFIX}/tests/results").status_code == 404
+
+
+def test_dashboard_charts_table_metadata_and_empty_state(dashboard, monkeypatch):
+    prepared, _, access = dashboard
+    settings = json.loads(access.read_bytes())
+    settings["requests_per_minute"] = 60
+    access.write_text(json.dumps(settings), encoding="utf-8")
+    table = pl.DataFrame(
+        {"Category": ["Labour", "Equipment", "Labour"], "unit_cost": [12.0, 5.0, 10.0]}
+    )
+    table.write_parquet(prepared / "detailed_table.parquet")
+    client = create_app(prepared).test_client()
+    dashboard_page = client.get("/dashboard", auth=VIEWER)
+    assert dashboard_page.status_code == 200
+    assert b"Primary cost calculation table" in dashboard_page.data
+    assert client.get("/visualize", auth=VIEWER).status_code == 200
+    assert client.get("/visualize/table/detailed_table", auth=VIEWER).status_code == 200
+    assert client.get("/visualize/table/unknown", auth=VIEWER).status_code == 404
+    assert client.get("/api/visualize/unknown", auth=VIEWER).status_code == 404
+    assert client.get("/api/visualize/detailed_table", auth=VIEWER).json == {
+        "table_name": "detailed_table",
+        "numeric_columns": ["unit_cost"],
+        "category_columns": ["Category"],
+        "row_count": 3,
+        "column_count": 2,
+    }
+    table_info = client.get("/api/table_info/detailed_table", auth=VIEWER).json
+    assert table_info["columns"][0] == {
+        "name": "Category",
+        "dtype": "String",
+        "null_count": 0,
+        "unique_count": 2,
+    }
+    assert client.get("/api/table_info/unknown", auth=VIEWER).status_code == 404
+    for route in ("cost-distribution", "top-categories"):
+        response = client.get(f"/api/dashboard/{route}", auth=VIEWER)
+        assert response.status_code == 200 and response.json["success"]
+        assert b64decode(response.json["image"]).startswith(b"\x89PNG")
+    assert (
+        client.get("/api/generate_viz/detailed_table", auth=VIEWER).status_code == 403
+    )
+    assert client.get("/api/generate_viz/unknown", auth=ANALYST).status_code == 404
+    for route in ("/metrics", "/alerts", "/api/generate-report"):
+        assert client.get(route, auth=VIEWER).status_code == 200
+
+    # Exercise the fallback with a real data shape that has no chart inputs.
+    table.select("Category").write_parquet(prepared / "detailed_table.parquet")
+    no_costs = create_app(prepared).test_client()
+    for route in ("cost-distribution", "top-categories"):
+        assert no_costs.get(f"/api/dashboard/{route}", auth=VIEWER).status_code == 404
+    monkeypatch.delenv("GENOMICS_WEB_ACCESS_FILE")
+    empty = prepared / "empty"
+    empty.mkdir()
+    empty_view = create_app(empty).test_client()
+    assert empty_view.get("/dashboard").status_code == 200
+    assert empty_view.get("/api/generate-report").status_code == 404
+    assert empty_view.get("/api/export/all/zip").status_code == 404
+    for kind in ("csv", "excel", "json", "parquet"):
+        assert empty_view.get(f"/api/export/unknown/{kind}").status_code == 404
+
+
+def test_operational_filters_reject_invalid_choices_and_unreadable_paired_table(
+    dashboard,
+    monkeypatch,
+):
+    prepared, _, _ = dashboard
+    client = create_app(prepared).test_client()
+    assert (
+        client.post(f"{PREFIX}/tests/run", data="{}", auth=ANALYST).status_code == 400
+    )
+    for route, param in (
+        ("tests/results", "test_type"),
+        ("performance/metrics", "analysis_type"),
+        ("monitoring/metrics", "metric_type"),
+    ):
+        assert (
+            client.get(
+                f"{PREFIX}/{route}", query_string={param: "unknown"}, auth=VIEWER
+            ).status_code
+            == 400
+        )
+    assert (
+        client.get(
+            f"{PREFIX}/monitoring/data-quality",
+            query_string={"sheet_name": "unknown"},
+            auth=VIEWER,
+        ).status_code
+        == 404
+    )
+
+    def unavailable_csv(*_args, **_kwargs):
+        raise OSError("Synthetic unavailable local volume")
+
+    monkeypatch.setattr(pl, "read_csv", unavailable_csv)
+    report = client.post(
+        f"{PREFIX}/data-quality/validate",
+        json={"sheet_names": ["assay"], "validation_types": ["consistency"]},
+        auth=ANALYST,
+    )
+    assert report.status_code == 200
+    assert report.json["sheets"][0]["consistency"] == {
+        "available": True,
+        "passed": False,
+        "errors": 1,
+    }
+
+
+def test_local_operational_requests_serialize_and_recover(dashboard, monkeypatch):
+    prepared, _, _ = dashboard
+    started = Event()
+    released = Event()
+    diagnose = web_operations.diagnose
+
+    def blocking_check(*args):
+        started.set()
+        assert released.wait(10)
+        return diagnose(*args)
+
+    monkeypatch.setattr(web_operations, "diagnose", blocking_check)
+    app = create_app(prepared)
+    endpoint = f"{PREFIX}/tests/run"
+    body = {"test_type": "integration", "analysis_modules": ["dsa"]}
+
+    def run_check():
+        return app.test_client().post(endpoint, json=body, auth=ANALYST)
+
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        pending = pool.submit(run_check)
+        try:
+            assert started.wait(10)
+            assert run_check().status_code == 429
+        finally:
+            released.set()
+        assert pending.result(timeout=10).status_code == 200
+    assert run_check().json["passed"] is True
+
+
+def test_operational_diagnostics_report_failed_independent_checks(
+    dashboard, monkeypatch
+):
+    prepared, _, _ = dashboard
+    client = create_app(prepared).test_client()
+    monkeypatch.setattr(
+        operational_checks, "model_template_bytes", lambda *_: b"Test,Item\n"
+    )
+    monkeypatch.setattr(
+        operational_checks.VOIAnalyzer,
+        "calculate_evpi",
+        lambda *_: {"evpi": 999.0},
+    )
+    result = client.post(
+        f"{PREFIX}/tests/run",
+        json={"test_type": "end_to_end", "analysis_modules": ["cost_driver", "voi"]},
+        auth=ANALYST,
+    )
+    assert result.status_code == 200 and not result.json["passed"]
+    assert {
+        item["analysis_module"]: item["passed"] for item in result.json["checks"]
+    } == {
+        "cost_driver": False,
+        "voi": False,
+    }
+    monkeypatch.setattr(web_operations, "synthetic_psa", lambda *_: np.zeros(3))
+    failure = client.post(
+        f"{PREFIX}/performance/benchmark",
+        json={"data_set_size": 5, "iterations": 3},
+        auth=ANALYST,
+    )
+    assert failure.status_code == 500
+    assert (
+        client.get(f"{PREFIX}/performance/metrics", auth=VIEWER).json["benchmarks"]
+        == []
+    )
+
+
+def test_installed_access_checks_with_invalid_config_and_optional_routes(
+    dashboard, monkeypatch
+):
+    prepared, _, access = dashboard
+    access.write_text('{"users":[]}', encoding="utf-8")
+    with pytest.raises(ValueError, match="Invalid dashboard access configuration"):
+        create_app(prepared)
+
+    monkeypatch.delenv("GENOMICS_WEB_ACCESS_FILE")
+    app = Flask(__name__)
+    operations = Blueprint("operations", __name__)
+    operations.add_url_rule("/test-results", "results", lambda: "Operational content")
+    app.register_blueprint(operations)
+    web_access.install_web_access(app)
+    response = app.test_client().get("/test-results")
+    assert response.status_code == 404
+    assert b"Configure dashboard access" in response.data
+
+
+def test_template_request_rejects_ambiguous_invalid_or_oversized_profiles(tmp_path):
+    client = create_app(tmp_path).test_client()
+    for data, code, message in (
+        (
+            {
+                "model": "panel",
+                "format": "csv",
+                "profile": "{}",
+                "profile_file": (BytesIO(b"{}"), "profile.json"),
+            },
+            400,
+            b"Choose one profile source",
+        ),
+        (
+            {"model": "panel", "format": "csv", "profile": "{bad}"},
+            400,
+            b"Enter a valid lab profile",
+        ),
+        ({"model": "unknown", "format": "csv"}, 400, b"Choose a listed model"),
+        (
+            {
+                "model": "panel",
+                "format": "csv",
+                "profile_file": (BytesIO(b" " * 65537), "profile.json"),
+            },
+            413,
+            b"profile exceeds 64 KiB",
+        ),
+    ):
+        reply = client.post("/models/template", data=data)
+        assert reply.status_code == code and message in reply.data

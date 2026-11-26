@@ -1,10 +1,11 @@
 # Remaining genomics acceptance
 
 The [G4.3 record](g4-3-acceptance.md) established 99 of 114 verified
-outcomes. This checkpoint verifies nine additional outcomes, bringing
-the verified count to **108 of 114 outcomes (94.74%)**. Full-model data
-quality, research reporting, the broader coverage targets and the three
-external outcomes remain open.
+outcomes. The previous checkpoint brought the count to 108. The coverage
+targets now pass, bringing the total to **109 of 113 active outcomes
+(96.46%)** or **109 of 114 frozen outcomes (95.61%)**. The representative
+lab pilot moved to the [roadmap](../../roadmap.md#representative-genomics-lab-pilot)
+on 26 November 2026.
 The original workbook retains **35 of 35 worksheets, 36,411 of 36,411
 formula coordinates and 10 of 10 valuation pathways**.
 
@@ -15,25 +16,29 @@ formula coordinates and 10 of 10 valuation pathways**.
 | `data-governance` | Qualified | Concurrent versions retained distinct identifiers and private metadata. A restart recovered both versions. Loading a changed source failed its registered checksum. |
 | `template-time` | Qualified | In a fresh synthetic consumer workspace, the installed tools generated a 22-row customized template in 0.54 s, validated the input in 0.47 s and completed the profile, data and app setup in 1.16 s. The original limits were 10, 5 and 30 minutes respectively. |
 | `full-analysis-chain` | Qualified | The installed planning command connected selected source components and declared cost draws to cost drivers, DSA, PSA, cost-only VOI, budget impact, break-even, benchmark and cost per diagnosis. Independent results matched every handoff in the synthetic case. Original workbook and archived-draw comparators remain in the G4.2 record. |
-| `distribution-quality` | Open | All 839 priced amounts and the independently calculated quartiles passed. The expanded 959-row view had 911 valid amounts (94.99%). The existing multi-field validator scored the five full model exports from 41.60% to 60.28%. Every export remains below the strict greater-than-99.5% target. [Full-model quality](#full-model-quality) |
+| `distribution-quality` | Open | All 1,091 historical export rows reconciled to the workbook under their source cost bases. The strict editable-data scores on those same tables range from 41.60% to 60.28%. The validated operational dataset outcome remains open. [Full-model quality](#full-model-quality) |
 | `lab-management-api` | Qualified | A separate standard-library HTTP client read two synthetic records, preserving leading zeros and decimal text, and recovered its stored version 1 validation receipt. An unauthenticated request received 401. Live lab acceptance remains a separate outcome. |
 | `workbook-migration` | Qualified | The installed model command copied static data to declared cells in a new XLSX layout. Independent readback verified the numeric value, a leading-zero text field and retained formulas. Duplicate targets, formula input or replacement, and output overwrite were rejected. |
 | `analysis-performance` | Qualified | All eight analytical workloads met the less-than-5% regression limit. The first comparison identified a cost-driver timing difference with identical code. After simplifying finite-value validation, a paired comparison in the same runtime improved median cost-driver times by 7.91%, 12.31% and 3.82% at 1,000, 5,000 and 10,000 rows. The cost-driver results matched exactly. |
 | `api-docs` | Qualified | The generator produced a reference with docstrings for 1,213 public declarations across 127 installed modules. All 1,129 declarations across the 109 frozen legacy modules mapped to their documented installed names. |
 | `guides` | Qualified | The installed commands executed the guide's standardization, planning and migration examples. The checks also exercised rejected inputs, authenticated HTTP readback and contribution verification from the source distribution. [Analyst guide](../../../adapters/genomics/deploy/analyst-guide.md) |
-| `research-reporting` | Open | The source, methods and output trail is documented. Completing the journal audit requires the actual study delivery edition and its supporting declarations. [Reporting evidence](#study-reporting-evidence) |
+| `research-reporting` | Audit completed with open findings | The published article, PDF supplement and table workbook were located and checked. The audit identifies which deterministic results reproduce and which uncertainty values still need their original run. [Reporting evidence](#study-reporting-evidence) |
 | `source-command-behavior` | Qualified | The updated source smoke command verified the installed home page, model wizard and client asset. The original repository-only release-screen command passed a numeric-only fixture and blocked a reserved-domain identifier fixture with exit 1. This brings the source-command audit to 74 of 74. |
-| `coverage-targets` | Open | Each of eight analytical modules exceeded 90%. Both modules added in this checkpoint reached 100%. The inherited library and full added-module targets remain open. [Coverage measurements](#coverage-measurements) |
+| `coverage-targets` | Qualified | The inherited library reached 85.71%. The added components covered all 1,941 executable statements. Each of eight analytical modules exceeded 90%. [Coverage measurements](#coverage-measurements) |
 
 ## Installed qualification
 
-The source archive was built at `cf67a08df41df76bcab138aecce3929a86015998`
-on CPython 3.15.1. The clean consumer could load both installed distributions.
-Source checkouts, the runtime source in the distribution archive and network
-access were denied for the installed suites. **201 packaged tests and 1,339
-inherited tests passed**. The independent lab client used an ephemeral
-loopback server with the installed wheel. The workbook inventory, formula
-results and native pathway output matched the retained files byte for byte.
+The clean source package at `6911ebbe6621126aa9487160619c8401e06662ca`
+passed **267 packaged tests** on CPython 3.15.1 with network and checkout
+reads denied. The byte-identical wheel passed **1,339 inherited tests**.
+The native Dapane 0.1.0 wheel was installed alongside the adapter.
+The inventory, exact formula results and all ten native valuation outputs
+matched the previous accepted receipts byte for byte. The corrected raw
+exports also reconciled 21,925 populated cells across the five models.
+
+Earlier acceptance at `cf67a08df41df76bcab138aecce3929a86015998` used
+201 packaged cases and the same 1,339 inherited cases. The separate
+independent lab client used an ephemeral loopback server.
 
 The seven other performance workloads had median elapsed changes from
 −1.35% to +3.43% against the prior installed candidate. Their numerical
@@ -51,69 +56,118 @@ GitHub Actions checks separately from these command tests.
 
 ## Full-model quality
 
-The installed extraction and enhancement commands produced all five model
-exports. A separate comparison with cached workbook values checked 8,287
-cells with zero differences. The existing quality validator then scored
-1,091 rows using model and item identity, available unit price and
-quantity, configured bounds, and agreement with the extended cost.
-Every model failed the strict quality target. The reports preserve
-unresolved values and allow them to be traced to the source.
+Use the existing `validation_pipeline.py --workbook` command for enhanced
+historical exports. It records the workbook and output digests and checks all
+rows, source row identities, taxonomy, schema and exported values. The five
+original exports passed all 1,091 rows and 8,287 populated cells. Changed
+values, omitted rows and missing models fail workbook validation. The separate
+exact replay qualifies the workbook's original formulas and cached totals.
 
-Closing Q-184 requires an approved validated dataset with documented row
-roles, authoritative values for unresolved fields and a passing receipt
-from the existing multi-field validator. The priced-amount audit and the
-workbook replay provide distinct evidence for the source values.
+The editable-data check reports three cost failure counts alongside the
+strict multi-field score. The original exports have 355 multiplication
+disagreements, 62 rows outside the editable bounds, 170 missing or
+nonfinite amount rows and 29 identity failures. Counts can overlap. For
+example, labour quantity is in minutes while wages are hourly, and equipment
+rows pair purchase prices and throughput with annualized per-test values.
+Subtotals and headings can legitimately lack a standalone unit price. The
+original values, broken references and missing inputs retain their workbook
+lineage. The 839 priced amounts pass their separate distribution check. A
+synthetic editable dataset at the original scale passed for all five models.
+Removing one price from a 200-row model yielded exactly 99.5% and failed
+the strict target.
+
+The Q-184 target applies to validated editable input datasets. A named
+operational dataset requires documented row roles, authorised values for
+unresolved component inputs and a strict score above 99.5%.
 
 ## Coverage measurements
 
-The combined statement coverage includes the packaged and inherited suites,
-the exact workbook replay, the installed analytical and guard cases,
-workbook preparation, 2,894 passing unit-cost comparisons, model export
-validation, and standard report generation in four formats.
+The statement coverage combines installed packaged and inherited suites,
+the exact workbook replay and model export checks. Earlier analytical and
+report command measurements were reused for byte-identical runtime source
+files. The two changed runtime modules use fresh measurements.
 
 | Scope | Covered statements | Coverage | Frozen target |
 | --- | ---: | ---: | --- |
-| All 127 installed modules | 14,070 / 16,895 | 83.28% | Whole-package comparison |
-| 109 inherited modules | 12,344 / 14,998 | 82.30% | At least 85% |
-| 18 modules added since the predecessor | 1,726 / 1,897 | 90.99% | Greater than 90% for new components, with 100% under R-271 |
+| All 127 installed modules | 14,794 / 16,937 | 87.35% | Whole-package comparison |
+| 109 inherited modules | 12,853 / 14,996 | 85.71% | At least 85% |
+| 18 modules added since the predecessor | 1,941 / 1,941 | 100% | Greater than 90% for new components, with 100% under R-271 |
 | Eight analytical modules | 891 / 977 | 91.20% | Greater than 90% in every module. Observed 90.15% to 92.81%. |
-| Two modules added in this checkpoint | 105 / 105 | 100% | 100% for these new components |
 
-The retained coverage XML identifies the executable lines for the remaining
-tests. Reaching 85% in the inherited modules requires at least 405 more
-covered statements at the measured denominator. The added-module aggregate
-exceeds 90%. Individual coverage varies, and 171 statements remain
-uncovered across that group.
+The added group contains 17 modules with executable statements and one
+package initializer with none. All executable statements in the group ran.
 
 ## Study reporting evidence
 
-The frozen source contains the Study 1 assumptions, version 4 dated
-23 July 2023 by its filename, with SHA-256
-`2ded2931a596169ce5676e2bad963e06aadf98d481bfd160a77c99a8ae8be71a`.
-The catalogue inspection found the assumptions edition and the software
-citation. The submission edition and its supplement inventory remain needed.
+The results edition is Mordaunt et al., *Genetics in Medicine* 26(4),
+101058, DOI `10.1016/j.gim.2023.101058`. It was accepted on 22 December
+2023, appeared online on 30 December 2023 and was assigned to the April
+2024 issue. The BMJ Open paper is the separately published protocol.
+The retained Study 1 assumptions v4 dated 23 July 2023 by filename are a
+separate source edition. [Results article](https://doi.org/10.1016/j.gim.2023.101058)
+[University record](https://researchnow.flinders.edu.au/en/publications/the-cost-of-proband-and-trio-exome-and-genome-analysis-in-rare-di/)
+[Study protocol](https://doi.org/10.1136/bmjopen-2022-069441)
 
-The reproducibility entries can be filled from the exact workbook replay,
-software citation, installed artifact manifest and versioned output receipts.
-For an original-research submission, reconcile the actual manuscript and
-supplements to the applicable reporting checklist, study design, protocol and
-relevant registration, structured abstract and methodological limitations,
-ethics and involvement statements, funding, interests, contributorship and
-data availability. Confirm the approved statement and access terms against
-the rights decision below. [BMJ Open author instructions](https://bmjopen.bmj.com/pages/authors)
+| Asset inspected on 26 November 2026 | Contents | SHA-256 |
+| --- | --- | --- |
+| [Results version of record](https://researchnow-admin.flinders.edu.au/ws/portalfiles/portal/105066454/Mordaunt_Cost_P2023.pdf) | Journal PDF, eight pages, CC BY 4.0 | `6c1bf8cb92d59dd167053d132287d775642acf912acd9a4cd31cfe218a0c3b71` |
+| [Publisher supplement PDF](https://ars.els-cdn.com/content/image/1-s2.0-S1098360023010742-mmc1.pdf) | Two figures and three documents covering assumptions, computing configuration and jurisdictional labour factors | `bd613e2f9bfc68884f1886bf5c74d382a63b488321e41c85f15450c8b5b65600` |
+| [Publisher supplement XLSX](https://ars.els-cdn.com/content/image/1-s2.0-S1098360023010742-mmc2.xlsx) | Eight tables covering detailed inputs, wages, estimates, four deterministic sensitivity analyses and PSA | `28170c95181393a96b8bfcc66e19cc5bd5f732e2ec3ed36cfa60fa6c2fd31eda` |
+
+The study reports cost per rare-disease test in 2023 AUD. Tables 1 and 2
+display five assay estimates. At published precision, the original
+`Summary Table` matches all five central AUD figures, 20 of 20 resource
+categories and 48 of 50 stage figures. The exceptions are proband exome's
+storage and analysis stages. Supplemental Table 3's unrounded
+proband exome total differs from the workbook by AUD 0.25. The 14 scenarios
+for the five assays reproduce all 70 midpoint entries from `DSA - Summary`
+through Supplemental Tables 4–7 and article Table 3. The article intervals
+and Supplemental Table 8 percentiles differ for all five assays. A December
+2023 legacy notebook uses an unseeded sampler and references a separate final
+MLE input. Exact publication PSA reproduction requires the publication's
+original draws or a documented deterministic run with matching inputs.
+Across the 15-column public view of the detailed table, 11,747 of 11,756
+populated cells agreed with their frozen counterparts. The nine differences
+are assay and stage labels.
+
+The published edition includes a structured abstract, setting and test
+denominators, price date, process exclusions, methods and limitations. Its
+declarations cover ethics, funding, contributions, competing interests and
+data availability. The last identifies the public supplements and confidential
+price redactions. Version-of-record identity was reconciled to DOI metadata.
+Manual table and citation-callout inspection, SourceRight 0.1.20 provenance
+diagnostics and Textstat 0.7.13 abstract scores are retained for the audited
+materials. The PDF text extraction splits some citations across lines, so
+the diagnostics require manual reconciliation. Current author
+guidance calls for CHEERS for new submissions in the economic-evaluation
+category. The original submitted checklist and the reproducible publication
+PSA run remain outstanding for full reporting acceptance. [Genetics in Medicine author guidance](https://www.gimjournal.org/content/authorinfo)
 
 ## External verification
 
 | Outcome | Required evidence |
 | --- | --- |
-| `publication-rights` | Identify the exact study edition, workbook, supporting tables and intended publication destinations. Retain the data owner's written redistribution decision for each asset, including any redaction or embargo. Verify the approved export contents, provenance and checksums against that decision. |
-| `pilot-acceptance` | Name a representative laboratory, a designated participant and the exact installed revision. Have the participant complete setup, customized template generation, input validation and report retrieval with approved inputs. Retain timings against the 30-, 10- and 5-minute targets, observed issues and the laboratory's dated acceptance decision. |
+| `publication-rights` | Linking the published article and supplements is available now. For any republication, record the exact bytes, license or permission, attribution and exclusions. For releasing the original workbook, restricted source inputs or any derivative that reveals confidential prices, obtain written authority from the relevant custodians and rights holders. Specify the artifact, audience, destination, licensing terms, required redactions and embargo. Retain the approval and check the final export against it. [Published article license](https://creativecommons.org/licenses/by/4.0/) |
 | `deployment-pipeline` | Identify the authorised target environment, existing AWS or Azure service, environment identity and immutable image digest. Retain the live promotion receipt, provider readback of the running digest, health and access results, and a rollback rehearsal. Record the execution and rollback authority for that target before a live operation. [Deployment instructions](../../../adapters/genomics/deploy/README.md) |
 
 ## Retained receipts
 
-The 26 November 2026 qualification catalogue retains these artifacts and
+The 26 November 2026 qualification records retain the artifacts and
 their producing commands in authorised storage.
+
+| Latest artifact | SHA-256 |
+| --- | --- |
+| Genomics wheel | `f959d36107347fc51f35e3e54e4931495519e8aa293edb13168649a933f69d8e` |
+| Genomics source distribution | `ac084a8c753b0fb59083ebf222541c1c6a52c4003aa7cb5c57c9aafb2e924c86` |
+| Packaged JUnit | `560f1705f566710d2cc391ead661fad4607a09f6c4c93e1baecf1eaba6c45255` |
+| Inherited JUnit | `4e59a9c3275dd0913223d3e678378dfdd3ab9ea3dd5f470ddcadbc0d599a7303` |
+| Installed statement populations | `7ac6dba3047a081c712abbde99a012c379efa463b1bbc8f126449b44cfa9b88c` |
+| Coverage readback | `752a6fa49d015a2175cdecdd730f36a0526da8184641d96dbab45d522fb2423c` |
+| Historical model validation | `a658d0f29405981ca767639f880a8b002309cadc167d72dd20e92615c1c32f48` |
+| Full-model editable validation | `2febbba673f122e83003b5f2cf29844406a734b0e52f9d27d5daa00d3e365d94` |
+| Published results and supplement comparison | `f7351bab1e88834a3bdd98d015783b9c4c50ca8f7c002e9ade5ccbc77695a249` |
+
+Earlier receipts support the prior performance and workflow comparisons.
 
 | Artifact | Edition or content | SHA-256 |
 | --- | --- | --- |

@@ -97,6 +97,151 @@ def test_price_release_selects_exact_volume_tier_and_allocates_booked_pool():
         )
 
 
+@pytest.mark.parametrize(
+    ("payload", "error"),
+    [
+        ("text instead of bytes", "versioned JSON bytes"),
+        (b'{"schema_version":"0.2","quotes":[]}', "release schema"),
+        (b'{"schema_version":"0.1","quotes":[{}]}', "identified quotation list"),
+    ],
+)
+def test_external_price_release_rejects_an_invalid_provider_contract(payload, error):
+    request, _ = _catalogue()
+    with pytest.raises(ValueError, match=error):
+        value_with_prices(request, fetch=lambda _: payload, volume=1)
+
+
+@pytest.mark.parametrize(
+    ("volume", "discounts", "error"),
+    [
+        (0, {}, "positive integer"),
+        (1, {"missing": []}, "supplied quotation"),
+        (
+            1,
+            {"quoted-compute": [VolumeDiscount(0, "0.1")]},
+            "positive integer thresholds",
+        ),
+        (1, {"quoted-compute": [VolumeDiscount(1, "1.1")]}, "between zero and one"),
+    ],
+)
+def test_volume_pricing_rejects_invalid_policies(volume, discounts, error):
+    request, payload = _catalogue()
+    with pytest.raises(ValueError, match=error):
+        value_with_prices(
+            request, fetch=lambda _: payload, volume=volume, discounts=discounts
+        )
+
+
+@pytest.mark.parametrize(
+    ("quote", "error"),
+    [
+        (12.5, "exact strings or rational pairs"),
+        ("-1", "nonnegative source price"),
+    ],
+)
+def test_volume_pricing_rejects_inexact_or_negative_source_prices(quote, error):
+    request, payload = _catalogue()
+    launch = json.loads(payload)
+    launch["quotes"][0]["amount"] = quote
+    with pytest.raises(ValueError, match=error):
+        value_with_prices(
+            request,
+            fetch=lambda _: json.dumps(launch).encode(),
+            volume=1,
+            discounts={"quoted-compute": [VolumeDiscount(1, "0.2")]},
+        )
+
+
+def test_volume_pricing_accepts_rational_quotes_and_requires_lab_context():
+    request, payload = _catalogue()
+    release = json.loads(payload)
+    release["quotes"][0]["amount"] = {"numerator": "25", "denominator": "2"}
+
+    def fetch(_):
+        return json.dumps(release).encode()
+
+    result = value_with_prices(
+        request,
+        fetch=fetch,
+        volume=1,
+        discounts={"quoted-compute": [VolumeDiscount(1, "0.2")]},
+    )
+    assert result["report"]["totals"]["rounded"] == "40.00"
+    with pytest.raises(ValueError, match="requires a lab profile"):
+        value_with_prices(
+            request, fetch=fetch, volume=1, labour_quote_ids=("quoted-compute",)
+        )
+    with pytest.raises(ValueError, match="labour-only"):
+        value_with_prices(
+            request,
+            fetch=fetch,
+            volume=1,
+            lab_profile=LabProfile(),
+            labour_quote_ids=("quoted-compute",),
+        )
+
+
+@pytest.mark.parametrize(
+    ("volume", "name", "efficiency", "quantity", "error"),
+    [
+        (0, "panel", "1", "1", "positive integer"),
+        (1, "unknown", "1", "1", "Unknown configured"),
+        (1, "panel", "0", "1", "multiplier must be positive"),
+        (1, "panel", "1", "-1", "quantity cannot be negative"),
+    ],
+)
+def test_configured_model_rejects_invalid_workloads(
+    tmp_path, volume, name, efficiency, quantity, error
+):
+    request, payload = _catalogue()
+    configuration = tmp_path / "model.yaml"
+    configuration.write_text(
+        f"""models:
+  panel:
+    efficiency_multiplier: "{efficiency}"
+    resources:
+      compute:
+        quantity_per_case: "{quantity}"
+        quote_id: quoted-compute
+        unit: hour
+""",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match=error):
+        value_configured_model(
+            request,
+            configuration=configuration,
+            model_name=name,
+            volume=volume,
+            service_date=date(2023, 9, 2),
+            source_access="public",
+            fetch=lambda _: payload,
+        )
+
+
+def test_prediction_rejects_absent_invalid_and_negative_observations():
+    frame = pl.DataFrame({"effort": [1.0, 2.0, 3.0], "cost": [4.0, 6.0, 8.0]})
+    with pytest.raises(ValueError, match="separate from fitted"):
+        fit_cost_model(frame, features=("cost",), response="cost")
+    with pytest.raises(ValueError, match="distinct numeric"):
+        fit_cost_model(frame, features=("unknown",), response="cost")
+    with pytest.raises(ValueError, match="finite and nonmissing"):
+        fit_cost_model(
+            frame.with_columns(pl.lit(float("inf")).alias("effort")),
+            features=("effort",),
+            response="cost",
+        )
+    with pytest.raises(ValueError, match="Training costs"):
+        fit_cost_model(
+            frame.with_columns(pl.lit(-1.0).alias("cost")),
+            features=("effort",),
+            response="cost",
+        )
+    fitted = fit_cost_model(frame, features=("effort",), response="cost")
+    with pytest.raises(ValueError, match="negative cost"):
+        fitted.predict(pl.DataFrame({"effort": [-10.0]}))
+
+
 def test_pinned_file_price_release_replays_and_rejects_changed_or_missing_bytes(
     tmp_path,
 ):

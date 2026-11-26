@@ -199,3 +199,12 @@ The next tranche is [full genomics workbook and feature incorporation](tracks/ge
 Both the complete v15 workbook and all existing and planned legacy features are
 required. Start by freezing the two coverage ledgers. Use the [registry](tracks.md)
 for status and the [workflow](workflow.md) for execution.
+
+## Representative genomics lab pilot
+
+Deferred on 26 November 2026. When a representative laboratory is available,
+agree on the participant, installed revision and approved inputs. Have the
+participant set up the application, generate a custom template, validate inputs
+and retrieve a report. Record setup, template and validation timings against the
+original 30-, 10- and 5-minute targets, respectively. Retain observed issues
+and the laboratory's dated acceptance decision. [Original outcome](tracks/genomics_full_incorporation_20261124/feature-audit.md#findings)
