@@ -48,6 +48,7 @@ moved to the roadmap on 26 November 2026. Both remain in the frozen
 - [x] G6.2 Share booked inputs across currency variants and build reports from the native valued lines. [Valuation and reporting evidence](verification.md#shared-workbook-calculations)
 - [x] G6.3 Verify the frozen workbook, changed inputs and installed artifact. [Exact comparisons and installed tests](verification.md#shared-workbook-calculations)
 - [x] G6.4 Reuse ordered subexpressions across formula families and qualify six workbook scenarios with exact error parity. [Nested calculations and six-scenario parity](verification.md#nested-calculations-and-six-scenario-parity)
+- [x] G6.5 Reproduce all six comparisons in a maintained local runner using two installed versions. [Repeatable scenario verification](verification.md#repeatable-scenario-verification)
 
 Integration requires the official offline-security check on the exact PR head
 and the receiving `main` revision. GitHub Actions retains the run for each
