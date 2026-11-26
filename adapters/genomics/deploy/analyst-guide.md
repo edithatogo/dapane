@@ -110,6 +110,21 @@ through `GET /api/microcosting/monitoring/data-quality?sheet_name=<name>`.
 Check `schema_version` is 1 and match the POST response's `X-Request-ID` with
 the stored `request_id`. A request without credentials receives HTTP 401.
 
+## Record study provenance
+
+Identify the software release or commit and the installed artifact digest.
+Record the version and fingerprint of each input and generated report. For a
+probabilistic run, retain the parameter or draw source, seed when set, draw
+count and interval calculation. When using a saved historical result, state
+its edition and preserve any differences from the published tables.
+
+In a data availability statement, name public sources and the conditions
+for obtaining restricted inputs. Publish code under its repository licence
+and document the applicable rights for each study asset. The original v15
+workbook and confidential prices require asset-specific permission for
+redistribution. The BMJ Open methodology protocol and the Genetics in
+Medicine results article are separate study records. [BMJ data sharing guidance](https://authors.bmj.com/policies/data-sharing/) · [Methodology protocol](https://doi.org/10.1136/bmjopen-2022-069441) · [Results article](https://doi.org/10.1016/j.gim.2023.101058)
+
 ## Troubleshoot and contribute
 
 If a planning request fails, verify the assay, the cost column, all component
