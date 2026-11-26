@@ -70,6 +70,9 @@ table and monitoring routes. The visualization extra adds chart rendering.
 The comprehensive analytical reports use the archived PSA data separately.
 Launch the installed interface with `genomics-web --data-dir <prepared-tables>`.
 It listens on the local machine and uses the same model templates as the CLI.
+The [analyst guide](deploy/analyst-guide.md) runs a synthetic case through the
+source-linked planning report, model audit and workbook migration. It also
+covers lab-system readback, troubleshooting and focused verification.
 
 ## Model templates, pricing and prediction
 

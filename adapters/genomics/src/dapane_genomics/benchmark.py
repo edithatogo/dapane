@@ -126,6 +126,7 @@ def compare(
 
 
 def main() -> int:
+    """Measure a repeatable workload or compare two compatible receipts."""
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     sample = commands.add_parser("measure")

@@ -279,6 +279,7 @@ def evaluate_pathways(ledger: dict[str, Any]) -> dict[str, Any]:
 
 
 def main() -> None:
+    """Replay the V15 pathway ledger into restricted exact valuation reports."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ledger", type=Path)
     parser.add_argument(

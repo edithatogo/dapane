@@ -2,6 +2,8 @@
 """Verify the native model calibration, taxonomy and bundled template contract."""
 
 import io
+import json
+import sys
 from decimal import Decimal
 
 import polars as pl
@@ -9,6 +11,7 @@ from openpyxl import load_workbook
 
 from dapane_genomics.model_tables import (
     LabProfile,
+    main,
     model_template,
     standardize_models,
     write_model_template,
@@ -48,6 +51,49 @@ def test_standardization_preserves_costs_and_checks_cross_model_coverage():
     assert report["subcategory_overlap"] == {"common": 1, "total": 3}
     assert report["models"][1]["missing_categories"] == ["Consumables"]
     assert report["models"][1]["unknown_subcategories"] == {}
+
+
+def test_distribution_audit_accounts_for_every_input_row(tmp_path, monkeypatch):
+    frame = pl.DataFrame(
+        {
+            "Test": ["Panel"] * 4 + ["WGS (T)"] * 4,
+            "Category": ["Labour"] * 8,
+            "Sub-Category": ["Specimen Receipt"] * 8,
+            "cost": [2.0, 8.0, None, float("inf"), 4.0, 16.0, -1.0, 0.0],
+        }
+    )
+    source = tmp_path / "models.parquet"
+    frame.write_parquet(source)
+    output = tmp_path / "audit"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "genomics-model",
+            "standardize",
+            str(source),
+            str(output),
+            "--cost-column",
+            "cost",
+        ],
+    )
+    assert main() == 0
+    audit = json.loads((output / "taxonomy-audit.json").read_text())[
+        "cost_distribution"
+    ]
+    assert audit["rows"] == 8
+    assert audit["valid_rows"] == 5
+    assert audit["valid_percentage"] == 62.5
+    assert not audit["above_99_5_percent"]
+    panel, wgs = audit["models"]
+    assert (panel["median"], panel["missing"], panel["nonfinite"]) == (5, 1, 1)
+    assert (wgs["quartile_1"], wgs["median"], wgs["quartile_3"], wgs["negative"]) == (
+        2,
+        4,
+        10,
+        1,
+    )
+    assert pl.read_parquet(output / "standardized.parquet").equals(frame)
 
 
 def test_templates_are_available_as_installed_resources():

@@ -222,12 +222,33 @@ def create_cost_analysis_plots(
 
 
 def main() -> int:
+    """Write a prepared-data report or a source-linked planning receipt."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-dir", type=Path, default=Path("data/prepared"))
     parser.add_argument("--output-dir", type=Path, default=Path("reports"))
     parser.add_argument("--template", type=Path)
     parser.add_argument("--pdf", action="store_true", help="Require PDF rendering")
+    parser.add_argument(
+        "--planning",
+        type=Path,
+        help="Generate a source-linked planning JSON report",
+    )
     args = parser.parse_args()
+    if args.planning:
+        from .planning_analysis import planning_analysis
+
+        try:
+            result = json.dumps(
+                planning_analysis(args.planning), indent=2, allow_nan=False
+            )
+        except (OSError, ValueError, pl.exceptions.PolarsError) as error:
+            parser.error(str(error))
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        with (args.output_dir / "planning-analysis.json").open(
+            "x", encoding="utf-8"
+        ) as report:
+            report.write(result + "\n")
+        return 0
     data = load_prepared_data(args.data_dir)
     if not data:
         parser.error("No prepared tables were found")

@@ -4,8 +4,11 @@
 import hashlib
 import json
 import logging
+import sqlite3
+from contextlib import closing
 from datetime import UTC, datetime
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Any
 from uuid import uuid4
 
@@ -99,7 +102,7 @@ class DataManager:
             if metadata_directory
             else self.data_directory / "metadata"
         )
-        self.metadata_directory.mkdir(exist_ok=True)
+        self.metadata_directory.mkdir(mode=0o700, exist_ok=True)
 
         # Load existing metadata
         self.datasets: dict[str, list[DataVersion]] = {}
@@ -121,11 +124,8 @@ class DataManager:
             str: SHA256 checksum
 
         """
-        hash_sha256 = hashlib.sha256()
         with Path(file_path).open("rb") as f:
-            for chunk in iter(lambda: f.read(4096), b""):
-                hash_sha256.update(chunk)
-        return hash_sha256.hexdigest()
+            return hashlib.file_digest(f, "sha256").hexdigest()
 
     def _get_dataset_name(self, file_path: Path) -> str:
         """Get dataset name from file path.
@@ -143,35 +143,28 @@ class DataManager:
         """Load existing metadata from files."""
         metadata_file = self.metadata_directory / "datasets.json"
         if metadata_file.exists():
-            try:
-                with Path(metadata_file).open() as f:
-                    data = json.load(f)
-
-                for dataset_name, versions_data in data.items():
-                    versions = [
-                        DataVersion.from_dict(version_data)
-                        for version_data in versions_data
-                    ]
-                    self.datasets[dataset_name] = versions
-
-                logger.info("Loaded metadata for %s datasets", len(self.datasets))
-            except Exception:
-                logger.exception("Error loading metadata")
+            with metadata_file.open(encoding="utf-8") as f:
+                data = json.load(f)
+            self.datasets = {
+                name: [DataVersion.from_dict(version) for version in versions]
+                for name, versions in data.items()
+            }
+            logger.info("Loaded metadata for %s datasets", len(self.datasets))
 
     def _save_metadata(self) -> None:
         """Save metadata to file."""
         metadata_file = self.metadata_directory / "datasets.json"
-        try:
-            data = {}
-            for dataset_name, versions in self.datasets.items():
-                data[dataset_name] = [version.to_dict() for version in versions]
-
-            with Path(metadata_file).open("w") as f:
+        data = {
+            name: [version.to_dict() for version in versions]
+            for name, versions in self.datasets.items()
+        }
+        with TemporaryDirectory(dir=self.metadata_directory) as directory:
+            staged = Path(directory) / metadata_file.name
+            with staged.open("w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)
-
-            logger.info("Saved metadata for %s datasets", len(self.datasets))
-        except Exception:
-            logger.exception("Error saving metadata")
+            staged.chmod(0o600)
+            staged.replace(metadata_file)
+        logger.info("Saved metadata for %s datasets", len(self.datasets))
 
     def register_dataset(
         self,
@@ -210,18 +203,27 @@ class DataManager:
         version = DataVersion(
             version_id=version_id,
             timestamp=timestamp,
-            file_path=file_path,
+            file_path=file_path.absolute(),
             checksum=checksum,
             metadata=file_metadata,
         )
 
-        # Add to datasets
-        if dataset_name not in self.datasets:
-            self.datasets[dataset_name] = []
-        self.datasets[dataset_name].append(version)
-
-        # Save metadata
-        self._save_metadata()
+        # Serialize registry writes while keeping datasets.json readable by
+        # existing consumers. Closing the connection releases the writer lock.
+        with closing(
+            sqlite3.connect(self.metadata_directory / ".dataset-writer"),
+        ) as lock:
+            lock.execute("BEGIN IMMEDIATE")
+            self._load_metadata()
+            versions = self.datasets.setdefault(dataset_name, [])
+            versions.append(version)
+            try:
+                self._save_metadata()
+            except Exception:
+                versions.pop()
+                if not versions:
+                    del self.datasets[dataset_name]
+                raise
 
         logger.info("Registered dataset %s with version %s", dataset_name, version_id)
         return version_id
@@ -295,15 +297,19 @@ class DataManager:
 
         logger.info("Loading dataset %s version %s", dataset_name, version.version_id)
 
-        # Load based on file extension
-        if file_path.suffix.lower() == ".parquet":
-            return pl.read_parquet(file_path)
-        if file_path.suffix.lower() == ".csv":
-            return pl.read_csv(
-                file_path,
-                infer_schema=False,
-                schema_overrides=schema_overrides,
-            )
+        with file_path.open("rb") as source:
+            if hashlib.file_digest(source, "sha256").hexdigest() != version.checksum:
+                message = f"Dataset {dataset_name} failed the registered checksum"
+                raise ValueError(message)
+            source.seek(0)
+            if file_path.suffix.lower() == ".parquet":
+                return pl.read_parquet(source)
+            if file_path.suffix.lower() == ".csv":
+                return pl.read_csv(
+                    source,
+                    infer_schema=False,
+                    schema_overrides=schema_overrides,
+                )
         message = f"Unsupported file format: {file_path.suffix}"
         raise ValueError(message)
 

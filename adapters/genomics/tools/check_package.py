@@ -95,6 +95,7 @@ DEPLOYMENT_FILES = {
     ".dockerignore",
     "Dockerfile",
     "deploy/README.md",
+    "deploy/analyst-guide.md",
     "deploy/container-app.bicep",
     "deploy/ecs-task.yml",
     "deploy/lab-setup.md",
