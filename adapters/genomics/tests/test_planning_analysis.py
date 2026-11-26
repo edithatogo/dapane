@@ -9,6 +9,8 @@ import polars as pl
 import pytest
 
 from dapane_genomics.reporting import main
+from dapane_genomics.v15_pathways import WORKBOOK_SHA256
+from genomics_microcosting import visualization
 from genomics_microcosting.cost_driver_tables import summarise_cost_drivers
 
 
@@ -93,3 +95,71 @@ def test_cost_driver_check_retains_unpriced_rows_and_rejects_nonfinite_values():
     nonfinite = ingredients.with_columns(pl.col("cost").fill_null(float("inf")))
     with pytest.raises(ValueError, match="Nonfinite source costs"):
         summarise_cost_drivers(nonfinite, cost_column="cost")
+
+
+def test_pathway_report_reuses_exact_valued_lines_and_rejects_double_counting(
+    tmp_path,
+    monkeypatch,
+):
+    one = {"numerator": "1", "denominator": "1"}
+    pathway = {
+        "request": {"policy": {"currency": "AUD"}},
+        "expected_total": one,
+        "stages": {
+            "a": {
+                "stage": "Preparation",
+                "source": "Synthetic",
+                "lines": ["x", "y"],
+                "exact": one,
+            }
+        },
+        "report": {
+            "status": "complete",
+            "policy": {"currency": "AUD"},
+            "totals": {"exact": one},
+            "lines": [
+                {
+                    "id": "x",
+                    "components": ["labour"],
+                    "exact": {"numerator": "1", "denominator": "3"},
+                },
+                {
+                    "id": "y",
+                    "components": ["labour"],
+                    "exact": {"numerator": "2", "denominator": "3"},
+                },
+            ],
+        },
+    }
+    receipt = tmp_path / "synthetic-pathway-receipt.json"
+    result = {"source_sha256": WORKBOOK_SHA256, "pathways": {"synthetic": pathway}}
+    receipt.write_text(json.dumps(result), encoding="utf-8")
+    output = tmp_path / "report"
+    monkeypatch.setattr(visualization, "plt", None)
+    argv = ["genomics-report", "--pathways", str(receipt), "--output-dir", str(output)]
+    monkeypatch.setattr(sys, "argv", argv)
+    assert main() == 0
+    report = json.loads((output / "pathway-report.json").read_bytes())
+    assert report["receipt_sha256"] == sha256(receipt.read_bytes()).hexdigest()
+    view = report["pathways"]["synthetic"]
+    assert view["currency"] == "AUD"
+    assert view["by_component"] == [{"component": "labour", "exact": one}]
+    assert view["by_stage"] == [
+        {"stage": "Preparation", "source": "Synthetic", "exact": one}
+    ]
+
+    rejected = tmp_path / "rejected"
+    monkeypatch.setattr(sys, "argv", [*argv[:-1], str(rejected)])
+    pathway["request"]["policy"]["currency"] = "USD"
+    receipt.write_text(json.dumps(result), encoding="utf-8")
+    with pytest.raises(SystemExit) as failure:
+        main()
+    assert failure.value.code == 2
+    assert not rejected.exists()
+    pathway["request"]["policy"]["currency"] = "AUD"
+    pathway["stages"]["b"] = pathway["stages"]["a"]
+    receipt.write_text(json.dumps(result), encoding="utf-8")
+    with pytest.raises(SystemExit) as failure:
+        main()
+    assert failure.value.code == 2
+    assert not rejected.exists()

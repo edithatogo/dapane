@@ -56,7 +56,29 @@ same ledger and writes native AUD and USD pathway reports, including source
 coordinates, stage amounts and recorded overlaps. Keep these outputs in
 restricted storage and use a new file for each run.
 
+The v15 formulas use four calculation families. A cell can return a value,
+combine values with arithmetic, aggregate values with `SUM` or `AVERAGE`,
+or calculate an annuity with `PMT`. These operations compose. For example,
+`SUM(a,b,c) * rate` totals three inputs before applying a rate. Cell
+references, literal values and the operation stay bound to the source
+cell. Changing a price or quantity recalculates its dependants.
+
+When authoring a workbook scenario with `build_workbook_copy`, a single
+formula can cover disjoint target ranges on the same sheet. For example,
+this synthetic change adds a fixed adjustment factor to selected charges.
+The writer translates the original and replacement from the anchor and
+checks the original formula at every target.
+
+```json
+{"sheet":"Costs","cell":"N2","original":"=F2*J2","replacement":"=F2*J2*$P$1","ranges":["N2:N5","N9:N10"]}
+```
+
 ## Reports and dashboard
+
+`genomics-report --pathways <valued-pathways.json> --output-dir <new-output>`
+writes exact totals by stage and cost component from the booked lines,
+with a hash of the input receipt. The visualization extra adds a chart for
+each pathway and currency. Amounts in the JSON retain exact fractions.
 
 Use `genomics-report --data-dir <prepared-tables> --output-dir <new-output>`
 for Markdown, HTML, JSON and the available charts. Use `--pdf` with the

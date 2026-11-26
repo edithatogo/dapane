@@ -55,6 +55,14 @@ class _Charge:
         return self.quantity * self.rate
 
 
+@dataclass(frozen=True)
+class _Booking:
+    charge: _Charge
+    line_id: str
+    component: str
+    summary_cell: str
+
+
 def _exact(value: Fraction) -> dict[str, str]:
     return {"numerator": str(value.numerator), "denominator": str(value.denominator)}
 
@@ -164,6 +172,41 @@ def _append_charge(
     )
 
 
+def _stage_bookings(
+    book: WorkbookReplay,
+    row: int,
+) -> tuple[list[_Booking], Fraction]:
+    bookings = []
+    direct = Fraction(0)
+    occurrences: Counter[str] = Counter()
+    for col, component in _COST_COLUMNS.items():
+        coordinate = f"{col}{row}"
+        for charge in _component_charges(book, coordinate):
+            base_id = f"{coordinate}-{charge.coordinate}"
+            occurrences[base_id] += 1
+            bookings.append(
+                _Booking(
+                    charge, f"{base_id}-{occurrences[base_id]}", component, coordinate
+                )
+            )
+            direct += charge.value
+
+    overhead_cell = f"K{row}"
+    overhead = _number(book, _SUMMARY, overhead_cell)
+    rate = Fraction("0.27")
+    if overhead != direct * rate:
+        raise ValueError(f"Historical overhead base differs at {overhead_cell}")
+    bookings.append(
+        _Booking(
+            _Charge(_SUMMARY, overhead_cell, direct, rate),
+            f"{overhead_cell}-overhead",
+            "overhead",
+            overhead_cell,
+        )
+    )
+    return bookings, direct + overhead
+
+
 def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
     """Return exact AUD and USD inputs with source links for each booked charge."""
     if ledger["source_sha256"] != WORKBOOK_SHA256:
@@ -172,6 +215,9 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
     fx = _number(book, _SUMMARY, "B81")
     pathways = {}
     for pathway, start in _PATHWAYS.items():
+        stage_bookings = {
+            row: _stage_bookings(book, row) for row in range(start, start + 10)
+        }
         for currency, conversion, total_col in (
             ("AUD", Fraction(1), "N"),
             ("USD", fx, "O"),
@@ -182,36 +228,22 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
             request["policy"]["id"] = "historical-v15-exact-pathway"
             stages = {}
             source_occurrences: dict[tuple[str, str], list[str]] = defaultdict(list)
-            for row in range(start, start + 10):
-                first = len(request["usage"])
-                direct = Fraction(0)
-                line_occurrences: Counter[str] = Counter()
-                for col, component in _COST_COLUMNS.items():
-                    coordinate = f"{col}{row}"
-                    for charge in _component_charges(book, coordinate):
-                        base_id = f"{coordinate}-{charge.coordinate}"
-                        line_occurrences[base_id] += 1
-                        line_id = f"{base_id}-{line_occurrences[base_id]}"
-                        source_occurrences[charge.sheet, charge.coordinate].append(
-                            line_id
-                        )
-                        _append_charge(
-                            request, charge, line_id, component, coordinate, conversion
-                        )
-                        direct += charge.value
-                overhead = _number(book, _SUMMARY, f"K{row}")
-                if overhead != direct * Fraction("0.27"):
-                    raise ValueError(f"Historical overhead base differs at K{row}")
-                _append_charge(
-                    request,
-                    _Charge(_SUMMARY, f"K{row}", direct, Fraction("0.27")),
-                    f"K{row}-overhead",
-                    "overhead",
-                    f"K{row}",
-                    conversion,
-                )
+            for row, (bookings, stage_cost) in stage_bookings.items():
+                for booking in bookings:
+                    charge = booking.charge
+                    source_occurrences[charge.sheet, charge.coordinate].append(
+                        booking.line_id
+                    )
+                    _append_charge(
+                        request,
+                        charge,
+                        booking.line_id,
+                        booking.component,
+                        booking.summary_cell,
+                        conversion,
+                    )
                 expected = _number(book, _SUMMARY, f"{total_col}{row}")
-                if expected != (direct + overhead) * conversion:
+                if expected != stage_cost * conversion:
                     raise ValueError(
                         f"Stage and workbook subtotal disagree at {total_col}{row}"
                     )
@@ -219,7 +251,7 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
                     "stage": book.value(_SUMMARY, f"A{row}"),
                     "source": f"{_SUMMARY}!{total_col}{row}",
                     "exact": _exact(expected),
-                    "lines": [use["id"] for use in request["usage"][first:]],
+                    "lines": [booking.line_id for booking in bookings],
                 }
             expected_pathway = _number(book, _SUMMARY, f"{total_col}{start + 10}")
             if expected_pathway != sum(
@@ -255,27 +287,78 @@ def pathway_requests(ledger: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _validated_stages(
+    pathway: dict[str, Any],
+    report: dict[str, Any],
+) -> dict[str, Fraction]:
+    if (
+        report["status"] != "complete"
+        or report["totals"]["exact"] != pathway["expected_total"]
+    ):
+        raise ValueError("Native total does not reconcile with the original pathway")
+    lines = {line["id"]: _fraction(line["exact"]) for line in report["lines"]}
+    stage_values = {}
+    members = []
+    for key, stage in pathway["stages"].items():
+        actual = sum((lines[line_id] for line_id in stage["lines"]), Fraction(0))
+        if actual != _fraction(stage["exact"]):
+            raise ValueError(f"Native total does not reconcile at {stage['source']}")
+        stage_values[key] = actual
+        members.extend(stage["lines"])
+    if (
+        len(members) != len(lines)
+        or len(lines) != len(report["lines"])
+        or set(members) != lines.keys()
+        or sum(stage_values.values(), Fraction(0))
+        != _fraction(report["totals"]["exact"])
+    ):
+        raise ValueError("Pathway stages must partition and reconcile the valued lines")
+    return stage_values
+
+
 def evaluate_pathways(ledger: dict[str, Any]) -> dict[str, Any]:
     """Value each request in the native kernel and reconcile every recorded stage."""
     result = pathway_requests(ledger)
     for pathway in result["pathways"].values():
         report = evaluate_native_request(pathway["request"])
-        if (
-            report["status"] != "complete"
-            or report["totals"]["exact"] != pathway["expected_total"]
-        ):
-            raise ValueError(
-                "Native total does not reconcile with the original pathway"
-            )
-        lines = {line["id"]: _fraction(line["exact"]) for line in report["lines"]}
-        for stage in pathway["stages"].values():
-            actual = sum((lines[line_id] for line_id in stage["lines"]), Fraction(0))
-            if actual != _fraction(stage["exact"]):
-                raise ValueError(
-                    f"Native total does not reconcile at {stage['source']}"
-                )
+        _validated_stages(pathway, report)
         pathway["report"] = report
     return result
+
+
+def summarise_pathways(result: dict[str, Any]) -> dict[str, Any]:
+    """Project stage and component views from the same exact native valued lines."""
+    if result["source_sha256"] != WORKBOOK_SHA256 or not result["pathways"]:
+        raise ValueError("Pathway report requires a valued original v15 receipt")
+    views = {}
+    for name, pathway in result["pathways"].items():
+        report = pathway["report"]
+        stages = _validated_stages(pathway, report)
+        currency = report["policy"]["currency"]
+        if currency != pathway["request"]["policy"]["currency"]:
+            raise ValueError("Native and requested pathway currencies differ")
+        components: dict[str, Fraction] = defaultdict(Fraction)
+        for line in report["lines"]:
+            (component,) = line["components"]
+            components[component] += _fraction(line["exact"])
+        views[name] = {
+            "currency": currency,
+            "exact": report["totals"]["exact"],
+            "line_count": len(report["lines"]),
+            "by_stage": [
+                {
+                    "stage": stage["stage"],
+                    "source": stage["source"],
+                    "exact": _exact(stages[key]),
+                }
+                for key, stage in pathway["stages"].items()
+            ],
+            "by_component": [
+                {"component": component, "exact": _exact(amount)}
+                for component, amount in sorted(components.items())
+            ],
+        }
+    return {"source_sha256": result["source_sha256"], "pathways": views}
 
 
 def main() -> None:

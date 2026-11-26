@@ -166,6 +166,66 @@ Both files remain restricted. Two independent synthetic tests cover
 cross-sheet ranges, exact expense arithmetic, annuity, input replacement
 and distinct propagated errors. Both passed on CPython 3.15.1.
 
+## Shared workbook calculations
+
+The frozen workbook has 22,434 distinct formula texts and 3,322
+sheet-specific templates after translating relative references. Counting
+each formula cell once gives four calculation families.
+
+| Family | Cells | Syntax patterns | Variations |
+| --- | ---: | ---: | --- |
+| Return a value | 15,507 | 3 | Cell references, a parenthesized reference, or a literal |
+| Arithmetic | 12,966 | 32 | Products, ratios, differences and compound expressions |
+| Aggregate | 7,909 | 7 | Sum or average, optionally followed by an arithmetic adjustment |
+| Annuity payment | 29 | 1 | Rate, periods and signed present value |
+| **Total** | **36,411** | **43** | |
+
+For this count, `PMT` identifies an annuity and `SUM` or `AVERAGE`
+identifies an aggregate, including 2,936 cells that apply arithmetic to
+the aggregate. Among the remaining cells, the presence of an arithmetic
+operator distinguishes arithmetic from returning a value. The syntax
+count retains operators, function names and operand types while ignoring
+individual references and literal values.
+
+The replay compiles 22 layouts from these patterns. It binds numbers,
+references, Excel errors, function names and infix operators at each cell.
+Parentheses, operator precedence and argument order govern reuse. An
+empty average, a division by zero and the order of two input errors retain
+their Excel behaviour. A quantity times a unit price and an amount times
+an exchange rate can share arithmetic while keeping their own sources,
+units and currency policies.
+
+The installed replay matched the previous evaluator byte for byte at all
+36,411 coordinates, including seven historical errors. The original
+formula and native pathway outputs retained the SHA-256 digests recorded
+above and below. Three separate changes to original numeric inputs also
+matched the previous evaluator at every coordinate and for all ten native
+pathway reports.
+
+| Input change | Changed formula results | Affected sheets | Changed pathway totals |
+| --- | ---: | ---: | --- |
+| Double one consumable quantity | 2,962 | 21 | 3 AUD and 3 USD |
+| Increase its unit price by 25% | 2,964 | 21 | 3 AUD and 3 USD |
+| Halve the AUD-to-USD exchange rate | 215 | 1 | All 5 USD totals halved |
+
+On a restricted workbook copy, one relative formula applied an identity
+factor to 346 quantity-times-price cells across 42 disjoint ranges. Every
+target contained the translated edit on readback. All other formula texts
+and all 36,411 recalculated results matched the original. The source file
+retained its frozen digest.
+
+Five pathways share their booked quantities and rates across AUD and USD.
+The installed reporting command read the native receipt, reconciled its
+1,610 booked lines to 100 stages and ten totals, and produced matching
+stage and component sums and ten readable PNG charts. The report keeps
+the source receipt digest. The packaged tests also exercise mismatched
+currency, duplicate stage membership, operand order and cross-sheet
+bindings. All 271 packaged tests passed with sockets disabled from a clean
+CPython 3.15.1 installation of the genomics wheel and native Dapane wheel.
+The installed `dapane-genomics-inventory`, `dapane-genomics-replay`,
+`dapane-genomics-pathways` and `genomics-report --pathways` commands
+reproduced the restricted outputs from outside the checkout. [Consumer commands](../../../adapters/genomics/README.md#original-workbook-replay)
+
 ## Detailed pathway and resource costing
 
 The [pathway adapter](../../../adapters/genomics/src/dapane_genomics/v15_pathways.py)

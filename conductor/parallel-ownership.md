@@ -319,6 +319,12 @@ image evidence changes. The same chat owns the Conductor closeout in this
 checkout on `codex/genomics-roadmap-closeout-20261126` and its exact-head
 qualification. The owner moved live promotion to the roadmap.
 
+Chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` continues the workbook
+formula reuse work in `/private/tmp/dapane-wolfi-qualification.jjPdWq/dapane`
+on `codex/genomics-shared-formulas-20261126`. It owns the genomics adapter
+and its Phase 6 records, private workbook comparisons, and verification of
+the candidate and merged revision on GitHub.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:
