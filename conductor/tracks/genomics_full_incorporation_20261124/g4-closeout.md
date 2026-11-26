@@ -1,11 +1,12 @@
 # Remaining genomics acceptance
 
 The [G4.3 record](g4-3-acceptance.md) established 99 of 114 verified
-outcomes. The previous checkpoint brought the count to 108. The coverage
-targets now pass, bringing the total to **109 of 113 active outcomes
-(96.46%)** or **109 of 114 frozen outcomes (95.61%)**. The representative
-lab pilot moved to the [roadmap](../../roadmap.md#representative-genomics-lab-pilot)
-on 26 November 2026.
+outcomes. Subsequent verification brought the count to 109. The installed
+quality qualification and research reporting audit bring the total to
+**111 of 113 active outcomes (98.23%)**, or **111 of 114 frozen outcomes
+(97.37%)**. Publication rights and live cloud promotion remain open.
+The representative lab pilot moved to the
+[roadmap](../../roadmap.md#representative-genomics-lab-pilot) on 26 November 2026.
 The original workbook retains **35 of 35 worksheets, 36,411 of 36,411
 formula coordinates and 10 of 10 valuation pathways**.
 
@@ -16,13 +17,13 @@ formula coordinates and 10 of 10 valuation pathways**.
 | `data-governance` | Qualified | Concurrent versions retained distinct identifiers and private metadata. A restart recovered both versions. Loading a changed source failed its registered checksum. |
 | `template-time` | Qualified | In a fresh synthetic consumer workspace, the installed tools generated a 22-row customized template in 0.54 s, validated the input in 0.47 s and completed the profile, data and app setup in 1.16 s. The original limits were 10, 5 and 30 minutes respectively. |
 | `full-analysis-chain` | Qualified | The installed planning command connected selected source components and declared cost draws to cost drivers, DSA, PSA, cost-only VOI, budget impact, break-even, benchmark and cost per diagnosis. Independent results matched every handoff in the synthetic case. Original workbook and archived-draw comparators remain in the G4.2 record. |
-| `distribution-quality` | Open | All 1,091 historical export rows reconciled to the workbook under their source cost bases. The strict editable-data scores on those same tables range from 41.60% to 60.28%. The validated operational dataset outcome remains open. [Full-model quality](#full-model-quality) |
+| `distribution-quality` | Qualified | The installed tools validated all 1,091 rows in a named five-model synthetic editable dataset and reproduced 15 independently calculated quartiles. The historical workbook check matched every row under its original cost basis. [Full-model quality](#full-model-quality) |
 | `lab-management-api` | Qualified | A separate standard-library HTTP client read two synthetic records, preserving leading zeros and decimal text, and recovered its stored version 1 validation receipt. An unauthenticated request received 401. Live lab acceptance remains a separate outcome. |
 | `workbook-migration` | Qualified | The installed model command copied static data to declared cells in a new XLSX layout. Independent readback verified the numeric value, a leading-zero text field and retained formulas. Duplicate targets, formula input or replacement, and output overwrite were rejected. |
 | `analysis-performance` | Qualified | All eight analytical workloads met the less-than-5% regression limit. The first comparison identified a cost-driver timing difference with identical code. After simplifying finite-value validation, a paired comparison in the same runtime improved median cost-driver times by 7.91%, 12.31% and 3.82% at 1,000, 5,000 and 10,000 rows. The cost-driver results matched exactly. |
 | `api-docs` | Qualified | The generator produced a reference with docstrings for 1,213 public declarations across 127 installed modules. All 1,129 declarations across the 109 frozen legacy modules mapped to their documented installed names. |
 | `guides` | Qualified | The installed commands executed the guide's standardization, planning and migration examples. The checks also exercised rejected inputs, authenticated HTTP readback and contribution verification from the source distribution. [Analyst guide](../../../adapters/genomics/deploy/analyst-guide.md) |
-| `research-reporting` | Audit completed with open findings | The published article, PDF supplement and table workbook were located and checked. The audit identifies which deterministic results reproduce and which uncertainty values still need their original run. [Reporting evidence](#study-reporting-evidence) |
+| `research-reporting` | Qualified | The 28-item reporting audit covers the fingerprinted published editions. All 80 numeric values in the retained author revision's Table 1 match the publication, and the submitted table supplement is byte-identical to the published workbook. The technical guide documents source access, statistical provenance and retained differences. [Reporting evidence](#study-reporting-evidence) |
 | `source-command-behavior` | Qualified | The updated source smoke command verified the installed home page, model wizard and client asset. The original repository-only release-screen command passed a numeric-only fixture and blocked a reserved-domain identifier fixture with exit 1. This brings the source-command audit to 74 of 74. |
 | `coverage-targets` | Qualified | The inherited library reached 85.71%. The added components covered all 1,941 executable statements. Each of eight analytical modules exceeded 90%. [Coverage measurements](#coverage-measurements) |
 
@@ -76,9 +77,17 @@ synthetic editable dataset at the original scale passed for all five models.
 Removing one price from a 200-row model yielded exactly 99.5% and failed
 the strict target.
 
-The Q-184 target applies to validated editable input datasets. A named
-operational dataset requires documented row roles, authorised values for
-unresolved component inputs and a strict score above 99.5%.
+The named five-model synthetic qualification reran on the wheel with
+SHA-256 `f959d36107347fc51f35e3e54e4931495519e8aa293edb13168649a933f69d8e`
+in a fresh CPython 3.15.1 environment. Its input digest was
+`b09abcb1d6f5f3641e7a4978bbdfb8503836804930f3b0803acdf8c7f8b3631d`.
+The installed enhancement and validation commands passed all 1,091
+rows across the five editable templates. Every row matched its independent
+decimal extension. `genomics-model standardize` matched all five medians
+and ten outer quartiles, with zero missing, negative or nonfinite costs.
+The strict boundary test again rejected one missing price in 200 rows.
+The historical source check separately reconciled 8,287 populated cells
+with zero differences. The lab pilot retains the real-use acceptance scope.
 
 ## Coverage measurements
 
@@ -123,7 +132,16 @@ proband exome total differs from the workbook by AUD 0.25. The 14 scenarios
 for the five assays reproduce all 70 midpoint entries from `DSA - Summary`
 through Supplemental Tables 4–7 and article Table 3. The article intervals
 and Supplemental Table 8 percentiles differ for all five assays. The
-[22 December 2023 notebook](https://github.com/edithatogo/microcosting_genomics/blob/fc8d4178bc3f5ce67cfc0547f7417272562c18a8/notebooks/PSA%20Update%2020231222%20-%20Interactive.ipynb)
+retained 26 November 2023 author revision matches all 80 numeric values
+in the published Table 1, including the ten interval endpoints. The
+table workbook retained with the journal production correspondence is
+byte-identical to the published XLSX. The
+[earlier PSA notebook](https://github.com/edithatogo/microcosting_genomics/blob/fc8d4178bc3f5ce67cfc0547f7417272562c18a8/notebooks/Microcosting%20Study%20-%20PSA.ipynb)
+keeps the same five saved summaries at the first source import and the
+frozen baseline. Eight of its ten endpoints match to the nearest dollar.
+The two genome upper endpoints differ by less than AUD 1.
+
+The [22 December 2023 notebook](https://github.com/edithatogo/microcosting_genomics/blob/fc8d4178bc3f5ce67cfc0547f7417272562c18a8/notebooks/PSA%20Update%2020231222%20-%20Interactive.ipynb)
 retains five embedded Plotly histogram traces with 10,000 absolute cost
 draws per assay. Its SHA-256 is
 `7a9af26b0148a8b102fe70f2e66c3ce3d24e2a3e1bafb8d4c0d3af6fab051f73`.
@@ -132,10 +150,8 @@ matched zero of the ten endpoints in article Table 1 and zero of the ten
 in Supplemental Table 8 at whole-AUD precision. The Gamma quantiles
 computed directly from the five published shape and scale pairs also
 matched zero endpoints in each table at the same precision. The notebook
-uses an unseeded sampler and references a separate final MLE input. Full
-publication reproduction still requires the verified source of the
-published intervals, such as the original draws or a reproducible
-run with matching inputs.
+uses an unseeded sampler and references a separate final MLE input.
+The original publication draw sequence remains an archival evidence gap.
 Across the 15-column public view of the detailed table, 11,747 of 11,756
 populated cells agreed with their frozen counterparts. The nine differences
 are assay and stage labels.
@@ -149,9 +165,11 @@ Manual table and citation-callout inspection, SourceRight 0.1.20 provenance
 diagnostics and Textstat 0.7.13 abstract scores are retained for the audited
 materials. The PDF text extraction splits some citations across lines, so
 the diagnostics require manual reconciliation. Current author
-guidance calls for CHEERS for new submissions in the economic-evaluation
-category. The original submitted checklist and the reproducible publication
-PSA run remain outstanding for full reporting acceptance. [Genetics in Medicine author guidance](https://www.gimjournal.org/content/authorinfo)
+guidance lists CHEERS. The independent 28-item assessment and reconciled
+outputs qualify the reporting documentation outcome. The original
+submitted checklist remains an archival evidence gap. The analyst guide
+sets out journal-facing source access and computational reporting.
+[Genetics in Medicine author guidance](https://www.gimjournal.org/content/authorinfo) · [Analyst guide](../../../adapters/genomics/deploy/analyst-guide.md#record-study-provenance)
 
 ## External verification
 
