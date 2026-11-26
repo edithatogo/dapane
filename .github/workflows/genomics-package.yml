@@ -14,10 +14,16 @@ on:
       - '.github/workflows/genomics-package.yml'
       - '.github/actions/project-python/**'
       - '.python-version'
+  schedule:
+    - cron: '35 3 * * 6'
   workflow_dispatch:
     inputs:
       upload_coverage:
         description: Publish installed genomics coverage using OIDC
+        type: boolean
+        default: false
+      verify_quality:
+        description: Run the scheduled prediction mutation check
         type: boolean
         default: false
 
@@ -25,7 +31,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: genomics-package-${{ github.event.pull_request.number || github.ref }}
+  group: genomics-package-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -75,6 +81,28 @@ jobs:
           suite=("$RUNNER_TEMP"/genomics-source/genomics_microcosting-*)
           "$UV_PROJECT_ENVIRONMENT/bin/python" -I -m pytest \
             -c "${suite[0]}/pyproject.toml" "${suite[0]}/tests" --disable-socket
+      - name: Check prediction guard mutations
+        id: mutation
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || inputs.verify_quality)
+        run: |
+          set -euo pipefail
+          python="$RUNNER_TEMP/genomics-installed/bin/python"
+          suite=("$RUNNER_TEMP"/genomics-source/genomics_microcosting-*)
+          target=$("$python" -I -c 'import dapane_genomics; from pathlib import Path; print(Path(dapane_genomics.__file__).with_name("prediction.py"))')
+          cd "$RUNNER_TEMP/genomics-consumer"
+          "$python" -I -m pytest -c "${suite[0]}/pyproject.toml" \
+            "${suite[0]}/tests/test_planned_pricing.py::test_prediction_reproduces_independent_holdout_values" \
+            --disable-socket --gremlins --gremlin-targets="$target" \
+            --gremlin-operators=comparison --gremlin-mutant-timeout=25 --gremlin-report=console,json
+          cp "${suite[0]}/coverage/gremlins/gremlins.json" "$RUNNER_TEMP/genomics-mutation.json"
+          jq -e '.summary | .total > 0 and .zapped == .total' "$RUNNER_TEMP/genomics-mutation.json"
+      - name: Retain the mutation result
+        if: always() && (steps.mutation.outcome == 'success' || steps.mutation.outcome == 'failure')
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: genomics-prediction-mutation
+          path: ${{ runner.temp }}/genomics-mutation.json
+          if-no-files-found: error
       - name: Prepare coverage from the installed wheel
         if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.upload_coverage && vars.GENOMICS_CODECOV_ENABLED == 'true'
         env:
