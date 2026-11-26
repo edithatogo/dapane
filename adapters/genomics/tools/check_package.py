@@ -90,6 +90,7 @@ SDIST_HELPERS = {
     "tools/select_tests.py",
     "tools/check_package.py",
     "tools/build_t1_scenario.py",
+    "tools/verify_v15_scenarios.py",
 }
 DEPLOYMENT_FILES = {
     ".dockerignore",

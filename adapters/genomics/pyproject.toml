@@ -118,7 +118,7 @@ include = [
     "/scripts/validation_pipeline.py",
     "/.dockerignore", "/Dockerfile", "/deploy",
     "/tools/__init__.py", "/tools/select_tests.py", "/tools/check_package.py",
-    "/tools/build_t1_scenario.py",
+    "/tools/build_t1_scenario.py", "/tools/verify_v15_scenarios.py",
 ]
 
 [tool.pytest.ini_options]

@@ -281,6 +281,23 @@ The clean wheel passed all 272 packaged tests with sockets disabled, including
 an independent synthetic test for subtotal and quotient reuse, distinct
 source bindings, annuity inputs and ordered error propagation.
 
+### Repeatable scenario verification
+
+The [comparison command](../../../adapters/genomics/README.md#original-workbook-replay)
+runs from the source distribution with separately installed baseline and
+candidate wheels. It inventories the authorised workbook against the frozen
+catalogue, then checks that both results cover every original formula address
+in every scenario. It compares the exact JSON values and the typed Excel error
+codes. A failure names the scenario and the first mismatching worksheet ID
+and address.
+
+The packaged runner on CPython 3.15.1 reproduced all six output digests from
+the earlier comparison of the `b7095ae` evaluator and the shared-calculation
+evaluator. It checked 218,466 results and 63 Excel error observations.
+Synthetic cases detect changed rational values, changed JSON types, changed
+error codes and missing cells. The local success receipt contains evaluator
+and source fingerprints plus scenario counts and digests.
+
 ## Detailed pathway and resource costing
 
 The [pathway adapter](../../../adapters/genomics/src/dapane_genomics/v15_pathways.py)

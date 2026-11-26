@@ -331,6 +331,11 @@ scope covers the historical evaluator, the legacy scaled quotient, their tests
 and the Phase 6 records. The workbook is a read-only input. The next native
 operation is GitHub qualification of the reviewed source.
 
+The same chat owns G6.5 in this checkout on
+`codex/genomics-repeatable-v15-replay`. Its scope covers the source-distribution
+verification runner, its tests, and the Phase 6 evidence. The two installed
+comparators and authorised workbook are read-only inputs.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

@@ -73,6 +73,24 @@ checks the original formula at every target.
 {"sheet":"Costs","cell":"N2","original":"=F2*J2","replacement":"=F2*J2*$P$1","ranges":["N2:N5","N9:N10"]}
 ```
 
+From the checkout or unpacked source distribution, compare two installed
+genomics wheels on the authorised v15 workbook. Use separate Python 3.15.1
+environments for the baseline and candidate.
+
+```sh
+/path/to/candidate/bin/python -I tools/verify_v15_scenarios.py \
+  /restricted/v15.xlsm /restricted/v15-parity.json \
+  --baseline-python /path/to/baseline/bin/python \
+  --candidate-python /path/to/candidate/bin/python
+```
+
+The runner checks the original inputs, doubled quantity, a 25% price increase,
+halved exchange rate and adjustment rates of zero and 13.75%. It compares each
+exact result and Excel error by sheet ID and cell address. A difference exits
+with the scenario and first affected address. The success receipt identifies
+both evaluators and contains counts and digests. Cell ledgers and replay outputs
+are processed in a local temporary directory.
+
 ## Reports and dashboard
 
 `genomics-report --pathways <valued-pathways.json> --output-dir <new-output>`
