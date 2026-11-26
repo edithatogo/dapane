@@ -26,6 +26,10 @@ on:
         description: Run the scheduled prediction mutation check
         type: boolean
         default: false
+      retain_dashboard:
+        description: Retain the smoke-tested dashboard image for promotion
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -142,12 +146,53 @@ jobs:
             if docker exec "$container" /opt/genomics/bin/python -I -c \
               'import json, os, sys, urllib.request as u; assert sys.version_info[:3] == (3, 15, 1) and os.getuid() == 10001; u.urlopen("http://127.0.0.1:8080/health", timeout=3).close(); assert json.load(u.urlopen("http://127.0.0.1:8080/api/tables", timeout=3)) == ["assay"]' 2>/dev/null
             then
+              docker container inspect --format '{{.Image}}' "$container" > "$RUNNER_TEMP/genomics-tested-image"
               exit 0
             fi
             sleep 1
           done
           printf 'Dashboard smoke test failed after %s attempts\n' "$attempt" >&2
           exit 1
+      - name: Export the smoke-tested image and verify its OCI digest
+        if: github.event_name == 'workflow_dispatch' && inputs.retain_dashboard
+        run: |
+          set -euo pipefail
+          image_id="$(cat "$RUNNER_TEMP/genomics-tested-image")"
+          archive="$RUNNER_TEMP/genomics-dashboard.tar"
+          docker image save --platform linux/amd64 --output "$archive" dapane-genomics-dashboard:ci
+          manifest="$(tar -xOf "$archive" index.json | jq -er '
+            .manifests | select(length == 1) | .[0]
+            | select(.mediaType == "application/vnd.oci.image.manifest.v1+json")
+            | .digest | select(test("^sha256:[0-9a-f]{64}$"))')"
+          document="$RUNNER_TEMP/genomics-dashboard-manifest.json"
+          tar -xOf "$archive" "blobs/sha256/${manifest#sha256:}" > "$document"
+          manifest_hash="$(sha256sum "$document")"
+          if [[ "sha256:${manifest_hash%% *}" != "$manifest" ]]; then
+            printf 'The exported OCI manifest does not match its digest.\n' >&2
+            exit 2
+          fi
+          jq -e --arg image "$image_id" '.config.digest == $image' "$document" >/dev/null
+          archive_hash="$(sha256sum "$archive")"
+          jq -n --arg source "$(git rev-parse HEAD)" --arg digest "$manifest" \
+            --arg config_digest "$image_id" --arg archive_sha256 "${archive_hash%% *}" \
+            '{source: $source, digest: $digest, config_digest: $config_digest,
+              archive_sha256: $archive_sha256, platform: "linux/amd64"}' \
+            > "$RUNNER_TEMP/genomics-dashboard-receipt.json"
+      - name: Retain the dashboard candidate receipt
+        if: github.event_name == 'workflow_dispatch' && inputs.retain_dashboard
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: genomics-dashboard-receipt
+          path: ${{ runner.temp }}/genomics-dashboard-receipt.json
+          if-no-files-found: error
+      - name: Retain the dashboard image archive
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.retain_dashboard
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: genomics-dashboard-image
+          path: ${{ runner.temp }}/genomics-dashboard.tar
+          compression-level: 1
+          if-no-files-found: error
 
   coverage-oidc:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.upload_coverage && vars.GENOMICS_CODECOV_ENABLED == 'true'

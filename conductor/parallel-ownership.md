@@ -309,6 +309,14 @@ created on 26 November 2026 after external drive reads stalled. It owns
 the changed genomics adapter, track records and its Dapane PR readback.
 The external drive checkout retains the earlier commit and its local edits.
 
+Chat `01a1f635-4bc2-7b60-87f9-e6d3111f4cb3` owns the public table rights and
+genomics promotion evidence on `codex/genomics-external-acceptance-20261126`
+in `/private/tmp/dapane-wolfi-qualification.jjPdWq/dapane`. Its write scope
+covers the active track records, the genomics deployment guide and the
+genomics package and promotion workflows. GitHub operations cover the
+candidate and its exact check runs. Live promotion needs a named private
+staging target and its operator identity.
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:

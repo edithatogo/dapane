@@ -2,9 +2,10 @@
 
 The [G4.3 record](g4-3-acceptance.md) established 99 of 114 verified
 outcomes. Subsequent verification brought the count to 109. The installed
-quality qualification and research reporting audit bring the total to
-**111 of 113 active outcomes (98.23%)**, or **111 of 114 frozen outcomes
-(97.37%)**. Publication rights and live cloud promotion remain open.
+quality and research reporting checks brought it to 111. The qualified
+public table edition brings the total to **112 of 113 active outcomes
+(99.12%)**, or **112 of 114 frozen outcomes (98.25%)**. Live cloud
+promotion remains open.
 The representative lab pilot moved to the
 [roadmap](../../roadmap.md#representative-genomics-lab-pilot) on 26 November 2026.
 The original workbook retains **35 of 35 worksheets, 36,411 of 36,411
@@ -171,11 +172,44 @@ submitted checklist remains an archival evidence gap. The analyst guide
 sets out journal-facing source access and computational reporting.
 [Genetics in Medicine author guidance](https://www.gimjournal.org/content/authorinfo) · [Analyst guide](../../../adapters/genomics/deploy/analyst-guide.md#record-study-provenance)
 
+## Publication-ready public tables
+
+The legacy plan calls for publication-ready CSV translations and metadata for
+the supporting tables. The version of record points readers to its supplements
+and reports confidential price redactions. The version of record carries
+CC BY 4.0. Elsevier's standard agreement for that licence defines the article
+to include tables contributed for publication as part of it. This supports
+the attributed conversion of the publisher-hosted tables. The same table
+workbook was retained with the author submission.
+[Legacy plan](https://github.com/edithatogo/microcosting_genomics/blob/fc8d4178bc3f5ce67cfc0547f7417272562c18a8/.qoder/quests/implementation_plan.md#L174-L188)
+· [Version of record](https://www.gimjournal.org/article/S1098-3600%2823%2901074-2/fulltext)
+· [Publisher agreement](https://legacyfileshare.elsevier.com/em/standard-cc-by-jpla.pdf)
+· [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+The attributed CSV edition uses the
+[publisher's table supplement](https://ars.els-cdn.com/content/image/1-s2.0-S1098360023010742-mmc2.xlsx)
+with SHA-256 `28170c95181393a96b8bfcc66e19cc5bd5f732e2ec3ed36cfa60fa6c2fd31eda`.
+The export read all eight visible sheets and retained 24,571 populated
+cells, including 17,096 exact numeric tokens. Formula cells use the
+publisher's cached values. The CSV retains the worksheet positions and
+blank fields. Only worksheet values enter the CSV. Two builds on
+CPython 3.15.1 with openpyxl 3.1.5 reproduced identical tables and
+metadata. The prepared package includes the exporter, per-table
+checksums, citation, a format-change notice and the licence link.
+The qualified package has SHA-256
+`d3b4bbf6433c5d8345dc257562fcee18a63637ba8da9c1cd233a8b4769f84a07`
+and is retained with the track owner's evidence.
+
+The original v15 workbook, confidential prices and unpublished study
+inputs remain available through authorised access. Publication of those
+sources or a derivative that exposes restricted inputs requires separate
+written authority naming the exact artifact, destination, licence terms
+and applicable redactions.
+
 ## External verification
 
 | Outcome | Required evidence |
 | --- | --- |
-| `publication-rights` | Linking the published article and supplements is available now. For any republication, record the exact bytes, license or permission, attribution and exclusions. For releasing the original workbook, restricted source inputs or any derivative that reveals confidential prices, obtain written authority from the relevant custodians and rights holders. Specify the artifact, audience, destination, licensing terms, required redactions and embargo. Retain the approval and check the final export against it. [Published article license](https://creativecommons.org/licenses/by/4.0/) |
 | `deployment-pipeline` | Identify the authorised target environment, existing AWS or Azure service, environment identity and immutable image digest. Retain the live promotion receipt, provider readback of the running digest, health and access results, and a rollback rehearsal. Record the execution and rollback authority for that target before a live operation. [Deployment instructions](../../../adapters/genomics/deploy/README.md) |
 
 ## Retained receipts
