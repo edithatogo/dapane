@@ -8,7 +8,7 @@ permissions:
   contents: read
 jobs:
   offline-ai-security:
-    uses: edithatogo/repository-standards/.github/workflows/reusable-ai-sec-pipeline.yml@cf9019ee135b980f9d12569258cf2fa536539e0d
+    uses: edithatogo/repository-standards/.github/workflows/reusable-ai-sec-pipeline.yml@e204f6fdcde100e68db88f200f831cddedfd242b
     permissions:
       contents: read
     with:

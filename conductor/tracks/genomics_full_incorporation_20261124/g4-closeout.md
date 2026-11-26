@@ -122,10 +122,18 @@ storage and analysis stages. Supplemental Table 3's unrounded
 proband exome total differs from the workbook by AUD 0.25. The 14 scenarios
 for the five assays reproduce all 70 midpoint entries from `DSA - Summary`
 through Supplemental Tables 4–7 and article Table 3. The article intervals
-and Supplemental Table 8 percentiles differ for all five assays. A December
-2023 legacy notebook uses an unseeded sampler and references a separate final
-MLE input. Exact publication PSA reproduction requires the publication's
-original draws or a documented deterministic run with matching inputs.
+and Supplemental Table 8 percentiles differ for all five assays. The
+[22 December 2023 notebook](https://github.com/edithatogo/microcosting_genomics/blob/fc8d4178bc3f5ce67cfc0547f7417272562c18a8/notebooks/PSA%20Update%2020231222%20-%20Interactive.ipynb)
+retains five embedded Plotly histogram traces with 10,000 absolute cost
+draws per assay. Its SHA-256 is
+`7a9af26b0148a8b102fe70f2e66c3ce3d24e2a3e1bafb8d4c0d3af6fab051f73`.
+For each trace, the linearly interpolated 2.5th and 97.5th percentiles
+matched zero of the ten endpoints in article Table 1 and zero of the ten
+in Supplemental Table 8 at whole-AUD precision. The notebook uses an
+unseeded sampler and references a separate final MLE input. Full
+publication reproduction still requires the verified source of the
+published intervals, such as the original draws or a reproducible
+run with matching inputs.
 Across the 15-column public view of the detailed table, 11,747 of 11,756
 populated cells agreed with their frozen counterparts. The nine differences
 are assay and stage labels.
