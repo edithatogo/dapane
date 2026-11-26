@@ -192,7 +192,7 @@ def test_same_second_dataset_versions_reopen_with_distinct_values(
     assert versions[0] != versions[1]
     reopened = data_management.DataManager(tmp_path)
     for version, amount in zip(versions, (4, 7), strict=True):
-        assert reopened.verify_data_integrity("costs", version)
+        assert reopened.verify_integrity("costs", version)
         assert reopened.load_dataset("costs", version)["amount"].item() == amount
     assert reopened.load_dataset("costs")["amount"].item() == 7
 
