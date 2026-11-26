@@ -12,6 +12,10 @@ on:
         description: Qualified image reference including its SHA-256 digest
         type: string
         required: true
+      package_run:
+        description: Installed genomics workflow run that retained this dashboard image
+        type: string
+        required: true
       ecs_task:
         description: Existing ECS task definition revision ARN for AWS
         type: string
@@ -38,6 +42,9 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       IMAGE: ${{ inputs.image }}
+      PACKAGE_RUN: ${{ inputs.package_run }}
+      DEPLOY: ${{ inputs.deploy }}
+      DEPLOY_ENABLED: ${{ vars.GENOMICS_DEPLOY_ENABLED }}
     steps:
       - uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
@@ -47,16 +54,34 @@ jobs:
         run: |
           set -euo pipefail
           [[ "$IMAGE" =~ ^[a-z0-9][a-z0-9./:_-]+@sha256:[0-9a-f]{64}$ ]] || exit 2
-          installed="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow genomics-package.yml \
-            --branch main --commit "$GITHUB_SHA" --status success --limit 1 \
-            --json databaseId --jq '.[0].databaseId // empty')"
+          [[ "$PACKAGE_RUN" =~ ^[1-9][0-9]*$ ]] || exit 2
+          if [[ "$DEPLOY" == true && "$DEPLOY_ENABLED" != true ]]; then
+            printf 'Enable the configured live promotion before selecting deploy.\n' >&2
+            exit 2
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PACKAGE_RUN" \
+            | jq -e --arg source "$GITHUB_SHA" --arg repo "$GITHUB_REPOSITORY" '
+              .head_sha == $source and .head_branch == "main"
+              and .head_repository.full_name == $repo and .event == "workflow_dispatch"
+              and (.path | split("@")[0]) == ".github/workflows/genomics-package.yml"
+              and .status == "completed" and .conclusion == "success"
+            ' >/dev/null
+          receipt_dir="$RUNNER_TEMP/genomics-dashboard-receipt"
+          gh run download "$PACKAGE_RUN" --repo "$GITHUB_REPOSITORY" \
+            --name genomics-dashboard-receipt --dir "$receipt_dir"
+          jq -e --arg source "$GITHUB_SHA" --arg digest "${IMAGE##*@}" '
+            .source == $source and .digest == $digest and .platform == "linux/amd64"
+          ' "$receipt_dir/genomics-dashboard-receipt.json" >/dev/null \
+            || { printf 'The image digest does not match the tested main candidate.\n' >&2; exit 2; }
           offline="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow offline-ai-security.yml \
             --branch main --commit "$GITHUB_SHA" --status success --limit 1 \
             --json databaseId --jq '.[0].databaseId // empty')"
-          [[ -n "$installed" && -n "$offline" ]] || exit 2
-          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$installed/jobs" | jq -e '
+          [[ -n "$offline" ]] || exit 2
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PACKAGE_RUN/jobs" | jq -e '
             any(.jobs[]; .name == "installed-genomics" and .conclusion == "success"
-              and any(.steps[]; .name == "Exercise the dashboard image without network access" and .conclusion == "success"))
+              and (.runner_name | startswith("GitHub Actions"))
+              and any(.steps[]; .name == "Exercise the dashboard image without network access" and .conclusion == "success")
+              and any(.steps[]; .name == "Export the smoke-tested image and verify its OCI digest" and .conclusion == "success"))
           ' >/dev/null
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$offline/jobs" | jq -e '
             any(.jobs[]; .conclusion == "success" and (.runner_name | startswith("GitHub Actions"))

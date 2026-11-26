@@ -85,12 +85,26 @@ Follow the [38-second lab setup tutorial](lab-setup.mp4) or its
 
 ## Promote a dashboard image
 
-The Genomics dashboard promotion workflow accepts a vetted image reference
-with a SHA-256 digest. A dispatch from `main` confirms that the installed
-package and dashboard image smoke test passed at that commit and that the
-official GitHub-hosted workflow passed the offline source scan and image
-advisory review. Keep the image digest and its source commit together in
-the deployment record.
+Dispatch the Installed genomics package workflow on `main` with
+`retain_dashboard=true` to export the Linux amd64 image that passed the
+network-disabled smoke test. The workflow checks that the exported OCI
+manifest references the tested container's image configuration. Download
+`genomics-dashboard-image` and `genomics-dashboard-receipt` from that run.
+The receipt identifies the source commit, image manifest, configuration
+and archive SHA-256.
+
+For live promotion, verify the archive with the receipt's checksum and
+copy it into the approved registry. Require digest preservation, for
+example with [Skopeo `copy --preserve-digests`](https://github.com/podman-container-tools/skopeo/blob/main/docs/skopeo-copy.1.md)
+and its `oci-archive:` transport. Read back the manifest digest from the
+registry and use that exact image reference in the dispatch.
+
+The Genomics dashboard promotion workflow accepts the tested run ID as
+`package_run` and the image reference as `image`. It verifies the digest
+against the retained receipt from the successful GitHub-hosted package
+run on the same `main` commit. It also checks the official GitHub-hosted
+offline source scan and image advisory review for that commit. Keep the
+image digest and source commit in the deployment record.
 
 The default dispatch is evidence-only. An authorised operator selects
 `deploy` after configuring the repository's `GENOMICS_DEPLOY_ENABLED` flag
@@ -112,7 +126,7 @@ then check readiness and read the expected prepared table list.
 
 | Option | Use when | Work to qualify |
 | --- | --- | --- |
-| Evidence-only dispatch | The repository has a candidate and deployment authority is pending. | Retain the installed-package and official offline-security results for the exact commit. Before live use, establish the link between the built, scanned and published image digest. The existing dispatch checks the digest format and the commit's jobs. |
+| Evidence-only dispatch | The repository has a retained candidate and live deployment is pending. | Verify the tested image manifest and retain the installed-package and official offline-security results for the exact commit. Keep the archive for a digest-preserving import to the approved registry. |
 | Azure Container Apps | An authorised private Container Apps environment, registry and Azure Files share are already available. | Verify managed-identity image pull, internal TLS access and the read-only prepared-data mount. Record the ready revision, running digest and previous image for rollback. [Managed identity image pull](https://learn.microsoft.com/azure/container-apps/managed-identity-image-pull) [Revisions](https://learn.microsoft.com/azure/container-apps/revisions) |
 | Amazon ECS on Fargate | An authorised private ECS service, ECR repository and EFS access point are already available. | Prepare the exact task revision and scoped task roles. Verify private connectivity, the running digest and restart behaviour. Retain the previous task revision and verify rollback. [Fargate networking](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html) [ECS deployment](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html) |
 

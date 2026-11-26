@@ -30,8 +30,8 @@ Status: in_progress
 - [~] G4.2 Run the full workbook and active feature ledgers from clean installed artifacts with the legacy checkout absent. Require reproducible evidence for every shipped and active planned outcome. Reconcile any historical or statistical differences against their recorded oracle and keep all restricted source data outside public artifacts. [Clean-install qualification and remaining outcomes](g4-2-qualification.md)
 - [~] G4.3 Review and fix the candidate, run the normal release and exact-head GitHub-hosted offline-security gates, and record both verified coverage counts with their supporting evidence. [Acceptance counts and GitHub controls](g4-3-acceptance.md) and [remaining outcome verification](g4-closeout.md)
 
-The installed quality and research reporting outcomes are verified.
-Publication rights and live cloud promotion await their external evidence.
+The installed quality, research reporting and public table publication rights
+are verified. Live cloud promotion awaits a private staging target and readback.
 [Current acceptance evidence](g4-closeout.md)
 
 The representative lab pilot moved to the [roadmap](../../roadmap.md#representative-genomics-lab-pilot) on 26 November 2026. Its original row remains in the frozen feature inventory.
