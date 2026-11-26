@@ -299,6 +299,8 @@ checkpoint in the implementation checkout on
 installed qualification and the Dapane PR and exact-main Actions readback.
 The three external outcomes have evidence requirements recorded in the
 [closeout](tracks/genomics_full_incorporation_20261124/g4-closeout.md).
+The same chat owns the full-model quality and expanded coverage readback
+on `codex/genomics-quality-evidence-20261126` in this checkout.
 
 ## Main integration reconciliation — 19 November 2026
 

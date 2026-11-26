@@ -1,9 +1,10 @@
 # Remaining genomics acceptance
 
 The [G4.3 record](g4-3-acceptance.md) established 99 of 114 verified
-outcomes. This checkpoint verifies ten additional outcomes, bringing
-the candidate to **109 of 114 outcomes (95.61%)**. Research reporting,
-the broader coverage targets and the three external outcomes remain open.
+outcomes. This checkpoint verifies nine additional outcomes, bringing
+the verified count to **108 of 114 outcomes (94.74%)**. Full-model data
+quality, research reporting, the broader coverage targets and the three
+external outcomes remain open.
 The original workbook retains **35 of 35 worksheets, 36,411 of 36,411
 formula coordinates and 10 of 10 valuation pathways**.
 
@@ -14,7 +15,7 @@ formula coordinates and 10 of 10 valuation pathways**.
 | `data-governance` | Qualified | Concurrent versions retained distinct identifiers and private metadata. A restart recovered both versions. Loading a changed source failed its registered checksum. |
 | `template-time` | Qualified | In a fresh synthetic consumer workspace, the installed tools generated a 22-row customized template in 0.54 s, validated the input in 0.47 s and completed the profile, data and app setup in 1.16 s. The original limits were 10, 5 and 30 minutes respectively. |
 | `full-analysis-chain` | Qualified | The installed planning command connected selected source components and declared cost draws to cost drivers, DSA, PSA, cost-only VOI, budget impact, break-even, benchmark and cost per diagnosis. Independent results matched every handoff in the synthetic case. Original workbook and archived-draw comparators remain in the G4.2 record. |
-| `distribution-quality` | Qualified for validated priced components | The same preselected 839 priced components from the workbook role ledger had 839 finite nonnegative costs. The expanded 959-row view had 911 of 959 valid amounts (94.99%). Separately calculated quartiles for all five models and the preserved amounts matched. The expanded view includes unpriced rows and headings. |
+| `distribution-quality` | Open | All 839 priced amounts and the independently calculated quartiles passed. The expanded 959-row view had 911 valid amounts (94.99%). The existing multi-field validator scored the five full model exports from 41.60% to 60.28%. Every export remains below the strict greater-than-99.5% target. [Full-model quality](#full-model-quality) |
 | `lab-management-api` | Qualified | A separate standard-library HTTP client read two synthetic records, preserving leading zeros and decimal text, and recovered its stored version 1 validation receipt. An unauthenticated request received 401. Live lab acceptance remains a separate outcome. |
 | `workbook-migration` | Qualified | The installed model command copied static data to declared cells in a new XLSX layout. Independent readback verified the numeric value, a leading-zero text field and retained formulas. Duplicate targets, formula input or replacement, and output overwrite were rejected. |
 | `analysis-performance` | Qualified | All eight analytical workloads met the less-than-5% regression limit. The first comparison identified a cost-driver timing difference with identical code. After simplifying finite-value validation, a paired comparison in the same runtime improved median cost-driver times by 7.91%, 12.31% and 3.82% at 1,000, 5,000 and 10,000 rows. The cost-driver results matched exactly. |
@@ -22,7 +23,7 @@ formula coordinates and 10 of 10 valuation pathways**.
 | `guides` | Qualified | The installed commands executed the guide's standardization, planning and migration examples. The checks also exercised rejected inputs, authenticated HTTP readback and contribution verification from the source distribution. [Analyst guide](../../../adapters/genomics/deploy/analyst-guide.md) |
 | `research-reporting` | Open | The source, methods and output trail is documented. Completing the journal audit requires the actual study delivery edition and its supporting declarations. [Reporting evidence](#study-reporting-evidence) |
 | `source-command-behavior` | Qualified | The updated source smoke command verified the installed home page, model wizard and client asset. The original repository-only release-screen command passed a numeric-only fixture and blocked a reserved-domain identifier fixture with exit 1. This brings the source-command audit to 74 of 74. |
-| `coverage-targets` | Open | Each of eight analytical modules exceeded 90%. Both modules added in this checkpoint reached 100%. The inherited library and full set of modules added since the predecessor still fall short. [Coverage measurements](#coverage-measurements) |
+| `coverage-targets` | Open | Each of eight analytical modules exceeded 90%. Both modules added in this checkpoint reached 100%. The inherited library and full added-module targets remain open. [Coverage measurements](#coverage-measurements) |
 
 ## Installed qualification
 
@@ -48,23 +49,41 @@ first run. A numeric-only control passed, and the separate identifier
 control was blocked as intended. The delivery PR retains its authoritative
 GitHub Actions checks separately from these command tests.
 
+## Full-model quality
+
+The installed extraction and enhancement commands produced all five model
+exports. A separate comparison with cached workbook values checked 8,287
+cells with zero differences. The existing quality validator then scored
+1,091 rows using model and item identity, available unit price and
+quantity, configured bounds, and agreement with the extended cost.
+Every model failed the strict quality target. The reports preserve
+unresolved values and allow them to be traced to the source.
+
+Closing Q-184 requires an approved validated dataset with documented row
+roles, authoritative values for unresolved fields and a passing receipt
+from the existing multi-field validator. The priced-amount audit and the
+workbook replay provide distinct evidence for the source values.
+
 ## Coverage measurements
 
 The combined statement coverage includes the packaged and inherited suites,
-the exact workbook replay and the installed analytical and guard cases.
+the exact workbook replay, the installed analytical and guard cases,
+workbook preparation, 2,894 passing unit-cost comparisons, model export
+validation, and standard report generation in four formats.
 
 | Scope | Covered statements | Coverage | Frozen target |
 | --- | ---: | ---: | --- |
-| All 127 installed modules | 13,664 / 16,895 | 80.88% | Whole-package comparison |
-| 109 inherited modules | 12,164 / 14,998 | 81.10% | At least 85% |
-| 18 modules added since the predecessor | 1,500 / 1,897 | 79.07% | Greater than 90%, with 100% under R-271 |
+| All 127 installed modules | 14,070 / 16,895 | 83.28% | Whole-package comparison |
+| 109 inherited modules | 12,344 / 14,998 | 82.30% | At least 85% |
+| 18 modules added since the predecessor | 1,726 / 1,897 | 90.99% | Greater than 90% for new components, with 100% under R-271 |
 | Eight analytical modules | 891 / 977 | 91.20% | Greater than 90% in every module. Observed 90.15% to 92.81%. |
 | Two modules added in this checkpoint | 105 / 105 | 100% | 100% for these new components |
 
 The retained coverage XML identifies the executable lines for the remaining
-tests. Reaching 85% in the inherited modules requires at least 585 more
-covered statements at the measured denominator. The broader added-module
-requirement still has 397 uncovered statements.
+tests. Reaching 85% in the inherited modules requires at least 405 more
+covered statements at the measured denominator. The added-module aggregate
+exceeds 90%. Individual coverage varies, and 171 statements remain
+uncovered across that group.
 
 ## Study reporting evidence
 
@@ -102,7 +121,9 @@ their producing commands in authorised storage.
 | Genomics source distribution | Archive of the same adapter and its packaged tests | `e273a16b542304c8c374dcf2c2900f9adde5b88de0ad19afd1aaec62ecf2f5d3` |
 | Packaged JUnit | All 201 packaged cases | `d4bdc9473929af68a94cea2ad67c23656c2ad5a8940705962ae3383a5d6b569c` |
 | Inherited JUnit | All 1,339 inherited cases | `cf4c81eebe0c4b21cf1b876a5f86c34521b53352465ddcb1ab726a8ad7ae6b6c` |
-| Combined coverage XML | Statement results by module and line | `017c81d5dc192c70c9dd47857b5aa20c9633fb91aa9804a6a67eb39c06652005` |
-| Coverage populations | Original module set, added modules and analytical thresholds | `c39abd76bfc6ea462f3279dacb6fc3ab269e1487bff9fa57fadae39f058f8de3` |
+| Combined coverage XML | Expanded statement results by module and line | `c39fd8cc944fe6ed0a1e3b4b6cc376429f5aabd3ae1300d1911503ed9633d798` |
+| Coverage populations | Original module set, added modules and analytical thresholds | `8af2ed9af78dae30e8ca84842d148b6c2b5d8cbfb241d5da20601bb22918ca1a` |
+| Model quality | Five strict multi-field scores and outcomes | `acdade52acd35f30a30756443a956d668221ca46258a35994f0d2c07ca1998cd` |
+| Model parity | Five model comparisons against cached workbook values | `de3329c88464b4d907ae0ff867753f2007d8799f2ddd5ba3f4a60dd4dedeb833` |
 | Cost-driver comparison | Alternating samples, runtime and both source fingerprints | `011122206fd10edb43df46cefe9180aa8b1bee39f11a6bee4ecb929e077c503e` |
 | Guide receipt | Installed commands and expected outputs, bound to the guide bytes | `a9c50695839b6b829f8c23006ef3dce12e0106d08e86dac89ba99e35ddda9319` |
