@@ -129,8 +129,10 @@ draws per assay. Its SHA-256 is
 `7a9af26b0148a8b102fe70f2e66c3ce3d24e2a3e1bafb8d4c0d3af6fab051f73`.
 For each trace, the linearly interpolated 2.5th and 97.5th percentiles
 matched zero of the ten endpoints in article Table 1 and zero of the ten
-in Supplemental Table 8 at whole-AUD precision. The notebook uses an
-unseeded sampler and references a separate final MLE input. Full
+in Supplemental Table 8 at whole-AUD precision. The Gamma quantiles
+computed directly from the five published shape and scale pairs also
+matched zero endpoints in each table at the same precision. The notebook
+uses an unseeded sampler and references a separate final MLE input. Full
 publication reproduction still requires the verified source of the
 published intervals, such as the original draws or a reproducible
 run with matching inputs.
