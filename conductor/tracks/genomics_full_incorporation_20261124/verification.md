@@ -638,6 +638,21 @@ scanner on its exact head. The [official main-push run](https://github.com/edith
 passed network-disabled scanning and image advisory review on merge commit
 `8125597034a8f87a4d788212b011ab88ee7263a9`.
 
+The first [official run on PR #92](https://github.com/edithatogo/dapane/actions/runs/45741576903)
+stopped while building the scanner image. The four CPython patch downloads
+had different digests again. The retained copies matched all four prior
+pins. Their applied library diffs and the new downloads differed only in
+the abbreviated Git blob IDs. The
+[scanner follow-up](https://github.com/edithatogo/repository-standards/pull/190)
+retains the four reviewed library diffs with their CPython licence. The
+existing offline build checks each stored diff and the original and patched
+files by hash. A changed patch failed before replacing any file. The
+[official scanner image check](https://github.com/edithatogo/repository-standards/actions/runs/45743266838)
+passed at `c229cd4d8060629038f0b37ac7cddc984798f2b4`. The merged policy
+`cf9019ee135b980f9d12569258cf2fa536539e0d` has the same tree and is now
+pinned for the Dapane run. The Dapane runtime and the clean-install candidate
+retain the same code.
+
 ## Preservation and restoration
 
 The restricted source bundle contains all four public branch heads and the

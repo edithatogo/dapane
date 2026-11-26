@@ -276,6 +276,14 @@ Conductor evidence. The legacy checkout is outside the consumer's read
 scope, and native controls are read-only. The next operation is to
 qualify the evidence commit on GitHub.
 
+The scanner follow-up is
+`codex/dapane-freeze-cpython-patches-20261126` in the same chat's
+`standards-full` checkout. Its scope is the four pinned CPython diffs and
+the Dapane-hosted workflow. The official image check passed on
+[scanner PR #190](https://github.com/edithatogo/repository-standards/pull/190),
+which merged at `cf9019e`. The same chat owns the pin update and exact-head
+verification in [Dapane PR #92](https://github.com/edithatogo/dapane/pull/92).
+
 ## Main integration reconciliation — 19 November 2026
 
 Following sequential `--no-ff` integration onto `main`, this ownership record incorporates:
